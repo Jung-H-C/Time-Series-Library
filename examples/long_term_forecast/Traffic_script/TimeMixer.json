@@ -1,0 +1,162 @@
+{
+  "source_script": "scripts/long_term_forecast/Traffic_script/TimeMixer.sh",
+  "relative_script_path": "long_term_forecast/Traffic_script/TimeMixer.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {},
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "TimeMixer"
+    ],
+    "tasks": [
+      "long_term_forecast"
+    ],
+    "datasets": [
+      "custom"
+    ],
+    "num_runs": 4
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/traffic/ --data_path traffic.csv --model_id Traffic_96_96 --model TimeMixer --data custom --features M --seq_len 96 --label_len 0 --pred_len 96 --e_layers 3 --d_layers 1 --factor 3 --enc_in 862 --dec_in 862 --c_out 862 --des Exp --itr 1 --d_model 32 --d_ff 64 --batch_size 8 --learning_rate 0.01 --down_sampling_layers 3 --down_sampling_method avg --down_sampling_window 2",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/traffic/",
+        "data_path": "traffic.csv",
+        "model_id": "Traffic_96_96",
+        "model": "TimeMixer",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "label_len": 0,
+        "pred_len": 96,
+        "e_layers": 3,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 862,
+        "dec_in": 862,
+        "c_out": 862,
+        "des": "Exp",
+        "itr": 1,
+        "d_model": 32,
+        "d_ff": 64,
+        "batch_size": 8,
+        "learning_rate": 0.01,
+        "down_sampling_layers": 3,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/traffic/ --data_path traffic.csv --model_id Traffic_96_192 --model TimeMixer --data custom --features M --seq_len 96 --label_len 0 --pred_len 192 --e_layers 3 --d_layers 1 --factor 3 --enc_in 862 --dec_in 862 --c_out 862 --des Exp --itr 1 --d_model 32 --d_ff 64 --batch_size 8 --learning_rate 0.01 --down_sampling_layers 3 --down_sampling_method avg --down_sampling_window 2",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/traffic/",
+        "data_path": "traffic.csv",
+        "model_id": "Traffic_96_192",
+        "model": "TimeMixer",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "label_len": 0,
+        "pred_len": 192,
+        "e_layers": 3,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 862,
+        "dec_in": 862,
+        "c_out": 862,
+        "des": "Exp",
+        "itr": 1,
+        "d_model": 32,
+        "d_ff": 64,
+        "batch_size": 8,
+        "learning_rate": 0.01,
+        "down_sampling_layers": 3,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/traffic/ --data_path traffic.csv --model_id Traffic_96_336 --model TimeMixer --data custom --features M --seq_len 96 --label_len 0 --pred_len 336 --e_layers 3 --d_layers 1 --factor 3 --enc_in 862 --dec_in 862 --c_out 862 --des Exp --itr 1 --d_model 32 --d_ff 64 --batch_size 8 --learning_rate 0.01 --down_sampling_layers 3 --down_sampling_method avg --down_sampling_window 2",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/traffic/",
+        "data_path": "traffic.csv",
+        "model_id": "Traffic_96_336",
+        "model": "TimeMixer",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "label_len": 0,
+        "pred_len": 336,
+        "e_layers": 3,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 862,
+        "dec_in": 862,
+        "c_out": 862,
+        "des": "Exp",
+        "itr": 1,
+        "d_model": 32,
+        "d_ff": 64,
+        "batch_size": 8,
+        "learning_rate": 0.01,
+        "down_sampling_layers": 3,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/traffic/ --data_path traffic.csv --model_id Traffic_96_720 --model TimeMixer --data custom --features M --seq_len 96 --label_len 0 --pred_len 720 --e_layers 3 --d_layers 1 --factor 3 --enc_in 862 --dec_in 862 --c_out 862 --des Exp --itr 1 --d_model 32 --d_ff 64 --batch_size 8 --learning_rate 0.01 --down_sampling_layers 3 --down_sampling_method avg --down_sampling_window 2",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/traffic/",
+        "data_path": "traffic.csv",
+        "model_id": "Traffic_96_720",
+        "model": "TimeMixer",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "label_len": 0,
+        "pred_len": 720,
+        "e_layers": 3,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 862,
+        "dec_in": 862,
+        "c_out": 862,
+        "des": "Exp",
+        "itr": 1,
+        "d_model": 32,
+        "d_ff": 64,
+        "batch_size": 8,
+        "learning_rate": 0.01,
+        "down_sampling_layers": 3,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

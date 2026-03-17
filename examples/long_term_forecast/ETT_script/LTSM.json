@@ -1,0 +1,417 @@
+{
+  "source_script": "scripts/long_term_forecast/ETT_script/LTSM.sh",
+  "relative_script_path": "long_term_forecast/ETT_script/LTSM.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "2"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "Chronos2"
+    ],
+    "tasks": [
+      "zero_shot_forecast"
+    ],
+    "datasets": [
+      "ETTh1",
+      "ETTh2",
+      "ETTm1",
+      "ETTm2"
+    ],
+    "num_runs": 15
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTh1.csv --model_id ETTh1_2048_96 --model Chronos2 --data ETTh1 --features M --seq_len 2048 --pred_len 96 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTh1.csv",
+        "model_id": "ETTh1_2048_96",
+        "model": "Chronos2",
+        "data": "ETTh1",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 96,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTh1.csv --model_id ETTh1_2048_192 --model Chronos2 --data ETTh1 --features M --seq_len 2048 --pred_len 192 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTh1.csv",
+        "model_id": "ETTh1_2048_192",
+        "model": "Chronos2",
+        "data": "ETTh1",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 192,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTh1.csv --model_id ETTh1_2048_336 --model Chronos2 --data ETTh1 --features M --seq_len 2048 --pred_len 336 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTh1.csv",
+        "model_id": "ETTh1_2048_336",
+        "model": "Chronos2",
+        "data": "ETTh1",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 336,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTh1.csv --model_id ETTh1_2048_720 --model Chronos2 --data ETTh1 --features M --seq_len 2048 --pred_len 720 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTh1.csv",
+        "model_id": "ETTh1_2048_720",
+        "model": "Chronos2",
+        "data": "ETTh1",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 720,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 5,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTh2.csv --model_id ETTh2_2048_96 --model Chronos2 --data ETTh2 --features M --seq_len 2048 --pred_len 96 --seg_len 24 --enc_in 7 --d_model 256 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTh2.csv",
+        "model_id": "ETTh2_2048_96",
+        "model": "Chronos2",
+        "data": "ETTh2",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 96,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 256,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 6,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTh2.csv --model_id ETTh2_2048_192 --model Chronos2 --data ETTh2 --features M --seq_len 2048 --pred_len 192 --seg_len 24 --enc_in 7 --d_model 256 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTh2.csv",
+        "model_id": "ETTh2_2048_192",
+        "model": "Chronos2",
+        "data": "ETTh2",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 192,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 256,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 7,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTh2.csv --model_id ETTh2_2048_336 --model Chronos2 --data ETTh2 --features M --seq_len 2048 --pred_len 336 --seg_len 24 --enc_in 7 --d_model 256 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTh2.csv",
+        "model_id": "ETTh2_2048_336",
+        "model": "Chronos2",
+        "data": "ETTh2",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 336,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 256,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 8,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTh2.csv --model_id ETTh2_2048_720 --model Chronos2 --data ETTh2 --features M --seq_len 2048 --pred_len 720 --seg_len 24 --enc_in 7 --d_model 256 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTh2.csv",
+        "model_id": "ETTh2_2048_720",
+        "model": "Chronos2",
+        "data": "ETTh2",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 720,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 256,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 9,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTm1.csv --model_id ETTm1_2048_192 --model Chronos2 --data ETTm1 --features M --seq_len 2048 --pred_len 192 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm1.csv",
+        "model_id": "ETTm1_2048_192",
+        "model": "Chronos2",
+        "data": "ETTm1",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 192,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 10,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTm1.csv --model_id ETTm1_2048_336 --model Chronos2 --data ETTm1 --features M --seq_len 2048 --pred_len 336 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm1.csv",
+        "model_id": "ETTm1_2048_336",
+        "model": "Chronos2",
+        "data": "ETTm1",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 336,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 11,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTm1.csv --model_id ETTm1_2048_720 --model Chronos2 --data ETTm1 --features M --seq_len 2048 --pred_len 720 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm1.csv",
+        "model_id": "ETTm1_2048_720",
+        "model": "Chronos2",
+        "data": "ETTm1",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 720,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 12,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTm2.csv --model_id ETTm2_2048_96 --model Chronos2 --data ETTm2 --features M --seq_len 2048 --pred_len 96 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm2.csv",
+        "model_id": "ETTm2_2048_96",
+        "model": "Chronos2",
+        "data": "ETTm2",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 96,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 13,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTm2.csv --model_id ETTm2_2048_192 --model Chronos2 --data ETTm2 --features M --seq_len 2048 --pred_len 192 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm2.csv",
+        "model_id": "ETTm2_2048_192",
+        "model": "Chronos2",
+        "data": "ETTm2",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 192,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 14,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTm2.csv --model_id ETTm2_2048_336 --model Chronos2 --data ETTm2 --features M --seq_len 2048 --pred_len 336 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm2.csv",
+        "model_id": "ETTm2_2048_336",
+        "model": "Chronos2",
+        "data": "ETTm2",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 336,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 15,
+      "command": "python -u run.py --task_name zero_shot_forecast --is_training 0 --root_path ./dataset/ETT-small/ --data_path ETTm2.csv --model_id ETTm2_2048_720 --model Chronos2 --data ETTm2 --features M --seq_len 2048 --pred_len 720 --seg_len 24 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "zero_shot_forecast",
+        "is_training": 0,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm2.csv",
+        "model_id": "ETTm2_2048_720",
+        "model": "Chronos2",
+        "data": "ETTm2",
+        "features": "M",
+        "seq_len": 2048,
+        "pred_len": 720,
+        "seg_len": 24,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

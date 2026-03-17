@@ -1,0 +1,136 @@
+{
+  "source_script": "scripts/long_term_forecast/Weather_script/WPMixer.sh",
+  "relative_script_path": "long_term_forecast/Weather_script/WPMixer.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "WPMixer"
+    ],
+    "tasks": [
+      "long_term_forecast"
+    ],
+    "datasets": [
+      "weather"
+    ],
+    "num_runs": 4
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --is_training 1 --root_path ./data/weather/ --data_path weather.csv --model_id wpmixer --model WPMixer --task_name long_term_forecast --data weather --seq_len 512 --pred_len 96 --label_len 0 --d_model 256 --patch_len 16 --batch_size 32 --learning_rate 0.000913333 --lradj type3 --dropout 0.4 --patience 12 --train_epochs 60 --use_amp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "is_training": 1,
+        "root_path": "./data/weather/",
+        "data_path": "weather.csv",
+        "model_id": "wpmixer",
+        "model": "WPMixer",
+        "task_name": "long_term_forecast",
+        "data": "weather",
+        "seq_len": 512,
+        "pred_len": 96,
+        "label_len": 0,
+        "d_model": 256,
+        "patch_len": 16,
+        "batch_size": 32,
+        "learning_rate": 0.000913333,
+        "lradj": "type3",
+        "dropout": 0.4,
+        "patience": 12,
+        "train_epochs": 60,
+        "use_amp": true
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --is_training 1 --root_path ./data/weather/ --data_path weather.csv --model_id wpmixer --model WPMixer --task_name long_term_forecast --data weather --seq_len 512 --pred_len 192 --label_len 0 --d_model 128 --patch_len 16 --batch_size 64 --learning_rate 0.001379042 --lradj type3 --dropout 0.4 --patience 12 --train_epochs 60 --use_amp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "is_training": 1,
+        "root_path": "./data/weather/",
+        "data_path": "weather.csv",
+        "model_id": "wpmixer",
+        "model": "WPMixer",
+        "task_name": "long_term_forecast",
+        "data": "weather",
+        "seq_len": 512,
+        "pred_len": 192,
+        "label_len": 0,
+        "d_model": 128,
+        "patch_len": 16,
+        "batch_size": 64,
+        "learning_rate": 0.001379042,
+        "lradj": "type3",
+        "dropout": 0.4,
+        "patience": 12,
+        "train_epochs": 60,
+        "use_amp": true
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --is_training 1 --root_path ./data/weather/ --data_path weather.csv --model_id wpmixer --model WPMixer --task_name long_term_forecast --data weather --seq_len 512 --pred_len 336 --label_len 0 --d_model 128 --patch_len 16 --batch_size 32 --learning_rate 0.000607991 --lradj type3 --dropout 0.4 --patience 12 --train_epochs 60 --use_amp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "is_training": 1,
+        "root_path": "./data/weather/",
+        "data_path": "weather.csv",
+        "model_id": "wpmixer",
+        "model": "WPMixer",
+        "task_name": "long_term_forecast",
+        "data": "weather",
+        "seq_len": 512,
+        "pred_len": 336,
+        "label_len": 0,
+        "d_model": 128,
+        "patch_len": 16,
+        "batch_size": 32,
+        "learning_rate": 0.000607991,
+        "lradj": "type3",
+        "dropout": 0.4,
+        "patience": 12,
+        "train_epochs": 60,
+        "use_amp": true
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --is_training 1 --root_path ./data/weather/ --data_path weather.csv --model_id wpmixer --model WPMixer --task_name long_term_forecast --data weather --seq_len 512 --pred_len 720 --label_len 0 --d_model 128 --patch_len 16 --batch_size 128 --learning_rate 0.001470479 --lradj type3 --dropout 0.4 --patience 12 --train_epochs 60 --use_amp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "is_training": 1,
+        "root_path": "./data/weather/",
+        "data_path": "weather.csv",
+        "model_id": "wpmixer",
+        "model": "WPMixer",
+        "task_name": "long_term_forecast",
+        "data": "weather",
+        "seq_len": 512,
+        "pred_len": 720,
+        "label_len": 0,
+        "d_model": 128,
+        "patch_len": 16,
+        "batch_size": 128,
+        "learning_rate": 0.001470479,
+        "lradj": "type3",
+        "dropout": 0.4,
+        "patience": 12,
+        "train_epochs": 60,
+        "use_amp": true
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

@@ -1,0 +1,284 @@
+{
+  "source_script": "scripts/classification/iTransformer.sh",
+  "relative_script_path": "classification/iTransformer.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "iTransformer"
+    ],
+    "tasks": [
+      "classification"
+    ],
+    "datasets": [
+      "UEA"
+    ],
+    "num_runs": 10
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 2048 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 2048,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/FaceDetection/ --model_id FaceDetection --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/FaceDetection/",
+        "model_id": "FaceDetection",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/Handwriting/ --model_id Handwriting --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/Handwriting/",
+        "model_id": "Handwriting",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/Heartbeat/ --model_id Heartbeat --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/Heartbeat/",
+        "model_id": "Heartbeat",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 5,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/JapaneseVowels/ --model_id JapaneseVowels --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/JapaneseVowels/",
+        "model_id": "JapaneseVowels",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 6,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/PEMS-SF/ --model_id PEMS-SF --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/PEMS-SF/",
+        "model_id": "PEMS-SF",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 7,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/SelfRegulationSCP1/ --model_id SelfRegulationSCP1 --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/SelfRegulationSCP1/",
+        "model_id": "SelfRegulationSCP1",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 8,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/SelfRegulationSCP2/ --model_id SelfRegulationSCP2 --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/SelfRegulationSCP2/",
+        "model_id": "SelfRegulationSCP2",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 9,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/SpokenArabicDigits/ --model_id SpokenArabicDigits --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/SpokenArabicDigits/",
+        "model_id": "SpokenArabicDigits",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    },
+    {
+      "index": 10,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/UWaveGestureLibrary/ --model_id UWaveGestureLibrary --model iTransformer --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --enc_in 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/UWaveGestureLibrary/",
+        "model_id": "UWaveGestureLibrary",
+        "model": "iTransformer",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "enc_in": 3
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

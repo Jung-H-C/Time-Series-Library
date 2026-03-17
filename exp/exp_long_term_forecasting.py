@@ -18,6 +18,7 @@ warnings.filterwarnings('ignore')
 class Exp_Long_Term_Forecast(Exp_Basic):
     def __init__(self, args):
         super(Exp_Long_Term_Forecast, self).__init__(args)
+        self.final_train_epoch = None
 
     def _build_model(self):
         model = self.model_dict[self.args.model](self.args).float()
@@ -93,7 +94,9 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         if self.args.use_amp:
             scaler = torch.cuda.amp.GradScaler()
 
+        executed_epochs = 0
         for epoch in range(self.args.train_epochs):
+            executed_epochs = epoch + 1
             iter_count = 0
             train_loss = []
 
@@ -160,6 +163,7 @@ class Exp_Long_Term_Forecast(Exp_Basic):
 
             adjust_learning_rate(model_optim, epoch + 1, self.args)
 
+        self.final_train_epoch = executed_epochs
         best_model_path = path + '/' + 'checkpoint.pth'
         self.model.load_state_dict(torch.load(best_model_path))
 
@@ -254,9 +258,10 @@ class Exp_Long_Term_Forecast(Exp_Basic):
 
         mae, mse, rmse, mape, mspe = metric(preds, trues)
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
+        final_epoch = self.final_train_epoch if self.final_train_epoch is not None else 'N/A'
         f = open("result_long_term_forecast.txt", 'a')
         f.write(setting + "  \n")
-        f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
+        f.write('final_epoch:{}, mse:{}, mae:{}, dtw:{}'.format(final_epoch, mse, mae, dtw))
         f.write('\n')
         f.write('\n')
         f.close()

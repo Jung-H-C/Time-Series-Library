@@ -1,0 +1,136 @@
+{
+  "source_script": "scripts/exogenous_forecast/ECL/TimeXer.sh",
+  "relative_script_path": "exogenous_forecast/ECL/TimeXer.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "1"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "TimeXer"
+    ],
+    "tasks": [
+      "long_term_forecast"
+    ],
+    "datasets": [
+      "custom"
+    ],
+    "num_runs": 4
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_96_96 --model TimeXer --data custom --features MS --seq_len 96 --label_len 48 --pred_len 96 --e_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --des Timexer-MS --batch_size 4 --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_96_96",
+        "model": "TimeXer",
+        "data": "custom",
+        "features": "MS",
+        "seq_len": 96,
+        "label_len": 48,
+        "pred_len": 96,
+        "e_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "des": "Timexer-MS",
+        "batch_size": 4,
+        "itr": 1
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_96_192 --model TimeXer --data custom --features MS --seq_len 96 --label_len 48 --pred_len 192 --e_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --des Timexer-MS --batch_size 32 --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_96_192",
+        "model": "TimeXer",
+        "data": "custom",
+        "features": "MS",
+        "seq_len": 96,
+        "label_len": 48,
+        "pred_len": 192,
+        "e_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "des": "Timexer-MS",
+        "batch_size": 32,
+        "itr": 1
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_96_336 --model TimeXer --data custom --features MS --seq_len 96 --label_len 48 --pred_len 336 --e_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --des Timexer-MS --batch_size 32 --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_96_336",
+        "model": "TimeXer",
+        "data": "custom",
+        "features": "MS",
+        "seq_len": 96,
+        "label_len": 48,
+        "pred_len": 336,
+        "e_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "des": "Timexer-MS",
+        "batch_size": 32,
+        "itr": 1
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_96_720 --model TimeXer --data custom --features MS --seq_len 96 --label_len 48 --pred_len 720 --e_layers 3 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --des Timexer-MS --d_model 512 --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_96_720",
+        "model": "TimeXer",
+        "data": "custom",
+        "features": "MS",
+        "seq_len": 96,
+        "label_len": 48,
+        "pred_len": 720,
+        "e_layers": 3,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "des": "Timexer-MS",
+        "d_model": 512,
+        "itr": 1
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

@@ -10,6 +10,7 @@ import pkgutil
 class Exp_Basic(object):
     def __init__(self, args):
         self.args = args
+        self.final_train_epoch = None
         
         # -------------------------------------------------------
         #  Automatically generate model map
@@ -109,4 +110,3 @@ class LazyModelDict(dict):
 
         self[key] = model_class
         return model_class
-

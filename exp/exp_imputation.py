@@ -92,7 +92,9 @@ class Exp_Imputation(Exp_Basic):
         model_optim = self._select_optimizer()
         criterion = self._select_criterion()
 
+        executed_epochs = 0
         for epoch in range(self.args.train_epochs):
+            executed_epochs = epoch + 1
             iter_count = 0
             train_loss = []
 
@@ -148,6 +150,7 @@ class Exp_Imputation(Exp_Basic):
                 break
             adjust_learning_rate(model_optim, epoch + 1, self.args)
 
+        self.final_train_epoch = executed_epochs
         best_model_path = path + '/' + 'checkpoint.pth'
         self.model.load_state_dict(torch.load(best_model_path))
 
@@ -215,9 +218,10 @@ class Exp_Imputation(Exp_Basic):
 
         mae, mse, rmse, mape, mspe = metric(preds[masks == 0], trues[masks == 0])
         print('mse:{}, mae:{}'.format(mse, mae))
+        final_epoch = self.final_train_epoch if self.final_train_epoch is not None else 'N/A'
         f = open("result_imputation.txt", 'a')
         f.write(setting + "  \n")
-        f.write('mse:{}, mae:{}'.format(mse, mae))
+        f.write('final_epoch:{}, mse:{}, mae:{}'.format(final_epoch, mse, mae))
         f.write('\n')
         f.write('\n')
         f.close()

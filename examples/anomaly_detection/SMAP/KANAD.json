@@ -1,0 +1,50 @@
+{
+  "source_script": "scripts/anomaly_detection/SMAP/KANAD.sh",
+  "relative_script_path": "anomaly_detection/SMAP/KANAD.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "KANAD"
+    ],
+    "tasks": [
+      "anomaly_detection"
+    ],
+    "datasets": [
+      "SMAP"
+    ],
+    "num_runs": 1
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name anomaly_detection --is_training 1 --root_path ./dataset/SMAP --model_id SMAP --model KANAD --data SMAP --features M --seq_len 64 --d_model 3 --enc_in 25 --c_out 25 --anomaly_ratio 1 --learning_rate 0.01 --batch_size 128 --num_workers 4 --patience 5 --train_epochs 100",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "anomaly_detection",
+        "is_training": 1,
+        "root_path": "./dataset/SMAP",
+        "model_id": "SMAP",
+        "model": "KANAD",
+        "data": "SMAP",
+        "features": "M",
+        "seq_len": 64,
+        "d_model": 3,
+        "enc_in": 25,
+        "c_out": 25,
+        "anomaly_ratio": 1,
+        "learning_rate": 0.01,
+        "batch_size": 128,
+        "num_workers": 4,
+        "patience": 5,
+        "train_epochs": 100
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

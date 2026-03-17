@@ -1,0 +1,160 @@
+{
+  "source_script": "scripts/imputation/ECL_script/LightTS.sh",
+  "relative_script_path": "imputation/ECL_script/LightTS.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "LightTS"
+    ],
+    "tasks": [
+      "imputation"
+    ],
+    "datasets": [
+      "custom"
+    ],
+    "num_runs": 4
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name imputation --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_mask_0.125 --mask_rate 0.125 --model LightTS --data custom --features M --seq_len 96 --label_len 0 --pred_len 96 --e_layers 2 --d_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --batch_size 16 --d_model 128 --d_ff 128 --des Exp --itr 1 --top_k 5 --learning_rate 0.001",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "imputation",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_mask_0.125",
+        "mask_rate": 0.125,
+        "model": "LightTS",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "label_len": 0,
+        "pred_len": 96,
+        "e_layers": 2,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 128,
+        "des": "Exp",
+        "itr": 1,
+        "top_k": 5,
+        "learning_rate": 0.001
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name imputation --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_mask_0.25 --mask_rate 0.25 --model LightTS --data custom --features M --seq_len 96 --label_len 0 --pred_len 96 --e_layers 2 --d_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --batch_size 16 --d_model 128 --d_ff 128 --des Exp --itr 1 --top_k 5 --learning_rate 0.001",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "imputation",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_mask_0.25",
+        "mask_rate": 0.25,
+        "model": "LightTS",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "label_len": 0,
+        "pred_len": 96,
+        "e_layers": 2,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 128,
+        "des": "Exp",
+        "itr": 1,
+        "top_k": 5,
+        "learning_rate": 0.001
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name imputation --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_mask_0.375 --mask_rate 0.375 --model LightTS --data custom --features M --seq_len 96 --label_len 0 --pred_len 96 --e_layers 2 --d_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --batch_size 16 --d_model 128 --d_ff 128 --des Exp --itr 1 --top_k 5 --learning_rate 0.001",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "imputation",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_mask_0.375",
+        "mask_rate": 0.375,
+        "model": "LightTS",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "label_len": 0,
+        "pred_len": 96,
+        "e_layers": 2,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 128,
+        "des": "Exp",
+        "itr": 1,
+        "top_k": 5,
+        "learning_rate": 0.001
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name imputation --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_mask_0.5 --mask_rate 0.5 --model LightTS --data custom --features M --seq_len 96 --label_len 0 --pred_len 96 --e_layers 2 --d_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --batch_size 16 --d_model 128 --d_ff 128 --des Exp --itr 1 --top_k 5 --learning_rate 0.001",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "imputation",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_mask_0.5",
+        "mask_rate": 0.5,
+        "model": "LightTS",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "label_len": 0,
+        "pred_len": 96,
+        "e_layers": 2,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 128,
+        "des": "Exp",
+        "itr": 1,
+        "top_k": 5,
+        "learning_rate": 0.001
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

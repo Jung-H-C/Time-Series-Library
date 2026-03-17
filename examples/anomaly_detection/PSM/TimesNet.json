@@ -1,0 +1,51 @@
+{
+  "source_script": "scripts/anomaly_detection/PSM/TimesNet.sh",
+  "relative_script_path": "anomaly_detection/PSM/TimesNet.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "6"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "TimesNet"
+    ],
+    "tasks": [
+      "anomaly_detection"
+    ],
+    "datasets": [
+      "PSM"
+    ],
+    "num_runs": 1
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name anomaly_detection --is_training 1 --root_path ./dataset/PSM --model_id PSM --model TimesNet --data PSM --features M --seq_len 100 --pred_len 0 --d_model 64 --d_ff 64 --e_layers 2 --enc_in 25 --c_out 25 --top_k 3 --anomaly_ratio 1 --batch_size 128 --train_epochs 3",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "anomaly_detection",
+        "is_training": 1,
+        "root_path": "./dataset/PSM",
+        "model_id": "PSM",
+        "model": "TimesNet",
+        "data": "PSM",
+        "features": "M",
+        "seq_len": 100,
+        "pred_len": 0,
+        "d_model": 64,
+        "d_ff": 64,
+        "e_layers": 2,
+        "enc_in": 25,
+        "c_out": 25,
+        "top_k": 3,
+        "anomaly_ratio": 1,
+        "batch_size": 128,
+        "train_epochs": 3
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

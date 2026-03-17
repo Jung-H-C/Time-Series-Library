@@ -1,0 +1,234 @@
+{
+  "source_script": "scripts/short_term_forecast/TimeMixer_M4.sh",
+  "relative_script_path": "short_term_forecast/TimeMixer_M4.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "TimeMixer"
+    ],
+    "tasks": [
+      "short_term_forecast"
+    ],
+    "datasets": [
+      "m4"
+    ],
+    "num_runs": 6
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name short_term_forecast --is_training 1 --root_path ./dataset/m4 --seasonal_patterns Monthly --model_id m4_Monthly --model TimeMixer --data m4 --features M --e_layers 4 --d_layers 1 --factor 3 --enc_in 1 --dec_in 1 --c_out 1 --batch_size 128 --d_model 32 --d_ff 32 --des Exp --itr 1 --learning_rate 0.01 --train_epochs 50 --patience 20 --down_sampling_layers 1 --down_sampling_method avg --down_sampling_window 2 --loss SMAPE",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "short_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/m4",
+        "seasonal_patterns": "Monthly",
+        "model_id": "m4_Monthly",
+        "model": "TimeMixer",
+        "data": "m4",
+        "features": "M",
+        "e_layers": 4,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 1,
+        "dec_in": 1,
+        "c_out": 1,
+        "batch_size": 128,
+        "d_model": 32,
+        "d_ff": 32,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.01,
+        "train_epochs": 50,
+        "patience": 20,
+        "down_sampling_layers": 1,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2,
+        "loss": "SMAPE"
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name short_term_forecast --is_training 1 --root_path ./dataset/m4 --seasonal_patterns Yearly --model_id m4_Yearly --model TimeMixer --data m4 --features M --e_layers 4 --d_layers 1 --factor 3 --enc_in 1 --dec_in 1 --c_out 1 --batch_size 128 --d_model 32 --d_ff 32 --des Exp --itr 1 --learning_rate 0.01 --train_epochs 50 --patience 20 --down_sampling_layers 1 --down_sampling_method avg --down_sampling_window 2 --loss SMAPE",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "short_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/m4",
+        "seasonal_patterns": "Yearly",
+        "model_id": "m4_Yearly",
+        "model": "TimeMixer",
+        "data": "m4",
+        "features": "M",
+        "e_layers": 4,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 1,
+        "dec_in": 1,
+        "c_out": 1,
+        "batch_size": 128,
+        "d_model": 32,
+        "d_ff": 32,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.01,
+        "train_epochs": 50,
+        "patience": 20,
+        "down_sampling_layers": 1,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2,
+        "loss": "SMAPE"
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name short_term_forecast --is_training 1 --root_path ./dataset/m4 --seasonal_patterns Quarterly --model_id m4_Quarterly --model TimeMixer --data m4 --features M --e_layers 4 --d_layers 1 --factor 3 --enc_in 1 --dec_in 1 --c_out 1 --batch_size 128 --d_model 32 --d_ff 64 --des Exp --itr 1 --learning_rate 0.01 --train_epochs 50 --patience 20 --down_sampling_layers 1 --down_sampling_method avg --down_sampling_window 2 --loss SMAPE",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "short_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/m4",
+        "seasonal_patterns": "Quarterly",
+        "model_id": "m4_Quarterly",
+        "model": "TimeMixer",
+        "data": "m4",
+        "features": "M",
+        "e_layers": 4,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 1,
+        "dec_in": 1,
+        "c_out": 1,
+        "batch_size": 128,
+        "d_model": 32,
+        "d_ff": 64,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.01,
+        "train_epochs": 50,
+        "patience": 20,
+        "down_sampling_layers": 1,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2,
+        "loss": "SMAPE"
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name short_term_forecast --is_training 1 --root_path ./dataset/m4 --seasonal_patterns Daily --model_id m4_Daily --model TimeMixer --data m4 --features M --e_layers 4 --d_layers 1 --factor 3 --enc_in 1 --dec_in 1 --c_out 1 --batch_size 128 --d_model 32 --d_ff 16 --des Exp --itr 1 --learning_rate 0.01 --train_epochs 50 --patience 20 --down_sampling_layers 1 --down_sampling_method avg --down_sampling_window 2 --loss SMAPE",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "short_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/m4",
+        "seasonal_patterns": "Daily",
+        "model_id": "m4_Daily",
+        "model": "TimeMixer",
+        "data": "m4",
+        "features": "M",
+        "e_layers": 4,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 1,
+        "dec_in": 1,
+        "c_out": 1,
+        "batch_size": 128,
+        "d_model": 32,
+        "d_ff": 16,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.01,
+        "train_epochs": 50,
+        "patience": 20,
+        "down_sampling_layers": 1,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2,
+        "loss": "SMAPE"
+      }
+    },
+    {
+      "index": 5,
+      "command": "python -u run.py --task_name short_term_forecast --is_training 1 --root_path ./dataset/m4 --seasonal_patterns Weekly --model_id m4_Weekly --model TimeMixer --data m4 --features M --e_layers 4 --d_layers 1 --factor 3 --enc_in 1 --dec_in 1 --c_out 1 --batch_size 128 --d_model 32 --d_ff 32 --des Exp --itr 1 --learning_rate 0.01 --train_epochs 50 --patience 20 --down_sampling_layers 1 --down_sampling_method avg --down_sampling_window 2 --loss SMAPE",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "short_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/m4",
+        "seasonal_patterns": "Weekly",
+        "model_id": "m4_Weekly",
+        "model": "TimeMixer",
+        "data": "m4",
+        "features": "M",
+        "e_layers": 4,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 1,
+        "dec_in": 1,
+        "c_out": 1,
+        "batch_size": 128,
+        "d_model": 32,
+        "d_ff": 32,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.01,
+        "train_epochs": 50,
+        "patience": 20,
+        "down_sampling_layers": 1,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2,
+        "loss": "SMAPE"
+      }
+    },
+    {
+      "index": 6,
+      "command": "python -u run.py --task_name short_term_forecast --is_training 1 --root_path ./dataset/m4 --seasonal_patterns Hourly --model_id m4_Hourly --model TimeMixer --data m4 --features M --e_layers 4 --d_layers 1 --factor 3 --enc_in 1 --dec_in 1 --c_out 1 --batch_size 128 --d_model 32 --d_ff 32 --des Exp --itr 1 --learning_rate 0.01 --train_epochs 50 --patience 20 --down_sampling_layers 1 --down_sampling_method avg --down_sampling_window 2 --loss SMAPE",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "short_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/m4",
+        "seasonal_patterns": "Hourly",
+        "model_id": "m4_Hourly",
+        "model": "TimeMixer",
+        "data": "m4",
+        "features": "M",
+        "e_layers": 4,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 1,
+        "dec_in": 1,
+        "c_out": 1,
+        "batch_size": 128,
+        "d_model": 32,
+        "d_ff": 32,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.01,
+        "train_epochs": 50,
+        "patience": 20,
+        "down_sampling_layers": 1,
+        "down_sampling_method": "avg",
+        "down_sampling_window": 2,
+        "loss": "SMAPE"
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

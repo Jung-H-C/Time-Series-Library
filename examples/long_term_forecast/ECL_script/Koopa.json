@@ -1,0 +1,136 @@
+{
+  "source_script": "scripts/long_term_forecast/ECL_script/Koopa.sh",
+  "relative_script_path": "long_term_forecast/ECL_script/Koopa.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "1"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "Koopa"
+    ],
+    "tasks": [
+      "long_term_forecast"
+    ],
+    "datasets": [
+      "custom"
+    ],
+    "num_runs": 4
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_96_48 --model Koopa --data custom --features M --seq_len 96 --pred_len 48 --e_layers 2 --d_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --des Exp --learning_rate 0.001 --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_96_48",
+        "model": "Koopa",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 96,
+        "pred_len": 48,
+        "e_layers": 2,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "des": "Exp",
+        "learning_rate": 0.001,
+        "itr": 1
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_192_96 --model Koopa --data custom --features M --seq_len 192 --pred_len 96 --e_layers 2 --d_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --des Exp --learning_rate 0.001 --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_192_96",
+        "model": "Koopa",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 192,
+        "pred_len": 96,
+        "e_layers": 2,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "des": "Exp",
+        "learning_rate": 0.001,
+        "itr": 1
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_288_144 --model Koopa --data custom --features M --seq_len 288 --pred_len 144 --e_layers 2 --d_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --des Exp --learning_rate 0.001 --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_288_144",
+        "model": "Koopa",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 288,
+        "pred_len": 144,
+        "e_layers": 2,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "des": "Exp",
+        "learning_rate": 0.001,
+        "itr": 1
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/electricity/ --data_path electricity.csv --model_id ECL_384_192 --model Koopa --data custom --features M --seq_len 384 --pred_len 192 --e_layers 2 --d_layers 1 --factor 3 --enc_in 321 --dec_in 321 --c_out 321 --des Exp --learning_rate 0.001 --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/electricity/",
+        "data_path": "electricity.csv",
+        "model_id": "ECL_384_192",
+        "model": "Koopa",
+        "data": "custom",
+        "features": "M",
+        "seq_len": 384,
+        "pred_len": 192,
+        "e_layers": 2,
+        "d_layers": 1,
+        "factor": 3,
+        "enc_in": 321,
+        "dec_in": 321,
+        "c_out": 321,
+        "des": "Exp",
+        "learning_rate": 0.001,
+        "itr": 1
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

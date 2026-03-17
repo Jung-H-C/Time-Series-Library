@@ -93,7 +93,9 @@ class Exp_Classification(Exp_Basic):
         model_optim = self._select_optimizer()
         criterion = self._select_criterion()
 
+        executed_epochs = 0
         for epoch in range(self.args.train_epochs):
+            executed_epochs = epoch + 1
             iter_count = 0
             train_loss = []
 
@@ -137,6 +139,7 @@ class Exp_Classification(Exp_Basic):
                 print("Early stopping")
                 break
 
+        self.final_train_epoch = executed_epochs
         best_model_path = path + '/' + 'checkpoint.pth'
         self.model.load_state_dict(torch.load(best_model_path))
 
@@ -182,9 +185,10 @@ class Exp_Classification(Exp_Basic):
 
         print('accuracy:{}'.format(accuracy))
         file_name='result_classification.txt'
+        final_epoch = self.final_train_epoch if self.final_train_epoch is not None else 'N/A'
         f = open(os.path.join(folder_path,file_name), 'a')
         f.write(setting + "  \n")
-        f.write('accuracy:{}'.format(accuracy))
+        f.write('final_epoch:{}, accuracy:{}'.format(final_epoch, accuracy))
         f.write('\n')
         f.write('\n')
         f.close()

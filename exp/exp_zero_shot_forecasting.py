@@ -125,9 +125,10 @@ class Exp_Zero_Shot_Forecast(Exp_Basic):
 
         mae, mse, rmse, mape, mspe = metric(preds, trues)
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
+        final_epoch = self.final_train_epoch if self.final_train_epoch is not None else 'N/A'
         f = open("result_zero_shot_forecast_search.txt", 'a')
         f.write(setting + "  \n")
-        f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
+        f.write('final_epoch:{}, mse:{}, mae:{}, dtw:{}'.format(final_epoch, mse, mae, dtw))
         f.write('\n')
         f.write('\n')
         f.close()

@@ -1,0 +1,274 @@
+{
+  "source_script": "scripts/classification/PatchTST.sh",
+  "relative_script_path": "classification/PatchTST.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "3"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "PatchTST"
+    ],
+    "tasks": [
+      "classification"
+    ],
+    "datasets": [
+      "UEA"
+    ],
+    "num_runs": 10
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/FaceDetection/ --model_id FaceDetection --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/FaceDetection/",
+        "model_id": "FaceDetection",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/Handwriting/ --model_id Handwriting --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/Handwriting/",
+        "model_id": "Handwriting",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/Heartbeat/ --model_id Heartbeat --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/Heartbeat/",
+        "model_id": "Heartbeat",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 5,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/JapaneseVowels/ --model_id JapaneseVowels --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/JapaneseVowels/",
+        "model_id": "JapaneseVowels",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 6,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/PEMS-SF/ --model_id PEMS-SF --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/PEMS-SF/",
+        "model_id": "PEMS-SF",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 7,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/SelfRegulationSCP1/ --model_id SelfRegulationSCP1 --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/SelfRegulationSCP1/",
+        "model_id": "SelfRegulationSCP1",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 8,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/SelfRegulationSCP2/ --model_id SelfRegulationSCP2 --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/SelfRegulationSCP2/",
+        "model_id": "SelfRegulationSCP2",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 9,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/SpokenArabicDigits/ --model_id SpokenArabicDigits --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/SpokenArabicDigits/",
+        "model_id": "SpokenArabicDigits",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    },
+    {
+      "index": 10,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/UWaveGestureLibrary/ --model_id UWaveGestureLibrary --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/UWaveGestureLibrary/",
+        "model_id": "UWaveGestureLibrary",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

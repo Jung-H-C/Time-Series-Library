@@ -1,0 +1,402 @@
+{
+  "source_script": "scripts/long_term_forecast/AugmentSample/Classification/PatchTST.sh",
+  "relative_script_path": "long_term_forecast/AugmentSample/Classification/PatchTST.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "PatchTST"
+    ],
+    "tasks": [
+      "classification"
+    ],
+    "datasets": [
+      "UEA"
+    ],
+    "num_runs": 14
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --jitter",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "jitter": true
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --scaling",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "scaling": true
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --permutation",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "permutation": true
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --magwarp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "magwarp": true
+      }
+    },
+    {
+      "index": 5,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --timewarp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "timewarp": true
+      }
+    },
+    {
+      "index": 6,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --windowslice",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "windowslice": true
+      }
+    },
+    {
+      "index": 7,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --windowwarp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "windowwarp": true
+      }
+    },
+    {
+      "index": 8,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --rotation",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "rotation": true
+      }
+    },
+    {
+      "index": 9,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --spawner",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "spawner": true
+      }
+    },
+    {
+      "index": 10,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --dtwwarp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "dtwwarp": true
+      }
+    },
+    {
+      "index": 11,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --shapedtwwarp",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "shapedtwwarp": true
+      }
+    },
+    {
+      "index": 12,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --wdba",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "wdba": true
+      }
+    },
+    {
+      "index": 13,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --discdtw",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "discdtw": true
+      }
+    },
+    {
+      "index": 14,
+      "command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model PatchTST --data UEA --e_layers 3 --batch_size 16 --d_model 128 --d_ff 256 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 100 --patience 10 --augmentation_ratio 1 --discsdtw",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "classification",
+        "is_training": 1,
+        "root_path": "./dataset/EthanolConcentration/",
+        "model_id": "EthanolConcentration",
+        "model": "PatchTST",
+        "data": "UEA",
+        "e_layers": 3,
+        "batch_size": 16,
+        "d_model": 128,
+        "d_ff": 256,
+        "top_k": 3,
+        "des": "Exp",
+        "itr": 1,
+        "learning_rate": 0.001,
+        "train_epochs": 100,
+        "patience": 10,
+        "augmentation_ratio": 1,
+        "discsdtw": true
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

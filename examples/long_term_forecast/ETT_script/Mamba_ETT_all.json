@@ -1,0 +1,13 @@
+{
+  "source_script": "scripts/long_term_forecast/ETT_script/Mamba_ETT_all.sh",
+  "relative_script_path": "long_term_forecast/ETT_script/Mamba_ETT_all.sh",
+  "script_type": "wrapper_recipe",
+  "exported_env": {},
+  "referenced_scripts": [
+    "./scripts/long_term_forecast/ETT_script/Mamba_ETTh1.sh",
+    "./scripts/long_term_forecast/ETT_script/Mamba_ETTh2.sh",
+    "./scripts/long_term_forecast/ETT_script/Mamba_ETTm1.sh",
+    "./scripts/long_term_forecast/ETT_script/Mamba_ETTm2.sh"
+  ],
+  "runs": []
+}

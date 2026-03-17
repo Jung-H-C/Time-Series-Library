@@ -1,0 +1,128 @@
+{
+  "source_script": "scripts/long_term_forecast/ETT_script/SegRNN_ETTm1.sh",
+  "relative_script_path": "long_term_forecast/ETT_script/SegRNN_ETTm1.sh",
+  "script_type": "run_py_recipe",
+  "exported_env": {
+    "CUDA_VISIBLE_DEVICES": "2"
+  },
+  "referenced_scripts": [],
+  "summary": {
+    "models": [
+      "SegRNN"
+    ],
+    "tasks": [
+      "long_term_forecast"
+    ],
+    "datasets": [
+      "ETTm1"
+    ],
+    "num_runs": 4
+  },
+  "runs": [
+    {
+      "index": 1,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/ETT-small/ --data_path ETTm1.csv --model_id ETTm1_96_96 --model SegRNN --data ETTm1 --features M --seq_len 96 --pred_len 96 --seg_len 48 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm1.csv",
+        "model_id": "ETTm1_96_96",
+        "model": "SegRNN",
+        "data": "ETTm1",
+        "features": "M",
+        "seq_len": 96,
+        "pred_len": 96,
+        "seg_len": 48,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 2,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/ETT-small/ --data_path ETTm1.csv --model_id ETTm1_96_192 --model SegRNN --data ETTm1 --features M --seq_len 96 --pred_len 192 --seg_len 48 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm1.csv",
+        "model_id": "ETTm1_96_192",
+        "model": "SegRNN",
+        "data": "ETTm1",
+        "features": "M",
+        "seq_len": 96,
+        "pred_len": 192,
+        "seg_len": 48,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 3,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/ETT-small/ --data_path ETTm1.csv --model_id ETTm1_96_336 --model SegRNN --data ETTm1 --features M --seq_len 96 --pred_len 336 --seg_len 48 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm1.csv",
+        "model_id": "ETTm1_96_336",
+        "model": "SegRNN",
+        "data": "ETTm1",
+        "features": "M",
+        "seq_len": 96,
+        "pred_len": 336,
+        "seg_len": 48,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    },
+    {
+      "index": 4,
+      "command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/ETT-small/ --data_path ETTm1.csv --model_id ETTm1_96_720 --model SegRNN --data ETTm1 --features M --seq_len 96 --pred_len 720 --seg_len 48 --enc_in 7 --d_model 512 --dropout 0.5 --learning_rate 0.0001 --des Exp --itr 1",
+      "interpreter_args": [
+        "-u"
+      ],
+      "run_args": {
+        "task_name": "long_term_forecast",
+        "is_training": 1,
+        "root_path": "./dataset/ETT-small/",
+        "data_path": "ETTm1.csv",
+        "model_id": "ETTm1_96_720",
+        "model": "SegRNN",
+        "data": "ETTm1",
+        "features": "M",
+        "seq_len": 96,
+        "pred_len": 720,
+        "seg_len": 48,
+        "enc_in": 7,
+        "d_model": 512,
+        "dropout": 0.5,
+        "learning_rate": 0.0001,
+        "des": "Exp",
+        "itr": 1
+      }
+    }
+  ],
+  "capture_stderr": ""
+}

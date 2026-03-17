@@ -1,0 +1,64 @@
+{
+  "backbone": "TimesNet",
+  "num_samples": 3,
+  "seed": 2026,
+  "candidate_prefix": "timesnet_long_term_forecast_etth1",
+  "fixed_config": {
+    "task_name": "long_term_forecast",
+    "is_training": 1,
+    "data": "ETTh1",
+    "root_path": "./data/ETT/",
+    "data_path": "ETTh1.csv",
+    "features": "M",
+    "target": "OT",
+    "freq": "h",
+    "checkpoints": "./checkpoints/",
+    "seq_len": 96,
+    "label_len": 48,
+    "pred_len": 96,
+    "enc_in": 7,
+    "dec_in": 7,
+    "c_out": 7
+  },
+  "search_space": {
+    "e_layers": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "d_model": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "d_ff": [
+      "x2",
+      "x4"
+    ],
+    "top_k": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "num_kernels": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "default_recipe": {
+    "source_recipe": "examples/long_term_forecast/ETT_script/TimesNet_ETTh1.json",
+    "relative_script_path": "long_term_forecast/ETT_script/TimesNet_ETTh1.sh",
+    "source_run_index": 1,
+    "source_command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/ETT-small/ --data_path ETTh1.csv --model_id ETTh1_96_96 --model TimesNet --data ETTh1 --features M --seq_len 96 --label_len 48 --pred_len 96 --e_layers 2 --d_layers 1 --factor 3 --enc_in 7 --dec_in 7 --c_out 7 --d_model 16 --d_ff 32 --des Exp --itr 1 --top_k 5"
+  }
+}
