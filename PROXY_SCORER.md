@@ -46,6 +46,9 @@ python score_candidates.py --candidates TimesNet_long_term_forecast_ETTh1
 - 예: `--proxies jacob_cov jacob_fro`
 - 예: `--proxies sfrd,jacob_cov`
 
+또 `--sfrd-q-sweep` 옵션을 주면, `sfrd` 선택 시 `q=0.05, 0.10, ..., 0.50`의
+총 10개 버전을 한 번에 계산합니다.
+
 프록시 계산 중에는 stochasticity를 줄이기 위해 다음 정책을 사용합니다.
 
 - BatchNorm 계열은 eval 모드로 전환
@@ -242,6 +245,12 @@ proxy_scores/<candidates_stem>_proxy_scores.csv
 proxy_scores/<candidates_stem>_<proxy1>_<proxy2>_proxy_scores.csv
 ```
 
+예를 들어 `--proxies sfrd --sfrd-q-sweep`이면 기본 파일명은 대략 아래처럼 됩니다.
+
+```text
+proxy_scores/<candidates_stem>_sfrd_qsweep_proxy_scores.csv
+```
+
 컬럼은 기본적으로 다음을 포함합니다.
 
 - `candidate_id`
@@ -297,6 +306,17 @@ python score_candidates.py \
   --proxies sfrd
 ```
 
+`sfrd`를 10개 `q` 값으로 스윕:
+
+```bash
+python score_candidates.py \
+  --candidates-file candidates/timesnet_long_term_forecast_etth1_candidates.json \
+  --num-batches 5 \
+  --gpu-id 0 \
+  --proxies sfrd \
+  --sfrd-q-sweep
+```
+
 여러 proxy만 계산:
 
 ```bash
@@ -319,6 +339,9 @@ python score_candidates.py \
 저장 시 candidate row는 항상 `candidate_id`의 마지막 suffix 숫자
 예: `_0001`, `_0002`, ..., `_0100`
 기준으로 정렬해서 CSV에 기록합니다.
+
+`--sfrd-q-sweep`를 켠 경우 CSV에는 `sfrd_q005`, `sfrd_q010`, ..., `sfrd_q050`
+컬럼이 추가됩니다.
 
 
 ## 추후 네가 검토하면 좋은 부분

@@ -50,6 +50,8 @@ ALL_PROXY_COLUMNS = [
     "synflow",
 ]
 
+SFRD_Q_SWEEP_VALUES = [round(step * 0.05, 2) for step in range(1, 11)]
+
 META_COLUMNS = [
     "candidate_id",
     "candidate_name",
@@ -95,13 +97,15 @@ def _default_csv_path(
     candidate_path: Path,
     repo_root: Path | None = None,
     proxy_columns: list[str] | None = None,
+    proxy_filename_labels: list[str] | None = None,
 ) -> Path:
     repo_root = repo_root or _repo_root()
     proxy_columns = proxy_columns or list(ALL_PROXY_COLUMNS)
-    if proxy_columns == list(ALL_PROXY_COLUMNS):
+    proxy_filename_labels = proxy_filename_labels or list(proxy_columns)
+    if proxy_filename_labels == list(ALL_PROXY_COLUMNS):
         filename = f"{candidate_path.stem}_proxy_scores.csv"
     else:
-        proxy_suffix = "_".join(proxy_columns)
+        proxy_suffix = "_".join(proxy_filename_labels)
         filename = f"{candidate_path.stem}_{proxy_suffix}_proxy_scores.csv"
     return repo_root / "proxy_scores" / filename
 
@@ -244,6 +248,31 @@ def _normalize_proxy_selection(raw_values: list[str] | None) -> list[str]:
         if token not in selected:
             selected.append(token)
     return selected
+
+
+def _sfrd_q_column_name(q_value: float) -> str:
+    q_suffix = int(round(q_value * 100))
+    return f"sfrd_q{q_suffix:03d}"
+
+
+def _resolve_proxy_output_config(
+    proxy_columns: list[str],
+    sfrd_q_sweep: bool,
+) -> tuple[list[str], list[str], list[float]]:
+    output_columns: list[str] = []
+    filename_labels: list[str] = []
+    sfrd_q_values: list[float] = []
+
+    for proxy_name in proxy_columns:
+        if proxy_name == "sfrd" and sfrd_q_sweep:
+            sfrd_q_values = list(SFRD_Q_SWEEP_VALUES)
+            output_columns.extend(_sfrd_q_column_name(q_value) for q_value in sfrd_q_values)
+            filename_labels.append("sfrd_qsweep")
+            continue
+        output_columns.append(proxy_name)
+        filename_labels.append(proxy_name)
+
+    return output_columns, filename_labels, sfrd_q_values
 
 
 def _count_total_params(model: nn.Module) -> float:
@@ -891,6 +920,7 @@ def _score_candidate(
     num_batches: int,
     seed: int,
     proxy_columns: list[str],
+    sfrd_q_values: list[float] | None = None,
 ) -> dict[str, Any]:
     run_args = dict(candidate.get("run_args", {}))
     if not isinstance(run_args, dict) or not run_args:
@@ -902,6 +932,7 @@ def _score_candidate(
     criterion = _build_proxy_criterion(exp)
     batches = _prepare_batches(exp, num_batches)
 
+    sfrd_q_values = sfrd_q_values or []
     proxy_accumulators: dict[str, list[float]] = {name: [] for name in proxy_columns}
     params_score = _count_total_params(exp.model) if "params" in proxy_columns else None
 
@@ -926,6 +957,11 @@ def _score_candidate(
             proxy_accumulators["jacob_fro"].append(_single_batch_jacob_fro(exp, prepared_batch))
         if "sfrd" in proxy_accumulators:
             proxy_accumulators["sfrd"].append(_single_batch_sfrd(exp, prepared_batch, q=0.25, normalize_repr=False))
+        for q_value in sfrd_q_values:
+            column_name = _sfrd_q_column_name(q_value)
+            proxy_accumulators[column_name].append(
+                _single_batch_sfrd(exp, prepared_batch, q=q_value, normalize_repr=False)
+            )
         if "synflow" in proxy_accumulators:
             proxy_accumulators["synflow"].append(_single_batch_synflow(exp, prepared_batch))
 
@@ -986,6 +1022,14 @@ def _build_arg_parser() -> argparse.ArgumentParser:
             "or a comma-separated list. Use 'all' to score every proxy."
         ),
     )
+    parser.add_argument(
+        "--sfrd-q-sweep",
+        action="store_true",
+        help=(
+            "When 'sfrd' is selected, compute 10 SFRD variants for q=0.05, 0.10, ..., 0.50 "
+            "and store them as separate columns."
+        ),
+    )
     return parser
 
 
@@ -1014,12 +1058,21 @@ def main(argv: list[str] | None = None) -> int:
     if args.max_candidates > 0:
         candidates = candidates[: args.max_candidates]
 
-    proxy_columns = _normalize_proxy_selection(args.proxies)
+    requested_proxy_columns = _normalize_proxy_selection(args.proxies)
+    output_proxy_columns, proxy_filename_labels, sfrd_q_values = _resolve_proxy_output_config(
+        requested_proxy_columns,
+        args.sfrd_q_sweep,
+    )
 
     csv_path = (
         Path(args.csv_path)
         if args.csv_path
-        else _default_csv_path(candidate_path, repo_root, proxy_columns=proxy_columns)
+        else _default_csv_path(
+            candidate_path,
+            repo_root,
+            proxy_columns=output_proxy_columns,
+            proxy_filename_labels=proxy_filename_labels,
+        )
     )
     if not csv_path.is_absolute():
         csv_path = (repo_root / csv_path).resolve()
@@ -1047,7 +1100,8 @@ def main(argv: list[str] | None = None) -> int:
                 gpu_id=args.gpu_id,
                 num_batches=args.num_batches,
                 seed=args.seed,
-                proxy_columns=proxy_columns,
+                proxy_columns=output_proxy_columns,
+                sfrd_q_values=sfrd_q_values,
             )
         except Exception as exc:
             row = {
@@ -1060,7 +1114,7 @@ def main(argv: list[str] | None = None) -> int:
                 "status": "failed",
                 "error": str(exc),
             }
-            for proxy_name in proxy_columns:
+            for proxy_name in output_proxy_columns:
                 row.setdefault(proxy_name, float("nan"))
             print(f"  failed: {exc}")
 
@@ -1070,7 +1124,7 @@ def main(argv: list[str] | None = None) -> int:
             row_by_id.values(),
             key=lambda row_item: _candidate_sort_key(str(row_item.get("candidate_id", ""))),
         )
-        _write_rows(csv_path, rows, proxy_columns)
+        _write_rows(csv_path, rows, output_proxy_columns)
 
     print(f"Saved proxy scores to {csv_path}")
     return 0

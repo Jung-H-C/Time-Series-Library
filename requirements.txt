@@ -1,34 +1,48 @@
-einops==0.8.1
-local-attention==1.11.2
-reformer-pytorch==1.4.4
+# Time-Series-Library requirements aligned to the current `tslib_nightly` env.
+# This is not a full `pip freeze`; it is a curated direct-dependency list.
 
+# PyTorch nightly stack used in `tslib_nightly`
+--extra-index-url https://download.pytorch.org/whl/nightly/cu128
+torch==2.12.0.dev20260315+cu128
+torchvision==0.26.0.dev20260315+cu128
+torchaudio==2.11.0.dev20260315+cu128
+
+# Core scientific stack
 numpy==2.1.2
 scipy==1.16.3
 scikit-learn==1.7.2
 pandas==2.3.3
 matplotlib==3.10.8
 sktime==0.40.1
-sympy==1.13.1
+sympy==1.14.0
 PyWavelets==1.9.0
-datasets==4.5.0
-
 tqdm==4.66.5
 patool==4.0.3
 
+# Backbone and model dependencies
+einops==0.8.1
+local-attention==1.11.2
+reformer-pytorch==1.4.4
+datasets==4.5.0
+
+# Hugging Face and zero-shot forecasting backbones
 transformers==4.57.3
-huggingface_hub==0.36.0
+huggingface-hub==0.36.0
 chronos-forecasting==2.2.1
 tirex-ts==1.3.0
 timesfm==1.3.0
 
-# uni2ts deps
-######
+# Uni2TS and related dependencies
 gluonts==0.16.2
 lightning==2.6.0
 hydra-core==1.3.0
 jax==0.8.1
+jaxlib==0.8.1
 jaxtyping==0.3.4
 orjson==3.11.5
 tensorboard==2.20.0
 python-dotenv==1.0.0
-######
+
+# Optional note:
+# The current `tslib_nightly` environment does not include `mamba-ssm`.
+# Mamba-based backbones in this repo will still need a separate install.
