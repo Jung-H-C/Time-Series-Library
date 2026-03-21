@@ -667,20 +667,10 @@ def _extract_sfrd_sequence_representation(exp, prepared_batch: dict[str, Any]) -
 
                 return hook
 
+            # Keep SFRD task-invariant by selecting only encoder-side forward activations.
+            # Head pre-hooks can jump to task-specific projection inputs, which makes the
+            # chosen hidden representation differ across tasks for the same backbone.
             handles.append(module.register_forward_hook(forward_hook_factory(module_name)))
-
-            lower_name = module_name.lower()
-            if not any(token in lower_name for token in SFRD_HEAD_MODULE_TOKENS):
-                continue
-
-            def pre_hook_factory(name: str):
-                def hook(_module, inputs):
-                    for tensor in _extract_activation_tensors(inputs):
-                        record_candidate(name, "pre", tensor, prefer_last_axis=True)
-
-                return hook
-
-            handles.append(module.register_forward_pre_hook(pre_hook_factory(module_name)))
 
         _run_model_forward_raw(exp, prepared_batch)
     except Exception:
