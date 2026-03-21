@@ -29,6 +29,18 @@ python score_candidates.py --candidates TimesNet_long_term_forecast_ETTh1
 
 그래서 **가능한 한 유사하게** 옮기되, Time-Series-Library에서 모든 backbone/task에 공통으로 적용될 수 있도록 일부 로직은 일반화했습니다.
 
+기본적으로 BatchNorm 계열은 `eval` 모드, Dropout 계열은 `off` (`eval`) 로 세팅되어 있습니다.
+재현가능한 실험 결과를 얻기 위해 `--deterministic` 옵션 사용을 권장합니다.
+
+`--gpu-id`는 다음 형식을 모두 지원합니다.
+
+- `--gpu-id 0`
+- `--gpu-id 0 1 2`
+- `--gpu-id 0,1,2`
+
+GPU를 여러 개 주면 GPU 개수만큼 worker를 띄워 candidate들을 병렬로 score합니다.
+즉 `--gpu-id 0 1 2`를 주면 `cuda:0`, `cuda:1`, `cuda:2`를 각각 담당하는 3개의 worker가 동시에 실행됩니다.
+
 
 ## 전체 동작 흐름
 
@@ -46,14 +58,22 @@ python score_candidates.py --candidates TimesNet_long_term_forecast_ETTh1
 - 예: `--proxies jacob_cov jacob_fro`
 - 예: `--proxies sfrd,jacob_cov`
 
-또 `--sfrd-q-sweep` 옵션을 주면, `sfrd` 선택 시 `q=0.05, 0.10, ..., 0.50`의
-총 10개 버전을 한 번에 계산합니다.
+또 `--sfrd-q-sweep` 옵션을 주면, `sfrd` 선택 시 여러 `q` 값을 한 번에 계산합니다.
+값 없이 `--sfrd-q-sweep`만 주면 기본 `q=0.05, 0.10, ..., 0.50`의 총 10개 버전을 계산합니다.
+직접 값을 주고 싶다면 예를 들어 `--sfrd-q-sweep 0.01 0.02 0.03 0.04 0.05`처럼 사용할 수 있습니다.
+
+`--deterministic` 옵션을 주면 seed 고정뿐 아니라 PyTorch deterministic mode까지 함께 켭니다.
+즉 cuDNN autotuning을 끄고, 가능한 경우 결정론적인 알고리즘만 사용하도록 강제합니다.
 
 프록시 계산 중에는 stochasticity를 줄이기 위해 다음 정책을 사용합니다.
 
 - BatchNorm 계열은 eval 모드로 전환
 - Dropout 계열은 비활성화
 - 그 외 모듈은 가능한 한 원래 상태를 유지
+- `--deterministic` 사용 시 PyTorch deterministic algorithms 활성화
+
+원하면 `--proxy-bn-mode train` 옵션으로 BatchNorm 계열만 train 모드로 유지한 채
+proxy를 계산할 수 있습니다. Dropout 계열은 여전히 eval 모드로 비활성화됩니다.
 
 
 ## 어떤 batch를 쓰는가
@@ -61,8 +81,12 @@ python score_candidates.py --candidates TimesNet_long_term_forecast_ETTh1
 - 기본값은 `5` minibatch입니다
 - classification은 `TRAIN`
 - 나머지 task는 `train`
+- 각 candidate는 **shuffle 없는 고정 train batch index**를 사용합니다
+- 즉 candidate마다 같은 앞쪽 minibatch 집합을 보고 proxy를 계산합니다
+- seed도 candidate마다 다시 고정해서, model init과 batch 선택이 candidate 순서에 덜 의존하게 했습니다
+- 실행 간 수치 재현성이 중요하면 `--deterministic`을 함께 사용하는 것이 좋습니다
 
-즉 실제 학습 루프가 쓰는 train loader에서 앞쪽 minibatch 몇 개를 뽑아 proxy를 계산합니다.
+즉 실제 학습에 사용하는 train split에서, 고정된 batch index의 minibatch 몇 개를 뽑아 proxy를 계산합니다.
 
 
 ## task별 forward / loss 대응 방식
@@ -197,6 +221,8 @@ ESPnet 원본과 가장 유사하게 옮긴 항목 중 하나입니다.
 - padding mask가 있는 classification batch는 sample별 valid length를 계산해서, 입력 시계열과 hidden representation 모두 유효 길이까지만 잘라서 시간 차분 norm을 계산합니다
 - backbone 구조상 raw `forecast()`를 직접 쓰기 어려운 경우에는 기존 forward output으로 fallback 합니다
 - 어떤 backbone은 classification head 직전 표현을 sequence 형태로 복원할 수 없어서, 그런 경우에는 기존 fallback 경로를 타거나 `NaN`이 나올 수 있습니다
+- `--sfrd-q-sweep` 사용 시에는 batch당 representation을 한 번만 추출하고, 모든 `q`가 그 representation을 재사용합니다
+- 따라서 같은 실행 안에서는 기본 `sfrd`와 `sfrd_q025`가 동일한 representation 기준으로 계산됩니다
 
 즉 이 프록시는 ESPnet 원본과 가장 차이가 큰 항목 중 하나입니다.
 
@@ -306,7 +332,7 @@ python score_candidates.py \
   --proxies sfrd
 ```
 
-`sfrd`를 10개 `q` 값으로 스윕:
+`sfrd`를 기본 10개 `q` 값으로 스윕:
 
 ```bash
 python score_candidates.py \
@@ -315,6 +341,30 @@ python score_candidates.py \
   --gpu-id 0 \
   --proxies sfrd \
   --sfrd-q-sweep
+```
+
+원하는 `q` 값만 직접 지정하려면:
+
+```bash
+python score_candidates.py \
+  --candidates-file candidates/timesnet_long_term_forecast_etth1_candidates.json \
+  --num-batches 5 \
+  --gpu-id 0 \
+  --proxies sfrd \
+  --sfrd-q-sweep 0.01 0.02 0.03 0.04 0.05
+  --deterministic
+```
+
+재현성을 더 강하게 맞추고 싶다면:
+
+```bash
+python score_candidates.py \
+  --candidates-file candidates/timesnet_long_term_forecast_etth1_candidates.json \
+  --num-batches 5 \
+  --gpu-id 0 \
+  --proxies sfrd \
+  --sfrd-q-sweep \
+  --deterministic
 ```
 
 여러 proxy만 계산:
@@ -336,12 +386,31 @@ python score_candidates.py \
   --gpu-id 0
 ```
 
+여러 GPU로 병렬 실행하고 싶다면:
+
+```bash
+python score_candidates.py \
+  --candidates-file candidates/timesnet_long_term_forecast_etth1_candidates.json \
+  --num-batches 5 \
+  --gpu-id 0 1 2
+```
+
+또는 쉼표 형식도 가능합니다:
+
+```bash
+python score_candidates.py \
+  --candidates-file candidates/timesnet_long_term_forecast_etth1_candidates.json \
+  --num-batches 5 \
+  --gpu-id 0,1,2
+```
+
 저장 시 candidate row는 항상 `candidate_id`의 마지막 suffix 숫자
 예: `_0001`, `_0002`, ..., `_0100`
 기준으로 정렬해서 CSV에 기록합니다.
 
-`--sfrd-q-sweep`를 켠 경우 CSV에는 `sfrd_q005`, `sfrd_q010`, ..., `sfrd_q050`
-컬럼이 추가됩니다.
+`--sfrd-q-sweep`를 켠 경우 CSV에는 지정한 `q` 값들에 대응하는 컬럼이 추가됩니다.
+예를 들어 기본 sweep이면 `sfrd_q005`, `sfrd_q010`, ..., `sfrd_q050`가 추가되고,
+`--sfrd-q-sweep 0.01 0.02 0.03 0.04 0.05`면 `sfrd_q001`, `sfrd_q002`, ..., `sfrd_q005`가 추가됩니다.
 
 
 ## 추후 네가 검토하면 좋은 부분

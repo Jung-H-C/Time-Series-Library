@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import argparse
 import csv
+from datetime import datetime
 import inspect
 import json
 import math
 import os
+import queue
 import random
 import re
+import threading
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
@@ -17,6 +20,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.profiler import ProfilerActivity, profile
+from torch.utils.data import DataLoader
 
 from benchmarking.candidate_sampler import discover_run_argument_defaults
 
@@ -65,9 +69,51 @@ META_COLUMNS = [
 
 CANDIDATE_SUFFIX_PATTERN = re.compile(r"_(\d+)$")
 
+SFRD_HEAD_MODULE_TOKENS = ("projection", "classifier", "head", "output_layer", "fc", "flatten")
+SFRD_ENCODER_MODULE_TOKENS = ("encoder", "encoders")
+SFRD_EMBED_MODULE_TOKENS = ("enc_embedding", "patch_embedding")
+SFRD_DECODER_MODULE_TOKENS = ("decoder", "dec_embedding")
+SFRD_POST_ENCODER_TOKENS = ("dropout", "act")
+UNSUPPORTED_PROXY_BACKBONES = frozenset(
+    {
+        "iTransformer",
+        "TimeXer",
+        "Koopa",
+        "FreTS",
+        "MultiPatchFormer",
+        "TimeFilter",
+        "TiDE",
+        "Chronos",
+        "Chronos2",
+        "Moirai",
+        "TimesFM",
+        "TimeMoE",
+        "Sundial",
+        "TiRex",
+    }
+)
+
+
+class UnsupportedProxyBackboneError(ValueError):
+    pass
+
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
+
+
+def _unsupported_backbone_message(model_name: str) -> str:
+    return (
+        f"WARNING: backbone '{model_name}' is not supported in proxy scoring. "
+        "This backbone does not expose a reliable time-axis hidden representation for "
+        "proxy validation, so it is marked as unusable."
+    )
+
+
+def _ensure_supported_backbone(model_name: str) -> None:
+    normalized = str(model_name).strip()
+    if normalized in UNSUPPORTED_PROXY_BACKBONES:
+        raise UnsupportedProxyBackboneError(_unsupported_backbone_message(normalized))
 
 
 def _slugify(value: str) -> str:
@@ -110,12 +156,56 @@ def _default_csv_path(
     return repo_root / "proxy_scores" / filename
 
 
-def _set_global_seed(seed: int) -> None:
+def _timestamp_label() -> str:
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+
+def _append_timestamp_to_csv_path(csv_path: Path, timestamp_label: str) -> Path:
+    suffix = csv_path.suffix or ".csv"
+    stem = csv_path.stem if csv_path.suffix else csv_path.name
+    return csv_path.with_name(f"{stem}_{timestamp_label}{suffix}")
+
+
+def _set_global_seed(seed: int, deterministic: bool = False) -> None:
+    if deterministic:
+        os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+
+    if hasattr(torch.backends, "cudnn"):
+        if deterministic:
+            torch.backends.cudnn.benchmark = False
+            torch.backends.cudnn.deterministic = True
+        else:
+            torch.backends.cudnn.deterministic = False
+
+    torch.use_deterministic_algorithms(deterministic)
+
+
+def _parse_gpu_ids(raw_gpu_ids: list[str] | None) -> list[int]:
+    if raw_gpu_ids is None:
+        return []
+
+    parsed_gpu_ids: list[int] = []
+    seen_gpu_ids: set[int] = set()
+    for raw_value in raw_gpu_ids:
+        for token in str(raw_value).split(","):
+            token = token.strip()
+            if not token:
+                continue
+            gpu_id = int(token)
+            if gpu_id < 0:
+                raise ValueError(f"GPU ids must be non-negative integers, got {gpu_id}.")
+            if gpu_id in seen_gpu_ids:
+                continue
+            seen_gpu_ids.add(gpu_id)
+            parsed_gpu_ids.append(gpu_id)
+
+    return parsed_gpu_ids
 
 
 def _build_args(run_args: dict[str, Any], gpu_id: int | None, repo_root: Path | None = None) -> SimpleNamespace:
@@ -164,16 +254,20 @@ def _select_exp_class(task_name: str):
     raise ValueError(f"Unsupported task_name: {task_name}")
 
 
-def _set_batch_norm_eval(model: nn.Module) -> None:
-    for module in model.modules():
-        if isinstance(module, BN_TYPES):
-            module.eval()
-
-
-def _set_proxy_stochastic_layers_eval(model: nn.Module) -> list[tuple[nn.Module, bool]]:
+def _set_proxy_stochastic_layers_mode(
+    model: nn.Module,
+    *,
+    batch_norm_mode: str = "eval",
+) -> list[tuple[nn.Module, bool]]:
     states: list[tuple[nn.Module, bool]] = []
     for module in model.modules():
-        if isinstance(module, BN_TYPES + DROPOUT_TYPES):
+        if isinstance(module, BN_TYPES):
+            states.append((module, module.training))
+            if batch_norm_mode == "train":
+                module.train()
+            else:
+                module.eval()
+        elif isinstance(module, DROPOUT_TYPES):
             states.append((module, module.training))
             module.eval()
     return states
@@ -255,24 +349,42 @@ def _sfrd_q_column_name(q_value: float) -> str:
     return f"sfrd_q{q_suffix:03d}"
 
 
+def _normalize_sfrd_q_sweep(raw_values: list[str] | None) -> list[float]:
+    if raw_values is None:
+        return []
+    if not raw_values:
+        return list(SFRD_Q_SWEEP_VALUES)
+
+    normalized: list[float] = []
+    seen: set[float] = set()
+    for raw_value in raw_values:
+        q_value = float(raw_value)
+        if not (0.0 < q_value <= 0.5):
+            raise ValueError(f"SFRD q values must satisfy 0 < q <= 0.5, got {q_value}.")
+        q_value = round(q_value, 4)
+        if q_value in seen:
+            continue
+        seen.add(q_value)
+        normalized.append(q_value)
+    return normalized
+
+
 def _resolve_proxy_output_config(
     proxy_columns: list[str],
-    sfrd_q_sweep: bool,
+    sfrd_q_values: list[float],
 ) -> tuple[list[str], list[str], list[float]]:
     output_columns: list[str] = []
     filename_labels: list[str] = []
-    sfrd_q_values: list[float] = []
 
     for proxy_name in proxy_columns:
-        if proxy_name == "sfrd" and sfrd_q_sweep:
-            sfrd_q_values = list(SFRD_Q_SWEEP_VALUES)
+        if proxy_name == "sfrd" and sfrd_q_values:
             output_columns.extend(_sfrd_q_column_name(q_value) for q_value in sfrd_q_values)
             filename_labels.append("sfrd_qsweep")
             continue
         output_columns.append(proxy_name)
         filename_labels.append(proxy_name)
 
-    return output_columns, filename_labels, sfrd_q_values
+    return output_columns, filename_labels, list(sfrd_q_values)
 
 
 def _count_total_params(model: nn.Module) -> float:
@@ -292,55 +404,296 @@ def _extract_activation_tensor(output: Any) -> torch.Tensor | None:
     return None
 
 
-def _find_classification_head(model: nn.Module) -> nn.Module | None:
-    for attr_name in ("projection", "classifier", "head", "output_layer", "fc"):
-        module = getattr(model, attr_name, None)
-        if isinstance(module, nn.Module):
-            return module
-    return None
+def _extract_activation_tensors(output: Any) -> list[torch.Tensor]:
+    tensors: list[torch.Tensor] = []
+    if torch.is_tensor(output):
+        tensors.append(output)
+        return tensors
+    if isinstance(output, (tuple, list)):
+        for item in output:
+            tensors.extend(_extract_activation_tensors(item))
+        return tensors
+    if isinstance(output, dict):
+        for value in output.values():
+            tensors.extend(_extract_activation_tensors(value))
+    return tensors
 
 
-def _extract_classification_sequence_representation(
+def _expected_sfrd_time_sizes(exp, prepared_batch: dict[str, Any]) -> list[int]:
+    sizes = []
+    for key in ("batch_x", "batch_y", "batch_x_mark", "batch_y_mark"):
+        value = prepared_batch.get(key)
+        if torch.is_tensor(value) and value.ndim >= 2:
+            sizes.append(int(value.size(1)))
+    for attr_name in ("seq_len", "pred_len", "label_len"):
+        value = int(getattr(exp.args, attr_name, 0) or 0)
+        if value > 1:
+            sizes.append(value)
+    return sorted(set(sizes))
+
+
+def _canonicalize_sfrd_tensor(
+    tensor: torch.Tensor,
+    *,
+    batch_size: int,
+    expected_time_sizes: list[int],
+    prefer_last_axis: bool,
+) -> torch.Tensor | None:
+    if not torch.is_tensor(tensor) or tensor.ndim < 3 or tensor.size(0) != batch_size:
+        return None
+
+    if tensor.ndim == 3:
+        axis_1_exact = tensor.size(1) in expected_time_sizes
+        axis_2_exact = tensor.size(2) in expected_time_sizes
+        if axis_1_exact != axis_2_exact:
+            time_axis = 1 if axis_1_exact else 2
+        elif tensor.size(1) > 1:
+            time_axis = 1
+        elif tensor.size(2) > 1:
+            time_axis = 2
+        else:
+            return None
+    else:
+        exact_axes = [axis for axis in range(1, tensor.ndim) if tensor.size(axis) in expected_time_sizes]
+        if exact_axes:
+            time_axis = exact_axes[-1] if prefer_last_axis else exact_axes[0]
+        else:
+            candidate_axes = [axis for axis in range(1, tensor.ndim) if tensor.size(axis) > 1]
+            if not candidate_axes:
+                return None
+            time_axis = candidate_axes[-1] if prefer_last_axis else candidate_axes[0]
+
+    ordered_axes = [0, time_axis] + [axis for axis in range(1, tensor.ndim) if axis != time_axis]
+    canonical = tensor.detach().permute(*ordered_axes).contiguous()
+    canonical = canonical.reshape(canonical.size(0), canonical.size(1), -1)
+    if canonical.size(1) < 2 or canonical.size(2) < 1:
+        return None
+    return canonical
+
+
+def _sfrd_module_layer_rank(module_name: str) -> tuple[int, ...] | None:
+    lower_name = module_name.lower()
+    if not any(token in lower_name for token in SFRD_ENCODER_MODULE_TOKENS):
+        return None
+
+    indices = tuple(int(match) for match in re.findall(r"(?:^|\.)(\d+)(?=\.|$)", module_name))
+    if not indices:
+        return None
+    return indices
+
+
+def _deepest_encoder_layer_rank(model: nn.Module) -> tuple[int, ...] | None:
+    deepest_rank: tuple[int, ...] | None = None
+    for module_name, _ in model.named_modules():
+        layer_rank = _sfrd_module_layer_rank(module_name)
+        if layer_rank is None:
+            continue
+        if deepest_rank is None or layer_rank > deepest_rank:
+            deepest_rank = layer_rank
+    return deepest_rank
+
+
+def _sfrd_module_priority(module_name: str, hook_kind: str) -> int:
+    lower_name = module_name.lower()
+    priority = 50
+
+    if any(token in lower_name for token in SFRD_ENCODER_MODULE_TOKENS):
+        priority += 45
+    elif any(token in lower_name for token in SFRD_EMBED_MODULE_TOKENS):
+        priority -= 20
+
+    if any(token in lower_name for token in SFRD_DECODER_MODULE_TOKENS):
+        priority -= 40
+
+    if any(token in lower_name for token in SFRD_HEAD_MODULE_TOKENS):
+        priority += 35 if hook_kind == "pre" else -60
+
+    if any(token in lower_name for token in SFRD_POST_ENCODER_TOKENS):
+        priority -= 15
+
+    return priority
+
+
+def _run_model_forward_raw(exp, prepared_batch: dict[str, Any], input_override: torch.Tensor | None = None):
+    args = exp.args
+    task = args.task_name
+    model = exp.model
+
+    if task in {"long_term_forecast", "zero_shot_forecast"}:
+        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
+        batch_y = prepared_batch["batch_y"]
+        batch_x_mark = prepared_batch["batch_x_mark"]
+        batch_y_mark = prepared_batch["batch_y_mark"]
+        dec_inp = torch.zeros_like(batch_y[:, -args.pred_len :, :]).float()
+        dec_inp = torch.cat([batch_y[:, : args.label_len, :], dec_inp], dim=1).float().to(exp.device)
+        return model(batch_x, batch_x_mark, dec_inp, batch_y_mark), {
+            "batch_x": batch_x,
+            "batch_y": batch_y,
+            "batch_x_mark": batch_x_mark,
+            "batch_y_mark": batch_y_mark,
+        }
+
+    if task == "short_term_forecast":
+        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
+        batch_y = prepared_batch["batch_y"]
+        batch_y_mark = prepared_batch["batch_y_mark"]
+        dec_inp = torch.zeros_like(batch_y[:, -args.pred_len :, :]).float()
+        dec_inp = torch.cat([batch_y[:, : args.label_len, :], dec_inp], dim=1).float().to(exp.device)
+        return model(batch_x, None, dec_inp, None), {
+            "batch_x": batch_x,
+            "batch_y": batch_y,
+            "batch_y_mark": batch_y_mark,
+        }
+
+    if task == "imputation":
+        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
+        batch_x_mark = prepared_batch["batch_x_mark"]
+        mask = prepared_batch["mask"]
+        inp = batch_x.masked_fill(mask == 0, 0)
+        return model(inp, batch_x_mark, None, None, mask), {
+            "batch_x": batch_x,
+            "batch_x_mark": batch_x_mark,
+            "mask": mask,
+        }
+
+    if task == "anomaly_detection":
+        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
+        return model(batch_x, None, None, None), {
+            "batch_x": batch_x,
+        }
+
+    if task == "classification":
+        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
+        padding_mask = prepared_batch["padding_mask"]
+        return model(batch_x, padding_mask, None, None), {
+            "batch_x": batch_x,
+            "padding_mask": padding_mask,
+        }
+
+    raise ValueError(f"Unsupported task for proxy scoring: {task}")
+
+
+def _extract_direct_encoder_method_representation(
     exp,
     prepared_batch: dict[str, Any],
-    input_override: torch.Tensor | None = None,
+    *,
+    batch_size: int,
+    expected_time_sizes: list[int],
 ) -> torch.Tensor | None:
-    model = exp.model
-    head = _find_classification_head(model)
-    if head is None:
+    encoder_method = getattr(exp.model, "encoder", None)
+    if encoder_method is None or isinstance(encoder_method, nn.Module) or not callable(encoder_method):
         return None
 
-    batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
-    padding_mask = prepared_batch["padding_mask"]
-    captured: dict[str, torch.Tensor] = {}
-
-    def pre_hook(_module, inputs):
-        if not inputs:
-            return
-        tensor = _extract_activation_tensor(inputs[0])
-        if tensor is not None:
-            captured["head_input"] = tensor
-
-    handle = head.register_forward_pre_hook(pre_hook)
     try:
-        _ = model(batch_x, padding_mask, None, None)
-    finally:
-        handle.remove()
+        signature = inspect.signature(encoder_method)
+        positional = [
+            param
+            for param in signature.parameters.values()
+            if param.kind in (inspect.Parameter.POSITIONAL_ONLY, inspect.Parameter.POSITIONAL_OR_KEYWORD)
+        ]
+    except (TypeError, ValueError):
+        positional = []
 
-    head_input = captured.get("head_input")
-    if head_input is None:
+    if len(positional) != 1:
         return None
 
-    if head_input.ndim == 3:
-        return head_input
+    try:
+        representation = encoder_method(prepared_batch["batch_x"])
+    except Exception:
+        return None
 
-    if head_input.ndim == 2:
-        seq_len = int(getattr(exp.args, "seq_len", 0) or 0)
-        if seq_len > 0 and head_input.size(1) % seq_len == 0:
-            hidden_dim = head_input.size(1) // seq_len
-            return head_input.reshape(head_input.size(0), seq_len, hidden_dim)
+    return _canonicalize_sfrd_tensor(
+        representation,
+        batch_size=batch_size,
+        expected_time_sizes=expected_time_sizes,
+        prefer_last_axis=False,
+    )
 
-    return None
+
+def _extract_sfrd_sequence_representation(exp, prepared_batch: dict[str, Any]) -> torch.Tensor | None:
+    batch_x = prepared_batch.get("batch_x")
+    if not torch.is_tensor(batch_x) or batch_x.ndim != 3:
+        return None
+
+    batch_size = int(batch_x.size(0))
+    expected_time_sizes = _expected_sfrd_time_sizes(exp, prepared_batch)
+    direct_representation = _extract_direct_encoder_method_representation(
+        exp,
+        prepared_batch,
+        batch_size=batch_size,
+        expected_time_sizes=expected_time_sizes,
+    )
+    if direct_representation is not None:
+        return direct_representation
+
+    model = exp.model
+    candidates: list[tuple[int, tuple[int, ...], int, torch.Tensor]] = []
+    call_order = 0
+    deepest_encoder_rank = _deepest_encoder_layer_rank(model)
+
+    def record_candidate(module_name: str, hook_kind: str, tensor: torch.Tensor, prefer_last_axis: bool) -> None:
+        nonlocal call_order
+        representation = _canonicalize_sfrd_tensor(
+            tensor,
+            batch_size=batch_size,
+            expected_time_sizes=expected_time_sizes,
+            prefer_last_axis=prefer_last_axis,
+        )
+        if representation is None:
+            return
+        layer_rank = _sfrd_module_layer_rank(module_name)
+        selection_rank = layer_rank if layer_rank is not None else (-1,)
+        candidates.append((_sfrd_module_priority(module_name, hook_kind), selection_rank, call_order, representation))
+        call_order += 1
+
+    handles = []
+    try:
+        for module_name, module in model.named_modules():
+            if module is model:
+                continue
+
+            module_layer_rank = _sfrd_module_layer_rank(module_name)
+            if (
+                deepest_encoder_rank is not None
+                and module_layer_rank is not None
+                and module_layer_rank < deepest_encoder_rank
+            ):
+                continue
+
+            def forward_hook_factory(name: str):
+                def hook(_module, _inputs, output):
+                    for tensor in _extract_activation_tensors(output):
+                        record_candidate(name, "forward", tensor, prefer_last_axis=False)
+
+                return hook
+
+            handles.append(module.register_forward_hook(forward_hook_factory(module_name)))
+
+            lower_name = module_name.lower()
+            if not any(token in lower_name for token in SFRD_HEAD_MODULE_TOKENS):
+                continue
+
+            def pre_hook_factory(name: str):
+                def hook(_module, inputs):
+                    for tensor in _extract_activation_tensors(inputs):
+                        record_candidate(name, "pre", tensor, prefer_last_axis=True)
+
+                return hook
+
+            handles.append(module.register_forward_pre_hook(pre_hook_factory(module_name)))
+
+        _run_model_forward_raw(exp, prepared_batch)
+    except Exception:
+        return None
+    finally:
+        for handle in handles:
+            handle.remove()
+
+    if not candidates:
+        return None
+
+    candidates.sort(key=lambda item: (item[0], item[1], item[2]))
+    return candidates[-1][3]
 
 
 def _sample_valid_length_from_mask(
@@ -357,63 +710,31 @@ def _sample_valid_length_from_mask(
     return valid_length
 
 
-def _build_decoder_input(exp, prepared_batch: dict[str, Any]) -> torch.Tensor:
-    batch_y = prepared_batch["batch_y"]
-    dec_inp = torch.zeros_like(batch_y[:, -exp.args.pred_len :, :]).float()
-    dec_inp = torch.cat([batch_y[:, : exp.args.label_len, :], dec_inp], dim=1).float().to(exp.device)
-    return dec_inp
-
-
-def _extract_raw_forecast_sequence_representation(exp, prepared_batch: dict[str, Any]) -> torch.Tensor | None:
-    forecast_method = getattr(exp.model, "forecast", None)
-    if not callable(forecast_method):
-        return None
-
-    batch_x = prepared_batch["batch_x"]
-    batch_x_mark = prepared_batch.get("batch_x_mark")
-    batch_y_mark = prepared_batch.get("batch_y_mark")
-    dec_inp = _build_decoder_input(exp, prepared_batch)
-
-    try:
-        signature = inspect.signature(forecast_method)
-        positional = [
-            param
-            for param in signature.parameters.values()
-            if param.kind in (inspect.Parameter.POSITIONAL_ONLY, inspect.Parameter.POSITIONAL_OR_KEYWORD)
-        ]
-        num_positional = len(positional)
-    except (TypeError, ValueError):
-        num_positional = 4
-
-    try:
-        if num_positional <= 1:
-            outputs = forecast_method(batch_x)
-        elif num_positional == 2:
-            outputs = forecast_method(batch_x, batch_x_mark)
-        else:
-            outputs = forecast_method(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-    except Exception:
-        return None
-
-    outputs = _extract_activation_tensor(outputs)
-    if outputs is None or not torch.is_tensor(outputs):
-        return None
-
-    if outputs.ndim != 3:
-        return None
-
-    f_dim = -1 if getattr(exp.args, "features", "M") == "MS" else 0
-    outputs = outputs[:, :, f_dim:]
-    return outputs
-
-
 def _train_flag(task_name: str) -> str:
     return "TRAIN" if task_name == "classification" else "train"
 
 
+def _fixed_train_loader(exp):
+    args = exp.args
+    task_name = args.task_name
+    train_data, _ = exp._get_data(flag=_train_flag(task_name))
+
+    loader_kwargs: dict[str, Any] = {
+        "batch_size": args.batch_size,
+        "shuffle": False,
+        "num_workers": args.num_workers,
+        "drop_last": False,
+    }
+    if task_name == "classification":
+        from data_provider.uea import collate_fn
+
+        loader_kwargs["collate_fn"] = lambda batch: collate_fn(batch, max_len=args.seq_len)
+
+    return DataLoader(train_data, **loader_kwargs)
+
+
 def _prepare_batches(exp, num_batches: int) -> list[dict[str, Any]]:
-    _, train_loader = exp._get_data(flag=_train_flag(exp.args.task_name))
-    iterator = iter(train_loader)
+    iterator = iter(_fixed_train_loader(exp))
     prepared = []
     for _ in range(num_batches):
         try:
@@ -486,19 +807,16 @@ def _build_proxy_criterion(exp):
 
 def _forward_task_outputs(exp, prepared_batch: dict[str, Any], input_override: torch.Tensor | None = None):
     args = exp.args
-    model = exp.model
     task = args.task_name
     f_dim = -1 if getattr(args, "features", "M") == "MS" else 0
+    raw_outputs, raw_context = _run_model_forward_raw(exp, prepared_batch, input_override=input_override)
+    outputs = _extract_activation_tensor(raw_outputs)
+    if outputs is None:
+        raise RuntimeError(f"Model forward returned no tensor output for task='{task}'.")
 
     if task in {"long_term_forecast", "zero_shot_forecast"}:
-        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
-        batch_y = prepared_batch["batch_y"]
-        batch_x_mark = prepared_batch["batch_x_mark"]
-        batch_y_mark = prepared_batch["batch_y_mark"]
-        dec_inp = torch.zeros_like(batch_y[:, -args.pred_len :, :]).float()
-        dec_inp = torch.cat([batch_y[:, : args.label_len, :], dec_inp], dim=1).float().to(exp.device)
-        outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-        outputs = _extract_activation_tensor(outputs)
+        batch_x = raw_context["batch_x"]
+        batch_y = raw_context["batch_y"]
         outputs = outputs[:, -args.pred_len :, f_dim:]
         return outputs, {
             "target": batch_y[:, -args.pred_len :, f_dim:],
@@ -506,13 +824,9 @@ def _forward_task_outputs(exp, prepared_batch: dict[str, Any], input_override: t
         }
 
     if task == "short_term_forecast":
-        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
-        batch_y = prepared_batch["batch_y"]
-        batch_y_mark = prepared_batch["batch_y_mark"]
-        dec_inp = torch.zeros_like(batch_y[:, -args.pred_len :, :]).float()
-        dec_inp = torch.cat([batch_y[:, : args.label_len, :], dec_inp], dim=1).float().to(exp.device)
-        outputs = model(batch_x, None, dec_inp, None)
-        outputs = _extract_activation_tensor(outputs)
+        batch_x = raw_context["batch_x"]
+        batch_y = raw_context["batch_y"]
+        batch_y_mark = raw_context["batch_y_mark"]
         outputs = outputs[:, -args.pred_len :, f_dim:]
         return outputs, {
             "target": batch_y[:, -args.pred_len :, f_dim:],
@@ -522,12 +836,8 @@ def _forward_task_outputs(exp, prepared_batch: dict[str, Any], input_override: t
         }
 
     if task == "imputation":
-        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
-        batch_x_mark = prepared_batch["batch_x_mark"]
-        mask = prepared_batch["mask"]
-        inp = batch_x.masked_fill(mask == 0, 0)
-        outputs = model(inp, batch_x_mark, None, None, mask)
-        outputs = _extract_activation_tensor(outputs)
+        batch_x = raw_context["batch_x"]
+        mask = raw_context["mask"]
         outputs = outputs[:, :, f_dim:]
         return outputs, {
             "target": batch_x[:, :, f_dim:],
@@ -536,9 +846,7 @@ def _forward_task_outputs(exp, prepared_batch: dict[str, Any], input_override: t
         }
 
     if task == "anomaly_detection":
-        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
-        outputs = model(batch_x, None, None, None)
-        outputs = _extract_activation_tensor(outputs)
+        batch_x = raw_context["batch_x"]
         outputs = outputs[:, :, f_dim:]
         return outputs, {
             "target": batch_x[:, :, f_dim:],
@@ -546,9 +854,7 @@ def _forward_task_outputs(exp, prepared_batch: dict[str, Any], input_override: t
         }
 
     if task == "classification":
-        batch_x = input_override if input_override is not None else prepared_batch["batch_x"]
-        outputs = model(batch_x, prepared_batch["padding_mask"], None, None)
-        outputs = _extract_activation_tensor(outputs)
+        batch_x = raw_context["batch_x"]
         return outputs, {
             "target": prepared_batch["label"].long().squeeze(-1),
             "primary_input": batch_x,
@@ -612,9 +918,15 @@ def _register_activation_hooks(model: nn.Module, activations: list[torch.Tensor]
     return handles
 
 
-def _single_batch_real_grad_metrics(exp, prepared_batch: dict[str, Any], criterion):
+def _single_batch_real_grad_metrics(
+    exp,
+    prepared_batch: dict[str, Any],
+    criterion,
+    *,
+    batch_norm_mode: str = "eval",
+):
     model = exp.model
-    stochastic_states = _set_proxy_stochastic_layers_eval(model)
+    stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     model.zero_grad(set_to_none=True)
     try:
         loss, _, _ = _compute_task_loss_and_outputs(exp, prepared_batch, criterion)
@@ -636,9 +948,15 @@ def _single_batch_real_grad_metrics(exp, prepared_batch: dict[str, Any], criteri
         _restore_module_training_states(stochastic_states)
 
 
-def _single_batch_fisher(exp, prepared_batch: dict[str, Any], criterion):
+def _single_batch_fisher(
+    exp,
+    prepared_batch: dict[str, Any],
+    criterion,
+    *,
+    batch_norm_mode: str = "eval",
+):
     model = exp.model
-    stochastic_states = _set_proxy_stochastic_layers_eval(model)
+    stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     model.zero_grad(set_to_none=True)
     activations: list[torch.Tensor] = []
     handles = _register_activation_hooks(model, activations)
@@ -676,9 +994,16 @@ def _perturb_params(params: list[torch.Tensor], directions: list[torch.Tensor], 
             param.add_(direction, alpha=scale)
 
 
-def _single_batch_grasp(exp, prepared_batch: dict[str, Any], criterion, fd_eps: float):
+def _single_batch_grasp(
+    exp,
+    prepared_batch: dict[str, Any],
+    criterion,
+    fd_eps: float,
+    *,
+    batch_norm_mode: str = "eval",
+):
     model = exp.model
-    stochastic_states = _set_proxy_stochastic_layers_eval(model)
+    stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     params = [p for p in model.parameters() if p.requires_grad]
     if not params:
         return float("nan")
@@ -717,9 +1042,9 @@ def _single_batch_grasp(exp, prepared_batch: dict[str, Any], criterion, fd_eps: 
         _restore_module_training_states(stochastic_states)
 
 
-def _single_batch_jacob_cov(exp, prepared_batch: dict[str, Any]):
+def _single_batch_jacob_cov(exp, prepared_batch: dict[str, Any], *, batch_norm_mode: str = "eval"):
     model = exp.model
-    stochastic_states = _set_proxy_stochastic_layers_eval(model)
+    stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     model.zero_grad(set_to_none=True)
     try:
         primary_input = prepared_batch["batch_x"].detach().clone().requires_grad_(True)
@@ -751,9 +1076,9 @@ def _single_batch_jacob_cov(exp, prepared_batch: dict[str, Any]):
         _restore_module_training_states(stochastic_states)
 
 
-def _single_batch_jacob_fro(exp, prepared_batch: dict[str, Any]):
+def _single_batch_jacob_fro(exp, prepared_batch: dict[str, Any], *, batch_norm_mode: str = "eval"):
     model = exp.model
-    stochastic_states = _set_proxy_stochastic_layers_eval(model)
+    stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     model.zero_grad(set_to_none=True)
     try:
         primary_input = prepared_batch["batch_x"].detach().clone().requires_grad_(True)
@@ -777,75 +1102,108 @@ def _single_batch_jacob_fro(exp, prepared_batch: dict[str, Any]):
         _restore_module_training_states(stochastic_states)
 
 
-def _single_batch_sfrd(exp, prepared_batch: dict[str, Any], q: float, normalize_repr: bool, eps: float = 1e-8):
+def _extract_sfrd_inputs_and_representation(
+    exp,
+    prepared_batch: dict[str, Any],
+    *,
+    batch_norm_mode: str = "eval",
+) -> tuple[torch.Tensor | None, torch.Tensor | None]:
     model = exp.model
-    stochastic_states = _set_proxy_stochastic_layers_eval(model)
+    stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     try:
-        if exp.args.task_name == "classification":
-            primary_input = prepared_batch["batch_x"]
-            outputs = _extract_classification_sequence_representation(exp, prepared_batch)
-            if outputs is None:
-                outputs, context = _forward_task_outputs(exp, prepared_batch)
-                primary_input = context["primary_input"]
-        elif exp.args.task_name in {"long_term_forecast", "short_term_forecast", "zero_shot_forecast"}:
-            primary_input = prepared_batch["batch_x"]
-            outputs = _extract_raw_forecast_sequence_representation(exp, prepared_batch)
-            if outputs is None:
-                outputs, context = _forward_task_outputs(exp, prepared_batch)
-                primary_input = context["primary_input"]
-        else:
+        primary_input = prepared_batch["batch_x"]
+        outputs = _extract_sfrd_sequence_representation(exp, prepared_batch)
+        if outputs is None:
             outputs, context = _forward_task_outputs(exp, prepared_batch)
             primary_input = context["primary_input"]
-        if primary_input.ndim != 3 or outputs.ndim != 3:
-            return float("nan")
-
-        disc_scores = []
-        for b in range(primary_input.size(0)):
-            input_valid_len = _sample_valid_length_from_mask(prepared_batch, b, primary_input.size(1))
-            if input_valid_len < 2:
-                continue
-
-            repr_valid_len = outputs.size(1)
-            if prepared_batch.get("padding_mask") is not None and primary_input.size(1) > 0:
-                repr_valid_len = int(round(input_valid_len * outputs.size(1) / primary_input.size(1)))
-                repr_valid_len = max(0, min(repr_valid_len, outputs.size(1)))
-            if repr_valid_len < 2:
-                continue
-
-            input_seq = primary_input[b, :input_valid_len, :]
-            repr_seq = outputs[b, :repr_valid_len, :]
-            d_b = torch.norm(input_seq[1:, :] - input_seq[:-1, :], p=2, dim=-1)
-
-            if normalize_repr:
-                repr_seq = F.normalize(repr_seq, p=2, dim=-1, eps=eps)
-            r_l2_b = torch.norm(repr_seq[1:, :] - repr_seq[:-1, :], p=2, dim=-1)
-
-            d_len = d_b.numel()
-            r_len = r_l2_b.numel()
-            if d_len < 1 or r_len < 1:
-                continue
-
-            if d_len != r_len:
-                d_b = F.interpolate(
-                    d_b.unsqueeze(0).unsqueeze(0),
-                    size=r_len,
-                    mode="linear",
-                    align_corners=False,
-                ).squeeze(0).squeeze(0)
-            n = r_l2_b.numel()
-            k = max(1, int(n * q))
-            if 2 * k > n:
-                k = max(1, n // 2)
-            top_idx = torch.topk(d_b, k=k, largest=True).indices
-            bottom_idx = torch.topk(d_b, k=k, largest=False).indices
-            disc = torch.log((r_l2_b[top_idx].mean() + eps) / (r_l2_b[bottom_idx].mean() + eps))
-            if torch.isfinite(disc):
-                disc_scores.append(disc)
-        if not disc_scores:
-            return float("nan")
-        return float(torch.stack(disc_scores).mean().item())
+        return primary_input, outputs
     finally:
         _restore_module_training_states(stochastic_states)
+
+
+def _single_batch_sfrd_from_sequences(
+    prepared_batch: dict[str, Any],
+    primary_input: torch.Tensor | None,
+    outputs: torch.Tensor | None,
+    q: float,
+    normalize_repr: bool,
+    eps: float = 1e-8,
+):
+    if not torch.is_tensor(primary_input) or not torch.is_tensor(outputs):
+        return float("nan")
+
+    if primary_input.ndim != 3 or outputs.ndim != 3:
+        return float("nan")
+
+    disc_scores = []
+    for b in range(primary_input.size(0)):
+        input_valid_len = _sample_valid_length_from_mask(prepared_batch, b, primary_input.size(1))
+        if input_valid_len < 2:
+            continue
+
+        repr_valid_len = outputs.size(1)
+        if prepared_batch.get("padding_mask") is not None and primary_input.size(1) > 0:
+            repr_valid_len = int(round(input_valid_len * outputs.size(1) / primary_input.size(1)))
+            repr_valid_len = max(0, min(repr_valid_len, outputs.size(1)))
+        if repr_valid_len < 2:
+            continue
+
+        input_seq = primary_input[b, :input_valid_len, :]
+        repr_seq = outputs[b, :repr_valid_len, :]
+        d_b = torch.norm(input_seq[1:, :] - input_seq[:-1, :], p=2, dim=-1)
+
+        if normalize_repr:
+            repr_seq = F.normalize(repr_seq, p=2, dim=-1, eps=eps)
+        r_l2_b = torch.norm(repr_seq[1:, :] - repr_seq[:-1, :], p=2, dim=-1)
+
+        d_len = d_b.numel()
+        r_len = r_l2_b.numel()
+        if d_len < 1 or r_len < 1:
+            continue
+
+        if d_len != r_len:
+            d_b = F.interpolate(
+                d_b.unsqueeze(0).unsqueeze(0),
+                size=r_len,
+                mode="linear",
+                align_corners=False,
+            ).squeeze(0).squeeze(0)
+        n = r_l2_b.numel()
+        k = max(1, int(n * q))
+        if 2 * k > n:
+            k = max(1, n // 2)
+        top_idx = torch.topk(d_b, k=k, largest=True).indices
+        bottom_idx = torch.topk(d_b, k=k, largest=False).indices
+        disc = torch.log((r_l2_b[top_idx].mean() + eps) / (r_l2_b[bottom_idx].mean() + eps))
+        if torch.isfinite(disc):
+            disc_scores.append(disc)
+    if not disc_scores:
+        return float("nan")
+    return float(torch.stack(disc_scores).mean().item())
+
+
+def _single_batch_sfrd(
+    exp,
+    prepared_batch: dict[str, Any],
+    q: float,
+    normalize_repr: bool,
+    eps: float = 1e-8,
+    *,
+    batch_norm_mode: str = "eval",
+):
+    primary_input, outputs = _extract_sfrd_inputs_and_representation(
+        exp,
+        prepared_batch,
+        batch_norm_mode=batch_norm_mode,
+    )
+    return _single_batch_sfrd_from_sequences(
+        prepared_batch,
+        primary_input,
+        outputs,
+        q=q,
+        normalize_repr=normalize_repr,
+        eps=eps,
+    )
 
 
 @torch.no_grad()
@@ -865,9 +1223,9 @@ def _nonlinearize_model(model: nn.Module, signs: dict[str, torch.Tensor]):
             param.data = param.data * signs[name]
 
 
-def _single_batch_synflow(exp, prepared_batch: dict[str, Any]):
+def _single_batch_synflow(exp, prepared_batch: dict[str, Any], *, batch_norm_mode: str = "eval"):
     model = exp.model
-    stochastic_states = _set_proxy_stochastic_layers_eval(model)
+    stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     model.zero_grad(set_to_none=True)
     signs = _linearize_model(model)
     try:
@@ -887,7 +1245,7 @@ def _single_batch_synflow(exp, prepared_batch: dict[str, Any]):
         _restore_module_training_states(stochastic_states)
 
 
-def _single_batch_flops(exp, prepared_batch: dict[str, Any]):
+def _single_batch_flops(exp, prepared_batch: dict[str, Any], *, batch_norm_mode: str = "eval"):
     model = exp.model
     activities = [ProfilerActivity.CPU]
     try:
@@ -898,7 +1256,7 @@ def _single_batch_flops(exp, prepared_batch: dict[str, Any]):
     if first_param.device.type == "cuda" and torch.cuda.is_available():
         activities.append(ProfilerActivity.CUDA)
 
-    stochastic_states = _set_proxy_stochastic_layers_eval(model)
+    stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     try:
         with torch.no_grad():
             with profile(activities=activities, with_flops=True, profile_memory=False) as prof:
@@ -919,6 +1277,8 @@ def _score_candidate(
     gpu_id: int | None,
     num_batches: int,
     seed: int,
+    deterministic: bool,
+    batch_norm_mode: str,
     proxy_columns: list[str],
     sfrd_q_values: list[float] | None = None,
 ) -> dict[str, Any]:
@@ -926,7 +1286,9 @@ def _score_candidate(
     if not isinstance(run_args, dict) or not run_args:
         raise ValueError("Candidate is missing run_args.")
 
+    _set_global_seed(seed, deterministic=deterministic)
     args = _build_args(run_args, gpu_id=gpu_id)
+    _ensure_supported_backbone(args.model)
     Exp = _select_exp_class(args.task_name)
     exp = Exp(args)
     criterion = _build_proxy_criterion(exp)
@@ -938,32 +1300,78 @@ def _score_candidate(
 
     for prepared_batch in batches:
         if "flops" in proxy_accumulators:
-            proxy_accumulators["flops"].append(_single_batch_flops(exp, prepared_batch))
+            proxy_accumulators["flops"].append(
+                _single_batch_flops(exp, prepared_batch, batch_norm_mode=batch_norm_mode)
+            )
 
         if "grad_norm" in proxy_accumulators or "snip" in proxy_accumulators:
-            grad_norm, snip = _single_batch_real_grad_metrics(exp, prepared_batch, criterion)
+            grad_norm, snip = _single_batch_real_grad_metrics(
+                exp,
+                prepared_batch,
+                criterion,
+                batch_norm_mode=batch_norm_mode,
+            )
             if "grad_norm" in proxy_accumulators:
                 proxy_accumulators["grad_norm"].append(grad_norm)
             if "snip" in proxy_accumulators:
                 proxy_accumulators["snip"].append(snip)
 
         if "fisher" in proxy_accumulators:
-            proxy_accumulators["fisher"].append(_single_batch_fisher(exp, prepared_batch, criterion))
+            proxy_accumulators["fisher"].append(
+                _single_batch_fisher(exp, prepared_batch, criterion, batch_norm_mode=batch_norm_mode)
+            )
         if "grasp" in proxy_accumulators:
-            proxy_accumulators["grasp"].append(_single_batch_grasp(exp, prepared_batch, criterion, fd_eps=1e-3))
+            proxy_accumulators["grasp"].append(
+                _single_batch_grasp(
+                    exp,
+                    prepared_batch,
+                    criterion,
+                    fd_eps=1e-3,
+                    batch_norm_mode=batch_norm_mode,
+                )
+            )
         if "jacob_cov" in proxy_accumulators:
-            proxy_accumulators["jacob_cov"].append(_single_batch_jacob_cov(exp, prepared_batch))
+            proxy_accumulators["jacob_cov"].append(
+                _single_batch_jacob_cov(exp, prepared_batch, batch_norm_mode=batch_norm_mode)
+            )
         if "jacob_fro" in proxy_accumulators:
-            proxy_accumulators["jacob_fro"].append(_single_batch_jacob_fro(exp, prepared_batch))
+            proxy_accumulators["jacob_fro"].append(
+                _single_batch_jacob_fro(exp, prepared_batch, batch_norm_mode=batch_norm_mode)
+            )
+        needs_sfrd = "sfrd" in proxy_accumulators or bool(sfrd_q_values)
+        sfrd_primary_input = None
+        sfrd_outputs = None
+        if needs_sfrd:
+            sfrd_primary_input, sfrd_outputs = _extract_sfrd_inputs_and_representation(
+                exp,
+                prepared_batch,
+                batch_norm_mode=batch_norm_mode,
+            )
         if "sfrd" in proxy_accumulators:
-            proxy_accumulators["sfrd"].append(_single_batch_sfrd(exp, prepared_batch, q=0.25, normalize_repr=False))
+            proxy_accumulators["sfrd"].append(
+                _single_batch_sfrd_from_sequences(
+                    prepared_batch,
+                    sfrd_primary_input,
+                    sfrd_outputs,
+                    q=0.25,
+                    normalize_repr=False,
+                )
+            )
         for q_value in sfrd_q_values:
             column_name = _sfrd_q_column_name(q_value)
             proxy_accumulators[column_name].append(
-                _single_batch_sfrd(exp, prepared_batch, q=q_value, normalize_repr=False)
+                _single_batch_sfrd_from_sequences(
+                    prepared_batch,
+                    sfrd_primary_input,
+                    sfrd_outputs,
+                    q=q_value,
+                    normalize_repr=False,
+                )
             )
         if "synflow" in proxy_accumulators:
-            proxy_accumulators["synflow"].append(_single_batch_synflow(exp, prepared_batch))
+            proxy_accumulators["synflow"].append(
+                _single_batch_synflow(exp, prepared_batch, batch_norm_mode=batch_norm_mode)
+            )
 
     row = {
         "candidate_id": candidate.get("candidate_id", run_args.get("model_id")),
@@ -1009,8 +1417,35 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--csv-path", type=str, default=None, help="Where to store the proxy score CSV.")
     parser.add_argument("--num-batches", type=int, default=5, help="How many minibatches to average for each proxy.")
-    parser.add_argument("--gpu-id", type=int, default=None, help="Physical GPU id to use.")
+    parser.add_argument(
+        "--gpu-id",
+        nargs="+",
+        default=None,
+        help=(
+            "One or more physical GPU ids to use. Examples: --gpu-id 0, --gpu-id 0 1 2, "
+            "--gpu-id 0,1,2. When multiple ids are given, proxy scoring runs in parallel "
+            "with one worker per GPU."
+        ),
+    )
     parser.add_argument("--seed", type=int, default=2026, help="Random seed for deterministic batch sampling.")
+    parser.add_argument(
+        "--deterministic",
+        action="store_true",
+        help=(
+            "Force PyTorch deterministic algorithms and disable cuDNN autotuning. "
+            "This improves reproducibility, but can be slower or raise if a proxy uses a non-deterministic CUDA op."
+        ),
+    )
+    parser.add_argument(
+        "--proxy-bn-mode",
+        type=str,
+        default="eval",
+        choices=("eval", "train"),
+        help=(
+            "BatchNorm mode to use during proxy scoring. Default keeps BatchNorm layers in eval mode; "
+            "set to 'train' to preserve train-mode BatchNorm behavior during proxy computation."
+        ),
+    )
     parser.add_argument("--skip-existing", action="store_true", help="Skip candidates already present in the CSV.")
     parser.add_argument("--max-candidates", type=int, default=-1, help="Only process the first N candidates.")
     parser.add_argument(
@@ -1024,10 +1459,12 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--sfrd-q-sweep",
-        action="store_true",
+        nargs="*",
+        default=None,
         help=(
-            "When 'sfrd' is selected, compute 10 SFRD variants for q=0.05, 0.10, ..., 0.50 "
-            "and store them as separate columns."
+            "When 'sfrd' is selected, compute multiple SFRD variants and store them as separate columns. "
+            "If values are omitted, the default sweep is q=0.05, 0.10, ..., 0.50. "
+            "You can also provide custom values, for example: --sfrd-q-sweep 0.01 0.02 0.03 0.04 0.05"
         ),
     )
     return parser
@@ -1042,7 +1479,8 @@ def main(argv: list[str] | None = None) -> int:
 
     repo_root = _repo_root()
     os.chdir(repo_root)
-    _set_global_seed(args.seed)
+    _set_global_seed(args.seed, deterministic=args.deterministic)
+    gpu_ids = _parse_gpu_ids(args.gpu_id)
 
     if args.candidates:
         candidate_path = _resolve_candidates_path(args.candidates, repo_root)
@@ -1059,10 +1497,12 @@ def main(argv: list[str] | None = None) -> int:
         candidates = candidates[: args.max_candidates]
 
     requested_proxy_columns = _normalize_proxy_selection(args.proxies)
+    sfrd_q_values = _normalize_sfrd_q_sweep(args.sfrd_q_sweep)
     output_proxy_columns, proxy_filename_labels, sfrd_q_values = _resolve_proxy_output_config(
         requested_proxy_columns,
-        args.sfrd_q_sweep,
+        sfrd_q_values,
     )
+    timestamp_label = _timestamp_label()
 
     csv_path = (
         Path(args.csv_path)
@@ -1076,6 +1516,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     if not csv_path.is_absolute():
         csv_path = (repo_root / csv_path).resolve()
+    csv_path = _append_timestamp_to_csv_path(csv_path, timestamp_label)
     csv_path.parent.mkdir(parents=True, exist_ok=True)
 
     rows = _load_existing_rows(csv_path)
@@ -1087,44 +1528,89 @@ def main(argv: list[str] | None = None) -> int:
 
     existing_ids = set(row_by_id)
 
+    candidate_jobs: list[tuple[int, dict[str, Any], str]] = []
     for index, candidate in enumerate(candidates, start=1):
         candidate_id = str(candidate.get("candidate_id", candidate.get("candidate_name", f"candidate_{index:04d}")))
         if args.skip_existing and candidate_id in existing_ids:
             print(f"[{index}/{len(candidates)}] Skipping {candidate_id} (already scored)")
             continue
+        candidate_jobs.append((index, candidate, candidate_id))
 
-        print(f"[{index}/{len(candidates)}] Scoring {candidate_id}")
+    write_lock = threading.Lock()
+
+    def persist_row(row: dict[str, Any]) -> None:
+        with write_lock:
+            row_by_id[str(row["candidate_id"])] = row
+            existing_ids.add(str(row["candidate_id"]))
+            ordered_rows = sorted(
+                row_by_id.values(),
+                key=lambda row_item: _candidate_sort_key(str(row_item.get("candidate_id", ""))),
+            )
+            _write_rows(csv_path, ordered_rows, output_proxy_columns)
+
+    def score_one(index: int, candidate: dict[str, Any], candidate_id: str, gpu_id: int | None) -> None:
+        prefix = f"[{index}/{len(candidates)}]"
+        gpu_suffix = f"[gpu:{gpu_id}]" if gpu_id is not None else ""
+        print(f"{prefix}{gpu_suffix} Scoring {candidate_id}")
         try:
             row = _score_candidate(
                 candidate,
-                gpu_id=args.gpu_id,
+                gpu_id=gpu_id,
                 num_batches=args.num_batches,
                 seed=args.seed,
+                deterministic=args.deterministic,
+                batch_norm_mode=args.proxy_bn_mode,
                 proxy_columns=output_proxy_columns,
                 sfrd_q_values=sfrd_q_values,
             )
         except Exception as exc:
+            status = "unsupported" if isinstance(exc, UnsupportedProxyBackboneError) else "failed"
+            message_prefix = "warning" if status == "unsupported" else "failed"
             row = {
                 "candidate_id": candidate_id,
                 "candidate_name": candidate.get("candidate_name", candidate_id),
-                "model": candidate.get("model", ""),
+                "model": candidate.get("run_args", {}).get("model", candidate.get("model", "")),
                 "task_name": candidate.get("run_args", {}).get("task_name", ""),
                 "data": candidate.get("run_args", {}).get("data", ""),
                 "num_batches": args.num_batches,
-                "status": "failed",
+                "status": status,
                 "error": str(exc),
             }
             for proxy_name in output_proxy_columns:
                 row.setdefault(proxy_name, float("nan"))
-            print(f"  failed: {exc}")
+            print(f"{prefix}{gpu_suffix} {message_prefix}: {exc}")
 
-        row_by_id[str(row["candidate_id"])] = row
-        existing_ids.add(str(row["candidate_id"]))
-        rows = sorted(
-            row_by_id.values(),
-            key=lambda row_item: _candidate_sort_key(str(row_item.get("candidate_id", ""))),
+        persist_row(row)
+
+    if len(gpu_ids) <= 1:
+        assigned_gpu_id = gpu_ids[0] if gpu_ids else None
+        for index, candidate, candidate_id in candidate_jobs:
+            score_one(index, candidate, candidate_id, assigned_gpu_id)
+    else:
+        print(
+            f"Launching {len(gpu_ids)} parallel GPU workers for {len(candidate_jobs)} candidates: "
+            + ", ".join(f"cuda:{gpu_id}" for gpu_id in gpu_ids)
         )
-        _write_rows(csv_path, rows, output_proxy_columns)
+        job_queue: queue.Queue[tuple[int, dict[str, Any], str]] = queue.Queue()
+        for job in candidate_jobs:
+            job_queue.put(job)
+
+        def worker(gpu_id: int) -> None:
+            while True:
+                try:
+                    index, candidate, candidate_id = job_queue.get_nowait()
+                except queue.Empty:
+                    return
+                score_one(index, candidate, candidate_id, gpu_id)
+
+        threads = [
+            threading.Thread(target=worker, name=f"proxy-scorer-gpu-{gpu_id}", args=(gpu_id,))
+            for gpu_id in gpu_ids
+        ]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
 
     print(f"Saved proxy scores to {csv_path}")
     return 0

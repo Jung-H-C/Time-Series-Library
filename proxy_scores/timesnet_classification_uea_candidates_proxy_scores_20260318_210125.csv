@@ -1,0 +1,2 @@
+candidate_id,candidate_name,model,task_name,data,num_batches,status,error,params,flops,grad_norm,fisher,grasp,jacob_cov,jacob_fro,sfrd,snip,synflow
+timesnet_classification_uea_el1_dm32_df128_tk7_nk6_0001,timesnet_classification_uea_el1_dm32_df128_tk7_nk6_0001,TimesNet,classification,UEA,5,success,,2568484.0,1116261884522.4,26.721603202819825,0.017618170380592345,-1209.3613159179688,-65.76911642754294,0.14012183845043183,0.902378511428833,18.028646087646486,68324.8828125

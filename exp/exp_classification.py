@@ -179,14 +179,13 @@ class Exp_Classification(Exp_Basic):
         accuracy = cal_accuracy(predictions, trues)
 
         # result save
-        folder_path = './results/' + setting + '/'
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
+        folder_path = self._results_folder_path(setting)
+        os.makedirs(folder_path, exist_ok=True)
 
         print('accuracy:{}'.format(accuracy))
         file_name='result_classification.txt'
         final_epoch = self.final_train_epoch if self.final_train_epoch is not None else 'N/A'
-        f = open(os.path.join(folder_path,file_name), 'a')
+        f = open(os.path.join(folder_path, file_name), 'a')
         f.write(setting + "  \n")
         f.write('final_epoch:{}, accuracy:{}'.format(final_epoch, accuracy))
         f.write('\n')

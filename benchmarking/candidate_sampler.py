@@ -2,13 +2,17 @@ from __future__ import annotations
 
 import argparse
 import ast
+import csv
 import json
 import math
 import os
+import queue
 import random
 import re
+import shlex
 import subprocess
 import sys
+import threading
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -17,6 +21,10 @@ from typing import Any, Callable
 RUN_ARG_PATTERN = re.compile(r"add_argument\('--(?P<name>[^']+)'")
 MULTIPLIER_PATTERN = re.compile(r"^x(?P<factor>\d+(?:\.\d+)?)$")
 CONFIG_ATTR_PATTERN = re.compile(r"configs\.(?P<name>[A-Za-z_][A-Za-z0-9_]*)")
+CANDIDATE_SUFFIX_PATTERN = re.compile(r"_(\d+)$")
+TRAINING_SETTING_PATTERN = re.compile(r"^>>>>>>>start training : (?P<setting>.+?)>+$")
+TESTING_SETTING_PATTERN = re.compile(r"^>>>>>>>testing : (?P<setting>.+?)<+$")
+ACCURACY_LINE_PATTERN = re.compile(r"^accuracy:(?P<accuracy>[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?)$")
 
 PARAMETER_ALIASES = {
     "e_layer": "e_layers",
@@ -77,6 +85,14 @@ class ParamRule:
 class BackboneSpec:
     name: str
     param_rules: dict[str, ParamRule]
+
+
+@dataclass(frozen=True)
+class CandidateRunPlan:
+    index: int
+    total: int
+    candidate_name: str
+    candidate: dict[str, Any]
 
 
 BACKBONE_SPECS = {
@@ -169,6 +185,35 @@ STORE_FALSE_RUN_ARGS = {
     "distil": "--distil",
     "use_gpu": "--no_use_gpu",
 }
+
+UEA_RECIPE_OVERRIDE_KEYS = (
+    "root_path",
+    "model_id",
+    "batch_size",
+    "learning_rate",
+    "train_epochs",
+    "patience",
+    "itr",
+)
+
+UEA_AVERAGE_SUMMARY_FIELDS = [
+    "candidate_id",
+    "candidate_name",
+    "model",
+    "task_name",
+    "data",
+    "model_num",
+    "e_layers",
+    "d_model",
+    "d_ff",
+    "top_k",
+    "num_kernels",
+    "num_subsets_total",
+    "num_subsets_completed",
+    "average_accuracy",
+    "status",
+    "error",
+]
 
 
 def _repo_root() -> Path:
@@ -509,6 +554,26 @@ def _find_default_recipe_run(
     return recipe_path, payload, run
 
 
+def _find_default_recipe_runs(
+    backbone: str,
+    task_name: str,
+    data: str,
+    repo_root: Path | None = None,
+) -> tuple[Path, dict[str, Any], list[dict[str, Any]]]:
+    repo_root = repo_root or _repo_root()
+    recipe_path, payload, _ = _find_default_recipe_run(backbone, task_name, data, repo_root)
+    runs = [
+        run
+        for run in payload.get("runs", [])
+        if isinstance(run.get("run_args"), dict)
+        and run["run_args"].get("model") == backbone
+        and run["run_args"].get("task_name") == task_name
+        and run["run_args"].get("data") == data
+    ]
+    runs.sort(key=lambda run: run.get("index", 0))
+    return recipe_path, payload, runs
+
+
 def _example_based_fixed_config(
     backbone: str,
     task_name: str,
@@ -596,6 +661,18 @@ def _build_or_update_spec_from_cli_args(
     for raw_assignment in args.fixed or []:
         key, raw_value = _parse_cli_assignment(raw_assignment)
         cli_fixed_overrides[_normalize_param_name(key)] = _parse_cli_fixed_value(raw_value)
+    cli_search_overrides: dict[str, list[Any]] = {}
+    for raw_assignment in args.search or []:
+        key, raw_value = _parse_cli_assignment(raw_assignment)
+        cli_search_overrides[_normalize_param_name(key)] = _parse_cli_search_values(raw_value)
+
+    conflicting_cli_params = sorted(set(cli_fixed_overrides) & set(cli_search_overrides))
+    if conflicting_cli_params:
+        joined = ", ".join(conflicting_cli_params)
+        raise ValueError(
+            "Do not specify the same parameter in both --fixed and --search in a single command: "
+            f"{joined}"
+        )
 
     task_name = cli_fixed_overrides.get("task_name")
     data = cli_fixed_overrides.get("data")
@@ -619,16 +696,21 @@ def _build_or_update_spec_from_cli_args(
 
     fixed_config = _normalize_fixed_config(spec.get("fixed_config", {}), valid_run_args)
     fixed_config.update(cli_fixed_overrides)
-    spec["fixed_config"] = fixed_config
 
     raw_existing_search_space = spec.get("search_space") or {}
     if raw_existing_search_space:
         search_space = _normalize_search_space(raw_existing_search_space, valid_run_args)
     else:
         search_space = {}
-    for raw_assignment in args.search or []:
-        key, raw_value = _parse_cli_assignment(raw_assignment)
-        search_space[_normalize_param_name(key)] = _parse_cli_search_values(raw_value)
+
+    for param_name in cli_fixed_overrides:
+        search_space.pop(param_name, None)
+    search_space.update(cli_search_overrides)
+
+    for param_name in search_space:
+        fixed_config.pop(param_name, None)
+
+    spec["fixed_config"] = fixed_config
     spec["search_space"] = search_space
 
     if args.num_samples is not None:
@@ -891,7 +973,8 @@ def _build_candidate_record(
 ) -> dict[str, Any]:
     run_args = dict(fixed_config)
     run_args["model"] = backbone
-    run_args["model_id"] = candidate_name
+    if not run_args.get("model_id"):
+        run_args["model_id"] = candidate_name
     run_args.update(hyperparameters)
     return {
         "candidate_id": candidate_name,
@@ -1008,6 +1091,36 @@ def _load_candidate_payload(candidate_path: Path) -> dict[str, Any]:
     return payload
 
 
+def _parse_gpu_ids(raw_gpu_ids: list[str] | None) -> list[int]:
+    if raw_gpu_ids is None:
+        return []
+
+    parsed_gpu_ids: list[int] = []
+    seen_gpu_ids: set[int] = set()
+    for raw_value in raw_gpu_ids:
+        for token in str(raw_value).split(","):
+            token = token.strip()
+            if not token:
+                continue
+            try:
+                gpu_id = int(token)
+            except ValueError as exc:
+                raise ValueError(
+                    f"Invalid GPU id '{token}'. Use non-negative integers like '0', '0 1 2 3', or '0,1,2,3'."
+                ) from exc
+            if gpu_id < 0:
+                raise ValueError(f"GPU ids must be non-negative integers, got {gpu_id}.")
+            if gpu_id in seen_gpu_ids:
+                continue
+            seen_gpu_ids.add(gpu_id)
+            parsed_gpu_ids.append(gpu_id)
+
+    if not parsed_gpu_ids:
+        raise ValueError("Provide at least one GPU id after --gpu-id.")
+
+    return parsed_gpu_ids
+
+
 def _prepare_candidate_run_args(
     candidate: dict[str, Any],
     *,
@@ -1029,11 +1142,35 @@ def _prepare_candidate_run_args(
             )
         run_args["model"] = model_name
 
+    candidate_name = (
+        candidate.get("candidate_name")
+        or candidate.get("candidate_id")
+        or run_args.get("model_id")
+    )
+    if not candidate_name:
+        raise ValueError("Each candidate must define candidate_name/candidate_id or run_args.model_id.")
+
     if "model_id" not in run_args:
-        candidate_name = candidate.get("candidate_name") or candidate.get("candidate_id")
-        if not candidate_name:
-            raise ValueError("Each candidate must define candidate_name/candidate_id or run_args.model_id.")
         run_args["model_id"] = candidate_name
+
+    original_results_id = run_args.get("results_id")
+    normalized_results_id = str(original_results_id).strip() if original_results_id is not None else ""
+    if normalized_results_id:
+        run_args["results_id"] = normalized_results_id
+    else:
+        run_args["results_id"] = candidate_name
+
+    # Keep model_id stable for tasks like classification where it doubles as
+    # the dataset identifier, and isolate checkpoint/result namespaces via des.
+    original_des = run_args.get("des")
+    normalized_des = str(original_des).strip() if original_des is not None else ""
+    if normalized_des:
+        if normalized_des == candidate_name or normalized_des.endswith(f"__{candidate_name}"):
+            run_args["des"] = normalized_des
+        else:
+            run_args["des"] = f"{normalized_des}__{candidate_name}"
+    else:
+        run_args["des"] = candidate_name
 
     if gpu_id is not None:
         run_args["use_gpu"] = True
@@ -1041,6 +1178,30 @@ def _prepare_candidate_run_args(
         run_args["use_multi_gpu"] = False
 
     return run_args
+
+
+def _candidate_display_name(candidate: dict[str, Any], index: int) -> str:
+    return candidate.get("candidate_name") or candidate.get("candidate_id") or f"candidate_{index:04d}"
+
+
+def _build_candidate_run_plans(payload: dict[str, Any]) -> list[CandidateRunPlan]:
+    candidates = payload["candidates"]
+    total = len(candidates)
+    plans: list[CandidateRunPlan] = []
+
+    for index, candidate in enumerate(candidates, start=1):
+        # Validate the candidate payload early before any long-running execution starts.
+        _prepare_candidate_run_args(candidate, gpu_id=None)
+        plans.append(
+            CandidateRunPlan(
+                index=index,
+                total=total,
+                candidate_name=_candidate_display_name(candidate, index),
+                candidate=candidate,
+            )
+        )
+
+    return plans
 
 
 def _build_run_command(
@@ -1081,64 +1242,515 @@ def _build_run_command(
     return command
 
 
+def _format_command(command: list[str]) -> str:
+    return shlex.join(command)
+
+
+def _candidate_sort_key(candidate_id: str) -> tuple[int, int, str]:
+    match = CANDIDATE_SUFFIX_PATTERN.search(candidate_id)
+    if match is not None:
+        return (0, int(match.group(1)), candidate_id)
+    return (1, 0, candidate_id)
+
+
+def _uea_accuracy_column(dataset_name: str) -> str:
+    return f"{dataset_name}_accuracy"
+
+
+def _summary_csv_path(candidate_path: Path, repo_root: Path | None = None) -> Path:
+    repo_root = repo_root or _repo_root()
+    return repo_root / "results" / f"{candidate_path.stem}_uea_average_accuracy.csv"
+
+
+def _load_existing_summary_rows(summary_path: Path) -> list[dict[str, Any]]:
+    if not summary_path.exists():
+        return []
+    with summary_path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        return [dict(row) for row in reader]
+
+
+def _write_summary_rows(summary_path: Path, rows: list[dict[str, Any]], dataset_names: list[str]) -> None:
+    fieldnames = UEA_AVERAGE_SUMMARY_FIELDS + [_uea_accuracy_column(dataset_name) for dataset_name in dataset_names]
+    with summary_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in rows:
+            normalized = {key: row.get(key, "") for key in fieldnames}
+            writer.writerow(normalized)
+
+
+def _parse_candidate_model_num(candidate_id: str) -> str:
+    match = CANDIDATE_SUFFIX_PATTERN.search(candidate_id)
+    if match is None:
+        return ""
+    return str(int(match.group(1)))
+
+
+def _build_uea_average_row(
+    candidate: dict[str, Any],
+    *,
+    dataset_names: list[str],
+    subset_accuracies: dict[str, float],
+    total_subsets: int,
+    status: str,
+    error: str = "",
+) -> dict[str, Any]:
+    run_args = dict(candidate.get("run_args", {}))
+    hyperparameters = dict(candidate.get("hyperparameters", {}))
+    candidate_id = str(candidate.get("candidate_id", candidate.get("candidate_name", run_args.get("model_id", ""))))
+    candidate_name = str(candidate.get("candidate_name", candidate_id))
+    accuracy_values = list(subset_accuracies.values())
+
+    row: dict[str, Any] = {
+        "candidate_id": candidate_id,
+        "candidate_name": candidate_name,
+        "model": candidate.get("model", run_args.get("model", "")),
+        "task_name": run_args.get("task_name", ""),
+        "data": run_args.get("data", ""),
+        "model_num": _parse_candidate_model_num(candidate_id),
+        "e_layers": hyperparameters.get("e_layers", run_args.get("e_layers", "")),
+        "d_model": hyperparameters.get("d_model", run_args.get("d_model", "")),
+        "d_ff": hyperparameters.get("d_ff", run_args.get("d_ff", "")),
+        "top_k": hyperparameters.get("top_k", run_args.get("top_k", "")),
+        "num_kernels": hyperparameters.get("num_kernels", run_args.get("num_kernels", "")),
+        "num_subsets_total": total_subsets,
+        "num_subsets_completed": len(subset_accuracies),
+        "average_accuracy": sum(accuracy_values) / len(accuracy_values) if accuracy_values else "",
+        "status": status,
+        "error": error,
+    }
+    for dataset_name in dataset_names:
+        row[_uea_accuracy_column(dataset_name)] = subset_accuracies.get(dataset_name, "")
+    return row
+
+
+def _candidate_recipe_runs(
+    candidate: dict[str, Any],
+    *,
+    repo_root: Path | None = None,
+) -> tuple[Path, list[dict[str, Any]]] | None:
+    repo_root = repo_root or _repo_root()
+    run_args = dict(candidate.get("run_args", {}))
+    backbone = run_args.get("model") or candidate.get("model")
+    task_name = run_args.get("task_name")
+    data = run_args.get("data")
+
+    if not isinstance(backbone, str) or task_name != "classification" or data != "UEA":
+        return None
+
+    recipe_path, _, runs = _find_default_recipe_runs(backbone, task_name, data, repo_root)
+    if len(runs) <= 1:
+        return None
+    return recipe_path, runs
+
+
+def _recipe_adjusted_run_args(
+    candidate: dict[str, Any],
+    recipe_run: dict[str, Any],
+    *,
+    gpu_id: int | None = None,
+) -> dict[str, Any]:
+    run_args = _prepare_candidate_run_args(candidate, gpu_id=gpu_id)
+    recipe_run_args = dict(recipe_run.get("run_args", {}))
+    for key in UEA_RECIPE_OVERRIDE_KEYS:
+        if key in recipe_run_args:
+            run_args[key] = recipe_run_args[key]
+    return run_args
+
+
+def _print_runner_message(message: str, *, print_lock: threading.Lock | None = None) -> None:
+    if print_lock is None:
+        print(message, flush=True)
+        return
+
+    with print_lock:
+        print(message, flush=True)
+
+
+def _stream_subprocess(
+    command: list[str],
+    *,
+    cwd: Path,
+    env: dict[str, str],
+    line_prefix: str | None = None,
+    print_lock: threading.Lock | None = None,
+    line_callback: Callable[[str], None] | None = None,
+) -> int:
+    process = subprocess.Popen(
+        command,
+        cwd=cwd,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        bufsize=1,
+    )
+
+    try:
+        if process.stdout is not None:
+            for line in process.stdout:
+                text = line.rstrip("\n")
+                if line_callback is not None:
+                    line_callback(text)
+                if line_prefix:
+                    rendered = f"{line_prefix} {text}" if text else line_prefix
+                else:
+                    rendered = text
+                _print_runner_message(rendered, print_lock=print_lock)
+        return process.wait()
+    finally:
+        if process.stdout is not None:
+            process.stdout.close()
+
+
+def _execute_run_args(
+    run_args: dict[str, Any],
+    *,
+    repo_root: Path,
+    gpu_id: int | None,
+    python_executable: str | None,
+    dry_run: bool,
+    display_name: str,
+    header_prefix: str,
+    print_lock: threading.Lock | None = None,
+    stream_prefix: str | None = None,
+) -> tuple[int, dict[str, Any]]:
+    command = _build_run_command(run_args, repo_root=repo_root, python_executable=python_executable)
+
+    _print_runner_message(f"{header_prefix} Running {display_name}", print_lock=print_lock)
+    if gpu_id is not None:
+        _print_runner_message(
+            f"{header_prefix} GPU: physical cuda:{gpu_id} (process-local cuda:0)",
+            print_lock=print_lock,
+        )
+    _print_runner_message(f"{header_prefix} Command: {_format_command(command)}", print_lock=print_lock)
+
+    observed: dict[str, Any] = {
+        "training_setting": None,
+        "testing_setting": None,
+        "accuracy": None,
+    }
+
+    def capture_line(text: str) -> None:
+        training_match = TRAINING_SETTING_PATTERN.match(text)
+        if training_match is not None:
+            observed["training_setting"] = training_match.group("setting")
+
+        testing_match = TESTING_SETTING_PATTERN.match(text)
+        if testing_match is not None:
+            observed["testing_setting"] = testing_match.group("setting")
+
+        accuracy_match = ACCURACY_LINE_PATTERN.match(text)
+        if accuracy_match is not None:
+            observed["accuracy"] = float(accuracy_match.group("accuracy"))
+
+    if dry_run:
+        return 0, observed
+
+    env = os.environ.copy()
+    if gpu_id is not None:
+        env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
+
+    try:
+        return_code = _stream_subprocess(
+            command,
+            cwd=repo_root,
+            env=env,
+            line_prefix=stream_prefix,
+            print_lock=print_lock,
+            line_callback=capture_line,
+        )
+    except OSError as exc:
+        _print_runner_message(
+            f"{header_prefix} Status: failed to launch ({exc})",
+            print_lock=print_lock,
+        )
+        observed["error"] = str(exc)
+        return 1, observed
+
+    if return_code == 0:
+        _print_runner_message(f"{header_prefix} Status: success", print_lock=print_lock)
+        return 0, observed
+
+    _print_runner_message(
+        f"{header_prefix} Status: failed (exit code {return_code})",
+        print_lock=print_lock,
+    )
+    return return_code, observed
+
+
+def _execute_candidate_plan(
+    plan: CandidateRunPlan,
+    *,
+    repo_root: Path,
+    gpu_id: int | None,
+    python_executable: str | None,
+    dry_run: bool,
+    print_lock: threading.Lock | None = None,
+    stream_prefix: str | None = None,
+    summary_callback: Callable[[dict[str, Any]], None] | None = None,
+) -> int:
+    header_prefix = f"[{plan.index}/{plan.total}]"
+    recipe_config = _candidate_recipe_runs(plan.candidate, repo_root=repo_root)
+    if recipe_config is None:
+        run_args = _prepare_candidate_run_args(plan.candidate, gpu_id=gpu_id)
+        return_code, _ = _execute_run_args(
+            run_args,
+            repo_root=repo_root,
+            gpu_id=gpu_id,
+            python_executable=python_executable,
+            dry_run=dry_run,
+            display_name=plan.candidate_name,
+            header_prefix=header_prefix,
+            print_lock=print_lock,
+            stream_prefix=stream_prefix,
+        )
+        return return_code
+
+    recipe_path, recipe_runs = recipe_config
+    dataset_names = [str(run.get("run_args", {}).get("model_id", f"subset_{index + 1}")) for index, run in enumerate(recipe_runs)]
+    _print_runner_message(
+        f"{header_prefix} UEA classification sweep: {len(recipe_runs)} subsets from {recipe_path.relative_to(repo_root)}",
+        print_lock=print_lock,
+    )
+
+    subset_accuracies: dict[str, float] = {}
+    total_subsets = len(recipe_runs)
+    for subset_index, recipe_run in enumerate(recipe_runs, start=1):
+        dataset_name = str(recipe_run.get("run_args", {}).get("model_id", f"subset_{subset_index}"))
+        subset_header_prefix = f"{header_prefix}[subset:{subset_index}/{total_subsets}]"
+        subset_stream_prefix = stream_prefix
+        if stream_prefix:
+            subset_stream_prefix = f"{stream_prefix}[subset:{dataset_name}]"
+        run_args = _recipe_adjusted_run_args(plan.candidate, recipe_run, gpu_id=gpu_id)
+        return_code, observed = _execute_run_args(
+            run_args,
+            repo_root=repo_root,
+            gpu_id=gpu_id,
+            python_executable=python_executable,
+            dry_run=dry_run,
+            display_name=f"{plan.candidate_name} [{dataset_name}]",
+            header_prefix=subset_header_prefix,
+            print_lock=print_lock,
+            stream_prefix=subset_stream_prefix,
+        )
+        if return_code != 0:
+            if not dry_run and summary_callback is not None:
+                summary_callback(
+                    _build_uea_average_row(
+                        plan.candidate,
+                        dataset_names=dataset_names,
+                        subset_accuracies=subset_accuracies,
+                        total_subsets=total_subsets,
+                        status="failed",
+                        error=f"subset '{dataset_name}' failed with exit code {return_code}",
+                    )
+                )
+            return return_code
+
+        accuracy = observed.get("accuracy")
+        if dry_run:
+            continue
+        if accuracy is None:
+            if summary_callback is not None:
+                summary_callback(
+                    _build_uea_average_row(
+                        plan.candidate,
+                        dataset_names=dataset_names,
+                        subset_accuracies=subset_accuracies,
+                        total_subsets=total_subsets,
+                        status="failed",
+                        error=f"subset '{dataset_name}' completed without an 'accuracy:' line in stdout",
+                    )
+                )
+            return 1
+        subset_accuracies[dataset_name] = accuracy
+
+    if not dry_run and summary_callback is not None:
+        summary_callback(
+            _build_uea_average_row(
+                plan.candidate,
+                dataset_names=dataset_names,
+                subset_accuracies=subset_accuracies,
+                total_subsets=total_subsets,
+                status="success",
+            )
+        )
+
+    if not dry_run:
+        average_accuracy = sum(subset_accuracies.values()) / len(subset_accuracies) if subset_accuracies else float("nan")
+        _print_runner_message(
+            f"{header_prefix} Average accuracy across {len(subset_accuracies)}/{total_subsets} UEA subsets: {average_accuracy:.6f}",
+            print_lock=print_lock,
+        )
+    return 0
+
+
 def run_candidates_from_payload(
     payload: dict[str, Any],
     *,
     candidate_path: Path,
     repo_root: Path | None = None,
-    gpu_id: int | None = None,
+    gpu_ids: list[int] | None = None,
     python_executable: str | None = None,
     dry_run: bool = False,
     continue_on_error: bool = False,
 ) -> int:
     repo_root = repo_root or _repo_root()
-    candidates = payload["candidates"]
-    total = len(candidates)
+    plans = _build_candidate_run_plans(payload)
+    total = len(plans)
     failures: list[tuple[int, str, int]] = []
+    normalized_gpu_ids = list(gpu_ids or [])
+    summary_callback: Callable[[dict[str, Any]], None] | None = None
 
-    for index, candidate in enumerate(candidates, start=1):
-        candidate_name = candidate.get("candidate_name") or candidate.get("candidate_id") or f"candidate_{index:04d}"
-        run_args = _prepare_candidate_run_args(candidate, gpu_id=gpu_id)
-        command = _build_run_command(run_args, repo_root=repo_root, python_executable=python_executable)
+    if plans:
+        recipe_config = _candidate_recipe_runs(plans[0].candidate, repo_root=repo_root)
+        if recipe_config is not None:
+            recipe_path, recipe_runs = recipe_config
+            dataset_names = [
+                str(run.get("run_args", {}).get("model_id", f"subset_{index + 1}"))
+                for index, run in enumerate(recipe_runs)
+            ]
+            summary_path = _summary_csv_path(candidate_path, repo_root)
+            summary_path.parent.mkdir(parents=True, exist_ok=True)
+            summary_rows = {
+                str(row.get("candidate_id", "")): dict(row)
+                for row in _load_existing_summary_rows(summary_path)
+                if row.get("candidate_id")
+            }
+            summary_lock = threading.Lock()
 
-        print(f"[{index}/{total}] Running {candidate_name}")
-        if gpu_id is not None:
-            print(f"  GPU: physical cuda:{gpu_id} (process-local cuda:0)")
-        print(f"  Command: {' '.join(command)}")
+            def write_summary_row(row: dict[str, Any]) -> None:
+                with summary_lock:
+                    summary_rows[str(row["candidate_id"])] = dict(row)
+                    ordered_rows = sorted(
+                        summary_rows.values(),
+                        key=lambda row_item: _candidate_sort_key(str(row_item.get("candidate_id", ""))),
+                    )
+                    _write_summary_rows(summary_path, ordered_rows, dataset_names)
 
-        if dry_run:
-            continue
-
-        env = os.environ.copy()
-        if gpu_id is not None:
-            env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
-
-        completed = subprocess.run(command, cwd=repo_root, env=env, check=False)
-        if completed.returncode == 0:
-            print(f"  Status: success")
-            continue
-
-        print(f"  Status: failed (exit code {completed.returncode})")
-        failures.append((index, candidate_name, completed.returncode))
-        if not continue_on_error:
+            summary_callback = write_summary_row
             print(
-                f"Stopped after the first failure while running '{candidate_name}'. "
-                f"Source candidate file: {candidate_path}"
+                f"UEA classification average-accuracy summary will be written to {summary_path} "
+                f"using {len(dataset_names)} subsets from {recipe_path.relative_to(repo_root)}"
             )
-            return completed.returncode
+
+    if dry_run and len(normalized_gpu_ids) > 1:
+        gpu_pool = ", ".join(f"cuda:{gpu_id}" for gpu_id in normalized_gpu_ids)
+        print(f"Dry run preview across GPU worker pool: {gpu_pool}")
+        print("Preview assignment uses round-robin order; real execution dispatches to the first available GPU.")
+
+    if len(normalized_gpu_ids) <= 1 or dry_run:
+        for plan in plans:
+            assigned_gpu_id = None
+            if normalized_gpu_ids:
+                if dry_run and len(normalized_gpu_ids) > 1:
+                    assigned_gpu_id = normalized_gpu_ids[(plan.index - 1) % len(normalized_gpu_ids)]
+                else:
+                    assigned_gpu_id = normalized_gpu_ids[0]
+
+            return_code = _execute_candidate_plan(
+                plan,
+                repo_root=repo_root,
+                gpu_id=assigned_gpu_id,
+                python_executable=python_executable,
+                dry_run=dry_run,
+                summary_callback=summary_callback,
+            )
+            if return_code == 0:
+                continue
+
+            failures.append((plan.index, plan.candidate_name, return_code))
+            if not continue_on_error:
+                print(
+                    f"Stopped after the first failure while running '{plan.candidate_name}'. "
+                    f"Source candidate file: {candidate_path}"
+                )
+                return return_code
+    else:
+        gpu_pool = ", ".join(f"cuda:{gpu_id}" for gpu_id in normalized_gpu_ids)
+        print(
+            f"Launching {len(normalized_gpu_ids)} parallel GPU workers for {total} candidates from {candidate_path}: {gpu_pool}"
+        )
+        if not continue_on_error:
+            print("A failure will stop new dispatches, but jobs already running on other GPUs are allowed to finish.")
+
+        task_queue: queue.Queue[CandidateRunPlan] = queue.Queue()
+        for plan in plans:
+            task_queue.put(plan)
+
+        print_lock = threading.Lock()
+        failures_lock = threading.Lock()
+        stop_event = threading.Event()
+
+        def worker(gpu_id: int) -> None:
+            while True:
+                if stop_event.is_set() and not continue_on_error:
+                    return
+
+                try:
+                    plan = task_queue.get_nowait()
+                except queue.Empty:
+                    return
+
+                if stop_event.is_set() and not continue_on_error:
+                    return
+
+                return_code = _execute_candidate_plan(
+                    plan,
+                    repo_root=repo_root,
+                    gpu_id=gpu_id,
+                    python_executable=python_executable,
+                    dry_run=False,
+                    print_lock=print_lock,
+                    stream_prefix=f"[{plan.index}/{plan.total}][gpu:{gpu_id}]",
+                    summary_callback=summary_callback,
+                )
+                if return_code == 0:
+                    continue
+
+                with failures_lock:
+                    failures.append((plan.index, plan.candidate_name, return_code))
+                if not continue_on_error:
+                    stop_event.set()
+
+        threads = [
+            threading.Thread(target=worker, name=f"candidate-runner-gpu-{gpu_id}", args=(gpu_id,))
+            for gpu_id in normalized_gpu_ids
+        ]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
 
     if dry_run:
-        print(f"Dry run completed. {total} candidate commands were generated from {candidate_path}.")
+        if normalized_gpu_ids:
+            gpu_pool = ", ".join(f"cuda:{gpu_id}" for gpu_id in normalized_gpu_ids)
+            print(f"Dry run completed. {total} candidate execution plans were generated from {candidate_path} using {gpu_pool}.")
+        else:
+            print(f"Dry run completed. {total} candidate execution plans were generated from {candidate_path}.")
         return 0
 
     if failures:
+        failures.sort(key=lambda item: item[0])
         failed_names = ", ".join(f"{name}(exit={code})" for _, name, code in failures)
         print(
             f"Finished with {len(failures)} failure(s) out of {total} candidates from {candidate_path}: {failed_names}"
         )
+        if len(normalized_gpu_ids) > 1 and not continue_on_error:
+            print("New dispatches were stopped after the first failure; some in-flight GPU jobs may have completed before shutdown.")
         return failures[0][2]
 
-    print(f"Finished successfully. {total} candidate runs completed from {candidate_path}.")
+    if len(normalized_gpu_ids) > 1:
+        print(
+            f"Finished successfully. {total} candidate runs completed from {candidate_path} "
+            f"across {len(normalized_gpu_ids)} GPUs."
+        )
+    else:
+        print(f"Finished successfully. {total} candidate runs completed from {candidate_path}.")
     return 0
 
 
@@ -1232,11 +1844,15 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--gpu-id",
-        type=int,
+        nargs="+",
+        type=str,
         default=None,
+        metavar="GPU",
         help=(
-            "Physical GPU id to use when running candidate JSON files. "
-            "The runner sets CUDA_VISIBLE_DEVICES=<gpu-id> and passes --gpu 0 to run.py."
+            "One or more physical GPU ids to use when running candidate JSON files. "
+            "Examples: --gpu-id 0, --gpu-id 0 1 2 3, --gpu-id 0,1,2,3. "
+            "When multiple ids are given, the runner launches one worker per GPU, sets "
+            "CUDA_VISIBLE_DEVICES=<gpu-id> for that worker, and passes --gpu 0 to run.py."
         ),
     )
     parser.add_argument(
@@ -1324,6 +1940,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if run_candidate_mode:
         try:
+            gpu_ids = _parse_gpu_ids(args.gpu_id) if args.gpu_id else None
             if args.run_candidates:
                 candidate_path = _resolve_candidates_path_from_name(args.run_candidates)
             else:
@@ -1336,7 +1953,7 @@ def main(argv: list[str] | None = None) -> int:
         return run_candidates_from_payload(
             payload,
             candidate_path=candidate_path,
-            gpu_id=args.gpu_id,
+            gpu_ids=gpu_ids,
             dry_run=args.dry_run,
             continue_on_error=args.continue_on_error,
         )

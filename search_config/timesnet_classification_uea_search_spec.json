@@ -1,0 +1,60 @@
+{
+  "backbone": "TimesNet",
+  "num_samples": 3,
+  "seed": 2026,
+  "candidate_prefix": "timesnet_classification_uea",
+  "fixed_config": {
+    "task_name": "classification",
+    "is_training": 1,
+    "root_path": "./dataset/EthanolConcentration/",
+    "model_id": "EthanolConcentration",
+    "data": "UEA",
+    "batch_size": 16,
+    "des": "Exp",
+    "itr": 1,
+    "learning_rate": 0.001,
+    "train_epochs": 40,
+    "patience": 5
+  },
+  "search_space": {
+    "e_layers": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "d_model": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "d_ff": [
+      "x2",
+      "x4"
+    ],
+    "top_k": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "num_kernels": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "default_recipe": {
+    "source_recipe": "examples/classification/TimesNet.json",
+    "relative_script_path": "classification/TimesNet.sh",
+    "source_run_index": 1,
+    "source_command": "python -u run.py --task_name classification --is_training 1 --root_path ./dataset/EthanolConcentration/ --model_id EthanolConcentration --model TimesNet --data UEA --e_layers 2 --batch_size 16 --d_model 16 --d_ff 32 --top_k 3 --des Exp --itr 1 --learning_rate 0.001 --train_epochs 30 --patience 10"
+  }
+}

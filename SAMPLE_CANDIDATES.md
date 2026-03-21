@@ -112,7 +112,10 @@ search_config/timesnet_long_term_forecast_etth1_search_spec.json
 
 - `--search key=v1,v2,v3`
   - 특정 하이퍼파라미터의 후보 리스트를 지정합니다.
+  - 같은 key가 기존 `fixed_config`에 있으면, spec 저장 시 그 key는 `fixed_config`에서 제거되고 `search_space`만 유지됩니다.
   - 여러 번 반복해서 사용할 수 있습니다.
+
+- 같은 key를 한 명령에서 `--fixed`와 `--search`에 동시에 넣을 수는 없습니다.
 
 - direct CLI 모드에서 `--output`을 생략하면:
   - search config만 갱신하고 종료합니다.
@@ -191,6 +194,22 @@ python sample_candidates.py \
   --gpu-id 0
 ```
 
+여러 GPU에 병렬 분산하려면:
+
+```bash
+python sample_candidates.py \
+  --run-candidates TimesNet_long_term_forecast_ETTh1 \
+  --gpu-id 0 1 2 3
+```
+
+또는 쉼표 형태도 가능합니다.
+
+```bash
+python sample_candidates.py \
+  --run-candidates TimesNet_long_term_forecast_ETTh1 \
+  --gpu-id 0,1,2,3
+```
+
 이 명령은 아래 파일을 읽습니다.
 
 ```text
@@ -207,10 +226,21 @@ python sample_candidates.py \
 
 설명:
 
+- 실행 namespace 처리
+  - `--run-candidates` 실행 시에는 각 candidate가 고유한 실행 namespace를 쓰도록 내부적으로 `des`를 재작성합니다.
+  - 기본적으로 `<원래 des>__<candidate_name>` 형태를 사용합니다.
+  - `model_id`는 그대로 유지하므로 classification처럼 `model_id`를 dataset 이름으로 쓰는 경우도 안전합니다.
+  - 그래서 멀티 GPU 병렬 실행 시에도 `checkpoints/`, `results/`, `test_results/` 경로가 서로 충돌하지 않습니다.
+  - 추가로 `classification + UEA` candidate JSON은 기본 recipe인 `examples/classification/<Backbone>.json`의 모든 subset run을 따라갑니다.
+  - 예를 들어 `TimesNet` UEA classification candidate는 10개 subset을 모두 학습/테스트하고, candidate별 평균 accuracy를 `results/<candidates_stem>_uea_average_accuracy.csv`에 저장합니다.
+
 - `--gpu-id`
-  - 물리 GPU 번호를 지정합니다.
-  - 내부적으로 `CUDA_VISIBLE_DEVICES=<gpu-id>`를 설정하고 `run.py`에는 `--gpu 0`을 넘깁니다.
-  - 즉 물리 GPU 3번을 쓰고 싶으면 `--gpu-id 3`으로 주면 됩니다.
+  - 물리 GPU 번호를 하나 이상 지정합니다.
+  - 예: `--gpu-id 3`, `--gpu-id 0 1 2 3`, `--gpu-id 0,1,2,3`
+  - GPU를 하나만 주면 기존처럼 순차 실행합니다.
+  - GPU를 여러 개 주면 GPU마다 worker 1개씩 띄우고, 비는 GPU에 다음 candidate를 붙여 병렬 실행합니다.
+  - 각 worker는 내부적으로 `CUDA_VISIBLE_DEVICES=<gpu-id>`를 설정하고 `run.py`에는 `--gpu 0`을 넘깁니다.
+  - 즉 물리 GPU 3번을 쓰고 싶으면 `--gpu-id 3`으로 주면 되고, `--gpu-id 0 1 2 3`이면 총 4개 GPU에 분산됩니다.
 
 - `--dry-run`
   - 실제 학습은 시작하지 않고, 어떤 `run.py` 명령이 순차 실행될지만 출력합니다.
@@ -225,6 +255,7 @@ python sample_candidates.py \
 - `--continue-on-error`
   - 특정 후보가 실패해도 뒤 후보들을 계속 실행합니다.
   - 이 옵션이 없으면 첫 실패 지점에서 중단합니다.
+  - 단, 멀티 GPU 병렬 실행 중이면 이미 다른 GPU에서 돌고 있던 in-flight job은 끝까지 실행될 수 있습니다.
 
 
 ## 7. JSON Spec 파일을 직접 사용하는 모드

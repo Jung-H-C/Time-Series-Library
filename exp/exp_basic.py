@@ -64,6 +64,24 @@ class Exp_Basic(object):
             print('Use CPU')
         return device
 
+    def _results_folder_name(self, setting):
+        results_id = str(getattr(self.args, 'results_id', '') or '').strip()
+        if not results_id:
+            return setting
+
+        task_name = str(getattr(self.args, 'task_name', '') or '').strip() or 'task'
+        model_id = str(getattr(self.args, 'model_id', '') or '').strip() or 'model'
+
+        for sep in filter(None, {os.sep, os.altsep}):
+            task_name = task_name.replace(sep, '_')
+            model_id = model_id.replace(sep, '_')
+            results_id = results_id.replace(sep, '_')
+
+        return f'{task_name}_{model_id}_{results_id}'
+
+    def _results_folder_path(self, setting):
+        return os.path.join('.', 'results', self._results_folder_name(setting))
+
     def _get_data(self):
         pass
 
