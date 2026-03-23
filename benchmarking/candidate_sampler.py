@@ -464,6 +464,20 @@ def _default_candidates_output_path(
     return repo_root / "candidates" / f"{stem}_candidates.json"
 
 
+def _filename_in_dir(
+    directory: Path,
+    raw_name: str,
+) -> Path:
+    normalized_name = Path(raw_name).name.strip()
+    if not normalized_name:
+        raise ValueError("File name must not be empty.")
+    if normalized_name in {".", ".."}:
+        raise ValueError(f"Invalid file name: {raw_name!r}")
+    if not normalized_name.endswith(".json"):
+        normalized_name = f"{normalized_name}.json"
+    return directory / normalized_name
+
+
 def _resolve_candidates_path_from_name(
     candidate_name: str,
     repo_root: Path | None = None,
@@ -1793,6 +1807,24 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--backbone", type=str, help="Backbone name when specifying the search space directly in CLI.")
     parser.add_argument("--output", type=str, help="Path to write the sampled candidate JSON.")
+    parser.add_argument(
+        "--search-spec-name",
+        type=str,
+        default=None,
+        help=(
+            "File name to use under search_config/ when creating or updating a search spec in direct CLI mode. "
+            "Example: --search-spec-name my_timesnet_search_spec.json"
+        ),
+    )
+    parser.add_argument(
+        "--candidates-name",
+        type=str,
+        default=None,
+        help=(
+            "File name to use under candidates/ for sampled candidate output, or when loading/running by name. "
+            "Example: --candidates-name my_timesnet_candidates.json"
+        ),
+    )
     parser.add_argument("--num-samples", type=int, default=None, help="Override num_samples from the spec.")
     parser.add_argument("--seed", type=int, default=None, help="Override seed from the spec.")
     parser.add_argument(
@@ -1937,12 +1969,20 @@ def main(argv: list[str] | None = None) -> int:
 
     if run_candidate_mode and args.output:
         parser.error("--output is not used with --run-candidates/--run-candidates-file.")
+    if args.search_spec_name and (args.spec or args.sample_search_config_file or run_candidate_mode):
+        parser.error("--search-spec-name is only used with direct CLI mode or --sample-search-config.")
 
     if run_candidate_mode:
         try:
             gpu_ids = _parse_gpu_ids(args.gpu_id) if args.gpu_id else None
+            repo_root = _repo_root()
             if args.run_candidates:
-                candidate_path = _resolve_candidates_path_from_name(args.run_candidates)
+                if args.candidates_name:
+                    candidate_path = _filename_in_dir(repo_root / "candidates", args.candidates_name)
+                    if not candidate_path.exists():
+                        parser.error(f"Candidate JSON not found: {candidate_path}")
+                else:
+                    candidate_path = _resolve_candidates_path_from_name(args.run_candidates)
             else:
                 candidate_path = Path(args.run_candidates_file)
                 if not candidate_path.exists():
@@ -1970,7 +2010,12 @@ def main(argv: list[str] | None = None) -> int:
         updated_search_config_path = None
         if args.sample_search_config:
             try:
-                spec_path = _resolve_search_config_path_from_name(args.sample_search_config)
+                if args.search_spec_name:
+                    spec_path = _filename_in_dir(_repo_root() / "search_config", args.search_spec_name)
+                    if not spec_path.exists():
+                        parser.error(f"Search config spec not found: {spec_path}")
+                else:
+                    spec_path = _resolve_search_config_path_from_name(args.sample_search_config)
             except ValueError as exc:
                 parser.error(str(exc))
         else:
@@ -1980,14 +2025,21 @@ def main(argv: list[str] | None = None) -> int:
 
         spec = _load_json(spec_path)
         if not args.output:
-            args.output = str(_default_candidates_output_path(spec_path))
+            if args.candidates_name:
+                args.output = str(_filename_in_dir(_repo_root() / "candidates", args.candidates_name))
+            else:
+                args.output = str(_default_candidates_output_path(spec_path))
     else:
         try:
             spec, updated_search_config_path = _build_or_update_spec_from_cli_args(args)
         except ValueError as exc:
             parser.error(str(exc))
+        if args.search_spec_name:
+            updated_search_config_path = _filename_in_dir(_repo_root() / "search_config", args.search_spec_name)
         _write_json(updated_search_config_path, spec)
         print(f"Updated search config: {updated_search_config_path}")
+        if not args.output and args.candidates_name:
+            args.output = str(_filename_in_dir(_repo_root() / "candidates", args.candidates_name))
         if not args.output:
             return 0
 

@@ -117,6 +117,14 @@ search_config/timesnet_long_term_forecast_etth1_search_spec.json
 
 - 같은 key를 한 명령에서 `--fixed`와 `--search`에 동시에 넣을 수는 없습니다.
 
+- direct CLI 모드에서 `--search-spec-name`을 주면:
+  - 자동 생성된 `<backbone>_<task>_<dataset>_search_spec.json` 대신, 지정한 파일명으로 `search_config/` 아래에 저장합니다.
+  - `.json` 확장자를 생략하면 자동으로 붙습니다.
+
+- direct CLI 모드에서 `--candidates-name`을 주면:
+  - `--output`을 직접 쓰지 않아도, 샘플링 결과를 지정한 파일명으로 `candidates/` 아래에 저장합니다.
+  - `.json` 확장자를 생략하면 자동으로 붙습니다.
+
 - direct CLI 모드에서 `--output`을 생략하면:
   - search config만 갱신하고 종료합니다.
   - 후보 샘플링은 수행하지 않습니다.
@@ -150,6 +158,7 @@ python sample_candidates.py \
   --num-samples 20
 ```
 
+
 원하면 출력 경로를 직접 지정할 수도 있습니다.
 
 ```bash
@@ -179,6 +188,27 @@ python sample_candidates.py \
   --search d_model=64,128 \
   --num-samples 6 \
   --output candidates/timemixer_long_term_forecast_etth1_candidates.json
+```
+
+파일명만 간단히 지정하고 싶다면:
+
+```bash
+python sample_candidates.py \
+  --backbone TimesNet \
+  --fixed task_name=classification \
+  --fixed data=UEA \
+  --search e_layers=1,2,3 \
+  --search d_model=32,64 \
+  --num-samples 8 \
+  --search-spec-name timesnet_classification_uea_custom \
+  --candidates-name timesnet_classification_uea_candidates_custom
+```
+
+위 명령은 아래 두 파일을 사용합니다.
+
+```text
+search_config/timesnet_classification_uea_custom.json
+candidates/timesnet_classification_uea_candidates_custom.json
 ```
 
 
@@ -222,6 +252,21 @@ candidates/timesnet_long_term_forecast_etth1_candidates.json
 python sample_candidates.py \
   --run-candidates-file candidates/timemixer_long_term_forecast_etth1_candidates.json \
   --gpu-id 1
+```
+
+또는 `candidates/` 아래 파일명만 직접 지정할 수도 있습니다.
+
+```bash
+python sample_candidates.py \
+  --run-candidates TimesNet_long_term_forecast_ETTh1 \
+  --candidates-name my_timesnet_candidates.json \
+  --gpu-id 0
+```
+
+이 경우 `--run-candidates`의 key 대신 실제로는 아래 파일을 읽습니다.
+
+```text
+candidates/my_timesnet_candidates.json
 ```
 
 설명:
