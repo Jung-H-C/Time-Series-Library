@@ -2,6 +2,7 @@ import os
 import torch
 import importlib
 import pkgutil  
+from utils.example_task_policy import ensure_example_task_backbone_supported
 
 # Just put your model files under models/ folder
 # e.g., models/Transformer.py, models/LSTM.py, etc.
@@ -16,6 +17,15 @@ class Exp_Basic(object):
         #  Automatically generate model map
         # -------------------------------------------------------
         model_map = self._scan_models_directory()
+        model_name = str(getattr(self.args, 'model', '') or '').strip()
+        if model_name and model_name not in model_map:
+            raise NotImplementedError(f"Model [{model_name}] not found in 'models' directory.")
+
+        # Gate experiment launches by the recipe combinations defined under examples/.
+        ensure_example_task_backbone_supported(
+            model_name,
+            getattr(self.args, 'task_name', ''),
+        )
 
         # Use smart dictionary
         self.model_dict = LazyModelDict(model_map)

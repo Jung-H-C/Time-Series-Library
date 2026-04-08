@@ -118,6 +118,7 @@ NAME_TOKEN_ALIASES = {
     "d_ff": "df",
     "d_layers": "dl",
     "d_model": "dm",
+    "dt_rank": "dtr",
     "dropout": "do",
     "e_layers": "el",
     "embed": "eb",
@@ -226,6 +227,36 @@ def discover_available_backbones(repo_root: Path | None = None) -> list[str]:
     return sorted(
         path.stem for path in models_dir.glob("*.py") if path.name != "__init__.py"
     )
+
+
+def _resolve_backbone_name(
+    raw_backbone: Any,
+    available_backbones: list[str],
+    *,
+    strict_known: bool,
+) -> str:
+    if not isinstance(raw_backbone, str) or not raw_backbone.strip():
+        if strict_known:
+            available = ", ".join(sorted(available_backbones))
+            raise ValueError(f"'backbone' must be one of: {available}")
+        raise ValueError("'backbone' must be a non-empty string.")
+
+    candidate = raw_backbone.strip()
+    available_set = set(available_backbones)
+    if candidate in available_set:
+        return candidate
+
+    casefold_matches = [name for name in available_backbones if name.casefold() == candidate.casefold()]
+    if len(casefold_matches) == 1:
+        return casefold_matches[0]
+    if len(casefold_matches) > 1:
+        options = ", ".join(casefold_matches)
+        raise ValueError(f"Backbone '{raw_backbone}' is ambiguous (case-insensitive matches: {options}).")
+
+    if strict_known:
+        available = ", ".join(sorted(available_backbones))
+        raise ValueError(f"'backbone' must be one of: {available}")
+    return candidate
 
 
 def discover_run_arguments(repo_root: Path | None = None) -> set[str]:
@@ -428,6 +459,43 @@ def _resolve_search_config_path_from_name(
 ) -> Path:
     repo_root = repo_root or _repo_root()
     config_dir = repo_root / "search_config"
+
+    # Prefer concrete paths first so users can pass any existing file without naming constraints.
+    raw_input = Path(config_name).expanduser()
+    direct_candidates = []
+    if raw_input.is_absolute():
+        direct_candidates.append(raw_input)
+    else:
+        direct_candidates.extend(
+            [
+                Path(config_name),
+                repo_root / config_name,
+                config_dir / config_name,
+            ]
+        )
+
+    if raw_input.suffix:
+        suffixed_candidates = direct_candidates
+    else:
+        if raw_input.is_absolute():
+            suffixed_candidates = direct_candidates + [
+                raw_input.with_suffix(".json"),
+                raw_input.with_name(f"{raw_input.name}_search_spec.json"),
+            ]
+        else:
+            suffixed_candidates = direct_candidates + [
+                Path(f"{config_name}.json"),
+                Path(f"{config_name}_search_spec.json"),
+                repo_root / f"{config_name}.json",
+                repo_root / f"{config_name}_search_spec.json",
+                config_dir / f"{config_name}.json",
+                config_dir / f"{config_name}_search_spec.json",
+            ]
+
+    for candidate in suffixed_candidates:
+        if candidate.exists() and candidate.is_file():
+            return candidate
+
     normalized = _slugify(Path(config_name).stem.replace("_search_spec", ""))
     exact_path = config_dir / f"{normalized}_search_spec.json"
 
@@ -515,6 +583,67 @@ def _iter_example_recipe_runs(
                 yield recipe_path, payload, run
 
 
+def _dataset_lookup_tokens(value: Any) -> set[str]:
+    raw = str(value or "").strip()
+    if not raw:
+        return set()
+
+    normalized = raw.replace("\\", "/").strip("/")
+    candidates = {raw, normalized}
+    try:
+        path_value = Path(normalized)
+        candidates.add(path_value.name)
+        candidates.add(path_value.stem)
+    except Exception:
+        pass
+
+    return {_slugify(candidate) for candidate in candidates if str(candidate).strip()}
+
+
+def _recipe_dataset_aliases(
+    recipe_path: Path,
+    payload: dict[str, Any],
+    run: dict[str, Any],
+) -> set[str]:
+    run_args = run["run_args"]
+    aliases: set[str] = set()
+
+    for key in ("data", "data_path", "root_path", "model_id"):
+        aliases.update(_dataset_lookup_tokens(run_args.get(key)))
+
+    summary = payload.get("summary")
+    if isinstance(summary, dict):
+        for dataset_name in summary.get("datasets", []):
+            aliases.update(_dataset_lookup_tokens(dataset_name))
+
+    aliases.update(_dataset_lookup_tokens(recipe_path.stem))
+    aliases.update(_dataset_lookup_tokens(recipe_path.parent.name))
+
+    parent_name = recipe_path.parent.name
+    if parent_name.lower().endswith("_script"):
+        aliases.update(_dataset_lookup_tokens(parent_name[: -len("_script")]))
+
+    return aliases
+
+
+def _recipe_matches_requested_data(
+    recipe_path: Path,
+    payload: dict[str, Any],
+    run: dict[str, Any],
+    requested_data: str,
+) -> bool:
+    run_args = run["run_args"]
+    actual_data = run_args.get("data")
+    if actual_data == requested_data:
+        return True
+
+    requested_slug = _slugify(requested_data)
+    if not requested_slug:
+        return False
+
+    return requested_slug in _recipe_dataset_aliases(recipe_path, payload, run)
+
+
 def _default_recipe_sort_key(
     recipe_path: Path,
     run: dict[str, Any],
@@ -547,7 +676,7 @@ def _find_default_recipe_run(
         if (
             run_args.get("model") == backbone
             and run_args.get("task_name") == task_name
-            and run_args.get("data") == data
+            and _recipe_matches_requested_data(recipe_path, payload, run, data)
         ):
             matches.append(
                 (
@@ -582,7 +711,7 @@ def _find_default_recipe_runs(
         if isinstance(run.get("run_args"), dict)
         and run["run_args"].get("model") == backbone
         and run["run_args"].get("task_name") == task_name
-        and run["run_args"].get("data") == data
+        and _recipe_matches_requested_data(recipe_path, payload, run, data)
     ]
     runs.sort(key=lambda run: run.get("index", 0))
     return recipe_path, payload, runs
@@ -607,6 +736,8 @@ def _example_based_fixed_config(
         "relative_script_path": payload.get("relative_script_path"),
         "source_run_index": run.get("index"),
         "source_command": run.get("command"),
+        "requested_data": data,
+        "resolved_data": fixed_config.get("data"),
     }
     return fixed_config, recipe_reference
 
@@ -651,6 +782,7 @@ def _load_or_initialize_search_config(
             repo_root,
         )
         spec = _default_spec_for_backbone(backbone, repo_root, fixed_config=example_fixed_config)
+        spec["candidate_prefix"] = _default_candidate_prefix(backbone, target_fixed_config)
         spec["default_recipe"] = recipe_reference
 
     spec["backbone"] = backbone
@@ -709,7 +841,22 @@ def _build_or_update_spec_from_cli_args(
     spec, _ = _load_or_initialize_search_config(args.backbone, target_fixed_config, repo_root)
 
     fixed_config = _normalize_fixed_config(spec.get("fixed_config", {}), valid_run_args)
-    fixed_config.update(cli_fixed_overrides)
+    effective_cli_fixed_overrides = dict(cli_fixed_overrides)
+
+    default_recipe = spec.get("default_recipe")
+    if isinstance(default_recipe, dict):
+        requested_data = default_recipe.get("requested_data")
+        resolved_data = default_recipe.get("resolved_data")
+        if (
+            effective_cli_fixed_overrides.get("data") == requested_data
+            and isinstance(resolved_data, str)
+            and resolved_data
+            and requested_data != resolved_data
+            and fixed_config.get("data") == resolved_data
+        ):
+            effective_cli_fixed_overrides.pop("data", None)
+
+    fixed_config.update(effective_cli_fixed_overrides)
 
     raw_existing_search_space = spec.get("search_space") or {}
     if raw_existing_search_space:
@@ -717,7 +864,7 @@ def _build_or_update_spec_from_cli_args(
     else:
         search_space = {}
 
-    for param_name in cli_fixed_overrides:
+    for param_name in effective_cli_fixed_overrides:
         search_space.pop(param_name, None)
     search_space.update(cli_search_overrides)
 
@@ -741,7 +888,20 @@ def _build_or_update_spec_from_cli_args(
         _, recipe_reference = _example_based_fixed_config(args.backbone, task_name, data, repo_root)
         spec["default_recipe"] = recipe_reference
 
-    spec_path = _search_config_path(args.backbone, fixed_config, repo_root)
+    spec_path_fixed_config = dict(fixed_config)
+    if isinstance(default_recipe, dict):
+        requested_data = default_recipe.get("requested_data")
+        resolved_data = default_recipe.get("resolved_data")
+        if (
+            isinstance(requested_data, str)
+            and requested_data
+            and isinstance(resolved_data, str)
+            and resolved_data
+            and requested_data != resolved_data
+        ):
+            spec_path_fixed_config["data"] = requested_data
+
+    spec_path = _search_config_path(args.backbone, spec_path_fixed_config, repo_root)
     return spec, spec_path
 
 
@@ -1008,21 +1168,36 @@ def sample_candidates_from_spec(
     seed_override: int | None = None,
     candidate_prefix_override: str | None = None,
     allow_replacement_override: bool | None = None,
+    strict_backbone_validation: bool = True,
 ) -> dict[str, Any]:
     repo_root = repo_root or _repo_root()
-    valid_backbones = set(discover_available_backbones(repo_root))
+    available_backbones = discover_available_backbones(repo_root)
     valid_run_args = discover_run_arguments(repo_root)
 
-    backbone = spec.get("backbone")
-    if not isinstance(backbone, str) or backbone not in valid_backbones:
-        available = ", ".join(sorted(valid_backbones))
-        raise ValueError(f"'backbone' must be one of: {available}")
+    backbone = _resolve_backbone_name(
+        spec.get("backbone"),
+        available_backbones,
+        strict_known=strict_backbone_validation,
+    )
 
     fixed_config = _normalize_fixed_config(spec.get("fixed_config"), valid_run_args)
     spec_model_name = fixed_config.get("model")
     fixed_config.pop("model", None)
     search_space = _normalize_search_space(spec.get("search_space"), valid_run_args)
-    backbone_hparam_info = discover_backbone_hyperparameters(backbone, repo_root)
+    try:
+        backbone_hparam_info = discover_backbone_hyperparameters(backbone, repo_root)
+    except ValueError:
+        backbone_hparam_info = {
+            "backbone": backbone,
+            "model_file": "",
+            "discovered_model_hyperparameters": [],
+            "custom_validated_parameters": [],
+            "parameter_aliases": {},
+            "warning": (
+                f"Backbone '{backbone}' was not found under models/. "
+                "Candidates were generated without model-file hyperparameter discovery."
+            ),
+        }
 
     if spec_model_name and spec_model_name != backbone:
         raise ValueError(
@@ -1068,6 +1243,18 @@ def sample_candidates_from_spec(
     candidate_prefix = _slugify(str(candidate_prefix))
     search_param_order = list(search_space.keys())
 
+    requested_uea_subset_names = spec.get("uea_subset_names")
+    if requested_uea_subset_names is not None:
+        if not isinstance(requested_uea_subset_names, list):
+            raise ValueError("'uea_subset_names' must be a list of subset names if provided.")
+        requested_uea_subset_names = [
+            str(subset_name).strip()
+            for subset_name in requested_uea_subset_names
+            if str(subset_name).strip()
+        ]
+        if not requested_uea_subset_names:
+            raise ValueError("'uea_subset_names' must contain at least one non-empty subset name.")
+
     candidate_records = []
     for index, hyperparameters in enumerate(sampled_candidates, start=1):
         candidate_name = _candidate_name(candidate_prefix, hyperparameters, search_param_order, index)
@@ -1090,6 +1277,8 @@ def sample_candidates_from_spec(
         },
         "candidates": candidate_records,
     }
+    if requested_uea_subset_names is not None:
+        payload["metadata"]["uea_subset_names"] = requested_uea_subset_names
 
     if output_path is not None:
         _write_json(Path(output_path), payload)
@@ -1103,6 +1292,37 @@ def _load_candidate_payload(candidate_path: Path) -> dict[str, Any]:
     if not isinstance(candidates, list) or not candidates:
         raise ValueError(f"Candidate JSON must contain a non-empty 'candidates' list: {candidate_path}")
     return payload
+
+
+def _requested_uea_subset_names(payload: dict[str, Any] | None) -> list[str] | None:
+    if not isinstance(payload, dict):
+        return None
+
+    metadata = payload.get("metadata")
+    if not isinstance(metadata, dict):
+        return None
+
+    raw_subset_names = metadata.get("uea_subset_names")
+    if raw_subset_names is None:
+        return None
+    if not isinstance(raw_subset_names, list):
+        raise ValueError("'metadata.uea_subset_names' must be a list of subset names if provided.")
+
+    normalized_subset_names: list[str] = []
+    seen_subset_slugs: set[str] = set()
+    for raw_name in raw_subset_names:
+        subset_name = str(raw_name).strip()
+        if not subset_name:
+            continue
+        subset_slug = _slugify(subset_name)
+        if subset_slug in seen_subset_slugs:
+            continue
+        seen_subset_slugs.add(subset_slug)
+        normalized_subset_names.append(subset_name)
+
+    if not normalized_subset_names:
+        raise ValueError("'metadata.uea_subset_names' must contain at least one non-empty subset name.")
+    return normalized_subset_names
 
 
 def _parse_gpu_ids(raw_gpu_ids: list[str] | None) -> list[int]:
@@ -1133,6 +1353,20 @@ def _parse_gpu_ids(raw_gpu_ids: list[str] | None) -> list[int]:
         raise ValueError("Provide at least one GPU id after --gpu-id.")
 
     return parsed_gpu_ids
+
+
+def _build_gpu_worker_specs(gpu_ids: list[int], workers_per_gpu: int) -> list[tuple[int, int]]:
+    return [
+        (gpu_id, worker_index)
+        for gpu_id in gpu_ids
+        for worker_index in range(1, workers_per_gpu + 1)
+    ]
+
+
+def _format_gpu_worker_pool(gpu_ids: list[int], workers_per_gpu: int) -> str:
+    if workers_per_gpu == 1:
+        return ", ".join(f"cuda:{gpu_id}" for gpu_id in gpu_ids)
+    return ", ".join(f"cuda:{gpu_id}[workers:{workers_per_gpu}]" for gpu_id in gpu_ids)
 
 
 def _prepare_candidate_run_args(
@@ -1342,6 +1576,7 @@ def _build_uea_average_row(
 def _candidate_recipe_runs(
     candidate: dict[str, Any],
     *,
+    requested_subset_names: list[str] | None = None,
     repo_root: Path | None = None,
 ) -> tuple[Path, list[dict[str, Any]]] | None:
     repo_root = repo_root or _repo_root()
@@ -1354,6 +1589,27 @@ def _candidate_recipe_runs(
         return None
 
     recipe_path, _, runs = _find_default_recipe_runs(backbone, task_name, data, repo_root)
+    if requested_subset_names:
+        run_by_subset_slug: dict[str, dict[str, Any]] = {}
+        for run in runs:
+            subset_name = str(run.get("run_args", {}).get("model_id", "")).strip()
+            if not subset_name:
+                continue
+            run_by_subset_slug.setdefault(_slugify(subset_name), run)
+
+        missing_subset_names = [
+            subset_name
+            for subset_name in requested_subset_names
+            if _slugify(subset_name) not in run_by_subset_slug
+        ]
+        if missing_subset_names:
+            raise ValueError(
+                "Requested UEA subset(s) were not found in the default recipe "
+                f"{recipe_path.relative_to(repo_root)}: {', '.join(missing_subset_names)}"
+            )
+
+        runs = [run_by_subset_slug[_slugify(subset_name)] for subset_name in requested_subset_names]
+
     if len(runs) <= 1:
         return None
     return recipe_path, runs
@@ -1367,6 +1623,17 @@ def _recipe_adjusted_run_args(
 ) -> dict[str, Any]:
     run_args = _prepare_candidate_run_args(candidate, gpu_id=gpu_id)
     recipe_run_args = dict(recipe_run.get("run_args", {}))
+    candidate_hparam_keys = {
+        str(key)
+        for key in dict(candidate.get("hyperparameters", {})).keys()
+    }
+    protected_keys = candidate_hparam_keys | {"model", "results_id", "des", "is_training"}
+
+    for key, value in recipe_run_args.items():
+        if key in protected_keys:
+            continue
+        run_args[key] = value
+
     for key in UEA_RECIPE_OVERRIDE_KEYS:
         if key in recipe_run_args:
             run_args[key] = recipe_run_args[key]
@@ -1503,12 +1770,17 @@ def _execute_candidate_plan(
     gpu_id: int | None,
     python_executable: str | None,
     dry_run: bool,
+    requested_uea_subset_names: list[str] | None = None,
     print_lock: threading.Lock | None = None,
     stream_prefix: str | None = None,
     summary_callback: Callable[[dict[str, Any]], None] | None = None,
 ) -> int:
     header_prefix = f"[{plan.index}/{plan.total}]"
-    recipe_config = _candidate_recipe_runs(plan.candidate, repo_root=repo_root)
+    recipe_config = _candidate_recipe_runs(
+        plan.candidate,
+        requested_subset_names=requested_uea_subset_names,
+        repo_root=repo_root,
+    )
     if recipe_config is None:
         run_args = _prepare_candidate_run_args(plan.candidate, gpu_id=gpu_id)
         return_code, _ = _execute_run_args(
@@ -1609,6 +1881,7 @@ def run_candidates_from_payload(
     candidate_path: Path,
     repo_root: Path | None = None,
     gpu_ids: list[int] | None = None,
+    workers_per_gpu: int = 1,
     python_executable: str | None = None,
     dry_run: bool = False,
     continue_on_error: bool = False,
@@ -1618,10 +1891,17 @@ def run_candidates_from_payload(
     total = len(plans)
     failures: list[tuple[int, str, int]] = []
     normalized_gpu_ids = list(gpu_ids or [])
+    worker_specs = _build_gpu_worker_specs(normalized_gpu_ids, workers_per_gpu) if normalized_gpu_ids else []
+    worker_count = len(worker_specs)
     summary_callback: Callable[[dict[str, Any]], None] | None = None
+    requested_uea_subset_names = _requested_uea_subset_names(payload)
 
     if plans:
-        recipe_config = _candidate_recipe_runs(plans[0].candidate, repo_root=repo_root)
+        recipe_config = _candidate_recipe_runs(
+            plans[0].candidate,
+            requested_subset_names=requested_uea_subset_names,
+            repo_root=repo_root,
+        )
         if recipe_config is not None:
             recipe_path, recipe_runs = recipe_config
             dataset_names = [
@@ -1652,19 +1932,19 @@ def run_candidates_from_payload(
                 f"using {len(dataset_names)} subsets from {recipe_path.relative_to(repo_root)}"
             )
 
-    if dry_run and len(normalized_gpu_ids) > 1:
-        gpu_pool = ", ".join(f"cuda:{gpu_id}" for gpu_id in normalized_gpu_ids)
-        print(f"Dry run preview across GPU worker pool: {gpu_pool}")
-        print("Preview assignment uses round-robin order; real execution dispatches to the first available GPU.")
+    if dry_run and worker_count > 1:
+        gpu_pool = _format_gpu_worker_pool(normalized_gpu_ids, workers_per_gpu)
+        print(f"Dry run preview across {worker_count} GPU workers: {gpu_pool}")
+        print("Preview assignment uses round-robin order; real execution dispatches to the first available worker.")
 
-    if len(normalized_gpu_ids) <= 1 or dry_run:
+    if worker_count <= 1 or dry_run:
         for plan in plans:
             assigned_gpu_id = None
-            if normalized_gpu_ids:
-                if dry_run and len(normalized_gpu_ids) > 1:
-                    assigned_gpu_id = normalized_gpu_ids[(plan.index - 1) % len(normalized_gpu_ids)]
+            if worker_specs:
+                if dry_run and worker_count > 1:
+                    assigned_gpu_id = worker_specs[(plan.index - 1) % worker_count][0]
                 else:
-                    assigned_gpu_id = normalized_gpu_ids[0]
+                    assigned_gpu_id = worker_specs[0][0]
 
             return_code = _execute_candidate_plan(
                 plan,
@@ -1672,6 +1952,7 @@ def run_candidates_from_payload(
                 gpu_id=assigned_gpu_id,
                 python_executable=python_executable,
                 dry_run=dry_run,
+                requested_uea_subset_names=requested_uea_subset_names,
                 summary_callback=summary_callback,
             )
             if return_code == 0:
@@ -1685,9 +1966,9 @@ def run_candidates_from_payload(
                 )
                 return return_code
     else:
-        gpu_pool = ", ".join(f"cuda:{gpu_id}" for gpu_id in normalized_gpu_ids)
+        gpu_pool = _format_gpu_worker_pool(normalized_gpu_ids, workers_per_gpu)
         print(
-            f"Launching {len(normalized_gpu_ids)} parallel GPU workers for {total} candidates from {candidate_path}: {gpu_pool}"
+            f"Launching {worker_count} parallel GPU workers for {total} candidates from {candidate_path}: {gpu_pool}"
         )
         if not continue_on_error:
             print("A failure will stop new dispatches, but jobs already running on other GPUs are allowed to finish.")
@@ -1700,7 +1981,7 @@ def run_candidates_from_payload(
         failures_lock = threading.Lock()
         stop_event = threading.Event()
 
-        def worker(gpu_id: int) -> None:
+        def worker(gpu_id: int, worker_index: int) -> None:
             while True:
                 if stop_event.is_set() and not continue_on_error:
                     return
@@ -1719,8 +2000,9 @@ def run_candidates_from_payload(
                     gpu_id=gpu_id,
                     python_executable=python_executable,
                     dry_run=False,
+                    requested_uea_subset_names=requested_uea_subset_names,
                     print_lock=print_lock,
-                    stream_prefix=f"[{plan.index}/{plan.total}][gpu:{gpu_id}]",
+                    stream_prefix=f"[{plan.index}/{plan.total}][gpu:{gpu_id}][worker:{worker_index}]",
                     summary_callback=summary_callback,
                 )
                 if return_code == 0:
@@ -1732,8 +2014,12 @@ def run_candidates_from_payload(
                     stop_event.set()
 
         threads = [
-            threading.Thread(target=worker, name=f"candidate-runner-gpu-{gpu_id}", args=(gpu_id,))
-            for gpu_id in normalized_gpu_ids
+            threading.Thread(
+                target=worker,
+                name=f"candidate-runner-gpu-{gpu_id}-worker-{worker_index}",
+                args=(gpu_id, worker_index),
+            )
+            for gpu_id, worker_index in worker_specs
         ]
         for thread in threads:
             thread.start()
@@ -1741,9 +2027,12 @@ def run_candidates_from_payload(
             thread.join()
 
     if dry_run:
-        if normalized_gpu_ids:
-            gpu_pool = ", ".join(f"cuda:{gpu_id}" for gpu_id in normalized_gpu_ids)
-            print(f"Dry run completed. {total} candidate execution plans were generated from {candidate_path} using {gpu_pool}.")
+        if worker_specs:
+            gpu_pool = _format_gpu_worker_pool(normalized_gpu_ids, workers_per_gpu)
+            print(
+                f"Dry run completed. {total} candidate execution plans were generated from {candidate_path} "
+                f"using {worker_count} GPU worker(s): {gpu_pool}."
+            )
         else:
             print(f"Dry run completed. {total} candidate execution plans were generated from {candidate_path}.")
         return 0
@@ -1754,14 +2043,14 @@ def run_candidates_from_payload(
         print(
             f"Finished with {len(failures)} failure(s) out of {total} candidates from {candidate_path}: {failed_names}"
         )
-        if len(normalized_gpu_ids) > 1 and not continue_on_error:
+        if worker_count > 1 and not continue_on_error:
             print("New dispatches were stopped after the first failure; some in-flight GPU jobs may have completed before shutdown.")
         return failures[0][2]
 
-    if len(normalized_gpu_ids) > 1:
+    if worker_count > 1:
         print(
             f"Finished successfully. {total} candidate runs completed from {candidate_path} "
-            f"across {len(normalized_gpu_ids)} GPUs."
+            f"across {worker_count} GPU workers on {len(normalized_gpu_ids)} GPU(s)."
         )
     else:
         print(f"Finished successfully. {total} candidate runs completed from {candidate_path}.")
@@ -1796,14 +2085,18 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         type=str,
         default=None,
         help=(
-            "Load candidates/<name>_candidates.json and sequentially execute every candidate with run.py."
+            "Load candidates/<name>_candidates.json and execute every candidate with run.py. "
+            "Execution is sequential by default, or parallel when multiple GPU workers are configured."
         ),
     )
     parser.add_argument(
         "--run-candidates-file",
         type=str,
         default=None,
-        help="Load a specific candidate JSON file and sequentially execute every candidate with run.py.",
+        help=(
+            "Load a specific candidate JSON file and execute every candidate with run.py. "
+            "Execution is sequential by default, or parallel when multiple GPU workers are configured."
+        ),
     )
     parser.add_argument("--backbone", type=str, help="Backbone name when specifying the search space directly in CLI.")
     parser.add_argument("--output", type=str, help="Path to write the sampled candidate JSON.")
@@ -1883,8 +2176,17 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         help=(
             "One or more physical GPU ids to use when running candidate JSON files. "
             "Examples: --gpu-id 0, --gpu-id 0 1 2 3, --gpu-id 0,1,2,3. "
-            "When multiple ids are given, the runner launches one worker per GPU, sets "
+            "When multiple ids are given, the runner launches one worker per GPU by default, sets "
             "CUDA_VISIBLE_DEVICES=<gpu-id> for that worker, and passes --gpu 0 to run.py."
+        ),
+    )
+    parser.add_argument(
+        "--workers-per-gpu",
+        type=int,
+        default=1,
+        help=(
+            "How many candidate workers to launch per physical GPU id when running candidates. "
+            "Example: --gpu-id 3 --workers-per-gpu 3 launches 3 parallel candidate processes on physical cuda:3."
         ),
     )
     parser.add_argument(
@@ -1903,6 +2205,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = _build_arg_parser()
     args = parser.parse_args(argv)
+    strict_backbone_validation = True
 
     if args.list_backbones:
         for backbone in discover_available_backbones():
@@ -1974,6 +2277,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if run_candidate_mode:
         try:
+            if args.workers_per_gpu < 1:
+                parser.error("--workers-per-gpu must be a positive integer.")
+            if args.workers_per_gpu != 1 and not args.gpu_id:
+                parser.error("--workers-per-gpu requires --gpu-id.")
             gpu_ids = _parse_gpu_ids(args.gpu_id) if args.gpu_id else None
             repo_root = _repo_root()
             if args.run_candidates:
@@ -1994,6 +2301,7 @@ def main(argv: list[str] | None = None) -> int:
             payload,
             candidate_path=candidate_path,
             gpu_ids=gpu_ids,
+            workers_per_gpu=args.workers_per_gpu,
             dry_run=args.dry_run,
             continue_on_error=args.continue_on_error,
         )
@@ -2006,6 +2314,7 @@ def main(argv: list[str] | None = None) -> int:
         spec_path = Path(args.spec)
         spec = _load_json(spec_path)
         updated_search_config_path = None
+        strict_backbone_validation = False
     elif args.sample_search_config or args.sample_search_config_file:
         updated_search_config_path = None
         if args.sample_search_config:
@@ -2024,6 +2333,7 @@ def main(argv: list[str] | None = None) -> int:
                 parser.error(f"Search config spec not found: {spec_path}")
 
         spec = _load_json(spec_path)
+        strict_backbone_validation = False
         if not args.output:
             if args.candidates_name:
                 args.output = str(_filename_in_dir(_repo_root() / "candidates", args.candidates_name))
@@ -2050,6 +2360,7 @@ def main(argv: list[str] | None = None) -> int:
         seed_override=args.seed,
         candidate_prefix_override=args.candidate_prefix,
         allow_replacement_override=args.allow_replacement if args.allow_replacement else None,
+        strict_backbone_validation=strict_backbone_validation,
     )
 
     print(

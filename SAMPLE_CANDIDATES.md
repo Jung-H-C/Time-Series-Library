@@ -156,15 +156,6 @@ candidates/timesnet_long_term_forecast_etth1_candidates.json
 python sample_candidates.py \
   --sample-search-config-file search_config/timesnet_long_term_forecast_etth1_search_spec.json \
   --num-samples 20
-```
-
-
-원하면 출력 경로를 직접 지정할 수도 있습니다.
-
-```bash
-python sample_candidates.py \
-  --sample-search-config TimesNet_long_term_forecast_ETTh1 \
-  --num-samples 20 \
   --output candidates/my_timesnet_candidates.json
 ```
 
@@ -282,19 +273,35 @@ candidates/my_timesnet_candidates.json
 - `--gpu-id`
   - 물리 GPU 번호를 하나 이상 지정합니다.
   - 예: `--gpu-id 3`, `--gpu-id 0 1 2 3`, `--gpu-id 0,1,2,3`
-  - GPU를 하나만 주면 기존처럼 순차 실행합니다.
+  - GPU를 하나만 주면 기본적으로 순차 실행합니다.
   - GPU를 여러 개 주면 GPU마다 worker 1개씩 띄우고, 비는 GPU에 다음 candidate를 붙여 병렬 실행합니다.
   - 각 worker는 내부적으로 `CUDA_VISIBLE_DEVICES=<gpu-id>`를 설정하고 `run.py`에는 `--gpu 0`을 넘깁니다.
   - 즉 물리 GPU 3번을 쓰고 싶으면 `--gpu-id 3`으로 주면 되고, `--gpu-id 0 1 2 3`이면 총 4개 GPU에 분산됩니다.
 
+- `--workers-per-gpu`
+  - 각 물리 GPU id마다 몇 개의 candidate worker를 동시에 띄울지 지정합니다.
+  - 기본값은 `1`입니다.
+  - 예: `--gpu-id 3 --workers-per-gpu 3`이면 물리 GPU 3번에서 candidate 3개를 동시에 실행합니다.
+  - 예: `--gpu-id 0 1 --workers-per-gpu 2`이면 총 4개 worker가 떠서 두 GPU에 분산됩니다.
+  - 같은 GPU에 여러 worker를 띄우면 실제 학습 프로세스도 그 GPU 메모리를 함께 쓰므로, OOM 가능성은 사용자가 감안해야 합니다.
+
 - `--dry-run`
-  - 실제 학습은 시작하지 않고, 어떤 `run.py` 명령이 순차 실행될지만 출력합니다.
+  - 실제 학습은 시작하지 않고, 어떤 `run.py` 명령이 실행될지만 출력합니다.
 
 ```bash
 python sample_candidates.py \
   --run-candidates TimesNet_long_term_forecast_ETTh1 \
   --gpu-id 0 \
   --dry-run
+```
+
+같은 GPU에서 candidate 3개를 병렬 실행하고 싶다면:
+
+```bash
+python sample_candidates.py \
+  --run-candidates timesnet_classification_uea_revised \
+  --gpu-id 3 \
+  --workers-per-gpu 3
 ```
 
 - `--continue-on-error`

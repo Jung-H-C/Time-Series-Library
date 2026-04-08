@@ -1,5 +1,3 @@
-import math
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -16,7 +14,17 @@ class Model(nn.Module):
         self.pred_len = configs.pred_len
 
         self.d_inner = configs.d_model * configs.expand
-        self.dt_rank = math.ceil(configs.d_model / 16) # TODO implement "auto"
+        raw_dt_rank = getattr(configs, 'dt_rank', 'auto')
+        if isinstance(raw_dt_rank, str):
+            normalized_dt_rank = raw_dt_rank.strip().lower()
+            if normalized_dt_rank == 'auto':
+                self.dt_rank = 'auto'
+            else:
+                self.dt_rank = int(normalized_dt_rank)
+        else:
+            self.dt_rank = int(raw_dt_rank)
+        if self.dt_rank != 'auto' and self.dt_rank < 1:
+            raise ValueError(f"dt_rank must be a positive integer or 'auto', got {raw_dt_rank!r}")
         
         self.embedding = DataEmbedding(configs.enc_in, configs.d_model, configs.embed, configs.freq, configs.dropout)
 
@@ -25,6 +33,7 @@ class Model(nn.Module):
             d_state = configs.d_ff,
             d_conv = configs.d_conv,
             expand = configs.expand,
+            dt_rank = self.dt_rank,
         )
 
         self.out_layer = nn.Linear(configs.d_model, configs.c_out, bias=False)

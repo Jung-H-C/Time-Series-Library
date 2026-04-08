@@ -1,0 +1,72 @@
+{
+  "backbone": "MambaSingleLayer",
+  "num_samples": 100,
+  "seed": 2026,
+  "candidate_prefix": "mambasinglelayer_classification_uea",
+  "fixed_config": {
+    "use_gpu": true,
+    "gpu_type": "cuda",
+    "gpu": 0,
+    "task_name": "classification",
+    "data": "UEA",
+    "root_path": "./dataset/ArticularyWordRecognition",
+    "checkpoints": "./checkpoints_best/MambaSL",
+    "tv_dt": 0,
+    "tv_B": 0,
+    "tv_C": 1,
+    "use_D": 0,
+    "num_kernels": 3,
+    "is_training": 0,
+    "pred_len": 0,
+    "label_len": 0,
+    "batch_size": 16,
+    "des": "gating4proposed",
+    "itr": 1,
+    "dropout": 0.1,
+    "learning_rate": 0.001,
+    "train_epochs": 100,
+    "patience": 10
+  },
+  "search_space": {
+    "d_model": [
+      16,
+      32,
+      64,
+      128
+    ],
+    "d_ff": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "expand": [
+      1,
+      2
+    ],
+    "d_conv": [
+      2,
+      4,
+      8
+    ]
+  },
+  "default_recipe": {
+    "source_recipe": "examples/classification/MambaSL.json",
+    "relative_script_path": "classification/MambaSL.sh",
+    "source_run_index": 1,
+    "source_command": "python run.py --use_gpu --gpu_type cuda --gpu 0 --task_name classification --data UEA --root_path ./dataset/ArticularyWordRecognition --checkpoints ./checkpoints_best/MambaSL --model MambaSingleLayer --model_id ArticularyWordRecognition --d_model 128 --d_ff 8 --expand 1 --d_conv 4 --tv_dt 0 --tv_B 0 --tv_C 1 --use_D 0 --num_kernels 3 --is_training 0 --pred_len 0 --label_len 0 --batch_size 16 --des gating4proposed --itr 1 --dropout 0.1 --learning_rate 0.001 --train_epochs 100 --patience 10"
+  },
+  "uea_subset_names": [
+    "AtrialFibrillation",
+    "BasicMotions",
+    "Cricket",
+    "EigenWorms",
+    "Epilepsy",
+    "FingerMovements",
+    "Heartbeat",
+    "MotorImagery",
+    "PenDigits",
+    "StandWalkJump"
+  ]
+}

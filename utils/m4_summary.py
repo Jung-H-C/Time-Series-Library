@@ -25,8 +25,22 @@ from data_provider.m4 import M4Meta
 import os
 
 
+def _trim_nan_series(values):
+    return [np.asarray(v[~np.isnan(v)], dtype=np.float32) for v in values]
+
+
+def _stack_if_uniform(series_list):
+    if not series_list:
+        return np.empty((0, 0), dtype=np.float32)
+
+    lengths = {len(series) for series in series_list}
+    if len(lengths) == 1:
+        return np.stack(series_list).astype(np.float32, copy=False)
+    return series_list
+
+
 def group_values(values, groups, group_name):
-    return np.array([v[~np.isnan(v)] for v in values[groups == group_name]])
+    return _stack_if_uniform(_trim_nan_series(values[groups == group_name]))
 
 
 def mase(forecast, insample, outsample, frequency):
@@ -64,7 +78,7 @@ class M4Summary:
         grouped_owa = OrderedDict()
 
         naive2_forecasts = pd.read_csv(self.naive_path).values[:, 1:].astype(np.float32)
-        naive2_forecasts = np.array([v[~np.isnan(v)] for v in naive2_forecasts])
+        naive2_forecasts = _stack_if_uniform(_trim_nan_series(naive2_forecasts))
 
         model_mases = {}
         naive2_smapes = {}
@@ -91,9 +105,15 @@ class M4Summary:
                                                      outsample=target[i],
                                                      frequency=frequency) for i in range(len(model_forecast))])
 
-            naive2_smapes[group_name] = np.mean(smape_2(naive2_forecast, target))
-            grouped_smapes[group_name] = np.mean(smape_2(forecast=model_forecast, target=target))
-            grouped_mapes[group_name] = np.mean(mape(forecast=model_forecast, target=target))
+            naive2_smapes[group_name] = np.mean([
+                np.mean(smape_2(naive2_forecast[i], target[i])) for i in range(len(model_forecast))
+            ])
+            grouped_smapes[group_name] = np.mean([
+                np.mean(smape_2(model_forecast[i], target[i])) for i in range(len(model_forecast))
+            ])
+            grouped_mapes[group_name] = np.mean([
+                np.mean(mape(model_forecast[i], target[i])) for i in range(len(model_forecast))
+            ])
 
         grouped_smapes = self.summarize_groups(grouped_smapes)
         grouped_mapes = self.summarize_groups(grouped_mapes)

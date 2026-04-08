@@ -16,6 +16,21 @@ import pandas
 warnings.filterwarnings('ignore')
 
 
+def _pad_m4_targets(timeseries, pred_len, device):
+    target = torch.zeros((len(timeseries), pred_len), dtype=torch.float32, device=device)
+    mask = torch.zeros_like(target)
+
+    for index, series in enumerate(timeseries):
+        series_array = np.asarray(series, dtype=np.float32).reshape(-1)
+        valid_len = min(int(series_array.size), pred_len)
+        if valid_len == 0:
+            continue
+        target[index, :valid_len] = torch.as_tensor(series_array[:valid_len], dtype=torch.float32, device=device)
+        mask[index, :valid_len] = 1.0
+
+    return target, mask
+
+
 class Exp_Short_Term_Forecast(Exp_Basic):
     def __init__(self, args):
         super(Exp_Short_Term_Forecast, self).__init__(args)
@@ -149,8 +164,7 @@ class Exp_Short_Term_Forecast(Exp_Basic):
             f_dim = -1 if self.args.features == 'MS' else 0
             outputs = outputs[:, -self.args.pred_len:, f_dim:]
             pred = outputs
-            true = torch.from_numpy(np.array(y))
-            batch_y_mark = torch.ones(true.shape)
+            true, batch_y_mark = _pad_m4_targets(y, self.args.pred_len, pred.device)
 
             loss = criterion(x.detach().cpu()[:, :, 0], self.args.frequency_map, pred[:, :, 0], true, batch_y_mark)
 
