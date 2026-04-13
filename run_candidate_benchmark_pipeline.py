@@ -36,6 +36,19 @@ PROXY_COLUMNS = [
     "synflow",
 ]
 
+FORECAST_METRIC_NAMES = ["mae", "mse", "rmse", "mape", "mspe"]
+M4_METRIC_NAMES = ["smape", "owa", "mape", "mase"]
+METRIC_COLUMN_PRIORITY = [
+    "smape",
+    "owa",
+    "mae",
+    "mse",
+    "rmse",
+    "mape",
+    "mspe",
+    "mase",
+]
+
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parent
@@ -127,6 +140,23 @@ def _result_dir_from_run_args(run_args: dict[str, Any], repo_root: Path) -> Path
     model_id = _sanitize_for_results_component(run_args.get("model_id")) or "model"
     results_id = _sanitize_for_results_component(run_args.get("results_id")) or model_id
     return repo_root / "results" / f"{task_name}_{model_id}_{results_id}"
+
+
+def _metric_names_for_task(task_name: Any, metric_count: int) -> list[str]:
+    normalized_task_name = str(task_name or "").strip()
+    if normalized_task_name == "short_term_forecast" and metric_count == len(M4_METRIC_NAMES):
+        return list(M4_METRIC_NAMES)
+    if normalized_task_name in {"long_term_forecast", "zero_shot_forecast", "imputation"} and metric_count == len(
+        FORECAST_METRIC_NAMES
+    ):
+        return list(FORECAST_METRIC_NAMES)
+    return [f"metric_{index}" for index in range(metric_count)]
+
+
+def _ordered_metric_columns(metric_names: set[str]) -> list[str]:
+    ordered = [name for name in METRIC_COLUMN_PRIORITY if name in metric_names]
+    ordered.extend(sorted(name for name in metric_names if name not in ordered))
+    return ordered
 
 
 def _candidate_run_args_list(
@@ -230,7 +260,7 @@ def _rank_normalize_proxy_columns(rows: list[dict[str, Any]], proxy_columns: lis
             continue
 
         if len(numeric_values) == 1:
-            normalized_rows[row_indices[0]][proxy_name] = 1.0
+            normalized_rows[row_indices[0]][proxy_name] = 0.0
             for row_index, row in enumerate(normalized_rows):
                 if row_index != row_indices[0]:
                     row[proxy_name] = float("nan")
@@ -240,7 +270,7 @@ def _rank_normalize_proxy_columns(rows: list[dict[str, Any]], proxy_columns: lis
         denom = len(numeric_values) - 1
         for local_index, row_index in enumerate(row_indices):
             rank = ranks[local_index]
-            normalized_rows[row_index][proxy_name] = (len(numeric_values) - rank) / denom
+            normalized_rows[row_index][proxy_name] = 2.0 * ((len(numeric_values) - rank) / denom) - 1.0
 
         for row_index, row in enumerate(normalized_rows):
             if row_index not in row_indices:
@@ -300,6 +330,14 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Continue remaining candidates on run-candidates failures.",
     )
+    parser.add_argument(
+        "--skip-run-candidates",
+        action="store_true",
+        help=(
+            "Skip step 1 (sample_candidates train/test). "
+            "Use existing results/.../metrics.npy and continue from proxy scoring."
+        ),
+    )
     return parser
 
 
@@ -330,20 +368,23 @@ def main(argv: list[str] | None = None) -> int:
         output_dir = (repo_root / output_dir).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    print("[1/3] Running candidate training/testing...")
-    run_command = [
-        sys.executable,
-        "sample_candidates.py",
-        "--run-candidates-file",
-        str(candidate_path),
-    ]
-    if gpu_tokens:
-        run_command.extend(["--gpu-id", *gpu_tokens])
-    if args.run_workers_per_gpu != 1:
-        run_command.extend(["--workers-per-gpu", str(args.run_workers_per_gpu)])
-    if args.continue_on_error:
-        run_command.append("--continue-on-error")
-    _run_command(run_command, cwd=repo_root)
+    if args.skip_run_candidates:
+        print("[1/3] Skipping candidate training/testing (--skip-run-candidates).")
+    else:
+        print("[1/3] Running candidate training/testing...")
+        run_command = [
+            sys.executable,
+            "sample_candidates.py",
+            "--run-candidates-file",
+            str(candidate_path),
+        ]
+        if gpu_tokens:
+            run_command.extend(["--gpu-id", *gpu_tokens])
+        if args.run_workers_per_gpu != 1:
+            run_command.extend(["--workers-per-gpu", str(args.run_workers_per_gpu)])
+        if args.continue_on_error:
+            run_command.append("--continue-on-error")
+        _run_command(run_command, cwd=repo_root)
 
     print("[2/3] Scoring all 10 zero-cost proxies...")
     proxy_csv_base_path = output_dir / f"{candidate_stem}_proxy_scores_raw.csv"
@@ -383,6 +424,7 @@ def main(argv: list[str] | None = None) -> int:
 
     run_level_rows: list[dict[str, Any]] = []
     candidate_metric_map: dict[str, dict[str, Any]] = {}
+    metric_names_seen: set[str] = set()
     for index, candidate in enumerate(candidates, start=1):
         candidate_id = str(
             candidate.get("candidate_id", candidate.get("candidate_name", f"candidate_{index:04d}"))
@@ -394,13 +436,7 @@ def main(argv: list[str] | None = None) -> int:
             repo_root=repo_root,
         )
 
-        metric_acc = {
-            "mae": [],
-            "mse": [],
-            "rmse": [],
-            "mape": [],
-            "mspe": [],
-        }
+        metric_acc: dict[str, list[float]] = {}
         success_runs = 0
 
         for run_index, run_args in enumerate(run_args_list, start=1):
@@ -418,11 +454,6 @@ def main(argv: list[str] | None = None) -> int:
                 "metrics_path": str(metrics_path.relative_to(repo_root)),
                 "status": "success",
                 "error": "",
-                "mae": float("nan"),
-                "mse": float("nan"),
-                "rmse": float("nan"),
-                "mape": float("nan"),
-                "mspe": float("nan"),
             }
             if not metrics_path.exists():
                 row["status"] = "missing_metrics"
@@ -435,38 +466,35 @@ def main(argv: list[str] | None = None) -> int:
                     row["error"] = str(exc)
                     values = []
 
-                if len(values) >= 5:
-                    row["mae"] = values[0]
-                    row["mse"] = values[1]
-                    row["rmse"] = values[2]
-                    row["mape"] = values[3]
-                    row["mspe"] = values[4]
-                    metric_acc["mae"].append(values[0])
-                    metric_acc["mse"].append(values[1])
-                    metric_acc["rmse"].append(values[2])
-                    metric_acc["mape"].append(values[3])
-                    metric_acc["mspe"].append(values[4])
+                if values:
+                    metric_names = _metric_names_for_task(run_args.get("task_name", ""), len(values))
+                    for metric_name, metric_value in zip(metric_names, values):
+                        row[metric_name] = metric_value
+                        metric_acc.setdefault(metric_name, []).append(metric_value)
+                        metric_names_seen.add(metric_name)
                     success_runs += 1
                 else:
                     row["status"] = "invalid_metrics"
-                    row["error"] = f"Expected >=5 values in metrics.npy, got {len(values)}"
+                    row["error"] = f"Expected >=1 value in metrics.npy, got {len(values)}"
 
             run_level_rows.append(row)
 
         aggregate_status = "success" if success_runs == len(run_args_list) else ("partial" if success_runs > 0 else "failed")
+        aggregated_metrics = {
+            metric_name: _nanmean(values)
+            for metric_name, values in metric_acc.items()
+        }
+        metric_names_seen.update(aggregated_metrics)
         candidate_metric_map[candidate_id] = {
             "candidate_id": candidate_id,
             "candidate_name": candidate_name,
             "num_runs_total": len(run_args_list),
             "num_runs_success": success_runs,
             "training_status": aggregate_status,
-            "mae": _nanmean(metric_acc["mae"]),
-            "mse": _nanmean(metric_acc["mse"]),
-            "rmse": _nanmean(metric_acc["rmse"]),
-            "mape": _nanmean(metric_acc["mape"]),
-            "mspe": _nanmean(metric_acc["mspe"]),
+            "metrics": aggregated_metrics,
         }
 
+    metric_columns = _ordered_metric_columns(metric_names_seen)
     run_level_csv_path = output_dir / f"{candidate_stem}_training_metrics_raw_{timestamp}.csv"
     run_level_fieldnames = [
         "candidate_id",
@@ -480,11 +508,7 @@ def main(argv: list[str] | None = None) -> int:
         "metrics_path",
         "status",
         "error",
-        "mae",
-        "mse",
-        "rmse",
-        "mape",
-        "mspe",
+        *metric_columns,
     ]
     _write_csv(run_level_csv_path, run_level_rows, run_level_fieldnames)
 
@@ -526,8 +550,9 @@ def main(argv: list[str] | None = None) -> int:
             "training_status": metric_row.get("training_status", "missing"),
             "proxy_status": proxy_row.get("status", ""),
             "proxy_error": proxy_row.get("error", ""),
-            "mse": metric_row.get("mse"),
         }
+        for metric_name in metric_columns:
+            combined_row[metric_name] = dict(metric_row.get("metrics", {})).get(metric_name)
         for proxy_name in PROXY_COLUMNS:
             combined_row[proxy_name] = _safe_float(proxy_row.get(proxy_name))
         combined_raw_rows.append(combined_row)
@@ -544,7 +569,7 @@ def main(argv: list[str] | None = None) -> int:
         "training_status",
         "proxy_status",
         "proxy_error",
-        "mse",
+        *metric_columns,
         *PROXY_COLUMNS,
     ]
     _write_csv(combined_raw_csv_path, combined_raw_rows, combined_fieldnames)

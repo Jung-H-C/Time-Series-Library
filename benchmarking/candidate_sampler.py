@@ -1355,6 +1355,48 @@ def _parse_gpu_ids(raw_gpu_ids: list[str] | None) -> list[int]:
     return parsed_gpu_ids
 
 
+def _parse_candidate_indices(
+    raw_candidate_indices: list[str] | None,
+    *,
+    total_candidates: int,
+) -> list[int]:
+    if raw_candidate_indices is None:
+        return []
+
+    parsed_indices: list[int] = []
+    seen_indices: set[int] = set()
+    for raw_value in raw_candidate_indices:
+        for token in str(raw_value).split(","):
+            token = token.strip()
+            if not token:
+                continue
+            try:
+                candidate_index = int(token)
+            except ValueError as exc:
+                raise ValueError(
+                    f"Invalid candidate index '{token}'. "
+                    "Use 1-based integers like '97', '1 5 97', or '1,5,97'."
+                ) from exc
+            if candidate_index < 1:
+                raise ValueError(
+                    f"Candidate indices are 1-based and must be >= 1, got {candidate_index}."
+                )
+            if candidate_index > total_candidates:
+                raise ValueError(
+                    f"Candidate index {candidate_index} is out of range for this file "
+                    f"(total candidates: {total_candidates})."
+                )
+            if candidate_index in seen_indices:
+                continue
+            seen_indices.add(candidate_index)
+            parsed_indices.append(candidate_index)
+
+    if not parsed_indices:
+        raise ValueError("Provide at least one candidate index after --run-candidates-specify-id.")
+
+    return parsed_indices
+
+
 def _build_gpu_worker_specs(gpu_ids: list[int], workers_per_gpu: int) -> list[tuple[int, int]]:
     return [
         (gpu_id, worker_index)
@@ -2098,6 +2140,19 @@ def _build_arg_parser() -> argparse.ArgumentParser:
             "Execution is sequential by default, or parallel when multiple GPU workers are configured."
         ),
     )
+    parser.add_argument(
+        "--run-candidates-specify-id",
+        "--run-candidate-specify_id",
+        nargs="+",
+        type=str,
+        default=None,
+        metavar="IDX",
+        help=(
+            "When running candidates, execute only selected 1-based candidate indices from the candidate JSON. "
+            "Examples: --run-candidates-specify-id 97, --run-candidates-specify-id 1 5 97, "
+            "--run-candidates-specify-id 1,5,97."
+        ),
+    )
     parser.add_argument("--backbone", type=str, help="Backbone name when specifying the search space directly in CLI.")
     parser.add_argument("--output", type=str, help="Path to write the sampled candidate JSON.")
     parser.add_argument(
@@ -2263,6 +2318,8 @@ def main(argv: list[str] | None = None) -> int:
             "Do not mix --run-candidates/--run-candidates-file with the direct CLI options "
             "(--backbone/--fixed/--search)."
         )
+    if args.run_candidates_specify_id and not run_candidate_mode:
+        parser.error("--run-candidates-specify-id can only be used with --run-candidates or --run-candidates-file.")
     if not args.spec and not args.sample_search_config and not args.sample_search_config_file and not run_candidate_mode and not args.backbone:
         parser.error(
             "Provide --spec, --sample-search-config, --sample-search-config-file, "
@@ -2295,6 +2352,21 @@ def main(argv: list[str] | None = None) -> int:
                 if not candidate_path.exists():
                     parser.error(f"Candidate JSON not found: {candidate_path}")
             payload = _load_candidate_payload(candidate_path)
+            selected_candidate_indices = _parse_candidate_indices(
+                args.run_candidates_specify_id,
+                total_candidates=len(payload["candidates"]),
+            )
+            if selected_candidate_indices:
+                source_candidates = payload["candidates"]
+                payload = dict(payload)
+                payload["candidates"] = [
+                    source_candidates[candidate_index - 1]
+                    for candidate_index in selected_candidate_indices
+                ]
+                selected_text = ", ".join(str(candidate_index) for candidate_index in selected_candidate_indices)
+                print(
+                    f"Running {len(selected_candidate_indices)} selected candidate(s) by index: {selected_text}"
+                )
         except ValueError as exc:
             parser.error(str(exc))
         return run_candidates_from_payload(

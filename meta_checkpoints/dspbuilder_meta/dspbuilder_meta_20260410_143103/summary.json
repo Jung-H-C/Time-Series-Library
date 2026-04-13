@@ -1,0 +1,25 @@
+{
+  "best_checkpoint": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_143103/best_checkpoint.pth",
+  "num_epochs_ran": 39,
+  "best_val_loss": 0.5931315720081329,
+  "best_epoch": 29,
+  "final_test_loss": null,
+  "final_test_pair_acc": null,
+  "final_test_pair_loss_mean": null,
+  "final_test_spearman_mean": -0.30582658265826584,
+  "final_test_spearman_std": 0.0008109472982430853,
+  "final_test_dataset_results": {
+    "Exchange": {
+      "dataset": "Exchange",
+      "metric_name": "mse",
+      "spearman_mean": -0.30582658265826584,
+      "spearman_std": 0.0008109472982430853,
+      "iterations": 5,
+      "num_candidates": 100
+    }
+  },
+  "train_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_143103/train_logs",
+  "valid_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_143103/valid_logs",
+  "test_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_143103/test_logs",
+  "train_only": false
+}

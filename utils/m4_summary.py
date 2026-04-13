@@ -43,6 +43,86 @@ def group_values(values, groups, group_name):
     return _stack_if_uniform(_trim_nan_series(values[groups == group_name]))
 
 
+def evaluate_m4_subset_metrics(
+    forecast: np.ndarray,
+    *,
+    root_path: str,
+    group_name: str,
+) -> dict[str, float]:
+    training_set = M4Dataset.load(training=True, dataset_file=root_path)
+    test_set = M4Dataset.load(training=False, dataset_file=root_path)
+
+    model_forecast = np.asarray(forecast, dtype=np.float32)
+    if model_forecast.ndim != 2:
+        raise ValueError(
+            f"Expected forecast to have shape [num_series, pred_len], got {model_forecast.shape}."
+        )
+
+    target = np.asarray(group_values(test_set.values, test_set.groups, group_name), dtype=np.float32)
+    insample = group_values(training_set.values, test_set.groups, group_name)
+
+    if model_forecast.shape != target.shape:
+        raise ValueError(
+            f"Forecast shape {model_forecast.shape} does not match target shape {target.shape} "
+            f"for M4 subset '{group_name}'."
+        )
+
+    frequency = training_set.frequencies[test_set.groups == group_name][0]
+
+    model_mase = np.mean([
+        mase(
+            forecast=model_forecast[i],
+            insample=insample[i],
+            outsample=target[i],
+            frequency=frequency,
+        )
+        for i in range(len(model_forecast))
+    ])
+
+    model_smape = np.mean([
+        np.mean(smape_2(model_forecast[i], target[i]))
+        for i in range(len(model_forecast))
+    ])
+    model_mape = np.mean([
+        np.mean(mape(model_forecast[i], target[i]))
+        for i in range(len(model_forecast))
+    ])
+
+    naive_path = os.path.join(root_path, 'submission-Naive2.csv')
+    if os.path.exists(naive_path):
+        naive2_forecasts = pd.read_csv(naive_path).values[:, 1:].astype(np.float32)
+        naive2_forecasts = _stack_if_uniform(_trim_nan_series(naive2_forecasts))
+        naive2_forecast = np.asarray(group_values(naive2_forecasts, test_set.groups, group_name), dtype=np.float32)
+
+        naive2_mase = np.mean([
+            mase(
+                forecast=naive2_forecast[i],
+                insample=insample[i],
+                outsample=target[i],
+                frequency=frequency,
+            )
+            for i in range(len(model_forecast))
+        ])
+        naive2_smape = np.mean([
+            np.mean(smape_2(naive2_forecast[i], target[i]))
+            for i in range(len(model_forecast))
+        ])
+
+        if naive2_mase == 0.0 or naive2_smape == 0.0:
+            owa = float("nan")
+        else:
+            owa = (model_mase / naive2_mase + model_smape / naive2_smape) / 2.0
+    else:
+        owa = float("nan")
+
+    return {
+        "smape": float(model_smape),
+        "owa": float(owa),
+        "mape": float(model_mape),
+        "mase": float(model_mase),
+    }
+
+
 def mase(forecast, insample, outsample, frequency):
     return np.mean(np.abs(forecast - outsample)) / np.mean(np.abs(insample[:-frequency] - insample[frequency:]))
 
@@ -76,9 +156,10 @@ class M4Summary:
         :return: sMAPE and OWA grouped by seasonal patterns.
         """
         grouped_owa = OrderedDict()
-
-        naive2_forecasts = pd.read_csv(self.naive_path).values[:, 1:].astype(np.float32)
-        naive2_forecasts = _stack_if_uniform(_trim_nan_series(naive2_forecasts))
+        has_naive2 = os.path.exists(self.naive_path)
+        if has_naive2:
+            naive2_forecasts = pd.read_csv(self.naive_path).values[:, 1:].astype(np.float32)
+            naive2_forecasts = _stack_if_uniform(_trim_nan_series(naive2_forecasts))
 
         model_mases = {}
         naive2_smapes = {}
@@ -90,7 +171,6 @@ class M4Summary:
             if os.path.exists(file_name):
                 model_forecast = pd.read_csv(file_name).values
 
-            naive2_forecast = group_values(naive2_forecasts, self.test_set.groups, group_name)
             target = group_values(self.test_set.values, self.test_set.groups, group_name)
             # all timeseries within group have same frequency
             frequency = self.training_set.frequencies[self.test_set.groups == group_name][0]
@@ -100,29 +180,35 @@ class M4Summary:
                                                     insample=insample[i],
                                                     outsample=target[i],
                                                     frequency=frequency) for i in range(len(model_forecast))])
-            naive2_mases[group_name] = np.mean([mase(forecast=naive2_forecast[i],
-                                                     insample=insample[i],
-                                                     outsample=target[i],
-                                                     frequency=frequency) for i in range(len(model_forecast))])
-
-            naive2_smapes[group_name] = np.mean([
-                np.mean(smape_2(naive2_forecast[i], target[i])) for i in range(len(model_forecast))
-            ])
             grouped_smapes[group_name] = np.mean([
                 np.mean(smape_2(model_forecast[i], target[i])) for i in range(len(model_forecast))
             ])
             grouped_mapes[group_name] = np.mean([
                 np.mean(mape(model_forecast[i], target[i])) for i in range(len(model_forecast))
             ])
+            if has_naive2:
+                naive2_forecast = group_values(naive2_forecasts, self.test_set.groups, group_name)
+                naive2_mases[group_name] = np.mean([mase(forecast=naive2_forecast[i],
+                                                         insample=insample[i],
+                                                         outsample=target[i],
+                                                         frequency=frequency) for i in range(len(model_forecast))])
+
+                naive2_smapes[group_name] = np.mean([
+                    np.mean(smape_2(naive2_forecast[i], target[i])) for i in range(len(model_forecast))
+                ])
 
         grouped_smapes = self.summarize_groups(grouped_smapes)
         grouped_mapes = self.summarize_groups(grouped_mapes)
         grouped_model_mases = self.summarize_groups(model_mases)
-        grouped_naive2_smapes = self.summarize_groups(naive2_smapes)
-        grouped_naive2_mases = self.summarize_groups(naive2_mases)
-        for k in grouped_model_mases.keys():
-            grouped_owa[k] = (grouped_model_mases[k] / grouped_naive2_mases[k] +
-                              grouped_smapes[k] / grouped_naive2_smapes[k]) / 2
+        if has_naive2:
+            grouped_naive2_smapes = self.summarize_groups(naive2_smapes)
+            grouped_naive2_mases = self.summarize_groups(naive2_mases)
+            for k in grouped_model_mases.keys():
+                grouped_owa[k] = (grouped_model_mases[k] / grouped_naive2_mases[k] +
+                                  grouped_smapes[k] / grouped_naive2_smapes[k]) / 2
+        else:
+            for k in grouped_model_mases.keys():
+                grouped_owa[k] = float("nan")
 
         def round_all(d):
             return dict(map(lambda kv: (kv[0], np.round(kv[1], 3)), d.items()))

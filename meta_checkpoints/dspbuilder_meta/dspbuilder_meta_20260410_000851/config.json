@@ -1,0 +1,48 @@
+{
+  "benchmark_dir": "/data/Time-Series-Library/benchmark",
+  "candidate_dir": "/data/Time-Series-Library/candidates",
+  "train_datasets": [
+    "Weather",
+    "Traffic",
+    "ECL",
+    "Etth1",
+    "Exchange",
+    "M4_Hourly",
+    "M4_Monthly",
+    "M4_Quarterly"
+  ],
+  "val_datasets": [
+    "ILI",
+    "M4_Daily"
+  ],
+  "test_datasets": [
+    "M4_Yearly"
+  ],
+  "epochs": 100,
+  "iterations_per_dataset": 5,
+  "val_iterations_per_dataset": 10,
+  "test_iterations_per_dataset": 5,
+  "support_size": 5,
+  "query_size": 10,
+  "encoder_hidden_dim": 64,
+  "hidden_dim": 128,
+  "raw_stat_emb": false,
+  "dropout": 0.1,
+  "learning_rate": 0.0001,
+  "weight_decay": 0.0001,
+  "cls_loss_weight": 0.1,
+  "patience": 10,
+  "seed": 2026,
+  "device": "cuda:1",
+  "train_only": false,
+  "train_dataset_class_ids": {
+    "Weather": 0,
+    "Traffic": 1,
+    "ECL": 2,
+    "Etth1": 3,
+    "Exchange": 4,
+    "M4_Hourly": 5,
+    "M4_Monthly": 6,
+    "M4_Quarterly": 7
+  }
+}

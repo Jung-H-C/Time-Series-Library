@@ -1,0 +1,123 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 35.10971531867981,
+    "train_pair_acc": 0.6033333480358124,
+    "train_pair_loss_mean": 0.7802159070968628,
+    "val_loss": 38.32435703277588,
+    "val_pair_acc": 0.44666667506098745,
+    "val_pair_loss_mean": 0.851652392745018,
+    "train_weight_norm": 1.2954488683491945,
+    "val_weight_norm": 1.6264602914452553
+  },
+  {
+    "epoch": 2,
+    "train_loss": 35.11678967475891,
+    "train_pair_acc": 0.5405555702745914,
+    "train_pair_loss_mean": 0.7803731225430965,
+    "val_loss": 39.05378322601318,
+    "val_pair_acc": 0.4866666831076145,
+    "val_pair_loss_mean": 0.8678618639707565,
+    "train_weight_norm": 1.3180088121443987,
+    "val_weight_norm": 1.6951930969953537
+  },
+  {
+    "epoch": 3,
+    "train_loss": 29.562042474746704,
+    "train_pair_acc": 0.61388890594244,
+    "train_pair_loss_mean": 0.656934293359518,
+    "val_loss": 38.704122638702394,
+    "val_pair_acc": 0.5177777945995331,
+    "val_pair_loss_mean": 0.8600916296243668,
+    "train_weight_norm": 1.3165056988596917,
+    "val_weight_norm": 1.7066704481840134
+  },
+  {
+    "epoch": 4,
+    "train_loss": 29.35049138069153,
+    "train_pair_acc": 0.6394444603472949,
+    "train_pair_loss_mean": 0.6522331617772579,
+    "val_loss": 43.796667385101316,
+    "val_pair_acc": 0.5688889071345329,
+    "val_pair_loss_mean": 0.9732592910528183,
+    "train_weight_norm": 1.3265776433050633,
+    "val_weight_norm": 1.7091996669769287
+  },
+  {
+    "epoch": 5,
+    "train_loss": 30.007056427001952,
+    "train_pair_acc": 0.6405555725097656,
+    "train_pair_loss_mean": 0.6668234899640083,
+    "val_loss": 42.444731903076175,
+    "val_pair_acc": 0.5722222402691841,
+    "val_pair_loss_mean": 0.9432162940502167,
+    "train_weight_norm": 1.3432743445038795,
+    "val_weight_norm": 1.7224042266607285
+  },
+  {
+    "epoch": 6,
+    "train_loss": 30.496966576576234,
+    "train_pair_acc": 0.6161111265420913,
+    "train_pair_loss_mean": 0.6777103826403618,
+    "val_loss": 42.31176586151123,
+    "val_pair_acc": 0.6477777928113937,
+    "val_pair_loss_mean": 0.9402614921331406,
+    "train_weight_norm": 1.3681137025356294,
+    "val_weight_norm": 1.7287433445453644
+  },
+  {
+    "epoch": 7,
+    "train_loss": 30.095894718170165,
+    "train_pair_acc": 0.6355555713176727,
+    "train_pair_loss_mean": 0.6687976740300655,
+    "val_loss": 40.085995769500734,
+    "val_pair_acc": 0.6888889014720917,
+    "val_pair_loss_mean": 0.8907999277114869,
+    "train_weight_norm": 1.382173204421997,
+    "val_weight_norm": 1.7030479609966278
+  },
+  {
+    "epoch": 8,
+    "train_loss": 30.380058240890502,
+    "train_pair_acc": 0.6405555713921786,
+    "train_pair_loss_mean": 0.6751124240458012,
+    "val_loss": 41.11621255874634,
+    "val_pair_acc": 0.7011111229658127,
+    "val_pair_loss_mean": 0.9136936247348786,
+    "train_weight_norm": 1.4028785809874535,
+    "val_weight_norm": 1.7884382456541061
+  },
+  {
+    "epoch": 9,
+    "train_loss": 28.170083570480347,
+    "train_pair_acc": 0.6683333460241556,
+    "train_pair_loss_mean": 0.6260018698871136,
+    "val_loss": 40.646066665649414,
+    "val_pair_acc": 0.7011111229658127,
+    "val_pair_loss_mean": 0.9032459497451782,
+    "train_weight_norm": 1.4526491269469262,
+    "val_weight_norm": 1.8207955956459045
+  },
+  {
+    "epoch": 10,
+    "train_loss": 28.609598112106323,
+    "train_pair_acc": 0.6750000149011612,
+    "train_pair_loss_mean": 0.6357688628137111,
+    "val_loss": 40.52572755813598,
+    "val_pair_acc": 0.7044444561004639,
+    "val_pair_loss_mean": 0.9005717411637306,
+    "train_weight_norm": 1.4764714784920216,
+    "val_weight_norm": 1.8254061043262482
+  },
+  {
+    "epoch": 11,
+    "train_loss": 27.96025195121765,
+    "train_pair_acc": 0.675555569678545,
+    "train_pair_loss_mean": 0.6213389493525028,
+    "val_loss": 40.14422369003296,
+    "val_pair_acc": 0.7033333450555801,
+    "val_pair_loss_mean": 0.8920938789844512,
+    "train_weight_norm": 1.4815096519887447,
+    "val_weight_norm": 1.8645772635936737
+  }
+]

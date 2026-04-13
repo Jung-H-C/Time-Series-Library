@@ -1,0 +1,13 @@
+{
+  "best_checkpoint": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_134537/best_checkpoint.pth",
+  "num_epochs_ran": 15,
+  "best_val_loss": 0.6516706064343453,
+  "best_epoch": 5,
+  "final_test_loss": 1.1331750392913817,
+  "final_test_pair_acc": 0.5288888990879059,
+  "final_test_pair_loss_mean": 1.1331750392913817,
+  "train_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_134537/train_logs",
+  "valid_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_134537/valid_logs",
+  "test_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_134537/test_logs",
+  "train_only": false
+}

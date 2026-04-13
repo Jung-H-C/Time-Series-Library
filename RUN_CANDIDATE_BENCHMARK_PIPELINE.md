@@ -70,6 +70,9 @@ python run_candidate_benchmark_pipeline.py \
   - proxy 계산을 deterministic 모드로 실행
 - `--continue-on-error`
   - run-candidates 단계에서 일부 candidate 실패 시에도 다음 candidate 계속 진행
+- `--skip-run-candidates`
+  - 1단계(train/test)를 건너뛰고 2단계(proxy)부터 수행
+  - 이미 `results/.../metrics.npy`가 준비된 상태에서 중간 재개할 때 사용
 
 
 ## 내부 동작 순서
@@ -112,14 +115,15 @@ python score_candidates.py --candidates-file <candidates_file> ...
 - `metrics.npy`에서 candidate별 metric 평균을 만듭니다.
   - 최종 머지/정규화 CSV에는 `mse`만 사용
 - Step2 proxy CSV와 `candidate_id` 기준으로 머지합니다.
-- 각 proxy 컬럼에 대해 rank-based normalization을 수행합니다.
+- 각 proxy 컬럼에 대해 centered rank normalization을 수행합니다.
 
 정규화 규칙:
 
 - 값이 클수록 높은 순위(내림차순)
 - tie는 평균 rank 사용
-- 정규화 식: `(N - rank) / (N - 1)`
-- 따라서 최고 rank는 `1`, 최저 rank는 `0`
+- 정규화 식: `2 * ((N - rank) / (N - 1)) - 1`
+- 따라서 최고 rank는 `1`, 최저 rank는 `-1`
+- 유효한 값이 1개뿐이면 centered 값 `0`으로 기록
 - 값이 비어있거나 `NaN`이면 정규화 결과도 `NaN`
 
 

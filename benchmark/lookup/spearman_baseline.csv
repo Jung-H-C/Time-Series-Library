@@ -1,0 +1,13 @@
+﻿dataset,best_proxy,coefficient
+ECL,params,0.9412
+Etth1,flops,-0.3522
+Exchange,synflow,0.3765
+ILI,synflow,0.9109
+M4_Daily,params,0.2088
+M4_Hourly,snip,0.5071
+M4_Monthly,synflow,0.824
+M4_Quarterly,synflow,0.759
+M4_Weekly,jacob_cov,0.242
+M4_Yearly,sfrd,-0.13497
+Traffic,params,0.5493
+Weather,flops,0.4466

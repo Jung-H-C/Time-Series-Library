@@ -1,0 +1,6 @@
+# Test iteration logs
+[TEST] epoch=009 dataset=M4_Yearly iteration=001 loss=0.757688 pair_acc=0.4444 pair_loss_mean=0.757688 num_pairs=45 weight_norm=0.615574 weight_vector=[0.216584, 0.278733, 0.050978, -0.185535, -0.084067, 0.218036, 0.131983, -0.010908, 0.147093, 0.351463]
+[TEST] epoch=009 dataset=M4_Yearly iteration=002 loss=0.655323 pair_acc=0.6444 pair_loss_mean=0.655323 num_pairs=45 weight_norm=0.626130 weight_vector=[0.222104, 0.283120, 0.049388, -0.187691, -0.080911, 0.220734, 0.134088, -0.009832, 0.148176, 0.359974]
+[TEST] epoch=009 dataset=M4_Yearly iteration=003 loss=0.739259 pair_acc=0.5556 pair_loss_mean=0.739259 num_pairs=45 weight_norm=0.628117 weight_vector=[0.223985, 0.284187, 0.049140, -0.188708, -0.081886, 0.220051, 0.134324, -0.010260, 0.148503, 0.360894]
+[TEST] epoch=009 dataset=M4_Yearly iteration=004 loss=0.635324 pair_acc=0.6000 pair_loss_mean=0.635324 num_pairs=45 weight_norm=0.629623 weight_vector=[0.223029, 0.284293, 0.050357, -0.188075, -0.081177, 0.222771, 0.135788, -0.010641, 0.147739, 0.362431]
+[TEST] epoch=009 dataset=M4_Yearly iteration=005 loss=1.017754 pair_acc=0.3111 pair_loss_mean=1.017754 num_pairs=45 weight_norm=0.635161 weight_vector=[0.225822, 0.287228, 0.050317, -0.189648, -0.081979, 0.224616, 0.135887, -0.010040, 0.148321, 0.365647]

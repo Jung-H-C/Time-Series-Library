@@ -1,0 +1,54 @@
+{
+  "backbone": "mamba",
+  "num_samples": 100,
+  "seed": 2026,
+  "candidate_prefix": "mamba_short_term_forecast_m4_hourly",
+  "fixed_config": {
+    "task_name": "short_term_forecast",
+    "is_training": 1,
+    "root_path": "./dataset/m4",
+    "seasonal_patterns": "Hourly",
+    "data": "m4",
+    "features": "M",
+    "e_layers": 2,
+    "enc_in": 1,
+    "c_out": 1,
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "loss": "SMAPE",
+    "des": "Exp",
+    "itr": 1
+  },
+  "search_space": {
+    "d_model": [
+      64,
+      96,
+      128
+    ],
+    "d_ff": [
+      8,
+      12,
+      16
+    ],
+    "expand": [
+      1,
+      2
+    ],
+    "d_conv": [
+      2,
+      3,
+      4
+    ],
+    "dt_rank": [
+      8,
+      16,
+      32
+    ]
+  },
+  "default_recipe": {
+    "source_recipe": "examples/short_term_forecast/Mamba_M4.json",
+    "relative_script_path": "short_term_forecast/Mamba_M4.sh",
+    "source_run_index": 6,
+    "source_command": "python -u run.py --task_name short_term_forecast --is_training 1 --root_path ./dataset/m4 --seasonal_patterns Hourly --model_id m4_Hourly --model Mamba --data m4 --features M --e_layers 2 --enc_in 1 --expand 2 --d_ff 16 --d_conv 4 --c_out 1 --batch_size 16 --d_model 128 --des Exp --itr 1 --learning_rate 0.001 --loss SMAPE"
+  }
+}

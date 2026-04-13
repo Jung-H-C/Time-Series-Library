@@ -3,7 +3,7 @@ from data_provider.m4 import M4Meta
 from exp.exp_basic import Exp_Basic
 from utils.tools import EarlyStopping, adjust_learning_rate, visual
 from utils.losses import mape_loss, mase_loss, smape_loss
-from utils.m4_summary import M4Summary
+from utils.m4_summary import M4Summary, evaluate_m4_subset_metrics
 import torch
 import torch.nn as nn
 from torch import optim
@@ -217,6 +217,27 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                 visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
 
         print('test shape:', preds.shape)
+
+        results_folder = self._results_folder_path(setting)
+        os.makedirs(results_folder, exist_ok=True)
+
+        subset_metrics = evaluate_m4_subset_metrics(
+            preds[:, :, 0],
+            root_path=self.args.root_path,
+            group_name=self.args.seasonal_patterns,
+        )
+        np.save(
+            os.path.join(results_folder, 'metrics.npy'),
+            np.array(
+                [
+                    subset_metrics['smape'],
+                    subset_metrics['owa'],
+                    subset_metrics['mape'],
+                    subset_metrics['mase'],
+                ],
+                dtype=np.float32,
+            ),
+        )
 
         # result save
         folder_path = './m4_results/' + self.args.model + '/'

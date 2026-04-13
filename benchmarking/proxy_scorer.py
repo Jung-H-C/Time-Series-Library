@@ -1475,9 +1475,8 @@ def _extract_sfrd_inputs_and_representation(
     model = exp.model
     stochastic_states = _set_proxy_stochastic_layers_mode(model, batch_norm_mode=batch_norm_mode)
     try:
-        # DSPBuilder setting: SFRD is defined only for long-term forecasting.
-        # d_t: input sequence delta, r_t: model prediction delta.
-        if getattr(exp.args, "task_name", None) != "long_term_forecast":
+        task_name = getattr(exp.args, "task_name", None)
+        if task_name not in {"long_term_forecast", "short_term_forecast"}:
             return None, None
 
         outputs, context = _forward_task_outputs(exp, prepared_batch)
@@ -1485,6 +1484,62 @@ def _extract_sfrd_inputs_and_representation(
         return primary_input, outputs
     finally:
         _restore_module_training_states(stochastic_states)
+
+
+def _masked_valid_length(mask_tensor: torch.Tensor | None, sample_index: int, max_len: int) -> int:
+    if mask_tensor is None or not torch.is_tensor(mask_tensor) or mask_tensor.ndim < 2:
+        return max_len
+
+    sample_mask = mask_tensor[sample_index]
+    if sample_mask.ndim > 1:
+        sample_mask = sample_mask.reshape(sample_mask.size(0), -1)
+        sample_mask = sample_mask[:, 0]
+    sample_mask = sample_mask[-max_len:]
+    valid_length = int(round(float(sample_mask.sum().item())))
+    return max(0, min(valid_length, max_len))
+
+
+def _extract_masked_sequence(
+    sequence: torch.Tensor,
+    mask_tensor: torch.Tensor | None,
+    sample_index: int,
+    *,
+    alignment: str,
+) -> torch.Tensor:
+    sample_sequence = sequence[sample_index]
+    if mask_tensor is None or not torch.is_tensor(mask_tensor) or mask_tensor.ndim < 2:
+        return sample_sequence
+
+    valid_len = _masked_valid_length(mask_tensor, sample_index, sample_sequence.size(0))
+    if valid_len < 1:
+        return sample_sequence[:0]
+
+    if alignment == "right":
+        return sample_sequence[-valid_len:, :]
+    if alignment == "left":
+        return sample_sequence[:valid_len, :]
+    raise ValueError(f"Unsupported masked sequence alignment: {alignment}")
+
+
+def _interpolate_sequence_length(sequence: torch.Tensor, target_len: int) -> torch.Tensor:
+    if sequence.ndim != 2:
+        raise ValueError(f"Expected 2D [time, channels] sequence, got shape {tuple(sequence.shape)}.")
+    if target_len < 1:
+        return sequence[:0]
+    if sequence.size(0) == target_len:
+        return sequence
+    if sequence.size(0) < 1:
+        return sequence.new_zeros((target_len, sequence.size(1)))
+
+    # F.interpolate expects [N, C, L] for 1D linear interpolation.
+    sequence_for_interp = sequence.transpose(0, 1).unsqueeze(0)
+    interpolated = F.interpolate(
+        sequence_for_interp,
+        size=target_len,
+        mode="linear",
+        align_corners=False,
+    )
+    return interpolated.squeeze(0).transpose(0, 1).contiguous()
 
 
 def _single_batch_sfrd_from_sequences(
@@ -1499,21 +1554,39 @@ def _single_batch_sfrd_from_sequences(
     if primary_input.ndim != 3 or outputs.ndim != 3:
         return float("nan")
 
+    task_name = str(prepared_batch.get("task_name", "") or "").strip()
     disc_scores = []
     for b in range(primary_input.size(0)):
-        input_valid_len = _sample_valid_length_from_mask(prepared_batch, b, primary_input.size(1))
-        if input_valid_len < 2:
-            continue
+        if task_name == "short_term_forecast":
+            input_seq = _extract_masked_sequence(
+                primary_input,
+                prepared_batch.get("batch_x_mark"),
+                b,
+                alignment="right",
+            )
+            repr_seq = _extract_masked_sequence(
+                outputs,
+                prepared_batch.get("batch_y_mark"),
+                b,
+                alignment="left",
+            )
+            if input_seq.size(0) < 2 or repr_seq.size(0) < 2:
+                continue
+            repr_seq = _interpolate_sequence_length(repr_seq, input_seq.size(0))
+        else:
+            input_valid_len = _sample_valid_length_from_mask(prepared_batch, b, primary_input.size(1))
+            if input_valid_len < 2:
+                continue
 
-        repr_valid_len = outputs.size(1)
-        if prepared_batch.get("padding_mask") is not None and primary_input.size(1) > 0:
-            repr_valid_len = int(round(input_valid_len * outputs.size(1) / primary_input.size(1)))
-            repr_valid_len = max(0, min(repr_valid_len, outputs.size(1)))
-        if repr_valid_len < 2:
-            continue
+            repr_valid_len = outputs.size(1)
+            if prepared_batch.get("padding_mask") is not None and primary_input.size(1) > 0:
+                repr_valid_len = int(round(input_valid_len * outputs.size(1) / primary_input.size(1)))
+                repr_valid_len = max(0, min(repr_valid_len, outputs.size(1)))
+            if repr_valid_len < 2:
+                continue
 
-        input_seq = primary_input[b, :input_valid_len, :]
-        repr_seq = outputs[b, :repr_valid_len, :]
+            input_seq = primary_input[b, :input_valid_len, :]
+            repr_seq = outputs[b, :repr_valid_len, :]
 
         # Frame-wise change vectors for input/prediction output.
         d_b = input_seq[1:, :] - input_seq[:-1, :]

@@ -1,6 +1,8 @@
 # Time-Series-Library requirements aligned to the current `tslib_nightly` env.
 # This remains a curated dependency list for the repo, not a full `pip freeze`.
-# Versions below were refreshed from the `tslib_nightly` environment on 2026-03-27.
+# Versions below were refreshed from the `tslib_nightly` environment on 2026-04-13.
+# Audit result: all repo imports that are currently available in `tslib_nightly`
+# are already pinned below.
 # Note: `torch.__version__` reports `2.11.0+cu130` in this env, while pip metadata resolves as `torch==2.11.0`.
 # Note: `mamba-ssm` is installed from a local editable checkout in this env, but its version metadata is `2.3.1`.
 
@@ -57,3 +59,10 @@ python-dotenv==1.0.0
 # `causal-conv1d` is not currently installed/importable in `tslib_nightly`.
 # Install a compatible build separately if you want the fused causal-conv path:
 # causal-conv1d>=1.4.0
+
+# Repo imports not currently available in `tslib_nightly`
+# These code paths exist in the repo, but the packages are not installed in the
+# reference environment, so they are documented here instead of being pinned.
+# statsmodels  # used by utils/ADFtest.py
+# arch         # used by utils/ADFtest.py
+# uni2ts       # used by models/Moirai.py

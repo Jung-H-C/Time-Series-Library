@@ -1,0 +1,7 @@
+subset,train_sample_count,train_avg_length,train_min_length,train_max_length,train_count_len_gt_200,test_sample_count,test_avg_length,test_min_length,test_max_length,test_count_len_gt_200
+Yearly,23000,31.32426086956522,13,835,80,23000,6.0,6,6,0
+Quarterly,24000,92.2545,16,866,574,24000,8.0,8,8,0
+Monthly,48000,216.30022916666667,42,2794,24547,48000,18.0,18,18,0
+Weekly,359,1022.0389972144847,80,2597,294,359,13.0,13,13,0
+Daily,4227,2357.38301395789,93,9919,3961,4227,14.0,14,14,0
+Hourly,414,853.864734299517,700,960,414,414,48.0,48,48,0

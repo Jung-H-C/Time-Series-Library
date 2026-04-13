@@ -1,0 +1,25 @@
+{
+  "best_checkpoint": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_155017/best_checkpoint.pth",
+  "num_epochs_ran": 39,
+  "best_val_loss": 0.6984128296375275,
+  "best_epoch": 9,
+  "final_test_loss": null,
+  "final_test_pair_acc": null,
+  "final_test_pair_loss_mean": null,
+  "final_test_spearman_mean": 0.10137413741374138,
+  "final_test_spearman_std": 0.0007189109551425342,
+  "final_test_dataset_results": {
+    "M4_Daily": {
+      "dataset": "M4_Daily",
+      "metric_name": "mase",
+      "spearman_mean": 0.10137413741374138,
+      "spearman_std": 0.0007189109551425342,
+      "iterations": 5,
+      "num_candidates": 100
+    }
+  },
+  "train_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_155017/train_logs",
+  "valid_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_155017/valid_logs",
+  "test_log_dir": "/data/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260410_155017/test_logs",
+  "train_only": false
+}

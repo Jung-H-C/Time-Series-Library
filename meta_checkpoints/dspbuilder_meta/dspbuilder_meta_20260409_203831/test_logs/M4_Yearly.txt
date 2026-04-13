@@ -1,0 +1,6 @@
+# Test iteration logs
+[TEST] epoch=001 dataset=M4_Yearly iteration=001 loss=49.273392 pair_acc=0.4667 pair_loss_mean=1.094964 num_pairs=45 weight_norm=3.162056 weight_vector=[1.000000, -1.000000, -1.000000, 1.000000, 1.000000, -0.999992, 1.000000, -0.999307, 1.000000, 1.000000]
+[TEST] epoch=001 dataset=M4_Yearly iteration=002 loss=62.458809 pair_acc=0.3778 pair_loss_mean=1.387974 num_pairs=45 weight_norm=3.162276 weight_vector=[1.000000, -1.000000, -1.000000, 1.000000, 1.000000, -1.000000, 1.000000, -0.999995, 1.000000, 1.000000]
+[TEST] epoch=001 dataset=M4_Yearly iteration=003 loss=29.567696 pair_acc=0.6444 pair_loss_mean=0.657060 num_pairs=45 weight_norm=3.162271 weight_vector=[1.000000, -1.000000, -1.000000, 1.000000, 1.000000, -0.999979, 1.000000, -1.000000, 1.000000, 1.000000]
+[TEST] epoch=001 dataset=M4_Yearly iteration=004 loss=47.902260 pair_acc=0.4222 pair_loss_mean=1.064495 num_pairs=45 weight_norm=3.162278 weight_vector=[1.000000, -1.000000, -1.000000, 1.000000, 1.000000, -1.000000, 1.000000, -1.000000, 1.000000, 1.000000]
+[TEST] epoch=001 dataset=M4_Yearly iteration=005 loss=27.705931 pair_acc=0.6889 pair_loss_mean=0.615687 num_pairs=45 weight_norm=3.162253 weight_vector=[1.000000, -1.000000, -1.000000, 1.000000, 1.000000, -0.999923, 1.000000, -1.000000, 1.000000, 1.000000]

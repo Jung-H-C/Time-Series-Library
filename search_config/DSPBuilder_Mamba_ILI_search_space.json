@@ -1,0 +1,55 @@
+{
+  "backbone": "mamba",
+  "num_samples": 100,
+  "seed": 2026,
+  "candidate_prefix": "mamba_long_term_forecast_ili",
+  "fixed_config": {
+    "task_name": "long_term_forecast",
+    "is_training": 1,
+    "root_path": "./dataset/illness/",
+    "data_path": "national_illness.csv",
+    "data": "custom",
+    "features": "M",
+    "seq_len": 48,
+    "label_len": 48,
+    "pred_len": 48,
+    "e_layers": 2,
+    "d_layers": 1,
+    "enc_in": 7,
+    "c_out": 7,
+    "des": "Exp",
+    "itr": 1
+  },
+  "search_space": {
+    "d_model": [
+      64,
+      96,
+      128
+    ],
+    "d_ff": [
+      8,
+      12,
+      16
+    ],
+    "expand": [
+      1,
+      2
+    ],
+    "d_conv": [
+      2,
+      3,
+      4
+    ],
+    "dt_rank": [
+      8,
+      16,
+      32
+    ]
+  },
+  "default_recipe": {
+    "source_recipe": "examples/long_term_forecast/ILI_script/Mamba.json",
+    "relative_script_path": "long_term_forecast/ILI_script/Mamba.sh",
+    "source_run_index": 1,
+    "source_command": "python -u run.py --task_name long_term_forecast --is_training 1 --root_path ./dataset/illness/ --data_path national_illness.csv --model_id ili_96_96 --model Mamba --data custom --features M --seq_len 48 --label_len 48 --pred_len 48 --e_layers 2 --d_layers 1 --enc_in 7 --expand 2 --d_ff 16 --d_conv 4 --c_out 7 --d_model 128 --des Exp --itr 1"
+  }
+}
