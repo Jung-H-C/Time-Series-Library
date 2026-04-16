@@ -1,4 +1,5 @@
 from data_provider.data_factory import data_provider
+from data_provider.data_loader import MONASH_GENERIC_DATASETS
 from exp.exp_basic import Exp_Basic
 from utils.tools import EarlyStopping, adjust_learning_rate, visual
 from utils.losses import mape_loss, mase_loss, smape_loss
@@ -42,6 +43,11 @@ def _pad_m4_targets(timeseries, pred_len, device):
 
 class Exp_Short_Term_Forecast(Exp_Basic):
     DOMINICK_DATASETS = {"dominick", "dominik"}
+    TOURISM_DATASETS = {"tourism", "tourism_monthly"}
+    NN5_DATASETS = {"nn5", "nn5_daily"}
+    CAR_PARTS_DATASETS = {"car_parts", "carparts"}
+    WEB_TRAFFIC_DATASETS = {"web_traffic", "webtraffic", "kaggle_web_traffic"}
+    GENERIC_MONASH_DATASETS = set(MONASH_GENERIC_DATASETS.keys())
 
     def __init__(self, args):
         super(Exp_Short_Term_Forecast, self).__init__(args)
@@ -52,6 +58,21 @@ class Exp_Short_Term_Forecast(Exp_Basic):
 
     def _is_dominick_dataset(self):
         return self.args.data in self.DOMINICK_DATASETS
+
+    def _is_tourism_dataset(self):
+        return self.args.data in self.TOURISM_DATASETS
+
+    def _is_nn5_dataset(self):
+        return self.args.data in self.NN5_DATASETS
+
+    def _is_car_parts_dataset(self):
+        return self.args.data in self.CAR_PARTS_DATASETS
+
+    def _is_web_traffic_dataset(self):
+        return self.args.data in self.WEB_TRAFFIC_DATASETS
+
+    def _is_generic_monash_dataset(self):
+        return self.args.data in self.GENERIC_MONASH_DATASETS
 
     def _configure_short_term_defaults(self):
         if self._is_m4_dataset():
@@ -91,6 +112,137 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                     f"`label_len` must be <= `seq_len` for Dominick short-term forecasting, "
                     f"got label_len={self.args.label_len}, seq_len={self.args.seq_len}."
                 )
+            return
+
+        if self._is_tourism_dataset():
+            if (self.args.seq_len, self.args.label_len, self.args.pred_len) == (96, 48, 96):
+                self.args.seq_len = 48
+                self.args.label_len = 24
+                self.args.pred_len = 24
+            if self.args.enc_in == 7:
+                self.args.enc_in = 1
+            if self.args.dec_in == 7:
+                self.args.dec_in = 1
+            if self.args.c_out == 7:
+                self.args.c_out = 1
+            if self.args.target == 'OT':
+                self.args.target = 'tourism'
+            self.args.freq = 'tourism_monthly'
+
+            if self.args.embed != 'timeF':
+                raise ValueError(
+                    "Tourism monthly short-term forecasting requires `--embed timeF` because "
+                    "the dataset returns dense month-of-year cyclical marks."
+                )
+
+            if self.args.label_len > self.args.seq_len:
+                raise ValueError(
+                    f"`label_len` must be <= `seq_len` for Tourism monthly short-term forecasting, "
+                    f"got label_len={self.args.label_len}, seq_len={self.args.seq_len}."
+                )
+            return
+
+        if self._is_nn5_dataset():
+            if (self.args.seq_len, self.args.label_len, self.args.pred_len) == (96, 48, 96):
+                self.args.seq_len = 112
+                self.args.label_len = 56
+                self.args.pred_len = 56
+            if self.args.enc_in == 7:
+                self.args.enc_in = 1
+            if self.args.dec_in == 7:
+                self.args.dec_in = 1
+            if self.args.c_out == 7:
+                self.args.c_out = 1
+            if self.args.target == 'OT':
+                self.args.target = 'cash'
+            self.args.freq = 'nn5_daily'
+
+            if self.args.embed != 'timeF':
+                raise ValueError(
+                    "NN5 daily short-term forecasting requires `--embed timeF` because "
+                    "the dataset returns dense daily calendar marks."
+                )
+
+            if self.args.label_len > self.args.seq_len:
+                raise ValueError(
+                    f"`label_len` must be <= `seq_len` for NN5 daily short-term forecasting, "
+                    f"got label_len={self.args.label_len}, seq_len={self.args.seq_len}."
+                )
+            return
+
+        if self._is_car_parts_dataset():
+            if (self.args.seq_len, self.args.label_len, self.args.pred_len) == (96, 48, 96):
+                self.args.seq_len = 24
+                self.args.label_len = 12
+                self.args.pred_len = 12
+            self.args.enc_in = 2674
+            self.args.dec_in = 2674
+            self.args.c_out = 2674
+            if self.args.target == 'OT':
+                self.args.target = 'sales'
+            self.args.freq = 'car_parts_monthly'
+
+            if self.args.embed != 'timeF':
+                raise ValueError(
+                    "Car Parts monthly short-term forecasting requires `--embed timeF` because "
+                    "the dataset returns dense month-of-year cyclical marks."
+                )
+
+            if self.args.label_len > self.args.seq_len:
+                raise ValueError(
+                    f"`label_len` must be <= `seq_len` for Car Parts monthly short-term forecasting, "
+                    f"got label_len={self.args.label_len}, seq_len={self.args.seq_len}."
+                )
+            return
+
+        if self._is_web_traffic_dataset():
+            if (self.args.seq_len, self.args.label_len, self.args.pred_len) == (96, 48, 96):
+                self.args.seq_len = 90
+                self.args.label_len = 30
+                self.args.pred_len = 30
+            if self.args.enc_in == 7:
+                self.args.enc_in = 1
+            if self.args.dec_in == 7:
+                self.args.dec_in = 1
+            if self.args.c_out == 7:
+                self.args.c_out = 1
+            if self.args.target == 'OT':
+                self.args.target = 'traffic'
+            # Custom frequency token used by the embedding layer for 4-D cyclical marks.
+            self.args.freq = 'web'
+
+            if self.args.embed != 'timeF':
+                raise ValueError(
+                    "Web Traffic short-term forecasting requires `--embed timeF` because "
+                    "the dataset returns dense cyclical calendar marks."
+                )
+
+            if self.args.label_len > self.args.seq_len:
+                raise ValueError(
+                    f"`label_len` must be <= `seq_len` for Web Traffic short-term forecasting, "
+                    f"got label_len={self.args.label_len}, seq_len={self.args.seq_len}."
+                )
+            return
+
+        if self._is_generic_monash_dataset():
+            default_seq_len, default_label_len, default_pred_len = MONASH_GENERIC_DATASETS[self.args.data]["default_size"]
+            if (self.args.seq_len, self.args.label_len, self.args.pred_len) == (96, 48, 96):
+                self.args.seq_len = default_seq_len
+                self.args.label_len = default_label_len
+                self.args.pred_len = default_pred_len
+            if self.args.enc_in == 7:
+                self.args.enc_in = 1
+            if self.args.dec_in == 7:
+                self.args.dec_in = 1
+            if self.args.c_out == 7:
+                self.args.c_out = 1
+            if self.args.target == 'OT':
+                self.args.target = MONASH_GENERIC_DATASETS[self.args.data].get("target", "value")
+            if self.args.label_len > self.args.seq_len:
+                raise ValueError(
+                    f"`label_len` must be <= `seq_len` for `{self.args.data}`, "
+                    f"got label_len={self.args.label_len}, seq_len={self.args.seq_len}."
+                )
 
     def _build_model(self):
         self._configure_short_term_defaults()
@@ -122,6 +274,9 @@ class Exp_Short_Term_Forecast(Exp_Basic):
         raise ValueError(f"Unsupported loss for short_term_forecast: {loss_name}")
 
     def _select_target_channel(self, outputs, dataset):
+        if getattr(dataset, 'predict_all_channels', False):
+            return outputs
+
         if outputs.shape[-1] == 1:
             return outputs
 
@@ -131,6 +286,15 @@ class Exp_Short_Term_Forecast(Exp_Basic):
         return outputs[:, :, -1:]
 
     def _build_fixed_window_decoder_input(self, batch_x, dataset):
+        if getattr(dataset, 'predict_all_channels', False):
+            history = batch_x[:, -self.args.label_len:, :]
+            future_pad = torch.zeros(
+                (batch_x.size(0), self.args.pred_len, batch_x.size(-1)),
+                dtype=batch_x.dtype,
+                device=batch_x.device,
+            )
+            return torch.cat([history, future_pad], dim=1)
+
         target_idx = getattr(dataset, 'target_feature_index', 0)
         history = batch_x[:, -self.args.label_len:, target_idx:target_idx + 1]
         future_pad = torch.zeros(
@@ -140,10 +304,17 @@ class Exp_Short_Term_Forecast(Exp_Basic):
         )
         return torch.cat([history, future_pad], dim=1)
 
+    def _build_fixed_window_decoder_mark(self, batch_x_mark, batch_y_mark, dataset):
+        if not getattr(dataset, 'use_time_marks', False):
+            return None
+
+        history_mark = batch_x_mark[:, -self.args.label_len:, :]
+        return torch.cat([history_mark, batch_y_mark], dim=1)
+
     def _validate_fixed_window_loss(self):
         if self.args.loss not in {'MSE', 'MAE'}:
             raise ValueError(
-                "Dominick short-term forecasting currently supports only `MSE` or `MAE` loss. "
+                "Non-M4 short-term forecasting currently supports only `MSE` or `MAE` loss. "
                 f"Received `{self.args.loss}`."
             )
 
@@ -185,16 +356,20 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                 model_optim.zero_grad()
                 batch_x = batch_x.float().to(self.device)
                 batch_y = batch_y.float().to(self.device)
+                batch_x_mark = batch_x_mark.float().to(self.device)
+                batch_y_mark = batch_y_mark.float().to(self.device)
 
                 dec_inp = self._build_fixed_window_decoder_input(batch_x, train_data)
+                dec_mark = self._build_fixed_window_decoder_mark(batch_x_mark, batch_y_mark, train_data)
+                encoder_mark = batch_x_mark if getattr(train_data, 'use_time_marks', False) else None
 
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
-                        outputs = self.model(batch_x, None, dec_inp, None)
+                        outputs = self.model(batch_x, encoder_mark, dec_inp, dec_mark)
                         outputs = self._select_target_channel(outputs[:, -self.args.pred_len:, :], train_data)
                         loss = criterion(outputs, batch_y)
                 else:
-                    outputs = self.model(batch_x, None, dec_inp, None)
+                    outputs = self.model(batch_x, encoder_mark, dec_inp, dec_mark)
                     outputs = self._select_target_channel(outputs[:, -self.args.pred_len:, :], train_data)
                     loss = criterion(outputs, batch_y)
 
@@ -244,8 +419,12 @@ class Exp_Short_Term_Forecast(Exp_Basic):
             for batch_x, batch_y, batch_x_mark, batch_y_mark in data_loader:
                 batch_x = batch_x.float().to(self.device)
                 batch_y = batch_y.float().to(self.device)
+                batch_x_mark = batch_x_mark.float().to(self.device)
+                batch_y_mark = batch_y_mark.float().to(self.device)
                 dec_inp = self._build_fixed_window_decoder_input(batch_x, data_set)
-                outputs = self.model(batch_x, None, dec_inp, None)
+                dec_mark = self._build_fixed_window_decoder_mark(batch_x_mark, batch_y_mark, data_set)
+                encoder_mark = batch_x_mark if getattr(data_set, 'use_time_marks', False) else None
+                outputs = self.model(batch_x, encoder_mark, dec_inp, dec_mark)
                 outputs = self._select_target_channel(outputs[:, -self.args.pred_len:, :], data_set)
                 loss = criterion(outputs, batch_y)
                 total_loss.append(loss.item())
@@ -272,9 +451,13 @@ class Exp_Short_Term_Forecast(Exp_Basic):
             for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(test_loader):
                 batch_x = batch_x.float().to(self.device)
                 batch_y = batch_y.float().to(self.device)
+                batch_x_mark = batch_x_mark.float().to(self.device)
+                batch_y_mark = batch_y_mark.float().to(self.device)
 
                 dec_inp = self._build_fixed_window_decoder_input(batch_x, test_data)
-                outputs = self.model(batch_x, None, dec_inp, None)
+                dec_mark = self._build_fixed_window_decoder_mark(batch_x_mark, batch_y_mark, test_data)
+                encoder_mark = batch_x_mark if getattr(test_data, 'use_time_marks', False) else None
+                outputs = self.model(batch_x, encoder_mark, dec_inp, dec_mark)
                 outputs = self._select_target_channel(outputs[:, -self.args.pred_len:, :], test_data)
 
                 pred = outputs.detach().cpu().numpy()
@@ -282,9 +465,14 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                 history = batch_x[:, :, target_idx:target_idx + 1].detach().cpu().numpy()
 
                 if test_data.scale and self.args.inverse:
-                    pred = test_data.inverse_transform(pred.reshape(-1, 1)).reshape(pred.shape)
-                    true = test_data.inverse_transform(true.reshape(-1, 1)).reshape(true.shape)
-                    history = test_data.inverse_transform(history.reshape(-1, 1)).reshape(history.shape)
+                    if getattr(test_data, 'predict_all_channels', False):
+                        pred = test_data.inverse_transform(pred)
+                        true = test_data.inverse_transform(true)
+                        history = test_data.inverse_transform(history)
+                    else:
+                        pred = test_data.inverse_transform(pred.reshape(-1, 1)).reshape(pred.shape)
+                        true = test_data.inverse_transform(true.reshape(-1, 1)).reshape(true.shape)
+                        history = test_data.inverse_transform(history.reshape(-1, 1)).reshape(history.shape)
 
                 preds.append(pred)
                 trues.append(true)

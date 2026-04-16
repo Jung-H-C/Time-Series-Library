@@ -4,13 +4,18 @@ import numpy as np
 import pandas as pd
 import glob
 import re
+import shutil
 import torch
+import zipfile
+import tarfile
 from torch.utils.data import Dataset, DataLoader
 from sklearn.preprocessing import StandardScaler
 from utils.timefeatures import time_features
 from data_provider.uea import subsample, interpolate_missing, Normalizer
 import warnings
 from utils.augmentation import run_augmentation_single
+from urllib.parse import urljoin, urlparse
+from urllib.request import urlopen
 
 try:
     from data_provider.m4 import M4Dataset, M4Meta
@@ -37,6 +42,266 @@ warnings.filterwarnings('ignore')
 
 HUGGINGFACE_REPO = "thuml/Time-Series-Library"
 
+GENERIC_TS_ZERO_MARK_DIM = 1
+MONASH_GENERIC_DATASETS = {
+    "m1_yearly": {
+        "display_name": "M1 Yearly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (8, 2, 2),
+        "zenodo_records": ["https://zenodo.org/record/4656193"],
+        "search_tokens": ["m1", "yearly"],
+    },
+    "m1_quarterly": {
+        "display_name": "M1 Quarterly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (16, 4, 4),
+        "zenodo_records": ["https://zenodo.org/record/4656154"],
+        "search_tokens": ["m1", "quarterly"],
+    },
+    "m1_monthly": {
+        "display_name": "M1 Monthly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (48, 12, 12),
+        "zenodo_records": ["https://zenodo.org/record/4656159"],
+        "search_tokens": ["m1", "monthly"],
+    },
+    "m3_yearly": {
+        "display_name": "M3 Yearly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (8, 2, 2),
+        "zenodo_records": ["https://zenodo.org/record/4656222"],
+        "search_tokens": ["m3", "yearly"],
+    },
+    "m3_quarterly": {
+        "display_name": "M3 Quarterly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (16, 4, 4),
+        "zenodo_records": ["https://zenodo.org/record/4656262"],
+        "search_tokens": ["m3", "quarterly"],
+    },
+    "m3_monthly": {
+        "display_name": "M3 Monthly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (48, 12, 12),
+        "zenodo_records": ["https://zenodo.org/record/4656298"],
+        "search_tokens": ["m3", "monthly"],
+    },
+    "m3_other": {
+        "display_name": "M3 Other",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (48, 12, 12),
+        "zenodo_records": ["https://zenodo.org/record/4656335"],
+        "search_tokens": ["m3", "other"],
+    },
+    "cif_2016": {
+        "display_name": "CIF 2016",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (48, 12, 12),
+        "zenodo_records": ["https://zenodo.org/record/4656042"],
+        "search_tokens": ["cif", "2016"],
+    },
+    "london_smart_meters": {
+        "display_name": "London Smart Meters",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (168, 24, 24),
+        "zenodo_records": ["https://zenodo.org/record/4656091"],
+        "search_tokens": ["london", "smart", "meter"],
+    },
+    "aus_electricity_demand": {
+        "display_name": "Aus. Electricity Demand",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (336, 48, 48),
+        "zenodo_records": ["https://zenodo.org/record/4659727"],
+        "search_tokens": ["aus", "electricity", "demand"],
+    },
+    "wind_farms": {
+        "display_name": "Wind Farms",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (168, 24, 24),
+        "zenodo_records": ["https://zenodo.org/record/4654858"],
+        "search_tokens": ["wind", "farm"],
+    },
+    "bitcoin": {
+        "display_name": "Bitcoin",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (90, 30, 30),
+        "zenodo_records": ["https://zenodo.org/record/5122101"],
+        "search_tokens": ["bitcoin"],
+    },
+    "pedestrian_counts": {
+        "display_name": "Pedestrian Counts",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (168, 24, 24),
+        "zenodo_records": ["https://zenodo.org/record/4656626"],
+        "search_tokens": ["pedestrian", "count"],
+    },
+    "vehicle_trips": {
+        "display_name": "Vehicle Trips",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (52, 13, 13),
+        "zenodo_records": ["https://zenodo.org/record/5122537"],
+        "search_tokens": ["vehicle", "trip"],
+    },
+    "kdd_cup_2018": {
+        "display_name": "KDD Cup 2018",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (90, 30, 30),
+        "zenodo_records": ["https://zenodo.org/record/4656756"],
+        "search_tokens": ["kdd", "2018"],
+    },
+    "weather_tsf": {
+        "display_name": "Weather",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (90, 30, 30),
+        "zenodo_records": ["https://zenodo.org/record/4654822"],
+        "search_tokens": ["weather"],
+    },
+    "solar_10min": {
+        "display_name": "Solar 10 Minutes",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (1008, 144, 144),
+        "zenodo_records": ["https://zenodo.org/record/4656144"],
+        "search_tokens": ["solar", "10", "minute"],
+    },
+    "solar_weekly": {
+        "display_name": "Solar Weekly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (52, 13, 13),
+        "zenodo_records": ["https://zenodo.org/record/4656151"],
+        "search_tokens": ["solar", "weekly"],
+    },
+    "electricity_hourly": {
+        "display_name": "Electricity Hourly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (168, 24, 24),
+        "zenodo_records": ["https://zenodo.org/record/4656140"],
+        "search_tokens": ["electricity", "hourly"],
+    },
+    "electricity_weekly": {
+        "display_name": "Electricity Weekly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (52, 13, 13),
+        "zenodo_records": ["https://zenodo.org/record/4656141"],
+        "search_tokens": ["electricity", "weekly"],
+    },
+    "fred_md": {
+        "display_name": "FRED-MD",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (48, 12, 12),
+        "zenodo_records": ["https://zenodo.org/record/4654833"],
+        "search_tokens": ["fred", "md"],
+    },
+    "san_francisco_traffic_hourly": {
+        "display_name": "San Francisco Traffic Hourly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (168, 24, 24),
+        "zenodo_records": ["https://zenodo.org/record/4656132"],
+        "search_tokens": ["san", "francisco", "traffic", "hourly"],
+    },
+    "san_francisco_traffic_weekly": {
+        "display_name": "San Francisco Traffic Weekly",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (52, 13, 13),
+        "zenodo_records": ["https://zenodo.org/record/4656135"],
+        "search_tokens": ["san", "francisco", "traffic", "weekly"],
+    },
+    "rideshare": {
+        "display_name": "Rideshare",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (52, 13, 13),
+        "zenodo_records": ["https://zenodo.org/record/5122232"],
+        "search_tokens": ["rideshare"],
+    },
+    "hospital": {
+        "display_name": "Hospital",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (48, 12, 12),
+        "zenodo_records": ["https://zenodo.org/record/4656014"],
+        "search_tokens": ["hospital"],
+    },
+    "covid_deaths": {
+        "display_name": "COVID Deaths",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (90, 30, 30),
+        "zenodo_records": ["https://zenodo.org/record/4656009"],
+        "search_tokens": ["covid", "death"],
+    },
+    "temperature_rain": {
+        "display_name": "Temperature Rain",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (90, 30, 30),
+        "zenodo_records": ["https://zenodo.org/record/5129091"],
+        "search_tokens": ["temperature", "rain"],
+    },
+    "sunspot": {
+        "display_name": "Sunspot",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (365, 90, 90),
+        "zenodo_records": ["https://zenodo.org/record/4654722"],
+        "search_tokens": ["sunspot"],
+    },
+    "saugeen_river_flow": {
+        "display_name": "Saugeen River Flow",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (90, 30, 30),
+        "zenodo_records": ["https://zenodo.org/record/4656058"],
+        "search_tokens": ["saugeen", "river", "flow"],
+    },
+    "us_births": {
+        "display_name": "US Births",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (90, 30, 30),
+        "zenodo_records": ["https://zenodo.org/record/4656049"],
+        "search_tokens": ["us", "birth"],
+    },
+    "solar_power": {
+        "display_name": "Solar Power",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (900, 225, 225),
+        "zenodo_records": ["https://zenodo.org/record/4656027"],
+        "search_tokens": ["solar", "power"],
+    },
+    "wind_power": {
+        "display_name": "Wind Power",
+        "target": "value",
+        "task": "short_term_forecast",
+        "default_size": (900, 225, 225),
+        "zenodo_records": ["https://zenodo.org/record/4656032"],
+        "search_tokens": ["wind", "power"],
+    },
+}
+
 
 def _require_optional_dependency(dependency, import_name, context):
     if dependency is None:
@@ -46,18 +311,99 @@ def _require_optional_dependency(dependency, import_name, context):
         )
 
 
-def _parse_tsf_series(filepath):
-    """Parse a minimal subset of the Monash `.tsf` format.
+def _download_url_to_file(url, destination):
+    os.makedirs(os.path.dirname(destination), exist_ok=True)
+    with urlopen(url) as response, open(destination, "wb") as handle:
+        shutil.copyfileobj(response, handle)
 
-    The Dominick file currently in the repo stores one weekly value series per line
-    as `<series_name>:<v1>,<v2>,...`. We only need the series id and the numeric
-    sequence for the forecast datasets below.
-    """
-    series_ids = []
-    series_values = []
+
+def _extract_archive_if_needed(filepath, destination_dir):
+    lower = filepath.lower()
+    if lower.endswith(".zip"):
+        with zipfile.ZipFile(filepath, "r") as archive:
+            archive.extractall(destination_dir)
+        return
+    if lower.endswith((".tar.gz", ".tgz", ".tar")):
+        mode = "r:gz" if lower.endswith((".tar.gz", ".tgz")) else "r:"
+        with tarfile.open(filepath, mode) as archive:
+            archive.extractall(destination_dir)
+
+
+def _resolve_zenodo_download_url(record_url):
+    with urlopen(record_url) as response:
+        html = response.read().decode("utf-8", errors="replace")
+
+    matches = re.findall(r'href="([^"]+/files/[^"]+\?download=1)"', html)
+    filtered = [link for link in matches if "/preview/" not in link]
+    if not filtered:
+        raise RuntimeError(f"Could not locate a downloadable file on the Zenodo page: {record_url}")
+    return urljoin(record_url, filtered[0])
+
+
+def _ensure_monash_artifact(root_path, dataset_key, config):
+    dataset_root = os.path.join(root_path, dataset_key)
+    os.makedirs(dataset_root, exist_ok=True)
+
+    preferred_extensions = {".tsf", ".csv", ".tsv", ".parquet", ".feather", ".pkl", ".pickle"}
+    for existing_path in glob.glob(os.path.join(dataset_root, "**", "*"), recursive=True):
+        if os.path.isfile(existing_path) and os.path.splitext(existing_path)[1].lower() in preferred_extensions:
+            return dataset_root
+
+    for record_url in config.get("zenodo_records", []):
+        download_url = _resolve_zenodo_download_url(record_url)
+        filename = os.path.basename(urlparse(download_url).path)
+        local_archive = os.path.join(dataset_root, filename)
+        if not os.path.exists(local_archive):
+            _download_url_to_file(download_url, local_archive)
+        _extract_archive_if_needed(local_archive, dataset_root)
+
+        for extracted_path in glob.glob(os.path.join(dataset_root, "**", "*"), recursive=True):
+            if os.path.isfile(extracted_path) and os.path.splitext(extracted_path)[1].lower() in preferred_extensions:
+                return dataset_root
+
+    raise FileNotFoundError(
+        f"Could not find an extracted dataset file for `{dataset_key}` under {dataset_root} "
+        "after attempting the configured downloads."
+    )
+
+
+def _read_tsf_header(filepath):
+    metadata = {}
+    attribute_names = []
+
+    with open(filepath, "r", encoding="utf-8", errors="replace") as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+
+            lowered = line.lower()
+            if lowered == "@data":
+                if not attribute_names:
+                    raise ValueError(f"TSF file is missing `@attribute` definitions: {filepath}")
+                return metadata, attribute_names
+
+            if lowered.startswith("@attribute"):
+                parts = re.split(r"\s+", line, maxsplit=2)
+                if len(parts) < 3:
+                    raise ValueError(f"Malformed TSF attribute line: `{line}`")
+                attribute_names.append(parts[1])
+                continue
+
+            for key in ["@relation", "@frequency", "@horizon", "@missing", "@equallength"]:
+                if lowered.startswith(key):
+                    metadata[key[1:]] = line.split(None, 1)[1].strip() if " " in line else ""
+                    break
+
+    raise ValueError(f"TSF file is missing an `@data` section: {filepath}")
+
+
+def _iter_tsf_records(filepath, attribute_names=None):
+    if attribute_names is None:
+        _, attribute_names = _read_tsf_header(filepath)
+
     in_data_section = False
-
-    with open(filepath, "r", encoding="utf-8") as handle:
+    with open(filepath, "r", encoding="utf-8", errors="replace") as handle:
         for raw_line in handle:
             line = raw_line.strip()
             if not line or line.startswith("#"):
@@ -70,22 +416,39 @@ def _parse_tsf_series(filepath):
             if not in_data_section:
                 continue
 
-            parts = line.split(":")
-            if len(parts) < 2:
-                continue
+            parts = line.split(":", len(attribute_names))
+            if len(parts) != len(attribute_names) + 1:
+                raise ValueError(
+                    f"Malformed TSF record in {filepath}. Expected {len(attribute_names)} attributes "
+                    f"before the value field, got line: `{line[:200]}`"
+                )
 
-            series_id = parts[0]
-            value_tokens = parts[-1].split(",")
-            values = np.asarray(
-                [np.nan if token == "?" else float(token) for token in value_tokens],
+            record = {name: value for name, value in zip(attribute_names, parts[:-1])}
+            record["values"] = np.asarray(
+                [np.nan if token == "?" else float(token) for token in parts[-1].split(",")],
                 dtype=np.float32,
             )
-            values = values[~np.isnan(values)]
-            if values.size == 0:
-                continue
+            yield record
 
-            series_ids.append(series_id)
-            series_values.append(values)
+
+def _parse_tsf_series(filepath):
+    """Parse the id/value pairs needed by the lightweight TSF inspection paths."""
+    _, attribute_names = _read_tsf_header(filepath)
+    series_ids = []
+    series_values = []
+
+    for record in _iter_tsf_records(filepath, attribute_names):
+        series_id = record.get("series_name")
+        if series_id is None:
+            series_id = record.get(attribute_names[0], f"series_{len(series_ids)}")
+
+        values = np.asarray(record["values"], dtype=np.float32)
+        values = values[~np.isnan(values)]
+        if values.size == 0:
+            continue
+
+        series_ids.append(series_id)
+        series_values.append(values)
 
     if not series_values:
         raise ValueError(f"No time series found in TSF file: {filepath}")
@@ -107,6 +470,37 @@ def _default_time_mark(length, timeenc, freq):
     dummy_dates = pd.date_range("2000-01-02", periods=2, freq="W")
     mark_dim = time_features(pd.to_datetime(dummy_dates.values), freq=freq).shape[0]
     return np.zeros((length, mark_dim), dtype=np.float32)
+
+
+def _build_daily_cyclical_marks(start_timestamp, length):
+    start = pd.Timestamp(start_timestamp).normalize()
+    dates = pd.date_range(start=start, periods=length, freq="D")
+    day_of_week = dates.dayofweek.to_numpy(dtype=np.float32)
+    month_of_year = dates.month.to_numpy(dtype=np.float32)
+    two_pi = np.float32(2.0 * np.pi)
+
+    return np.column_stack(
+        [
+            np.sin(two_pi * day_of_week / 7.0),
+            np.cos(two_pi * day_of_week / 7.0),
+            np.sin(two_pi * month_of_year / 12.0),
+            np.cos(two_pi * month_of_year / 12.0),
+        ]
+    ).astype(np.float32)
+
+
+def _build_monthly_cyclical_marks(start_timestamp, length):
+    start = pd.Timestamp(start_timestamp).tz_localize(None).normalize()
+    dates = pd.date_range(start=start, periods=length, freq="MS")
+    month_of_year = dates.month.to_numpy(dtype=np.float32)
+    two_pi = np.float32(2.0 * np.pi)
+
+    return np.column_stack(
+        [
+            np.sin(two_pi * month_of_year / 12.0),
+            np.cos(two_pi * month_of_year / 12.0),
+        ]
+    ).astype(np.float32)
 
 
 def _read_table_file(filepath):
@@ -632,6 +1026,7 @@ class Dataset_DominickPanel(Dataset):
 
         self.target_feature_index = self.TARGET_FEATURE_INDEX
         self.feature_names = list(self.FEATURE_NAMES)
+        self.use_time_marks = False
         self.series_keys = []
         self.series_values = []
         self.series_start_offsets = []
@@ -881,6 +1276,7 @@ class Dataset_DominickTSF(Dataset):
         self.freq = freq or "w"
         self.root_path = root_path
         self.data_path = data_path
+        self.use_time_marks = False
 
         self.series_ids = []
         self.series_values = []
@@ -1013,6 +1409,1200 @@ class Dataset_DominickTSF(Dataset):
         if not self.scale:
             return data
         return self.scaler.inverse_transform(data)
+
+
+class Dataset_MonashTSFGeneric(Dataset):
+    """Generic fixed-window loader for Monash/forecastingdata TSF datasets.
+
+    This first-pass integration treats each TSF row as one univariate series and
+    maps it to the repo's `short_term_forecast` contract:
+    `(seq_x, seq_y, seq_x_mark, seq_y_mark)`.
+    """
+
+    _CACHE = {}
+
+    def __init__(
+        self,
+        args,
+        root_path,
+        flag="train",
+        size=None,
+        features="S",
+        data_path="",
+        target="value",
+        scale=True,
+        timeenc=0,
+        freq="generic",
+        seasonal_patterns=None,
+    ):
+        self.args = args
+        dataset_key = getattr(args, "data", "")
+        if dataset_key not in MONASH_GENERIC_DATASETS:
+            raise ValueError(
+                f"`Dataset_MonashTSFGeneric` does not know how to configure dataset key `{dataset_key}`."
+            )
+        self.config = MONASH_GENERIC_DATASETS[dataset_key]
+
+        default_seq_len, default_label_len, default_pred_len = self.config["default_size"]
+        if size is None:
+            self.seq_len = default_seq_len
+            self.label_len = default_label_len
+            self.pred_len = default_pred_len
+        else:
+            self.seq_len, self.label_len, self.pred_len = size
+
+        assert flag in ["train", "val", "test"]
+        self.flag = flag
+        self.features = features
+        self.target = target if target != "OT" else self.config.get("target", "value")
+        self.scale = scale
+        self.timeenc = timeenc
+        self.freq = freq or "generic"
+        self.root_path = root_path
+        self.data_path = data_path
+        self.use_time_marks = False
+
+        self.feature_names = [self.target]
+        self.mark_feature_names = ["compat_mark"]
+        self.target_feature_index = 0
+        self.series_ids = []
+        self.series_values = []
+        self.series_start_offsets = []
+        self.series_window_counts = []
+        self.cumulative_windows = np.array([], dtype=np.int64)
+        self.metadata = {}
+        self.scaler = StandardScaler()
+        self.seq_x_mark_template = np.zeros((self.seq_len, GENERIC_TS_ZERO_MARK_DIM), dtype=np.float32)
+        self.seq_y_mark_template = np.zeros((self.pred_len, GENERIC_TS_ZERO_MARK_DIM), dtype=np.float32)
+
+        self.__read_data__()
+
+    def _search_local_candidates(self, base_dir):
+        tokens = [token.lower() for token in self.config.get("search_tokens", [])]
+        explicit_candidates = []
+        if self.data_path:
+            explicit_candidates.append(os.path.join(base_dir, self.data_path))
+
+        for candidate in explicit_candidates:
+            if candidate and os.path.exists(candidate):
+                return os.path.abspath(candidate)
+
+        recursive_candidates = []
+        for extension in ("*.tsf", "*.csv", "*.tsv", "*.parquet", "*.feather", "*.pkl", "*.pickle"):
+            recursive_candidates.extend(glob.glob(os.path.join(base_dir, "**", extension), recursive=True))
+
+        for candidate in sorted(recursive_candidates):
+            lowered = os.path.basename(candidate).lower()
+            if all(token in lowered for token in tokens):
+                return os.path.abspath(candidate)
+
+        if len(recursive_candidates) == 1:
+            return os.path.abspath(recursive_candidates[0])
+        return None
+
+    def _resolve_dataset_path(self):
+        if os.path.isfile(self.root_path):
+            return os.path.abspath(self.root_path)
+
+        if self.data_path:
+            explicit_path = os.path.join(self.root_path, self.data_path)
+            if os.path.exists(explicit_path):
+                return os.path.abspath(explicit_path)
+
+        search_root = self.root_path if os.path.isdir(self.root_path) else os.path.dirname(self.root_path) or "."
+        local_match = self._search_local_candidates(search_root)
+        if local_match is not None:
+            return local_match
+
+        artifact_root = _ensure_monash_artifact(search_root, getattr(self.args, "data", "monash_dataset"), self.config)
+        downloaded_match = self._search_local_candidates(artifact_root)
+        if downloaded_match is not None:
+            return downloaded_match
+
+        raise FileNotFoundError(
+            f"Could not resolve a local file for dataset key `{getattr(self.args, 'data', '')}` "
+            f"under root_path={self.root_path} data_path={self.data_path}."
+        )
+
+    @classmethod
+    def _load_cached_source(cls, filepath):
+        filepath = os.path.abspath(filepath)
+        if filepath in cls._CACHE:
+            return cls._CACHE[filepath]
+
+        if filepath.lower().endswith(".tsf"):
+            metadata, attribute_names = _read_tsf_header(filepath)
+            series_ids = []
+            series_values = []
+            for record in _iter_tsf_records(filepath, attribute_names):
+                series_name = record.get("series_name", f"series_{len(series_ids)}")
+                values = np.asarray(record["values"], dtype=np.float32)
+                values = np.nan_to_num(values, nan=0.0, posinf=0.0, neginf=0.0)
+                if values.size == 0:
+                    continue
+                series_ids.append(series_name)
+                series_values.append(values)
+        else:
+            frame = _read_table_file(filepath)
+            metadata = {"frequency": "unknown", "relation": os.path.basename(filepath)}
+            series_ids = list(frame.columns[1:])
+            series_values = [
+                pd.to_numeric(frame[column], errors="coerce").fillna(0.0).to_numpy(dtype=np.float32)
+                for column in frame.columns[1:]
+            ]
+
+        if not series_values:
+            raise ValueError(f"No usable time series found in `{filepath}`.")
+
+        cls._CACHE[filepath] = {
+            "metadata": metadata,
+            "series_ids": series_ids,
+            "series_values": series_values,
+        }
+        return cls._CACHE[filepath]
+
+    def _split_bounds(self, series_length):
+        max_start = series_length - self.seq_len - self.pred_len
+        if max_start < 0:
+            return None
+
+        train_end = max(self.seq_len + self.pred_len, int(np.floor(series_length * 0.7)))
+        val_end = max(train_end, int(np.floor(series_length * 0.8)))
+        train_end = min(train_end, series_length)
+        val_end = min(max(val_end, train_end), series_length)
+
+        split_start = {
+            "train": 0,
+            "val": max(0, train_end - self.seq_len),
+            "test": max(0, val_end - self.seq_len),
+        }
+        split_end = {
+            "train": train_end - self.seq_len - self.pred_len,
+            "val": val_end - self.seq_len - self.pred_len,
+            "test": series_length - self.seq_len - self.pred_len,
+        }
+
+        start = split_start[self.flag]
+        end = split_end[self.flag]
+        if end < start:
+            return None
+        return int(start), int(end - start + 1), int(train_end)
+
+    def __read_data__(self):
+        resolved_path = self._resolve_dataset_path()
+        cached = self._load_cached_source(resolved_path)
+        self.metadata = cached["metadata"]
+
+        usable_rows = []
+        train_values = []
+        min_points = self.seq_len + self.pred_len
+
+        for series_id, values in zip(cached["series_ids"], cached["series_values"]):
+            values = np.asarray(values, dtype=np.float32)
+            if values.size < min_points:
+                continue
+
+            split_bounds = self._split_bounds(len(values))
+            if split_bounds is None:
+                continue
+
+            split_start, split_count, train_end = split_bounds
+            if split_count <= 0:
+                continue
+
+            train_values.append(values[:train_end].reshape(-1, 1))
+            usable_rows.append((series_id, values, split_start, split_count))
+
+        if not usable_rows:
+            raise ValueError(
+                f"No series in `{resolved_path}` were long enough for seq_len={self.seq_len}, pred_len={self.pred_len}."
+            )
+
+        if self.scale and train_values:
+            self.scaler.fit(np.concatenate(train_values, axis=0))
+
+        cumulative = []
+        running_total = 0
+        for series_id, values, split_start, split_count in usable_rows:
+            if self.scale:
+                values = self.scaler.transform(values.reshape(-1, 1)).reshape(-1)
+
+            self.series_ids.append(series_id)
+            self.series_values.append(values.astype(np.float32))
+            self.series_start_offsets.append(int(split_start))
+            self.series_window_counts.append(int(split_count))
+
+            running_total += int(split_count)
+            cumulative.append(running_total)
+
+        self.cumulative_windows = np.asarray(cumulative, dtype=np.int64)
+
+    def __getitem__(self, index):
+        series_idx = bisect_right(self.cumulative_windows, index)
+        prev_total = 0 if series_idx == 0 else int(self.cumulative_windows[series_idx - 1])
+        local_window_offset = index - prev_total
+
+        start = self.series_start_offsets[series_idx] + local_window_offset
+        end = start + self.seq_len
+        target_start = end
+        target_end = target_start + self.pred_len
+
+        series = self.series_values[series_idx]
+        seq_x = series[start:end].reshape(-1, 1)
+        seq_y = series[target_start:target_end].reshape(-1, 1)
+        seq_x_mark = self.seq_x_mark_template.copy()
+        seq_y_mark = self.seq_y_mark_template.copy()
+        return seq_x, seq_y, seq_x_mark, seq_y_mark
+
+    def __len__(self):
+        if self.cumulative_windows.size == 0:
+            return 0
+        return int(self.cumulative_windows[-1])
+
+    def inverse_transform(self, data):
+        if not self.scale:
+            return data
+        return self.scaler.inverse_transform(data)
+
+
+class Dataset_TourismMonthlyTSF(Dataset):
+    """Monthly Tourism competition dataset for fixed-window short-term forecasting.
+
+    Each TSF row is one monthly univariate tourism series. The loader builds
+    temporal sliding windows and returns calendar marks based on month-of-year
+    sine/cosine features, keeping the same `(seq_x, seq_y, seq_x_mark,
+    seq_y_mark)` contract used by the fixed-window short-term pipeline.
+    """
+
+    _CACHE = {}
+    MARK_FEATURE_NAMES = ["month_sin", "month_cos"]
+
+    def __init__(
+        self,
+        args,
+        root_path,
+        flag="train",
+        size=None,
+        features="S",
+        data_path="tourism_monthly_dataset.tsf",
+        target="tourism",
+        scale=True,
+        timeenc=1,
+        freq="tourism_monthly",
+        seasonal_patterns=None,
+    ):
+        self.args = args
+        if size is None:
+            self.seq_len = 48
+            self.label_len = 24
+            self.pred_len = 24
+        else:
+            self.seq_len, self.label_len, self.pred_len = size
+
+        assert flag in ["train", "val", "test"]
+        self.flag = flag
+        self.features = features
+        self.target = target
+        self.scale = scale
+        self.timeenc = timeenc
+        self.freq = freq or "tourism_monthly"
+        self.root_path = root_path
+        self.data_path = data_path
+        self.use_time_marks = True
+
+        self.feature_names = [self.target]
+        self.mark_feature_names = list(self.MARK_FEATURE_NAMES)
+        self.target_feature_index = 0
+        self.series_ids = []
+        self.series_values = []
+        self.series_marks = []
+        self.series_start_offsets = []
+        self.series_window_counts = []
+        self.cumulative_windows = np.array([], dtype=np.int64)
+        self.num_series = 0
+        self.scaler = StandardScaler()
+
+        self.__read_data__()
+
+    def _resolve_tsf_path(self):
+        candidates = []
+        if os.path.isfile(self.root_path):
+            candidates.append(self.root_path)
+        if self.data_path:
+            candidates.append(os.path.join(self.root_path, self.data_path))
+        if os.path.isdir(self.root_path):
+            candidates.extend(
+                os.path.join(self.root_path, name)
+                for name in [
+                    "tourism_monthly_dataset.tsf",
+                    "tourism_monthly.tsf",
+                    "tourism_dataset.tsf",
+                    "tourism.tsf",
+                ]
+            )
+            candidates.extend(sorted(glob.glob(os.path.join(self.root_path, "*tourism*monthly*.tsf"))))
+            candidates.extend(sorted(glob.glob(os.path.join(self.root_path, "*tourism*.tsf"))))
+
+        for candidate in candidates:
+            if candidate and os.path.exists(candidate):
+                return os.path.abspath(candidate)
+
+        raise FileNotFoundError(
+            "Tourism monthly TSF file not found. Expected a file like "
+            "`tourism_monthly_dataset.tsf` under `--root_path`."
+        )
+
+    @classmethod
+    def _load_cached_source(cls, filepath):
+        filepath = os.path.abspath(filepath)
+        if filepath in cls._CACHE:
+            return cls._CACHE[filepath]
+
+        metadata, attribute_names = _read_tsf_header(filepath)
+        if "start_timestamp" not in attribute_names:
+            raise ValueError(
+                "Tourism monthly TSF file is missing the `start_timestamp` attribute "
+                "needed to construct month-of-year marks."
+            )
+
+        series_ids = []
+        series_values = []
+        series_marks = []
+
+        for record in _iter_tsf_records(filepath, attribute_names):
+            values = np.nan_to_num(record["values"], nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32)
+            if values.size == 0:
+                continue
+
+            series_name = record.get("series_name", f"series_{len(series_ids)}")
+            start_timestamp = pd.to_datetime(record["start_timestamp"], errors="coerce")
+            if pd.isna(start_timestamp):
+                raise ValueError(
+                    f"Invalid `start_timestamp` for tourism series `{series_name}`: "
+                    f"{record['start_timestamp']}"
+                )
+
+            series_ids.append(series_name)
+            series_values.append(values)
+            series_marks.append(_build_monthly_cyclical_marks(start_timestamp, len(values)))
+
+        if not series_ids:
+            raise ValueError(f"No usable tourism monthly series found in TSF file: {filepath}")
+
+        cls._CACHE[filepath] = {
+            "metadata": metadata,
+            "series_ids": series_ids,
+            "series_values": series_values,
+            "series_marks": series_marks,
+        }
+        return cls._CACHE[filepath]
+
+    def _split_bounds(self, series_length):
+        max_start = series_length - self.seq_len - self.pred_len
+        if max_start < 0:
+            return None
+
+        train_end = max(self.seq_len + self.pred_len, int(np.floor(series_length * 0.7)))
+        val_end = max(train_end, int(np.floor(series_length * 0.8)))
+        train_end = min(train_end, series_length)
+        val_end = min(max(val_end, train_end), series_length)
+
+        split_start = {
+            "train": 0,
+            "val": max(0, train_end - self.seq_len),
+            "test": max(0, val_end - self.seq_len),
+        }
+        split_end = {
+            "train": train_end - self.seq_len - self.pred_len,
+            "val": val_end - self.seq_len - self.pred_len,
+            "test": series_length - self.seq_len - self.pred_len,
+        }
+
+        start = split_start[self.flag]
+        end = split_end[self.flag]
+        if end < start:
+            return None
+        return int(start), int(end - start + 1), int(train_end)
+
+    def __read_data__(self):
+        tsf_path = self._resolve_tsf_path()
+        cached = self._load_cached_source(tsf_path)
+
+        usable_rows = []
+        train_values = []
+        min_points = self.seq_len + self.pred_len
+
+        for series_id, values, marks in zip(
+            cached["series_ids"],
+            cached["series_values"],
+            cached["series_marks"],
+        ):
+            if len(values) < min_points:
+                continue
+
+            split_bounds = self._split_bounds(len(values))
+            if split_bounds is None:
+                continue
+
+            split_start, split_count, train_end = split_bounds
+            if split_count <= 0:
+                continue
+
+            train_values.append(values[:train_end].reshape(-1, 1))
+            usable_rows.append((series_id, values, marks, split_start, split_count))
+
+        if not usable_rows:
+            raise ValueError(
+                "No tourism monthly series were long enough for the configured "
+                f"`seq_len={self.seq_len}` and `pred_len={self.pred_len}`."
+            )
+
+        if self.scale and train_values:
+            self.scaler.fit(np.concatenate(train_values, axis=0))
+
+        cumulative = []
+        running_total = 0
+        for series_id, values, marks, split_start, split_count in usable_rows:
+            if self.scale:
+                values = self.scaler.transform(values.reshape(-1, 1)).reshape(-1)
+
+            self.series_ids.append(series_id)
+            self.series_values.append(values.astype(np.float32))
+            self.series_marks.append(marks.astype(np.float32))
+            self.series_start_offsets.append(int(split_start))
+            self.series_window_counts.append(int(split_count))
+
+            running_total += int(split_count)
+            cumulative.append(running_total)
+
+        self.cumulative_windows = np.asarray(cumulative, dtype=np.int64)
+        self.num_series = len(self.series_ids)
+
+    def __getitem__(self, index):
+        series_idx = bisect_right(self.cumulative_windows, index)
+        prev_total = 0 if series_idx == 0 else int(self.cumulative_windows[series_idx - 1])
+        local_window_offset = index - prev_total
+
+        start = self.series_start_offsets[series_idx] + local_window_offset
+        end = start + self.seq_len
+        target_start = end
+        target_end = target_start + self.pred_len
+
+        series = self.series_values[series_idx]
+        marks = self.series_marks[series_idx]
+
+        seq_x = series[start:end].reshape(-1, 1)
+        seq_y = series[target_start:target_end].reshape(-1, 1)
+        seq_x_mark = marks[start:end]
+        seq_y_mark = marks[target_start:target_end]
+        return seq_x, seq_y, seq_x_mark, seq_y_mark
+
+    def __len__(self):
+        if self.cumulative_windows.size == 0:
+            return 0
+        return int(self.cumulative_windows[-1])
+
+    def inverse_transform(self, data):
+        if not self.scale:
+            return data
+        return self.scaler.inverse_transform(data)
+
+
+class Dataset_NN5DailyTSF(Dataset):
+    """Daily NN5 ATM cash-withdrawal dataset for short-term forecasting.
+
+    Each TSF row is one ATM cash-withdrawal series. We construct fixed daily
+    sliding windows and use real daily calendar marks because ATM usage usually
+    has strong day-of-week effects.
+    """
+
+    _CACHE = {}
+    MARK_FEATURE_NAMES = ["dow_sin", "dow_cos", "month_sin", "month_cos"]
+
+    def __init__(
+        self,
+        args,
+        root_path,
+        flag="train",
+        size=None,
+        features="S",
+        data_path="nn5_daily_dataset_without_missing_values.tsf",
+        target="cash",
+        scale=True,
+        timeenc=1,
+        freq="nn5_daily",
+        seasonal_patterns=None,
+    ):
+        self.args = args
+        if size is None:
+            self.seq_len = 112
+            self.label_len = 56
+            self.pred_len = 56
+        else:
+            self.seq_len, self.label_len, self.pred_len = size
+
+        assert flag in ["train", "val", "test"]
+        self.flag = flag
+        self.features = features
+        self.target = target
+        self.scale = scale
+        self.timeenc = timeenc
+        self.freq = freq or "nn5_daily"
+        self.root_path = root_path
+        self.data_path = data_path
+        self.use_time_marks = True
+
+        self.feature_names = [self.target]
+        self.mark_feature_names = list(self.MARK_FEATURE_NAMES)
+        self.target_feature_index = 0
+        self.series_ids = []
+        self.series_start_keys = np.array([], dtype=object)
+        self.series_values = np.empty((0, 0), dtype=np.float32)
+        self.series_length = 0
+        self.window_start = 0
+        self.window_count = 0
+        self.num_series = 0
+        self.scaler = StandardScaler()
+        self._marks_by_start = {}
+
+        self.__read_data__()
+
+    def _resolve_tsf_path(self):
+        candidates = []
+        if os.path.isfile(self.root_path):
+            candidates.append(self.root_path)
+        if self.data_path:
+            candidates.append(os.path.join(self.root_path, self.data_path))
+        if os.path.isdir(self.root_path):
+            candidates.extend(
+                os.path.join(self.root_path, name)
+                for name in [
+                    "nn5_daily_dataset_without_missing_values.tsf",
+                    "nn5_daily_dataset.tsf",
+                    "nn5_daily.tsf",
+                    "nn5.tsf",
+                ]
+            )
+            candidates.extend(sorted(glob.glob(os.path.join(self.root_path, "*nn5*daily*.tsf"))))
+            candidates.extend(sorted(glob.glob(os.path.join(self.root_path, "*nn5*.tsf"))))
+
+        for candidate in candidates:
+            if candidate and os.path.exists(candidate):
+                return os.path.abspath(candidate)
+
+        raise FileNotFoundError(
+            "NN5 daily TSF file not found. Expected a file like "
+            "`nn5_daily_dataset_without_missing_values.tsf` under `--root_path`."
+        )
+
+    @classmethod
+    def _load_cached_source(cls, filepath):
+        filepath = os.path.abspath(filepath)
+        if filepath in cls._CACHE:
+            return cls._CACHE[filepath]
+
+        metadata, attribute_names = _read_tsf_header(filepath)
+        if "start_timestamp" not in attribute_names:
+            raise ValueError(
+                "NN5 daily TSF file is missing the `start_timestamp` attribute "
+                "needed to construct daily calendar marks."
+            )
+
+        series_ids = []
+        series_start_keys = []
+        series_length = None
+
+        for record in _iter_tsf_records(filepath, attribute_names):
+            values = np.nan_to_num(record["values"], nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32)
+            current_length = int(values.size)
+            if current_length == 0:
+                continue
+            if series_length is None:
+                series_length = current_length
+            elif current_length != series_length:
+                raise ValueError(
+                    "NN5 daily integration expects equal-length ATM series, "
+                    f"but found lengths {series_length} and {current_length}."
+                )
+
+            series_name = record.get("series_name", f"series_{len(series_ids)}")
+            start_timestamp = pd.to_datetime(record["start_timestamp"], errors="coerce")
+            if pd.isna(start_timestamp):
+                raise ValueError(
+                    f"Invalid `start_timestamp` for NN5 series `{series_name}`: "
+                    f"{record['start_timestamp']}"
+                )
+
+            series_ids.append(series_name)
+            series_start_keys.append(start_timestamp.normalize().strftime("%Y-%m-%d"))
+
+        if not series_ids or series_length is None:
+            raise ValueError(f"No usable NN5 daily series found in TSF file: {filepath}")
+
+        series_values = np.empty((len(series_ids), series_length), dtype=np.float32)
+        for row_idx, record in enumerate(_iter_tsf_records(filepath, attribute_names)):
+            values = np.nan_to_num(record["values"], nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32)
+            series_values[row_idx] = values
+
+        marks_by_start = {
+            start_key: _build_daily_cyclical_marks(start_key, series_length)
+            for start_key in sorted(set(series_start_keys))
+        }
+
+        cls._CACHE[filepath] = {
+            "metadata": metadata,
+            "series_ids": series_ids,
+            "series_start_keys": np.asarray(series_start_keys, dtype=object),
+            "series_values": series_values,
+            "series_length": series_length,
+            "marks_by_start": marks_by_start,
+        }
+        return cls._CACHE[filepath]
+
+    def _split_bounds(self, series_length):
+        max_start = series_length - self.seq_len - self.pred_len
+        if max_start < 0:
+            return None
+
+        train_end = max(self.seq_len + self.pred_len, int(np.floor(series_length * 0.7)))
+        val_end = max(train_end, int(np.floor(series_length * 0.8)))
+        train_end = min(train_end, series_length)
+        val_end = min(max(val_end, train_end), series_length)
+
+        split_start = {
+            "train": 0,
+            "val": max(0, train_end - self.seq_len),
+            "test": max(0, val_end - self.seq_len),
+        }
+        split_end = {
+            "train": train_end - self.seq_len - self.pred_len,
+            "val": val_end - self.seq_len - self.pred_len,
+            "test": series_length - self.seq_len - self.pred_len,
+        }
+
+        start = split_start[self.flag]
+        end = split_end[self.flag]
+        if end < start:
+            return None
+        return int(start), int(end - start + 1), int(train_end)
+
+    def __read_data__(self):
+        tsf_path = self._resolve_tsf_path()
+        cached = self._load_cached_source(tsf_path)
+
+        self.series_ids = cached["series_ids"]
+        self.series_start_keys = cached["series_start_keys"]
+        self.series_values = cached["series_values"].astype(np.float32).copy()
+        self.series_length = int(cached["series_length"])
+        self._marks_by_start = cached["marks_by_start"]
+        self.num_series = int(self.series_values.shape[0])
+
+        minimum_length = self.seq_len + self.pred_len
+        if self.series_length < minimum_length:
+            raise ValueError(
+                "NN5 daily series are too short for the configured short-term setup. "
+                f"Need at least {minimum_length} points, found {self.series_length}."
+            )
+
+        split_bounds = self._split_bounds(self.series_length)
+        if split_bounds is None:
+            raise ValueError(
+                "Could not construct temporal short-term windows for the NN5 daily dataset "
+                f"with seq_len={self.seq_len} and pred_len={self.pred_len}."
+            )
+
+        self.window_start, self.window_count, train_end = split_bounds
+        if self.scale:
+            self.scaler.fit(self.series_values[:, :train_end].reshape(-1, 1))
+            self.series_values = self.scaler.transform(self.series_values.reshape(-1, 1)).reshape(self.series_values.shape)
+
+    def __getitem__(self, index):
+        series_idx = index // self.window_count
+        local_window_offset = index % self.window_count
+
+        start = self.window_start + local_window_offset
+        end = start + self.seq_len
+        target_start = end
+        target_end = target_start + self.pred_len
+
+        series = self.series_values[series_idx]
+        marks = self._marks_by_start[self.series_start_keys[series_idx]]
+
+        seq_x = series[start:end].reshape(-1, 1)
+        seq_y = series[target_start:target_end].reshape(-1, 1)
+        seq_x_mark = marks[start:end]
+        seq_y_mark = marks[target_start:target_end]
+        return seq_x, seq_y, seq_x_mark, seq_y_mark
+
+    def __len__(self):
+        return int(self.num_series * self.window_count)
+
+    def inverse_transform(self, data):
+        if not self.scale:
+            return data
+        return self.scaler.inverse_transform(data)
+
+
+class Dataset_CarPartsTSF(Dataset):
+    """Multivariate monthly car-parts sales forecasting dataset.
+
+    The TSF file contains 2674 equal-length monthly intermittent-demand series
+    on the same calendar grid. Unlike the page/ATM loaders that emit one
+    univariate sample per row, this loader stacks all car-part series as feature
+    channels and predicts all channels together.
+    """
+
+    _CACHE = {}
+    MARK_FEATURE_NAMES = ["month_sin", "month_cos"]
+
+    def __init__(
+        self,
+        args,
+        root_path,
+        flag="train",
+        size=None,
+        features="M",
+        data_path="car_parts_dataset_without_missing_values.tsf",
+        target="sales",
+        scale=True,
+        timeenc=1,
+        freq="car_parts_monthly",
+        seasonal_patterns=None,
+    ):
+        self.args = args
+        if size is None:
+            self.seq_len = 24
+            self.label_len = 12
+            self.pred_len = 12
+        else:
+            self.seq_len, self.label_len, self.pred_len = size
+
+        assert flag in ["train", "val", "test"]
+        self.flag = flag
+        self.features = features
+        self.target = target
+        self.scale = scale
+        self.timeenc = timeenc
+        self.freq = freq or "car_parts_monthly"
+        self.root_path = root_path
+        self.data_path = data_path
+        self.use_time_marks = True
+        self.predict_all_channels = True
+
+        self.mark_feature_names = list(self.MARK_FEATURE_NAMES)
+        self.target_feature_index = 0
+        self.series_ids = []
+        self.feature_names = []
+        self.series_values = np.empty((0, 0), dtype=np.float32)
+        self.series_length = 0
+        self.feature_dim = 0
+        self.window_start = 0
+        self.window_count = 0
+        self.scaler = StandardScaler()
+        self.marks = np.empty((0, len(self.MARK_FEATURE_NAMES)), dtype=np.float32)
+
+        self.__read_data__()
+
+    def _resolve_tsf_path(self):
+        candidates = []
+        if os.path.isfile(self.root_path):
+            candidates.append(self.root_path)
+        if self.data_path:
+            candidates.append(os.path.join(self.root_path, self.data_path))
+        if os.path.isdir(self.root_path):
+            candidates.extend(
+                os.path.join(self.root_path, name)
+                for name in [
+                    "car_parts_dataset_without_missing_values.tsf",
+                    "car_parts_dataset.tsf",
+                    "car_parts.tsf",
+                ]
+            )
+            candidates.extend(sorted(glob.glob(os.path.join(self.root_path, "*car*parts*.tsf"))))
+
+        for candidate in candidates:
+            if candidate and os.path.exists(candidate):
+                return os.path.abspath(candidate)
+
+        raise FileNotFoundError(
+            "Car Parts TSF file not found. Expected a file like "
+            "`car_parts_dataset_without_missing_values.tsf` under `--root_path`."
+        )
+
+    @classmethod
+    def _load_cached_source(cls, filepath):
+        filepath = os.path.abspath(filepath)
+        if filepath in cls._CACHE:
+            return cls._CACHE[filepath]
+
+        metadata, attribute_names = _read_tsf_header(filepath)
+        if "start_timestamp" not in attribute_names:
+            raise ValueError(
+                "Car Parts TSF file is missing the `start_timestamp` attribute "
+                "needed to construct month-of-year marks."
+            )
+
+        series_ids = []
+        series_values = []
+        start_keys = []
+        series_length = None
+
+        for record in _iter_tsf_records(filepath, attribute_names):
+            values = np.nan_to_num(record["values"], nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32)
+            current_length = int(values.size)
+            if current_length == 0:
+                continue
+            if series_length is None:
+                series_length = current_length
+            elif current_length != series_length:
+                raise ValueError(
+                    "Car Parts integration expects equal-length monthly series, "
+                    f"but found lengths {series_length} and {current_length}."
+                )
+
+            series_name = record.get("series_name", f"series_{len(series_ids)}")
+            start_timestamp = pd.to_datetime(record["start_timestamp"], errors="coerce")
+            if pd.isna(start_timestamp):
+                raise ValueError(
+                    f"Invalid `start_timestamp` for car-parts series `{series_name}`: "
+                    f"{record['start_timestamp']}"
+                )
+
+            series_ids.append(series_name)
+            series_values.append(values)
+            start_keys.append(start_timestamp.normalize().strftime("%Y-%m-%d"))
+
+        if not series_ids or series_length is None:
+            raise ValueError(f"No usable car-parts series found in TSF file: {filepath}")
+        if len(set(start_keys)) != 1:
+            raise ValueError(
+                "Car Parts multivariate loader expects all part series to share one calendar start."
+            )
+
+        values_matrix = np.stack(series_values, axis=1).astype(np.float32)
+        marks = _build_monthly_cyclical_marks(start_keys[0], series_length)
+
+        cls._CACHE[filepath] = {
+            "metadata": metadata,
+            "series_ids": series_ids,
+            "series_values": values_matrix,
+            "series_length": series_length,
+            "marks": marks,
+        }
+        return cls._CACHE[filepath]
+
+    def _window_split_bounds(self, window_count):
+        if window_count < 3:
+            return None
+
+        train_count = max(1, int(window_count * 0.7))
+        val_count = max(1, int(window_count * 0.1))
+        if train_count + val_count >= window_count:
+            train_count = max(1, window_count - 2)
+            val_count = 1
+        test_count = window_count - train_count - val_count
+        if test_count < 1:
+            return None
+
+        split_start = {
+            "train": 0,
+            "val": train_count,
+            "test": train_count + val_count,
+        }
+        split_count = {
+            "train": train_count,
+            "val": val_count,
+            "test": test_count,
+        }
+        return split_start[self.flag], split_count[self.flag], train_count
+
+    def __read_data__(self):
+        tsf_path = self._resolve_tsf_path()
+        cached = self._load_cached_source(tsf_path)
+
+        self.series_ids = cached["series_ids"]
+        self.feature_names = list(self.series_ids)
+        self.series_values = cached["series_values"].astype(np.float32).copy()
+        self.series_length = int(cached["series_length"])
+        self.feature_dim = int(self.series_values.shape[1])
+        self.marks = cached["marks"]
+
+        window_count = self.series_length - self.seq_len - self.pred_len + 1
+        bounds = self._window_split_bounds(window_count)
+        if bounds is None:
+            raise ValueError(
+                "Could not construct Car Parts windows. "
+                f"Need at least 3 windows, got {window_count} with "
+                f"seq_len={self.seq_len} and pred_len={self.pred_len}."
+            )
+
+        self.window_start, self.window_count, train_window_count = bounds
+        train_end = min(self.series_length, train_window_count + self.seq_len + self.pred_len - 1)
+        if self.scale:
+            self.scaler.fit(self.series_values[:train_end])
+            self.series_values = self.scaler.transform(self.series_values)
+
+    def __getitem__(self, index):
+        start = self.window_start + index
+        end = start + self.seq_len
+        target_start = end
+        target_end = target_start + self.pred_len
+
+        seq_x = self.series_values[start:end]
+        seq_y = self.series_values[target_start:target_end]
+        seq_x_mark = self.marks[start:end]
+        seq_y_mark = self.marks[target_start:target_end]
+        return seq_x, seq_y, seq_x_mark, seq_y_mark
+
+    def __len__(self):
+        return int(self.window_count)
+
+    def inverse_transform(self, data):
+        if not self.scale:
+            return data
+
+        if data.shape[-1] == self.feature_dim:
+            original_shape = data.shape
+            return self.scaler.inverse_transform(data.reshape(-1, self.feature_dim)).reshape(original_shape)
+
+        target_idx = self.target_feature_index
+        return data * self.scaler.scale_[target_idx] + self.scaler.mean_[target_idx]
+
+
+class Dataset_WebTrafficTSF(Dataset):
+    """Short-term daily web traffic forecasting dataset backed by the Kaggle TSF file.
+
+    Each series corresponds to one Wikipedia page. We construct fixed-length
+    sliding windows over the daily traffic values and return real calendar-based
+    marks using day-of-week and month sine/cosine features.
+    """
+
+    _CACHE = {}
+    MARK_FEATURE_NAMES = ["dow_sin", "dow_cos", "month_sin", "month_cos"]
+
+    def __init__(
+        self,
+        args,
+        root_path,
+        flag="train",
+        size=None,
+        features="S",
+        data_path="kaggle_web_traffic_dataset_without_missing_values.tsf",
+        target="traffic",
+        scale=False,
+        timeenc=1,
+        freq="web",
+        seasonal_patterns=None,
+    ):
+        self.args = args
+        if size is None:
+            self.seq_len = 90
+            self.label_len = 30
+            self.pred_len = 30
+        else:
+            self.seq_len, self.label_len, self.pred_len = size
+
+        assert flag in ["train", "val", "test"]
+        self.flag = flag
+        self.features = features
+        self.target = target
+        self.timeenc = timeenc
+        self.freq = freq or "web"
+        self.root_path = root_path
+        self.data_path = data_path
+
+        self.use_log1p = bool(getattr(args, "web_traffic_log1p", False))
+        self.scale = bool(scale or self.use_log1p)
+        self.use_time_marks = True
+        self.feature_names = [self.target]
+        self.mark_feature_names = list(self.MARK_FEATURE_NAMES)
+        self.target_feature_index = 0
+
+        self.series_ids = []
+        self.series_start_keys = np.array([], dtype=object)
+        self.series_values = np.empty((0, 0), dtype=np.float32)
+        self.series_length = 0
+        self.window_start = 0
+        self.window_count = 0
+        self.num_series = 0
+        self._marks_by_start = {}
+
+        self.__read_data__()
+
+    def _resolve_tsf_path(self):
+        candidates = []
+        if os.path.isfile(self.root_path):
+            candidates.append(self.root_path)
+        if self.data_path:
+            candidates.append(os.path.join(self.root_path, self.data_path))
+        if os.path.isdir(self.root_path):
+            candidates.extend(
+                os.path.join(self.root_path, name)
+                for name in [
+                    "kaggle_web_traffic_dataset_without_missing_values.tsf",
+                    "web_traffic_dataset.tsf",
+                    "web_traffic.tsf",
+                ]
+            )
+            candidates.extend(sorted(glob.glob(os.path.join(self.root_path, "*web*traffic*.tsf"))))
+
+        for candidate in candidates:
+            if candidate and os.path.exists(candidate):
+                return os.path.abspath(candidate)
+
+        raise FileNotFoundError(
+            "Web Traffic TSF file not found. Expected a file like "
+            "`kaggle_web_traffic_dataset_without_missing_values.tsf`."
+        )
+
+    @classmethod
+    def _load_cached_source(cls, filepath, use_log1p):
+        cache_key = (os.path.abspath(filepath), bool(use_log1p))
+        if cache_key in cls._CACHE:
+            return cls._CACHE[cache_key]
+
+        metadata, attribute_names = _read_tsf_header(filepath)
+        if "start_timestamp" not in attribute_names:
+            raise ValueError(
+                "Web Traffic TSF file is missing the `start_timestamp` attribute needed "
+                "to construct calendar marks."
+            )
+
+        series_ids = []
+        series_start_keys = []
+        series_length = None
+
+        for record in _iter_tsf_records(filepath, attribute_names):
+            values = np.nan_to_num(record["values"], nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32)
+            values = np.clip(values, a_min=0.0, a_max=None)
+
+            current_length = int(values.size)
+            if series_length is None:
+                series_length = current_length
+            elif current_length != series_length:
+                raise ValueError(
+                    "Web Traffic TSF integration expects equal-length page series, "
+                    f"but found lengths {series_length} and {current_length}."
+                )
+
+            series_name = record.get("series_name", f"series_{len(series_ids)}")
+            start_timestamp = pd.to_datetime(record["start_timestamp"], errors="coerce")
+            if pd.isna(start_timestamp):
+                raise ValueError(
+                    f"Invalid `start_timestamp` for web traffic series `{series_name}`: "
+                    f"{record['start_timestamp']}"
+                )
+
+            series_ids.append(series_name)
+            series_start_keys.append(start_timestamp.normalize().strftime("%Y-%m-%d"))
+
+        if not series_ids or series_length is None:
+            raise ValueError(f"No usable web traffic series found in TSF file: {filepath}")
+
+        series_values = np.empty((len(series_ids), series_length), dtype=np.float32)
+        for row_idx, record in enumerate(_iter_tsf_records(filepath, attribute_names)):
+            values = np.nan_to_num(record["values"], nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32)
+            values = np.clip(values, a_min=0.0, a_max=None)
+            if use_log1p:
+                values = np.log1p(values)
+            series_values[row_idx] = values
+
+        marks_by_start = {
+            start_key: _build_daily_cyclical_marks(start_key, series_length)
+            for start_key in sorted(set(series_start_keys))
+        }
+
+        cls._CACHE[cache_key] = {
+            "metadata": metadata,
+            "series_ids": series_ids,
+            "series_start_keys": np.asarray(series_start_keys, dtype=object),
+            "series_values": series_values,
+            "series_length": series_length,
+            "marks_by_start": marks_by_start,
+        }
+        return cls._CACHE[cache_key]
+
+    def _split_bounds(self, series_length):
+        max_start = series_length - self.seq_len - self.pred_len
+        if max_start < 0:
+            return None
+
+        train_end = max(self.seq_len + self.pred_len, int(np.floor(series_length * 0.7)))
+        val_end = max(train_end, int(np.floor(series_length * 0.8)))
+        train_end = min(train_end, series_length)
+        val_end = min(max(val_end, train_end), series_length)
+
+        split_start = {
+            "train": 0,
+            "val": max(0, train_end - self.seq_len),
+            "test": max(0, val_end - self.seq_len),
+        }
+        split_end = {
+            "train": train_end - self.seq_len - self.pred_len,
+            "val": val_end - self.seq_len - self.pred_len,
+            "test": series_length - self.seq_len - self.pred_len,
+        }
+
+        start = split_start[self.flag]
+        end = split_end[self.flag]
+        if end < start:
+            return None
+        return int(start), int(end - start + 1)
+
+    def __read_data__(self):
+        tsf_path = self._resolve_tsf_path()
+        cached = self._load_cached_source(tsf_path, self.use_log1p)
+
+        self.series_ids = cached["series_ids"]
+        self.series_start_keys = cached["series_start_keys"]
+        self.series_values = cached["series_values"]
+        self.series_length = int(cached["series_length"])
+        self._marks_by_start = cached["marks_by_start"]
+        self.num_series = int(self.series_values.shape[0])
+
+        minimum_length = max(self.seq_len + self.pred_len, 2 * (self.seq_len + self.pred_len))
+        if self.series_length < minimum_length:
+            raise ValueError(
+                "Web Traffic series are too short for the configured short-term setup. "
+                f"Need at least {minimum_length} points, found {self.series_length}."
+            )
+
+        split_bounds = self._split_bounds(self.series_length)
+        if split_bounds is None:
+            raise ValueError(
+                "Could not construct temporal short-term windows for the Web Traffic dataset "
+                f"with seq_len={self.seq_len} and pred_len={self.pred_len}."
+            )
+
+        self.window_start, self.window_count = split_bounds
+
+    def __getitem__(self, index):
+        series_idx = index // self.window_count
+        local_window_offset = index % self.window_count
+
+        start = self.window_start + local_window_offset
+        end = start + self.seq_len
+        target_start = end
+        target_end = target_start + self.pred_len
+
+        series = self.series_values[series_idx]
+        marks = self._marks_by_start[self.series_start_keys[series_idx]]
+
+        seq_x = series[start:end].reshape(-1, 1)
+        seq_y = series[target_start:target_end].reshape(-1, 1)
+        seq_x_mark = marks[start:end]
+        seq_y_mark = marks[target_start:target_end]
+        return seq_x, seq_y, seq_x_mark, seq_y_mark
+
+    def __len__(self):
+        return int(self.num_series * self.window_count)
+
+    def inverse_transform(self, data):
+        if not self.use_log1p:
+            return data
+        if isinstance(data, torch.Tensor):
+            return torch.expm1(data)
+        return np.expm1(data)
 
 
 class PSMSegLoader(Dataset):
