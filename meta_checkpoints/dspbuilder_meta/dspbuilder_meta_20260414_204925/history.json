@@ -1,0 +1,62 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 0.6964644575119019,
+    "train_pair_acc": 0.5943158137798309,
+    "train_pair_loss_mean": 0.6675431180000305,
+    "train_dataset_acc": 0.0,
+    "train_signature_cosine": -0.17005521565675735,
+    "val_loss": 0.7321491360664367,
+    "val_pair_acc": 0.471578973531723,
+    "val_pair_loss_mean": 0.7321491360664367,
+    "val_spearman_mean": -0.06521932193219322,
+    "train_weight_norm": 0.3468907380104065,
+    "val_weight_norm": 0.3499618470668793,
+    "train_reg_loss": 0.2892134439945221
+  },
+  {
+    "epoch": 2,
+    "train_loss": 0.6859617853164672,
+    "train_pair_acc": 0.6046316063404084,
+    "train_pair_loss_mean": 0.6622164320945739,
+    "train_dataset_acc": 0.0,
+    "train_signature_cosine": 0.01295064389705658,
+    "val_loss": 0.7367057204246521,
+    "val_pair_acc": 0.4642105460166931,
+    "val_pair_loss_mean": 0.7367057204246521,
+    "val_spearman_mean": -0.0836939693969397,
+    "train_weight_norm": 0.34994784235954285,
+    "val_weight_norm": 0.35167932510375977,
+    "train_reg_loss": 0.23745355442166327
+  },
+  {
+    "epoch": 3,
+    "train_loss": 0.6732768726348877,
+    "train_pair_acc": 0.6082105517387391,
+    "train_pair_loss_mean": 0.6531559419631958,
+    "train_dataset_acc": 0.0,
+    "train_signature_cosine": 0.2725238972902298,
+    "val_loss": 0.7423607468605041,
+    "val_pair_acc": 0.4547368586063385,
+    "val_pair_loss_mean": 0.7423607468605041,
+    "val_spearman_mean": -0.10147494749474947,
+    "train_weight_norm": 0.35295685291290285,
+    "val_weight_norm": 0.35504263639450073,
+    "train_reg_loss": 0.2012093235552311
+  },
+  {
+    "epoch": 4,
+    "train_loss": 0.6653371095657349,
+    "train_pair_acc": 0.6233684480190277,
+    "train_pair_loss_mean": 0.6484695672988892,
+    "train_dataset_acc": 0.0,
+    "train_signature_cosine": 0.4641027534008026,
+    "val_loss": 0.7470122575759888,
+    "val_pair_acc": 0.4389473915100098,
+    "val_pair_loss_mean": 0.7470122575759888,
+    "val_spearman_mean": -0.12815601560156015,
+    "train_weight_norm": 0.3561395502090454,
+    "val_weight_norm": 0.35767075419425964,
+    "train_reg_loss": 0.16867537885904313
+  }
+]

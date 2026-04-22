@@ -60,7 +60,7 @@ cd /data/Time-Series-Library
 
 ```bash
 conda run -n tslib_nightly python train_dspbuilder_meta.py \
-  --train-datasets Weather,Traffic,ECL,Etth1,Exchange \
+  --train-datasets Weather,Traffic,ECL,Etth1,Exchange,M4_Hourly,M4_Monthly,M4_Quarterly,M4_Weekly \
   --val-datasets ILI,M4_Daily \
   --test-datasets M4_Yearly
 ```
@@ -78,7 +78,7 @@ conda run -n tslib_nightly python train_dspbuilder_meta.py
 
 ```bash
 conda run -n tslib_nightly python train_dspbuilder_meta.py \
-  --train-datasets Weather,Traffic,ECL,Etth1,Exchange,M4_Hourly,M4_Monthly,M4_Quarterly \
+  --train-datasets Weather,Traffic,ECL,Etth1,Exchange,M4_Hourly,M4_Monthly,M4_Quarterly,M4_Weekly \
   --val-datasets ILI,M4_Daily \
   --test-datasets M4_Yearly \
   --epochs 50 \
@@ -111,7 +111,7 @@ conda run -n tslib_nightly python train_dspbuilder_meta.py \
 
 ```bash
 conda run -n tslib_nightly python train_dspbuilder_meta.py \
-  --train-datasets Weather,Traffic,ECL,Etth1,Exchange \
+  --train-datasets Weather,Traffic,ECL,Etth1,Exchange,M4_Hourly,M4_Monthly,M4_Quarterly,M4_Weekly \
   --val-datasets ILI,M4_Daily \
   --train-only \
   --device cuda:0

@@ -19,18 +19,18 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--train-datasets", type=str, default="", help="Comma-separated dataset names.")
     parser.add_argument("--val-datasets", type=str, default="", help="Comma-separated dataset names.")
     parser.add_argument("--test-datasets", type=str, default="", help="Comma-separated dataset names.")
-    parser.add_argument("--epochs", type=int, default=50)
+    parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--iterations-per-dataset", type=int, default=5)
-    parser.add_argument("--val-iterations-per-dataset", type=int, default=10)
+    parser.add_argument("--val-iterations-per-dataset", type=int, default=5)
     parser.add_argument(
         "--eval-iterations-per-dataset",
         type=int,
         default=5,
         help="Number of test iterations per dataset.",
     )
-    parser.add_argument("--support-size", type=int, default=5)
+    parser.add_argument("--support-size", type=int, default=16)
     parser.add_argument("--train-query-size", type=int, default=20)
-    parser.add_argument("--val-query-size", type=int, default=10)
+    parser.add_argument("--val-query-size", type=int, default=20)
     parser.add_argument("--test-query-size", type=int, default=10)
     parser.add_argument("--hidden-dim", type=int, default=32) # proxy builder hidden dim: 128 > hidden-dim > proxy_dim
     parser.add_argument("--encoder-hidden-dim", type=int, default=16)
@@ -54,9 +54,22 @@ def build_arg_parser() -> argparse.ArgumentParser:
         "--cls-loss-weight",
         type=float,
         default=0.5,
-        help="Weight for the auxiliary dataset classification loss (train only).",
+        help="Weight for the auxiliary training loss (dataset classification or proxy signature regression).",
     )
-    parser.add_argument("--patience", type=int, default=10)
+    parser.add_argument(
+        "--proxy-signature-regression",
+        dest="proxy_signature_regression",
+        action="store_true",
+        default=False,
+        help="Use proxy signature regression as the auxiliary loss instead of dataset-id classification.",
+    )
+    parser.add_argument(
+        "--no-proxy-signature-regression",
+        dest="proxy_signature_regression",
+        action="store_false",
+        help="Use the original dataset-id classification auxiliary loss.",
+    )
+    parser.add_argument("--patience", type=int, default=5)
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument(

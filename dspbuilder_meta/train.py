@@ -22,6 +22,7 @@ def run_train_epoch(
     epoch: int,
     log_dir: Path,
     cls_loss_weight: float = 0.1,
+    use_proxy_signature_regression: bool = False,
 ) -> dict[str, float]:
     return run_split_epoch(
         model=model,
@@ -36,4 +37,5 @@ def run_train_epoch(
         stage_name="train",
         log_dir=log_dir,
         cls_loss_weight=cls_loss_weight,
+        use_proxy_signature_regression=use_proxy_signature_regression,
     )

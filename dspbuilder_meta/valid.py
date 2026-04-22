@@ -175,6 +175,14 @@ def _write_validation_spearman_log(
         handle.write(log_line + "\n")
 
 
+def _write_validation_section_separator(log_dir: Path, dataset_name: str) -> None:
+    dataset_log_path = log_dir / f"{dataset_name}.txt"
+    separator_line = "-" * 120
+    with dataset_log_path.open("a", encoding="utf-8") as handle:
+        handle.write(separator_line + "\n")
+        handle.write(separator_line + "\n")
+
+
 def _write_validation_spearman_summary_log(
     log_dir: Path,
     epoch: int,
@@ -186,26 +194,45 @@ def _write_validation_spearman_summary_log(
 ) -> None:
     spearman_mean = float(np.mean(spearman_values)) if spearman_values else 0.0
     spearman_std = float(np.std(spearman_values)) if spearman_values else 0.0
-    baseline_suffix = ""
+    baseline_prefix = ""
     if baseline_entry is not None:
-        baseline_suffix = (
-            f" baseline_best_proxy={baseline_entry['best_proxy']} "
-            f"baseline_coefficient={float(baseline_entry['coefficient']):.6f}"
+        baseline_prefix = (
+            f"baseline_best_proxy={baseline_entry['best_proxy']} "
+            f"baseline_coefficient={float(baseline_entry['coefficient']):.6f} "
         )
     log_line = (
         f"[VALID-SPEARMAN-SUMMARY] "
         f"epoch={epoch:03d} "
+        f"spearman_mean={spearman_mean:.6f} "
+        f"{baseline_prefix}"
         f"dataset={dataset_name} "
         f"metric={metric_name} "
-        f"spearman_mean={spearman_mean:.6f} "
         f"spearman_std={spearman_std:.6f} "
         f"support_sets={len(spearman_values)} "
         f"num_candidates={num_candidates}"
-        f"{baseline_suffix}"
     )
     dataset_log_path = log_dir / f"{dataset_name}.txt"
     with dataset_log_path.open("a", encoding="utf-8") as handle:
         handle.write(log_line + "\n")
+
+
+def write_validation_epoch_summary_logs(
+    log_dir: Path,
+    tasks: list[TaskContext],
+    epoch: int,
+    val_loss: float,
+    early_stopping_counter: int,
+) -> None:
+    log_line = (
+        f"[EPOCH-SUMMARY] "
+        f"epoch={epoch:03d} "
+        f"val_loss={val_loss:.6f} "
+        f"early_stopping_counter={early_stopping_counter}"
+    )
+    for task in tasks:
+        dataset_log_path = log_dir / f"{task.benchmark.display_name}.txt"
+        with dataset_log_path.open("a", encoding="utf-8") as handle:
+            handle.write(log_line + "\n")
 
 
 def run_validation_spearman_analysis(
@@ -235,10 +262,14 @@ def run_validation_spearman_analysis(
             baseline_entry = baseline_lookup.get(task.benchmark.key) if baseline_lookup is not None else None
             dataset_spearman_values: list[float] = []
             total_support_sets = len(plan.spearman_support_indices_sets)
+            _write_validation_section_separator(
+                log_dir=log_dir,
+                dataset_name=task.benchmark.display_name,
+            )
             for support_set_index, support_indices_tuple in enumerate(plan.spearman_support_indices_sets, start=1):
                 support_indices = list(support_indices_tuple)
                 support_samples = load_support_samples_from_indices(task, indices=support_indices, device=device)
-                weight_vector, _task_embedding, _dataset_logits = model(support_samples)
+                weight_vector, _task_embedding, _dataset_logits, _predicted_signature = model(support_samples)
                 predicted_proxy_scores = torch.matmul(task.benchmark.proxies.to(device), weight_vector)
                 spearman_corr = flip_spearman_for_lower_is_better_metric(
                     compute_spearman_correlation(
@@ -263,6 +294,10 @@ def run_validation_spearman_analysis(
 
             dataset_spearman_mean = float(np.mean(dataset_spearman_values)) if dataset_spearman_values else 0.0
             dataset_spearman_std = float(np.std(dataset_spearman_values)) if dataset_spearman_values else 0.0
+            _write_validation_section_separator(
+                log_dir=log_dir,
+                dataset_name=task.benchmark.display_name,
+            )
             _write_validation_spearman_summary_log(
                 log_dir=log_dir,
                 epoch=epoch,

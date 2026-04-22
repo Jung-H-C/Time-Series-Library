@@ -32,6 +32,7 @@ class BenchmarkTask:
     proxy_names: tuple[str, ...]
     metrics: torch.Tensor
     proxies: torch.Tensor
+    proxy_signature: torch.Tensor | None = None
 
     @property
     def num_candidates(self) -> int:
@@ -51,11 +52,32 @@ class TaskContext:
 def extract_display_name(csv_path: Path) -> str:
     stem = csv_path.stem
     stem = stem.removeprefix("DSPBuilder_")
-    stem = stem.removesuffix("_Benchmark")
+    suffixes = ("_Benchmark", "_benchmark", "_zscore", "_ZScore")
+    changed = True
+    while changed:
+        changed = False
+        for suffix in suffixes:
+            if stem.endswith(suffix):
+                stem = stem[:-len(suffix)]
+                changed = True
     return stem
 
 
-def load_benchmark_task(csv_path: Path) -> BenchmarkTask:
+def benchmark_file_priority(csv_path: Path) -> tuple[int, int, str]:
+    stem = csv_path.stem
+    has_zscore_suffix = stem.lower().endswith("_zscore")
+    is_legacy_named = stem.startswith("DSPBuilder_") or stem.endswith("_Benchmark") or stem.endswith("_benchmark")
+    return (
+        0 if has_zscore_suffix else 1,
+        1 if is_legacy_named else 0,
+        str(csv_path),
+    )
+
+
+def load_benchmark_task(
+    csv_path: Path,
+    proxy_signature_lookup: dict[str, dict[str, float]] | None = None,
+) -> BenchmarkTask:
     with csv_path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.reader(handle)
         header = [str(column).replace("\ufeff", "").strip() for column in next(reader)]
@@ -70,24 +92,55 @@ def load_benchmark_task(csv_path: Path) -> BenchmarkTask:
     metrics = torch.tensor(row_array[:, 0], dtype=torch.float32)
     proxies = torch.tensor(row_array[:, 1:], dtype=torch.float32)
     display_name = extract_display_name(csv_path)
+    key = normalize_name(display_name)
+    proxy_signature: torch.Tensor | None = None
+    if proxy_signature_lookup is not None:
+        signature_row = proxy_signature_lookup.get(key)
+        if signature_row is None:
+            raise KeyError(f"Proxy signature for dataset '{display_name}' not found in lookup CSV.")
+        missing_proxy_names = [proxy_name for proxy_name in proxy_names if proxy_name not in signature_row]
+        if missing_proxy_names:
+            raise KeyError(
+                f"Proxy signature lookup is missing columns for dataset '{display_name}': {missing_proxy_names}"
+            )
+        proxy_signature = torch.tensor(
+            [float(signature_row[proxy_name]) for proxy_name in proxy_names],
+            dtype=torch.float32,
+        )
     return BenchmarkTask(
-        key=normalize_name(display_name),
+        key=key,
         display_name=display_name,
         csv_path=csv_path,
         metric_name=metric_name,
         proxy_names=proxy_names,
         metrics=metrics,
         proxies=proxies,
+        proxy_signature=proxy_signature,
     )
 
 
-def discover_benchmark_tasks(benchmark_dir: Path) -> dict[str, BenchmarkTask]:
+def discover_benchmark_tasks(
+    benchmark_dir: Path,
+    proxy_signature_lookup: dict[str, dict[str, float]] | None = None,
+) -> dict[str, BenchmarkTask]:
     tasks: dict[str, BenchmarkTask] = {}
     for csv_path in sorted(benchmark_dir.glob("*.csv")):
-        task = load_benchmark_task(csv_path)
-        if task.key in tasks:
-            raise ValueError(f"Duplicate normalized dataset key detected: {task.key}")
-        tasks[task.key] = task
+        task = load_benchmark_task(csv_path, proxy_signature_lookup=proxy_signature_lookup)
+        existing_task = tasks.get(task.key)
+        if existing_task is None:
+            tasks[task.key] = task
+            continue
+
+        current_priority = benchmark_file_priority(existing_task.csv_path)
+        incoming_priority = benchmark_file_priority(csv_path)
+        if incoming_priority < current_priority:
+            tasks[task.key] = task
+            continue
+        if incoming_priority == current_priority:
+            raise ValueError(
+                f"Duplicate benchmark CSVs detected for dataset key '{task.key}': "
+                f"{existing_task.csv_path.name}, {csv_path.name}"
+            )
     if not tasks:
         raise FileNotFoundError(f"No benchmark CSV files found under {benchmark_dir}")
     return tasks
@@ -198,10 +251,53 @@ def build_dataset_namespace(data_config: dict[str, object], repo_root: Path) -> 
     return SimpleNamespace(**merged)
 
 
+class MetaSingleWindowM4Dataset:
+    def __init__(self, base_dataset: object) -> None:
+        self.base_dataset = base_dataset
+        self.seq_len = int(base_dataset.seq_len)
+        self.label_len = int(base_dataset.label_len)
+        self.pred_len = int(base_dataset.pred_len)
+        self.timeseries = base_dataset.timeseries
+        self.ids = getattr(base_dataset, "ids", None)
+
+    def __len__(self) -> int:
+        return len(self.base_dataset)
+
+    def __getattr__(self, name: str):
+        return getattr(self.base_dataset, name)
+
+    def _deterministic_cut_point(self, series_length: int) -> int:
+        # Use the latest cut point that still leaves up to pred_len future targets in the train series.
+        return max(1, series_length - self.pred_len)
+
+    def __getitem__(self, index: int):
+        sampled_timeseries = np.asarray(self.timeseries[int(index)], dtype=np.float32).reshape(-1)
+        insample = np.zeros((self.seq_len, 1), dtype=np.float32)
+        insample_mask = np.zeros((self.seq_len, 1), dtype=np.float32)
+        outsample = np.zeros((self.pred_len + self.label_len, 1), dtype=np.float32)
+        outsample_mask = np.zeros((self.pred_len + self.label_len, 1), dtype=np.float32)
+
+        cut_point = self._deterministic_cut_point(int(sampled_timeseries.shape[0]))
+
+        insample_window = sampled_timeseries[max(0, cut_point - self.seq_len):cut_point]
+        if insample_window.size:
+            insample[-insample_window.shape[0]:, 0] = insample_window
+            insample_mask[-insample_window.shape[0]:, 0] = 1.0
+
+        outsample_window = sampled_timeseries[
+            max(0, cut_point - self.label_len):min(sampled_timeseries.shape[0], cut_point + self.pred_len)
+        ]
+        if outsample_window.size:
+            outsample[:outsample_window.shape[0], 0] = outsample_window
+            outsample_mask[:outsample_window.shape[0], 0] = 1.0
+
+        return insample, outsample, insample_mask, outsample_mask
+
+
 def instantiate_train_dataset(args: SimpleNamespace):
     Data = data_dict[args.data]
     timeenc = 0 if args.embed != "timeF" else 1
-    return Data(
+    dataset = Data(
         args=args,
         root_path=args.root_path,
         data_path=args.data_path,
@@ -213,6 +309,9 @@ def instantiate_train_dataset(args: SimpleNamespace):
         freq=args.freq,
         seasonal_patterns=args.seasonal_patterns,
     )
+    if args.task_name == "short_term_forecast" and args.data == "m4":
+        return MetaSingleWindowM4Dataset(dataset)
+    return dataset
 
 
 def extract_input_sequence(sample) -> torch.Tensor:

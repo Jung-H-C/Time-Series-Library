@@ -11,7 +11,7 @@ import torch
 
 from utils.tools import EarlyStopping
 
-from .baseline import load_spearman_baselines
+from .baseline import load_proxy_signature_lookup, load_spearman_baselines
 from .data_loader import (
     BenchmarkTask,
     TaskContext,
@@ -27,7 +27,7 @@ from .engine import FixedEvaluationPlan
 from .model import DSPBuilderMetaModel
 from .test import run_test_epoch
 from .train import run_train_epoch
-from .valid import build_fixed_evaluation_plans, run_validation_epoch
+from .valid import build_fixed_evaluation_plans, run_validation_epoch, write_validation_epoch_summary_logs
 
 
 def set_seed(seed: int) -> None:
@@ -124,6 +124,10 @@ def print_run_overview(
         f"task_embedding_dim={model.task_embedding_dim}"
     )
     print(
+        "Auxiliary mode:",
+        "proxy_signature_regression" if model.proxy_signature_regression else "dataset_classification",
+    )
+    print(
         "Train dataset ids:",
         ", ".join(
             f"{dataset_id}:{available_tasks[key].display_name}"
@@ -164,7 +168,14 @@ def run_pipeline(args: Namespace) -> int:
     repo_root = Path(__file__).resolve().parent.parent
     benchmark_dir = args.benchmark_dir.resolve()
     candidate_dir = args.candidate_dir.resolve()
-    available_tasks = discover_benchmark_tasks(benchmark_dir)
+    proxy_signature_lookup_path = repo_root / "benchmark" / "lookup" / "proxy_signature_lookup.csv"
+    proxy_signature_lookup = (
+        load_proxy_signature_lookup(proxy_signature_lookup_path) if args.proxy_signature_regression else None
+    )
+    available_tasks = discover_benchmark_tasks(
+        benchmark_dir,
+        proxy_signature_lookup=proxy_signature_lookup,
+    )
     candidate_configs = discover_candidate_configs(candidate_dir)
     baseline_lookup = load_spearman_baselines(repo_root / "benchmark" / "lookup" / "spearman_baseline.csv")
 
@@ -217,6 +228,7 @@ def run_pipeline(args: Namespace) -> int:
         dropout=args.dropout,
         raw_stat_emb=args.raw_stat_emb,
     ).to(device)
+    model.proxy_signature_regression = bool(args.proxy_signature_regression)
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=args.learning_rate,
@@ -261,6 +273,8 @@ def run_pipeline(args: Namespace) -> int:
         "learning_rate": args.learning_rate,
         "weight_decay": args.weight_decay,
         "cls_loss_weight": args.cls_loss_weight,
+        "proxy_signature_regression": args.proxy_signature_regression,
+        "proxy_signature_lookup": str(proxy_signature_lookup_path) if args.proxy_signature_regression else None,
         "patience": args.patience,
         "seed": args.seed,
         "device": str(device),
@@ -311,6 +325,7 @@ def run_pipeline(args: Namespace) -> int:
             epoch=epoch,
             log_dir=train_log_dir,
             cls_loss_weight=args.cls_loss_weight,
+            use_proxy_signature_regression=args.proxy_signature_regression,
         )
         val_stats = run_validation_epoch(
             model=model,
@@ -331,8 +346,8 @@ def run_pipeline(args: Namespace) -> int:
             "train_loss": train_stats["loss"],
             "train_pair_acc": train_stats["pair_acc"],
             "train_pair_loss_mean": train_stats["pair_loss_mean"],
-            "train_cls_loss": train_stats["cls_loss"],
             "train_dataset_acc": train_stats["dataset_acc"],
+            "train_signature_cosine": train_stats["signature_cosine"],
             "val_loss": val_stats["loss"],
             "val_pair_acc": val_stats["pair_acc"],
             "val_pair_loss_mean": val_stats["pair_loss_mean"],
@@ -340,6 +355,9 @@ def run_pipeline(args: Namespace) -> int:
             "train_weight_norm": train_stats["weight_norm"],
             "val_weight_norm": val_stats["weight_norm"],
         }
+        epoch_record["train_reg_loss" if args.proxy_signature_regression else "train_cls_loss"] = train_stats[
+            "cls_loss"
+        ]
         history.append(epoch_record)
         (run_dir / "history.json").write_text(json.dumps(history, indent=2), encoding="utf-8")
 
@@ -354,6 +372,13 @@ def run_pipeline(args: Namespace) -> int:
             )
 
         early_stopping(val_stats["loss"], model, str(run_dir))
+        write_validation_epoch_summary_logs(
+            log_dir=val_log_dir,
+            tasks=val_tasks,
+            epoch=epoch,
+            val_loss=float(val_stats["loss"]),
+            early_stopping_counter=early_stopping.counter,
+        )
         if early_stopping.early_stop:
             print("Early stopping triggered.")
             break

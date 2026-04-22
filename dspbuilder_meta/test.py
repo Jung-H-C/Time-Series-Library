@@ -172,7 +172,7 @@ def run_test_epoch(
                 support_indices = _sample_support_indices(task, support_size=support_size, rng=rng)
                 support_samples = load_support_samples_from_indices(task, indices=support_indices, device=device)
 
-                weight_vector, _task_embedding, _dataset_logits = model(support_samples)
+                weight_vector, _task_embedding, _dataset_logits, _predicted_signature = model(support_samples)
                 predicted_proxy_scores = torch.matmul(all_candidate_proxies, weight_vector)
                 spearman_corr = flip_spearman_for_lower_is_better_metric(
                     compute_spearman_correlation(predicted_proxy_scores, all_candidate_metrics)

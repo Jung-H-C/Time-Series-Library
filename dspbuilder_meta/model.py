@@ -14,13 +14,13 @@ class FeatureWiseSharedEncoder(nn.Module):
     ) -> None:
         super().__init__()
         self.raw_stat_emb = raw_stat_emb
-        self.temporal_encoder = nn.Sequential(
+        self.temporal_encoder = nn.Sequential(  # 각 feature => 16차원
             nn.Conv1d(1, encoder_hidden_dim, kernel_size=5, padding=2),
             nn.GELU(),
             nn.Conv1d(encoder_hidden_dim, encoder_hidden_dim, kernel_size=3, padding=1),
             nn.GELU(),
         )
-        self.feature_projection = nn.Linear(encoder_hidden_dim, projected_dim)
+        self.feature_projection = nn.Linear(encoder_hidden_dim, projected_dim) # 16차원 => 32차원
         self.projected_dim = projected_dim
         self.raw_stat_dim = raw_stat_dim if raw_stat_emb else 0
         if raw_stat_emb:
@@ -72,20 +72,24 @@ class FeatureWiseSharedEncoder(nn.Module):
             raw_stats = self._extract_raw_stats(sample)  # [8]
             raw_stat_embedding = self.raw_stat_projection(raw_stats)  # [R], R = raw_stat_dim
 
+        # Normalize each feature across time
         feature_mean = sample.mean(dim=0, keepdim=True)  # [1, F]
         feature_std = sample.std(dim=0, unbiased=False, keepdim=True).clamp_min(1e-6)  # [1, F]
         sample = (sample - feature_mean) / feature_std  # [T, F]
 
+        # Encode each feature independently using the same temporal encoder
         feature_series = sample.transpose(0, 1).unsqueeze(1)  # [F, 1, T]
         encoded = self.temporal_encoder(feature_series)  # [F, H, T], H = encoder_hidden_dim
-        pooled_over_time = encoded.mean(dim=-1)  # [F, H]
-        projected = self.feature_projection(pooled_over_time)  # [F, P], P = projected_dim
 
-        pooled_mean = projected.mean(dim=0)  # [P]
-        pooled_std = projected.std(dim=0, unbiased=False)  # [P]
+        # Pool over time dimension to get a single vector per feature, then project to the final embedding dimension
+        pooled_over_time = encoded.mean(dim=-1)  # [F, H] 현재 H는 16
+        projected = self.feature_projection(pooled_over_time)  # [F, P], P = projected_dim, 현재 P는 32
+
+        pooled_mean = projected.mean(dim=0)  # [P] ; mean over features
+        pooled_std = projected.std(dim=0, unbiased=False)  # [P] ; std over features
         if self.raw_stat_emb:
             return torch.cat([pooled_mean, pooled_std, raw_stat_embedding], dim=0)  # [2P + R]
-        return torch.cat([pooled_mean, pooled_std], dim=0)  # [2P]
+        return torch.cat([pooled_mean, pooled_std], dim=0)  # [2P] ; pool_mean;pool_std
 
 
 class DSPBuilderMetaModel(nn.Module):
@@ -107,6 +111,7 @@ class DSPBuilderMetaModel(nn.Module):
             raw_stat_dim=32,
             raw_stat_emb=raw_stat_emb,
         )
+        self.proxy_signature_regression = False
         self.sample_embedding_dim = self.support_encoder.output_dim
         self.task_embedding_dim = self.sample_embedding_dim * 2
         self.weight_head = nn.Sequential(
@@ -121,8 +126,18 @@ class DSPBuilderMetaModel(nn.Module):
             nn.Dropout(dropout),
             nn.Linear(head_hidden_dim, num_dataset_classes),
         )
+        self.signature_head = nn.Sequential(
+            nn.LayerNorm(self.task_embedding_dim),
+            nn.Linear(self.task_embedding_dim, head_hidden_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(head_hidden_dim, proxy_dim),
+        )
 
-    def forward(self, support_samples: list[torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self,
+        support_samples: list[torch.Tensor],
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         # support_samples: list of S tensors, each [T, F]
         if not support_samples:
             raise ValueError("support_samples must contain at least one mini sample.")
@@ -134,4 +149,5 @@ class DSPBuilderMetaModel(nn.Module):
         task_embedding = torch.cat([sample_mean, sample_std], dim=0)  # [2E]
         weight_vector = torch.tanh(self.weight_head(task_embedding))  # [proxy_dim]
         dataset_logits = self.dataset_classifier(task_embedding)  # [num_dataset_classes]
-        return weight_vector, task_embedding, dataset_logits  # ([proxy_dim], [2E], [num_dataset_classes])
+        predicted_signature = self.signature_head(task_embedding)  # [proxy_dim]
+        return weight_vector, task_embedding, dataset_logits, predicted_signature

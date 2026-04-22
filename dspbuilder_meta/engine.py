@@ -75,6 +75,19 @@ def compute_dataset_classification_loss(
     }
 
 
+def compute_proxy_signature_regression_loss(
+    predicted_signature: torch.Tensor,
+    target_signature: torch.Tensor,
+) -> tuple[torch.Tensor, dict[str, float]]:
+    loss = torch.nn.functional.mse_loss(predicted_signature, target_signature)
+    pred = torch.nn.functional.normalize(predicted_signature, dim=0)
+    target = torch.nn.functional.normalize(target_signature, dim=0)
+    cosine = torch.sum(pred * target)
+    return loss, {
+        "signature_cosine": float(cosine.item()),
+    }
+
+
 def load_support_samples_from_indices(
     task: TaskContext,
     indices: Iterable[int],
@@ -118,10 +131,16 @@ def write_iteration_log(
     epoch: int,
     dataset_name: str,
     iteration_index: int,
-    stats: dict[str, float | list[float]],
+    stats: dict[str, float | list[float] | str],
 ) -> None:
     weight_vector = stats["weight_vector"]
     assert isinstance(weight_vector, list)
+    signature_suffix = ""
+    aux_metric_name = stats.get("aux_metric_name")
+    aux_loss_label = "cls_loss"
+    if aux_metric_name == "signature_cosine":
+        aux_loss_label = "reg_loss"
+        signature_suffix = f" signature_cosine={float(stats['signature_cosine']):.6f}"
     log_line = (
         f"[{stage_name.upper()}] "
         f"epoch={epoch:03d} "
@@ -130,11 +149,12 @@ def write_iteration_log(
         f"loss={float(stats['loss']):.6f} "
         f"pair_acc={float(stats['pair_acc']):.4f} "
         f"pair_loss_mean={float(stats['pair_loss_mean']):.6f} "
-        f"cls_loss={float(stats['cls_loss']):.6f} "
+        f"{aux_loss_label}={float(stats['cls_loss']):.6f} "
         f"dataset_acc={float(stats['dataset_acc']):.4f} "
         f"num_pairs={int(float(stats['num_pairs']))} "
         f"weight_norm={float(stats['weight_norm']):.6f} "
         f"weight_vector={format_weight_vector(weight_vector)}"
+        f"{signature_suffix}"
     )
     dataset_log_path = log_dir / f"{dataset_name}.txt"
     with dataset_log_path.open("a", encoding="utf-8") as handle:
@@ -153,7 +173,8 @@ def run_task_iteration(
     support_indices: Iterable[int] | None = None,
     query_indices: Iterable[int] | None = None,
     cls_loss_weight: float = 0.1,
-) -> dict[str, float | list[float]]:
+    use_proxy_signature_regression: bool = False,
+) -> dict[str, float | list[float] | str]:
     if support_samples is not None:
         prepared_support_samples = support_samples
     elif support_indices is None:
@@ -183,20 +204,34 @@ def run_task_iteration(
     if optimizer is not None:
         optimizer.zero_grad(set_to_none=True)
 
-    if optimizer is not None and task.dataset_class_id is None:
+    if optimizer is not None and not use_proxy_signature_regression and task.dataset_class_id is None:
         raise ValueError(f"Training task is missing dataset_class_id: {task.benchmark.display_name}")
 
-    weight_vector, _task_embedding, dataset_logits = model(prepared_support_samples)
+    weight_vector, _task_embedding, dataset_logits, predicted_signature = model(prepared_support_samples)
     query_scores = torch.matmul(query_proxies, weight_vector)
     pair_loss_mean, pair_stats = compute_pairwise_loss(query_scores, query_metrics)
     cls_loss = query_scores.new_zeros(())
     dataset_acc = 0.0
+    signature_cosine = 0.0
+    aux_metric_name = "dataset_acc"
     total_loss = pair_loss_mean
 
     if optimizer is not None:
-        assert task.dataset_class_id is not None
-        cls_loss, cls_stats = compute_dataset_classification_loss(dataset_logits, task.dataset_class_id)
-        dataset_acc = float(cls_stats["dataset_acc"])
+        if use_proxy_signature_regression:
+            if task.benchmark.proxy_signature is None:
+                raise ValueError(
+                    f"Training task is missing proxy_signature: {task.benchmark.display_name}"
+                )
+            cls_loss, cls_stats = compute_proxy_signature_regression_loss(
+                predicted_signature,
+                task.benchmark.proxy_signature.to(device),
+            )
+            signature_cosine = float(cls_stats["signature_cosine"])
+            aux_metric_name = "signature_cosine"
+        else:
+            assert task.dataset_class_id is not None
+            cls_loss, cls_stats = compute_dataset_classification_loss(dataset_logits, task.dataset_class_id)
+            dataset_acc = float(cls_stats["dataset_acc"])
         total_loss = pair_loss_mean + (cls_loss_weight * cls_loss)
 
     if optimizer is not None:
@@ -211,6 +246,8 @@ def run_task_iteration(
         "pair_loss_mean": float(pair_stats["pair_loss_mean"]),
         "cls_loss": float(cls_loss.detach().cpu().item()),
         "dataset_acc": dataset_acc,
+        "signature_cosine": signature_cosine,
+        "aux_metric_name": aux_metric_name,
         "weight_norm": float(weight_vector.detach().norm().cpu().item()),
         "weight_vector": [float(value) for value in weight_vector.detach().cpu().tolist()],
     }
@@ -230,6 +267,7 @@ def run_split_epoch(
     log_dir: Path,
     fixed_plans: dict[str, FixedEvaluationPlan] | None = None,
     cls_loss_weight: float = 0.1,
+    use_proxy_signature_regression: bool = False,
 ) -> dict[str, float]:
     aggregate = {
         "loss_sum": 0.0,
@@ -237,6 +275,7 @@ def run_split_epoch(
         "pair_loss_mean_sum": 0.0,
         "cls_loss_sum": 0.0,
         "dataset_acc_sum": 0.0,
+        "signature_cosine_sum": 0.0,
         "weight_norm_sum": 0.0,
         "steps": 0,
         "pairs": 0.0,
@@ -269,6 +308,7 @@ def run_split_epoch(
 
             task_loss_sum = 0.0
             task_cls_loss_sum = 0.0
+            task_signature_cosine_sum = 0.0
             for iteration_index in range(1, effective_iterations + 1):
                 stats = run_task_iteration(
                     model=model,
@@ -282,6 +322,7 @@ def run_split_epoch(
                     support_indices=task_plan.loss_support_indices if task_plan is not None else None,
                     query_indices=task_plan.query_batches[iteration_index - 1] if task_plan is not None else None,
                     cls_loss_weight=cls_loss_weight,
+                    use_proxy_signature_regression=use_proxy_signature_regression,
                 )
                 write_iteration_log(
                     log_dir=log_dir,
@@ -293,24 +334,30 @@ def run_split_epoch(
                 )
                 task_loss_sum += float(stats["loss"])
                 task_cls_loss_sum += float(stats["cls_loss"])
+                task_signature_cosine_sum += float(stats["signature_cosine"])
                 aggregate["loss_sum"] += float(stats["loss"])
                 aggregate["pair_acc_sum"] += float(stats["pair_acc"])
                 aggregate["pair_loss_mean_sum"] += float(stats["pair_loss_mean"])
                 aggregate["cls_loss_sum"] += float(stats["cls_loss"])
                 aggregate["dataset_acc_sum"] += float(stats["dataset_acc"])
+                aggregate["signature_cosine_sum"] += float(stats["signature_cosine"])
                 aggregate["weight_norm_sum"] += float(stats["weight_norm"])
                 aggregate["steps"] += 1
                 aggregate["pairs"] += float(stats["num_pairs"])
             if stage_name == "train":
                 task_avg_loss = task_loss_sum / max(effective_iterations, 1)
                 task_avg_cls_loss = task_cls_loss_sum / max(effective_iterations, 1)
-                print(
+                aux_loss_label = "avg_reg_loss" if use_proxy_signature_regression else "avg_cls_loss"
+                print_line = (
                     f"[TRAIN] epoch={epoch:03d} "
                     f"dataset={task.benchmark.display_name} "
                     f"avg_loss_over_{effective_iterations}_iters={task_avg_loss:.6f} "
-                    f"avg_cls_loss_over_{effective_iterations}_iters={task_avg_cls_loss:.6f}",
-                    flush=True,
+                    f"{aux_loss_label}_over_{effective_iterations}_iters={task_avg_cls_loss:.6f}"
                 )
+                if use_proxy_signature_regression:
+                    task_avg_signature_cosine = task_signature_cosine_sum / max(effective_iterations, 1)
+                    print_line += f" avg_signature_cosine_so_far={task_avg_signature_cosine:.6f}"
+                print(print_line, flush=True)
 
     if aggregate["steps"] == 0:
         return {
@@ -319,6 +366,7 @@ def run_split_epoch(
             "pair_loss_mean": 0.0,
             "cls_loss": 0.0,
             "dataset_acc": 0.0,
+            "signature_cosine": 0.0,
             "weight_norm": 0.0,
             "num_steps": 0.0,
             "num_pairs": 0.0,
@@ -330,6 +378,7 @@ def run_split_epoch(
         "pair_loss_mean": aggregate["pair_loss_mean_sum"] / aggregate["steps"],
         "cls_loss": aggregate["cls_loss_sum"] / aggregate["steps"],
         "dataset_acc": aggregate["dataset_acc_sum"] / aggregate["steps"],
+        "signature_cosine": aggregate["signature_cosine_sum"] / aggregate["steps"],
         "weight_norm": aggregate["weight_norm_sum"] / aggregate["steps"],
         "num_steps": float(aggregate["steps"]),
         "num_pairs": aggregate["pairs"],
