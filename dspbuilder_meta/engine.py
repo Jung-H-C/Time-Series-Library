@@ -383,3 +383,184 @@ def run_split_epoch(
         "num_steps": float(aggregate["steps"]),
         "num_pairs": aggregate["pairs"],
     }
+
+
+def run_supervised_train_epoch(
+    model: DSPBuilderMetaModel,
+    tasks: list[TaskContext],
+    device: torch.device,
+    rng: random.Random,
+    iterations_per_epoch: int,
+    batch_size: int,
+    support_size: int,
+    query_size: int,
+    optimizer: torch.optim.Optimizer,
+    epoch: int,
+    log_dir: Path,
+    cls_loss_weight: float = 0.1,
+    use_proxy_signature_regression: bool = False,
+) -> dict[str, float]:
+    if not tasks:
+        raise ValueError("tasks must contain at least one training dataset.")
+    if iterations_per_epoch <= 0:
+        raise ValueError("iterations_per_epoch must be positive.")
+    if batch_size <= 0:
+        raise ValueError("batch_size must be positive.")
+    if not use_proxy_signature_regression:
+        missing_class_ids = [
+            task.benchmark.display_name
+            for task in tasks
+            if task.dataset_class_id is None
+        ]
+        if missing_class_ids:
+            raise ValueError(
+                "Training tasks are missing dataset_class_id: "
+                + ", ".join(missing_class_ids)
+            )
+
+    aggregate = {
+        "loss_sum": 0.0,
+        "pair_acc_sum": 0.0,
+        "pair_loss_mean_sum": 0.0,
+        "cls_loss_sum": 0.0,
+        "dataset_acc_sum": 0.0,
+        "signature_cosine_sum": 0.0,
+        "weight_norm_sum": 0.0,
+        "task_losses": 0,
+        "pairs": 0.0,
+    }
+
+    model.train(True)
+    progress_interval = max(1, iterations_per_epoch // 10)
+
+    for iteration_index in range(1, iterations_per_epoch + 1):
+        optimizer.zero_grad(set_to_none=True)
+        batch_losses: list[torch.Tensor] = []
+        batch_stats: list[tuple[TaskContext, dict[str, float | list[float] | str]]] = []
+
+        for _ in range(batch_size):
+            task = rng.choice(tasks)
+            support_samples = sample_support_samples(
+                task,
+                support_size=support_size,
+                rng=rng,
+                device=device,
+            )
+            query_indices = sample_query_indices(
+                task.benchmark.num_candidates,
+                query_size=query_size,
+                rng=rng,
+            )
+            query_proxies = task.benchmark.proxies[query_indices].to(device)
+            query_metrics = task.benchmark.metrics[query_indices].to(device)
+
+            weight_vector, _task_embedding, dataset_logits, predicted_signature = model(support_samples)
+            query_scores = torch.matmul(query_proxies, weight_vector)
+            pair_loss_mean, pair_stats = compute_pairwise_loss(query_scores, query_metrics)
+
+            cls_loss = query_scores.new_zeros(())
+            dataset_acc = 0.0
+            signature_cosine = 0.0
+            aux_metric_name = "dataset_acc"
+            if use_proxy_signature_regression:
+                if task.benchmark.proxy_signature is None:
+                    raise ValueError(
+                        f"Training task is missing proxy_signature: {task.benchmark.display_name}"
+                    )
+                cls_loss, cls_stats = compute_proxy_signature_regression_loss(
+                    predicted_signature,
+                    task.benchmark.proxy_signature.to(device),
+                )
+                signature_cosine = float(cls_stats["signature_cosine"])
+                aux_metric_name = "signature_cosine"
+            else:
+                assert task.dataset_class_id is not None
+                cls_loss, cls_stats = compute_dataset_classification_loss(
+                    dataset_logits,
+                    task.dataset_class_id,
+                )
+                dataset_acc = float(cls_stats["dataset_acc"])
+
+            task_loss = pair_loss_mean + (cls_loss_weight * cls_loss)
+            batch_losses.append(task_loss)
+            stats: dict[str, float | list[float] | str] = {
+                "loss": float(task_loss.detach().cpu().item()),
+                "pair_acc": float(pair_stats["pair_acc"]),
+                "num_pairs": float(pair_stats["num_pairs"]),
+                "pair_loss_mean": float(pair_stats["pair_loss_mean"]),
+                "cls_loss": float(cls_loss.detach().cpu().item()),
+                "dataset_acc": dataset_acc,
+                "signature_cosine": signature_cosine,
+                "aux_metric_name": aux_metric_name,
+                "weight_norm": float(weight_vector.detach().norm().cpu().item()),
+                "weight_vector": [float(value) for value in weight_vector.detach().cpu().tolist()],
+            }
+            batch_stats.append((task, stats))
+
+        batch_loss = torch.stack(batch_losses).mean()
+        batch_loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+        optimizer.step()
+
+        for task, stats in batch_stats:
+            write_iteration_log(
+                log_dir=log_dir,
+                stage_name="train",
+                epoch=epoch,
+                dataset_name=task.benchmark.display_name,
+                iteration_index=iteration_index,
+                stats=stats,
+            )
+            aggregate["loss_sum"] += float(stats["loss"])
+            aggregate["pair_acc_sum"] += float(stats["pair_acc"])
+            aggregate["pair_loss_mean_sum"] += float(stats["pair_loss_mean"])
+            aggregate["cls_loss_sum"] += float(stats["cls_loss"])
+            aggregate["dataset_acc_sum"] += float(stats["dataset_acc"])
+            aggregate["signature_cosine_sum"] += float(stats["signature_cosine"])
+            aggregate["weight_norm_sum"] += float(stats["weight_norm"])
+            aggregate["task_losses"] += 1
+            aggregate["pairs"] += float(stats["num_pairs"])
+
+        if iteration_index % progress_interval == 0 or iteration_index == iterations_per_epoch:
+            completed_task_losses = max(aggregate["task_losses"], 1)
+            aux_loss_label = "avg_reg_loss" if use_proxy_signature_regression else "avg_cls_loss"
+            print_line = (
+                f"[TRAIN] epoch={epoch:03d} "
+                f"iteration={iteration_index:03d}/{iterations_per_epoch:03d} "
+                f"batch_loss={float(batch_loss.detach().cpu().item()):.6f} "
+                f"avg_loss_so_far={aggregate['loss_sum'] / completed_task_losses:.6f} "
+                f"{aux_loss_label}_so_far={aggregate['cls_loss_sum'] / completed_task_losses:.6f}"
+            )
+            if use_proxy_signature_regression:
+                print_line += (
+                    f" avg_signature_cosine_so_far="
+                    f"{aggregate['signature_cosine_sum'] / completed_task_losses:.6f}"
+                )
+            print(print_line, flush=True)
+
+    if aggregate["task_losses"] == 0:
+        return {
+            "loss": 0.0,
+            "pair_acc": 0.0,
+            "pair_loss_mean": 0.0,
+            "cls_loss": 0.0,
+            "dataset_acc": 0.0,
+            "signature_cosine": 0.0,
+            "weight_norm": 0.0,
+            "num_steps": 0.0,
+            "num_pairs": 0.0,
+        }
+
+    task_losses = aggregate["task_losses"]
+    return {
+        "loss": aggregate["loss_sum"] / task_losses,
+        "pair_acc": aggregate["pair_acc_sum"] / task_losses,
+        "pair_loss_mean": aggregate["pair_loss_mean_sum"] / task_losses,
+        "cls_loss": aggregate["cls_loss_sum"] / task_losses,
+        "dataset_acc": aggregate["dataset_acc_sum"] / task_losses,
+        "signature_cosine": aggregate["signature_cosine_sum"] / task_losses,
+        "weight_norm": aggregate["weight_norm_sum"] / task_losses,
+        "num_steps": float(iterations_per_epoch),
+        "num_task_losses": float(task_losses),
+        "num_pairs": aggregate["pairs"],
+    }

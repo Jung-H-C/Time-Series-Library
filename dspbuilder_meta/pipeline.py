@@ -109,6 +109,8 @@ def print_run_overview(
     model: DSPBuilderMetaModel,
     run_dir: Path,
     train_only: bool,
+    train_batch_size: int,
+    train_iterations_per_epoch: int,
 ) -> None:
     print("Available tasks:", ", ".join(task.display_name for task in available_tasks.values()))
     print("Train tasks:", ", ".join(task.benchmark.display_name for task in train_tasks))
@@ -121,11 +123,16 @@ def print_run_overview(
     print(
         f"raw_stat_emb={model.support_encoder.raw_stat_emb} "
         f"sample_embedding_dim={model.sample_embedding_dim} "
-        f"task_embedding_dim={model.task_embedding_dim}"
+        f"dataset_description_dim={model.dataset_description_dim} "
+        f"weight_head_layers={model.weight_head_layers}"
     )
     print(
         "Auxiliary mode:",
         "proxy_signature_regression" if model.proxy_signature_regression else "dataset_classification",
+    )
+    print(
+        f"Train schedule: batch_size={train_batch_size} "
+        f"iterations_per_epoch={train_iterations_per_epoch}"
     )
     print(
         "Train dataset ids:",
@@ -227,6 +234,7 @@ def run_pipeline(args: Namespace) -> int:
         head_hidden_dim=args.hidden_dim,
         dropout=args.dropout,
         raw_stat_emb=args.raw_stat_emb,
+        weight_head_layers=args.weight_head_layers,
     ).to(device)
     model.proxy_signature_regression = bool(args.proxy_signature_regression)
     optimizer = torch.optim.AdamW(
@@ -259,7 +267,8 @@ def run_pipeline(args: Namespace) -> int:
         "val_datasets": task_names_for_logging(val_keys, available_tasks),
         "test_datasets": task_names_for_logging(test_keys, available_tasks),
         "epochs": args.epochs,
-        "iterations_per_dataset": args.iterations_per_dataset,
+        "train_iterations_per_epoch": args.iterations_per_epoch,
+        "train_batch_size": args.train_batch_size,
         "val_iterations_per_dataset": args.val_iterations_per_dataset,
         "test_iterations_per_dataset": args.eval_iterations_per_dataset,
         "support_size": args.support_size,
@@ -268,6 +277,7 @@ def run_pipeline(args: Namespace) -> int:
         "test_query_size": args.test_query_size,
         "encoder_hidden_dim": args.encoder_hidden_dim,
         "hidden_dim": args.hidden_dim,
+        "weight_head_layers": args.weight_head_layers,
         "raw_stat_emb": args.raw_stat_emb,
         "dropout": args.dropout,
         "learning_rate": args.learning_rate,
@@ -308,17 +318,18 @@ def run_pipeline(args: Namespace) -> int:
         model=model,
         run_dir=run_dir,
         train_only=args.train_only,
+        train_batch_size=args.train_batch_size,
+        train_iterations_per_epoch=args.iterations_per_epoch,
     )
 
     for epoch in range(1, args.epochs + 1):
-        epoch_train_tasks = list(train_tasks)
-        train_rng.shuffle(epoch_train_tasks)
         train_stats = run_train_epoch(
             model=model,
-            tasks=epoch_train_tasks,
+            tasks=train_tasks,
             device=device,
             rng=train_rng,
-            iterations_per_dataset=args.iterations_per_dataset,
+            iterations_per_epoch=args.iterations_per_epoch,
+            batch_size=args.train_batch_size,
             support_size=args.support_size,
             query_size=args.train_query_size,
             optimizer=optimizer,

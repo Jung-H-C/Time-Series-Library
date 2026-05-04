@@ -85,11 +85,72 @@ class FeatureWiseSharedEncoder(nn.Module):
         pooled_over_time = encoded.mean(dim=-1)  # [F, H] 현재 H는 16
         projected = self.feature_projection(pooled_over_time)  # [F, P], P = projected_dim, 현재 P는 32
 
-        pooled_mean = projected.mean(dim=0)  # [P] ; mean over features
-        pooled_std = projected.std(dim=0, unbiased=False)  # [P] ; std over features
+        pooled_mean = projected.mean(dim=0)  # [32] ; mean over features
+        pooled_std = projected.std(dim=0, unbiased=False)  # [32] ; std over features
         if self.raw_stat_emb:
             return torch.cat([pooled_mean, pooled_std, raw_stat_embedding], dim=0)  # [2P + R]
-        return torch.cat([pooled_mean, pooled_std], dim=0)  # [2P] ; pool_mean;pool_std
+        return torch.cat([pooled_mean, pooled_std], dim=0)  # [64] ; pool_mean;pool_std
+
+
+class SetEncoder(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+        output_dim: int = 128,
+        dropout: float = 0.1,
+    ) -> None:
+        super().__init__()
+        self.output_dim = output_dim
+        self.shared_mlp = nn.Sequential(
+            nn.Linear(input_dim, output_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(output_dim, output_dim),
+            nn.GELU(),
+        )
+        self.output_mlp = nn.Sequential(
+            nn.Linear(output_dim, output_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(output_dim, output_dim),
+        )
+
+    def forward(self, sample_embeddings: torch.Tensor) -> torch.Tensor:
+        # sample_embeddings: [N, 64]
+        if sample_embeddings.ndim != 2:
+            raise ValueError(
+                f"Expected [num_samples, embedding_dim] tensor, got shape {tuple(sample_embeddings.shape)}"
+            )
+        encoded_samples = self.shared_mlp(sample_embeddings)  # [N, 64] -> [N, 128]
+        pooled = encoded_samples.mean(dim=0)  # [128]
+        return self.output_mlp(pooled)  # [128]
+
+
+def build_weight_head(
+    input_dim: int,
+    hidden_dim: int,
+    output_dim: int,
+    num_hidden_layers: int,
+    dropout: float,
+) -> nn.Sequential:
+    if num_hidden_layers <= 0:
+        raise ValueError("weight_head_layers must be positive.")
+    if hidden_dim <= 0:
+        raise ValueError("head_hidden_dim must be positive.")
+
+    layers: list[nn.Module] = []
+    current_dim = input_dim
+    for _ in range(num_hidden_layers):
+        layers.extend(
+            [
+                nn.Linear(current_dim, hidden_dim),
+                nn.ReLU(),
+                nn.Dropout(dropout),
+            ]
+        )
+        current_dim = hidden_dim
+    layers.append(nn.Linear(current_dim, output_dim))
+    return nn.Sequential(*layers)
 
 
 class DSPBuilderMetaModel(nn.Module):
@@ -101,10 +162,14 @@ class DSPBuilderMetaModel(nn.Module):
         head_hidden_dim: int,
         dropout: float,
         raw_stat_emb: bool,
+        weight_head_layers: int = 1,
+        dataset_description_dim: int = 128,
     ) -> None:
         super().__init__()
         if num_dataset_classes <= 0:
             raise ValueError("num_dataset_classes must be positive.")
+        if proxy_dim <= 0:
+            raise ValueError("proxy_dim must be positive.")
         self.support_encoder = FeatureWiseSharedEncoder(
             encoder_hidden_dim=encoder_hidden_dim,
             projected_dim=32,
@@ -113,22 +178,30 @@ class DSPBuilderMetaModel(nn.Module):
         )
         self.proxy_signature_regression = False
         self.sample_embedding_dim = self.support_encoder.output_dim
-        self.task_embedding_dim = self.sample_embedding_dim * 2
-        self.weight_head = nn.Sequential(
-            nn.Linear(self.task_embedding_dim, head_hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(head_hidden_dim, proxy_dim),
+        self.dataset_description_dim = dataset_description_dim
+        self.task_embedding_dim = dataset_description_dim
+        self.weight_head_layers = weight_head_layers
+        self.set_encoder = SetEncoder(
+            input_dim=self.sample_embedding_dim,
+            output_dim=dataset_description_dim,
+            dropout=dropout,
+        )
+        self.weight_head = build_weight_head(
+            input_dim=dataset_description_dim,
+            hidden_dim=head_hidden_dim,
+            output_dim=proxy_dim,
+            num_hidden_layers=weight_head_layers,
+            dropout=dropout,
         )
         self.dataset_classifier = nn.Sequential(
-            nn.Linear(self.task_embedding_dim, head_hidden_dim),
+            nn.Linear(dataset_description_dim, head_hidden_dim),
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(head_hidden_dim, num_dataset_classes),
         )
         self.signature_head = nn.Sequential(
-            nn.LayerNorm(self.task_embedding_dim),
-            nn.Linear(self.task_embedding_dim, head_hidden_dim),
+            nn.LayerNorm(dataset_description_dim),
+            nn.Linear(dataset_description_dim, head_hidden_dim),
             nn.GELU(),
             nn.Dropout(dropout),
             nn.Linear(head_hidden_dim, proxy_dim),
@@ -144,10 +217,8 @@ class DSPBuilderMetaModel(nn.Module):
 
         sample_embeddings = [self.support_encoder(sample) for sample in support_samples]  # S x [E]
         stacked_embeddings = torch.stack(sample_embeddings, dim=0)  # [S, E]
-        sample_mean = stacked_embeddings.mean(dim=0)  # [E]
-        sample_std = stacked_embeddings.std(dim=0, unbiased=False)  # [E]
-        task_embedding = torch.cat([sample_mean, sample_std], dim=0)  # [2E]
-        weight_vector = torch.tanh(self.weight_head(task_embedding))  # [proxy_dim]
-        dataset_logits = self.dataset_classifier(task_embedding)  # [num_dataset_classes]
-        predicted_signature = self.signature_head(task_embedding)  # [proxy_dim]
-        return weight_vector, task_embedding, dataset_logits, predicted_signature
+        dataset_description = self.set_encoder(stacked_embeddings)  # [dataset_description_dim]
+        weight_vector = torch.tanh(self.weight_head(dataset_description))  # [proxy_dim]
+        dataset_logits = self.dataset_classifier(dataset_description)  # [num_dataset_classes]
+        predicted_signature = self.signature_head(dataset_description)  # [proxy_dim]
+        return weight_vector, dataset_description, dataset_logits, predicted_signature
