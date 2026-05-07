@@ -110,6 +110,45 @@ proxy_scores/ : 이 경로안에 proxy score가 저장됨
 | `Solar Power` | `solar_power` | `short_term_forecast` | ultra-high-frequency solar power forecast |
 | `Wind Power` | `wind_power` | `short_term_forecast` | ultra-high-frequency wind power forecast |
 
+### 원본 데이터가 의미하는 forecasting task
+
+중요한 점:
+- `forecastingdata.org`의 Monash archive는 새로운 task를 정의한 사이트라기보다, 원래 있던 대회/공공/운영 데이터를 **forecasting benchmark**로 재정리한 저장소임.
+- 그래서 아래 표는 각 데이터셋의 **원래 예측 대상**과, 우리 코드베이스에서 해석하는 **실제 task 형태**를 같이 적은 것임.
+
+| Dataset | 원래 데이터가 풀려는 예측 문제 | 우리 쪽에서 보는 task |
+| --- | --- | --- |
+| `M1` | 여러 도메인 yearly/quarterly/monthly 시계열의 competition-style 다중 시점 예측 | 개별 series별 `short_term_forecast` |
+| `M3` | 여러 도메인 yearly/quarterly/monthly/other 시계열의 competition-style 다중 시점 예측 | 개별 series별 `short_term_forecast` |
+| `M4` | 여러 도메인 yearly~hourly 시계열의 대규모 competition forecasting | 개별 series별 `short_term_forecast` |
+| `Tourism` | 국가/지역 단위 관광 수요 또는 관광객 도착 수 예측 | 개별 tourism series별 `short_term_forecast` |
+| `NN5` | 영국 ATM별 일일 현금 인출액 예측 | ATM series별 `short_term_forecast` |
+| `CIF 2016` | 월별 banking series와 synthetic series의 competition forecasting | 개별 monthly series별 `short_term_forecast` |
+| `Web Traffic` | Wikipedia page별 미래 방문 수 / hit 수 예측 | page series별 `short_term_forecast` |
+| `Solar` | 태양광 발전량 예측 | site series별 `short_term_forecast` |
+| `Electricity` | 고객별 전력 사용량(load) 예측 | client series별 `short_term_forecast` |
+| `London Smart Meters` | 가구 smart meter 반시간 전력 소비량 예측 | meter/household series별 `short_term_forecast` |
+| `Aus. Electricity Demand` | 호주 5개 주의 반시간 전력 수요 예측 | state series별 `short_term_forecast` |
+| `Wind Farms` | 풍력 발전 단지별 분 단위 발전량 예측 | farm series별 `short_term_forecast` |
+| `Car Parts` | 부품별 월간 intermittent demand / sales 예측 | multivariate 또는 row-wise `short_term_forecast` |
+| `Dominick` | 소매 SKU별 주간 profit/sales 수요 예측 | SKU/store 단위 `short_term_forecast` |
+| `FRED-MD` | 거시경제 지표들의 월별 움직임 예측 | indicator series별 `short_term_forecast` |
+| `Bitcoin` | 비트코인 가격 영향 지표(거래량, hash rate, 검색량 등) 예측 | indicator series별 `short_term_forecast` |
+| `San Francisco Traffic` | freeway sensor/location별 도로 점유율(occupancy) 예측 | sensor series별 `short_term_forecast` |
+| `Pedestrian Counts` | 보행자 센서별 시간당 유동 인구 수 예측 | counter series별 `short_term_forecast` |
+| `Rideshare` | 뉴욕 Uber/Lyft 관련 price/distance 속성 시계열 예측 | attribute/location series별 `short_term_forecast` |
+| `Vehicle Trips` | FHV 회사별 trip 수 / vehicle 수 예측 | company/metric series별 `short_term_forecast` |
+| `Hospital` | 의료 제품 관련 환자 수 월별 시계열 예측 | product-related series별 `short_term_forecast` |
+| `COVID Deaths` | 국가/주 단위 일별 누적 COVID 사망자 수 예측 | region series별 `short_term_forecast` |
+| `KDD Cup 2018` | 도시/측정소/오염물질별 대기질 예측 | station-variable series별 `short_term_forecast` |
+| `Weather` | 호주 weather station별 rain / min temp / max temp / solar radiation 예측 | station-variable series별 `short_term_forecast` |
+| `Temperature Rain` | 호주 weather station별 일별 temperature/rainfall 관측/예보 관련 시계열 예측 | station-variable series별 `short_term_forecast` |
+| `Sunspot` | 장기 태양 흑점 수 예측 | single-series `short_term_forecast` |
+| `Saugeen River Flow` | 일별 하천 유량 예측 | single-series `short_term_forecast` |
+| `US Births` | 미국 일별 출생아 수 예측 | single-series `short_term_forecast` |
+| `Solar Power` | 초고주파 태양광 발전량 예측 | single-series `short_term_forecast` |
+| `Wind Power` | 초고주파 풍력 발전량 예측 | single-series `short_term_forecast` |
+
 <hr>
 
 ### 구현된 데이터셋 task 기준
