@@ -1,0 +1,27 @@
+# Validation iteration logs
+# val_candidate_indices=[80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+# fixed_support_indices=[561, 1560, 1928, 2567, 3979]
+[VALID] epoch=001 dataset=Exchange iteration=001 loss=0.692337 pair_acc=0.5211 pair_loss_mean=0.692337 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.246116 weight_vector=[-0.021931, -0.068039, 0.027450, -0.015436, -0.174984, 0.036766, 0.109663, 0.101495, -0.013138]
+[EPOCH-SUMMARY] epoch=001 val_loss=0.700678 early_stopping_counter=0
+[VALID] epoch=002 dataset=Exchange iteration=001 loss=0.620797 pair_acc=0.6789 pair_loss_mean=0.620797 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.417143 weight_vector=[0.118816, 0.132754, 0.014900, -0.177628, -0.242368, 0.109188, 0.042013, 0.185865, 0.059317]
+[EPOCH-SUMMARY] epoch=002 val_loss=0.567187 early_stopping_counter=0
+[VALID] epoch=003 dataset=Exchange iteration=001 loss=0.638219 pair_acc=0.6526 pair_loss_mean=0.638219 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.615040 weight_vector=[0.224094, 0.336498, -0.138637, -0.197616, -0.165798, 0.143112, 0.114458, 0.187487, 0.245624]
+[EPOCH-SUMMARY] epoch=003 val_loss=0.508142 early_stopping_counter=0
+[VALID] epoch=004 dataset=Exchange iteration=001 loss=0.649901 pair_acc=0.6579 pair_loss_mean=0.649901 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.685967 weight_vector=[0.199571, 0.380166, -0.153099, -0.122739, -0.041300, 0.164183, 0.159438, 0.219402, 0.381408]
+[EPOCH-SUMMARY] epoch=004 val_loss=0.498697 early_stopping_counter=0
+[VALID] epoch=005 dataset=Exchange iteration=001 loss=0.662785 pair_acc=0.6632 pair_loss_mean=0.662785 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.754586 weight_vector=[0.159074, 0.405726, -0.145349, -0.069002, 0.045559, 0.206594, 0.167424, 0.245233, 0.469753]
+[EPOCH-SUMMARY] epoch=005 val_loss=0.496374 early_stopping_counter=0
+[VALID] epoch=006 dataset=Exchange iteration=001 loss=0.656528 pair_acc=0.6526 pair_loss_mean=0.656528 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.766946 weight_vector=[0.092291, 0.386086, -0.143661, -0.011240, 0.124641, 0.223237, 0.185227, 0.219557, 0.511836]
+[EPOCH-SUMMARY] epoch=006 val_loss=0.499117 early_stopping_counter=1
+[VALID] epoch=007 dataset=Exchange iteration=001 loss=0.645586 pair_acc=0.6684 pair_loss_mean=0.645586 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.788766 weight_vector=[0.054388, 0.379872, -0.099651, 0.044825, 0.147299, 0.222006, 0.192300, 0.246009, 0.542649]
+[EPOCH-SUMMARY] epoch=007 val_loss=0.494021 early_stopping_counter=0
+[VALID] epoch=008 dataset=Exchange iteration=001 loss=0.651755 pair_acc=0.6526 pair_loss_mean=0.651755 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.810666 weight_vector=[0.016729, 0.387944, -0.108358, 0.043380, 0.197223, 0.231235, 0.181269, 0.215074, 0.566827]
+[EPOCH-SUMMARY] epoch=008 val_loss=0.499040 early_stopping_counter=1
+[VALID] epoch=009 dataset=Exchange iteration=001 loss=0.644917 pair_acc=0.6684 pair_loss_mean=0.644917 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.830660 weight_vector=[-0.008067, 0.393012, -0.066452, 0.068037, 0.211740, 0.217847, 0.175672, 0.232531, 0.590936]
+[EPOCH-SUMMARY] epoch=009 val_loss=0.494652 early_stopping_counter=2
+[VALID] epoch=010 dataset=Exchange iteration=001 loss=0.654028 pair_acc=0.6632 pair_loss_mean=0.654028 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.888852 weight_vector=[-0.028587, 0.424110, -0.058905, 0.073814, 0.251047, 0.230230, 0.168795, 0.234417, 0.633229]
+[EPOCH-SUMMARY] epoch=010 val_loss=0.495226 early_stopping_counter=3
+[VALID] epoch=011 dataset=Exchange iteration=001 loss=0.647241 pair_acc=0.6632 pair_loss_mean=0.647241 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.865126 weight_vector=[-0.068279, 0.397933, -0.036020, 0.075937, 0.252882, 0.235521, 0.152860, 0.230907, 0.618273]
+[EPOCH-SUMMARY] epoch=011 val_loss=0.496192 early_stopping_counter=4
+[VALID] epoch=012 dataset=Exchange iteration=001 loss=0.644861 pair_acc=0.6526 pair_loss_mean=0.644861 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.826581 weight_vector=[-0.085557, 0.379168, -0.033942, 0.061870, 0.243496, 0.219207, 0.119428, 0.204384, 0.603149]
+[EPOCH-SUMMARY] epoch=012 val_loss=0.500401 early_stopping_counter=5

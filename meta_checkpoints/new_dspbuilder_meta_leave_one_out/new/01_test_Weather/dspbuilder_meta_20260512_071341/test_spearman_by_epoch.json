@@ -1,0 +1,218 @@
+[
+  {
+    "epoch": 1,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_001.pth",
+    "spearman_mean": -0.07255685568556855,
+    "spearman_std": 0.0016299273437986673,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": -0.07255685568556855,
+        "spearman_std": 0.0016299273437986673,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 2,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_002.pth",
+    "spearman_mean": 0.40024482448244825,
+    "spearman_std": 0.0016211591424383472,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.40024482448244825,
+        "spearman_std": 0.0016211591424383472,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 3,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_003.pth",
+    "spearman_mean": 0.42540414041404145,
+    "spearman_std": 0.00016584251708489826,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.42540414041404145,
+        "spearman_std": 0.00016584251708489826,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 4,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_004.pth",
+    "spearman_mean": 0.4263210321032103,
+    "spearman_std": 0.00019401898952737457,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.4263210321032103,
+        "spearman_std": 0.00019401898952737457,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 5,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_005.pth",
+    "spearman_mean": 0.4244440444044405,
+    "spearman_std": 0.0007929297454559542,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.4244440444044405,
+        "spearman_std": 0.0007929297454559542,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 6,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_006.pth",
+    "spearman_mean": 0.4257185718571857,
+    "spearman_std": 0.0004934814103340041,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.4257185718571857,
+        "spearman_std": 0.0004934814103340041,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 7,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_007.pth",
+    "spearman_mean": 0.4191875187518752,
+    "spearman_std": 0.000918304354854537,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.4191875187518752,
+        "spearman_std": 0.000918304354854537,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 8,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_008.pth",
+    "spearman_mean": 0.4225382538253825,
+    "spearman_std": 0.0006928341786023582,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.4225382538253825,
+        "spearman_std": 0.0006928341786023582,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 9,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_009.pth",
+    "spearman_mean": 0.41462466246624663,
+    "spearman_std": 0.0005823043639572462,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.41462466246624663,
+        "spearman_std": 0.0005823043639572462,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 10,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_010.pth",
+    "spearman_mean": 0.41667926792679266,
+    "spearman_std": 0.0003097518818121823,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.41667926792679266,
+        "spearman_std": 0.0003097518818121823,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 11,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_011.pth",
+    "spearman_mean": 0.4123708370837084,
+    "spearman_std": 0.0008273484962588631,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.4123708370837084,
+        "spearman_std": 0.0008273484962588631,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  },
+  {
+    "epoch": 12,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/01_test_Weather/dspbuilder_meta_20260512_071341/epoch_checkpoints/epoch_012.pth",
+    "spearman_mean": 0.41496309630963096,
+    "spearman_std": 0.0005549903060124566,
+    "dataset_results": {
+      "Weather": {
+        "dataset": "Weather",
+        "metric_name": "mse",
+        "spearman_mean": 0.41496309630963096,
+        "spearman_std": 0.0005549903060124566,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.4466
+      }
+    }
+  }
+]

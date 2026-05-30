@@ -20,26 +20,115 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--val-datasets", type=str, default="", help="Comma-separated dataset names.")
     parser.add_argument("--test-datasets", type=str, default="", help="Comma-separated dataset names.")
     parser.add_argument("--epochs", type=int, default=100)
-    parser.add_argument("--iterations-per-dataset", type=int, default=5)
-    parser.add_argument("--val-iterations-per-dataset", type=int, default=5)
+    parser.add_argument(
+        "--iterations-per-epoch",
+        type=int,
+        default=40,
+        help="Number of supervised mini-batch optimizer updates per training epoch.",
+    )
+    parser.add_argument(
+        "--train-batch-size",
+        type=int,
+        default=16,
+        help="Number of dataset-level tasks sampled per training mini-batch.",
+    )
+    parser.add_argument(
+        "--val-iterations-per-dataset",
+        type=int,
+        default=5,
+        help=(
+            "Number of fixed non-overlapping validation query batches per dataset. "
+            "With 100 candidates and query_size=20, the default 5 covers each candidate once."
+        ),
+    )
     parser.add_argument(
         "--eval-iterations-per-dataset",
         type=int,
         default=5,
         help="Number of test iterations per dataset.",
     )
-    parser.add_argument("--support-size", type=int, default=16)
+    parser.add_argument("--support-size", type=int, default=5)
     parser.add_argument("--train-query-size", type=int, default=20)
     parser.add_argument("--val-query-size", type=int, default=20)
     parser.add_argument("--test-query-size", type=int, default=10)
-    parser.add_argument("--hidden-dim", type=int, default=32) # proxy builder hidden dim: 128 > hidden-dim > proxy_dim
-    parser.add_argument("--encoder-hidden-dim", type=int, default=16)
+    parser.add_argument("--hidden-dim", type=int, default=64) # proxy builder hidden dim: 128 > hidden-dim > proxy_dim
+    parser.add_argument(
+        "--weight-head-layers",
+        type=int,
+        default=1,
+        help="Number of hidden Linear layers in the dataset-description-to-proxy-weight MLP.",
+    )
+    parser.add_argument(
+        "--mlp_norm",
+        "--mlp-norm",
+        dest="mlp_norm",
+        action="store_true",
+        default=False,
+        help="Insert LayerNorm between each weight-head Linear layer and ReLU.",
+    )
+    parser.add_argument(
+        "--no-mlp_norm",
+        "--no-mlp-norm",
+        dest="mlp_norm",
+        action="store_false",
+        help="Disable LayerNorm layers in the weight-head MLP.",
+    )
+    parser.add_argument("--encoder-hidden-dim", type=int, default=64)
+    parser.add_argument(
+        "--number-of-conv1d-layer",
+        "--number_of_conv1d_layer",
+        dest="number_of_conv1d_layer",
+        type=int,
+        default=1,
+        help="Number of additional sample-encoder Conv1d layers with kernel_size=5 after the first kernel_size=7 layer.",
+    )
+    parser.add_argument(
+        "--sample_encoder_norm",
+        "--sample-encoder-norm",
+        dest="sample_encoder_norm",
+        action="store_true",
+        default=False,
+        help="Insert GroupNorm(num_groups=8) between each sample-encoder Conv1d and GELU.",
+    )
+    parser.add_argument(
+        "--no-sample_encoder_norm",
+        "--no-sample-encoder-norm",
+        dest="sample_encoder_norm",
+        action="store_false",
+        help="Disable GroupNorm layers in the sample encoder.",
+    )
+    parser.add_argument(
+        "--number-of-setencoder-mlp-layers",
+        "--number_of_setencoder_mlp_layers",
+        dest="number_of_setencoder_mlp_layers",
+        type=int,
+        default=None,
+        help=(
+            "Number of Linear(output_dim, output_dim) layers in both SetEncoder MLPs. "
+            "Default preserves the legacy shared=1/output=2 layout."
+        ),
+    )
+    parser.add_argument(
+        "--set_encoder_norm",
+        "--set-encoder-norm",
+        dest="set_encoder_norm",
+        action="store_true",
+        default=False,
+        help="Insert LayerNorm between SetEncoder Linear and GELU layers.",
+    )
+    parser.add_argument(
+        "--no-set_encoder_norm",
+        "--no-set-encoder-norm",
+        dest="set_encoder_norm",
+        action="store_false",
+        help="Disable LayerNorm layers in the SetEncoder.",
+    )
     parser.add_argument(
         "--raw_stat_emb",
         dest="raw_stat_emb",
         action="store_true",
         default=False,
-        help="Enable the 32-dim raw statistic embedding branch in the encoder (default: on).",
+        help="Enable the 32-dim raw statistic embedding branch in the encoder (default: off).",
     )
     parser.add_argument(
         "--no-raw_stat_emb",
@@ -53,7 +142,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--cls-loss-weight",
         type=float,
-        default=0.5,
+        default=0,
         help="Weight for the auxiliary training loss (dataset classification or proxy signature regression).",
     )
     parser.add_argument(

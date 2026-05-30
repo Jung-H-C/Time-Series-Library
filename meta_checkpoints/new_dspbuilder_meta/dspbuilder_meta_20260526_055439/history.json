@@ -1,0 +1,2567 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 0.7605076666921378,
+    "train_pair_acc": 0.3893421215354465,
+    "train_pair_loss_mean": 0.7605076666921378,
+    "train_dataset_acc": 0.184375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.763768470287323,
+    "val_normalized_score": 0.0,
+    "val_pair_acc": 0.3884210705757141,
+    "val_pair_loss_mean": 0.763768470287323,
+    "train_weight_norm": 0.2808451246935874,
+    "val_weight_norm": 0.27130078077316283,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_001.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.0,
+    "best_val_loss_at_best_score": 0.763768470287323,
+    "lowest_raw_val_loss": 0.763768470287323,
+    "lowest_raw_val_loss_epoch": 1,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.0,
+      "Traffic": 0.0,
+      "Weather": 0.0,
+      "ILI": 0.0,
+      "Exchange": 0.0
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 1.6115610402077436
+  },
+  {
+    "epoch": 2,
+    "train_loss": 0.7261025331914425,
+    "train_pair_acc": 0.4297121888026595,
+    "train_pair_loss_mean": 0.7261025331914425,
+    "train_dataset_acc": 0.20625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.7264774918556214,
+    "val_normalized_score": 0.04733598251475423,
+    "val_pair_acc": 0.4473684310913086,
+    "val_pair_loss_mean": 0.7264774918556214,
+    "train_weight_norm": 0.2674586245324463,
+    "val_weight_norm": 0.2604202628135681,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_002.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.04733598251475423,
+    "best_val_loss_at_best_score": 0.7264774918556214,
+    "lowest_raw_val_loss": 0.7264774918556214,
+    "lowest_raw_val_loss_epoch": 2,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.07833771348169538,
+      "Traffic": 0.02759359761761708,
+      "Weather": 0.041016221842764856,
+      "ILI": 0.07563304490724665,
+      "Exchange": 0.014099334724447186
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 1.6096789361909032
+  },
+  {
+    "epoch": 3,
+    "train_loss": 0.6889212594367564,
+    "train_pair_acc": 0.5338898244546726,
+    "train_pair_loss_mean": 0.6889212594367564,
+    "train_dataset_acc": 0.1734375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6818287611007691,
+    "val_normalized_score": 0.10376423123479939,
+    "val_pair_acc": 0.5873684406280517,
+    "val_pair_loss_mean": 0.6818287611007691,
+    "train_weight_norm": 0.2625003775348887,
+    "val_weight_norm": 0.26335400342941284,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_003.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.10376423123479939,
+    "best_val_loss_at_best_score": 0.6818287611007691,
+    "lowest_raw_val_loss": 0.6818287611007691,
+    "lowest_raw_val_loss_epoch": 3,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.17572837331816699,
+      "Traffic": 0.05755687555425284,
+      "Weather": 0.08776960575679457,
+      "ILI": 0.1713437184553555,
+      "Exchange": 0.026422583089427024
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 1.6162291161715985
+  },
+  {
+    "epoch": 4,
+    "train_loss": 0.6198378521483392,
+    "train_pair_acc": 0.689070752589032,
+    "train_pair_loss_mean": 0.6198378521483392,
+    "train_dataset_acc": 0.20625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5680656433105469,
+    "val_normalized_score": 0.24116213059200917,
+    "val_pair_acc": 0.7389474034309387,
+    "val_pair_loss_mean": 0.5680656433105469,
+    "train_weight_norm": 0.3774772810516879,
+    "val_weight_norm": 0.706256103515625,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_004.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.24116213059200917,
+    "best_val_loss_at_best_score": 0.5680656433105469,
+    "lowest_raw_val_loss": 0.5680656433105469,
+    "lowest_raw_val_loss_epoch": 4,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5701020849012481,
+      "Traffic": 0.1189107757790617,
+      "Weather": 0.1189284313410256,
+      "ILI": 0.5430519148848447,
+      "Exchange": -0.14518255394613414
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 1.6063832879066466
+  },
+  {
+    "epoch": 5,
+    "train_loss": 0.5432960943784565,
+    "train_pair_acc": 0.7412006877362728,
+    "train_pair_loss_mean": 0.5432960943784565,
+    "train_dataset_acc": 0.225,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5704157531261445,
+    "val_normalized_score": 0.23765101918134582,
+    "val_pair_acc": 0.7084210872650146,
+    "val_pair_loss_mean": 0.5704157531261445,
+    "train_weight_norm": 0.759307939466089,
+    "val_weight_norm": 0.7335206151008606,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_005.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.24116213059200917,
+    "best_val_loss_at_best_score": 0.5680656433105469,
+    "lowest_raw_val_loss": 0.5680656433105469,
+    "lowest_raw_val_loss_epoch": 4,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5814400782177087,
+      "Traffic": 0.12116616665743973,
+      "Weather": 0.13477665717897272,
+      "ILI": 0.5486374106477379,
+      "Exchange": -0.1977652167951298
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 1.6212800253182649
+  },
+  {
+    "epoch": 6,
+    "train_loss": 0.5451377019286155,
+    "train_pair_acc": 0.7375000297557562,
+    "train_pair_loss_mean": 0.5451377019286155,
+    "train_dataset_acc": 0.2046875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5656754791736602,
+    "val_normalized_score": 0.24383871832914586,
+    "val_pair_acc": 0.7168421387672425,
+    "val_pair_loss_mean": 0.5656754791736602,
+    "train_weight_norm": 0.7368240613956004,
+    "val_weight_norm": 0.7066192030906677,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_006.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.24383871832914586,
+    "best_val_loss_at_best_score": 0.5656754791736602,
+    "lowest_raw_val_loss": 0.5656754791736602,
+    "lowest_raw_val_loss_epoch": 6,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5847887625371151,
+      "Traffic": 0.12130890109259347,
+      "Weather": 0.1351064573364377,
+      "ILI": 0.5549069207078285,
+      "Exchange": -0.1769174500282456
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 1.624188575707376
+  },
+  {
+    "epoch": 7,
+    "train_loss": 0.5617301012389362,
+    "train_pair_acc": 0.7187993708997965,
+    "train_pair_loss_mean": 0.5617301012389362,
+    "train_dataset_acc": 0.15,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5653336644172668,
+    "val_normalized_score": 0.24528145761294207,
+    "val_pair_acc": 0.7210526704788208,
+    "val_pair_loss_mean": 0.5653336644172668,
+    "train_weight_norm": 0.6509278307203203,
+    "val_weight_norm": 0.6488503336906433,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_007.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.24528145761294207,
+    "best_val_loss_at_best_score": 0.5653336644172668,
+    "lowest_raw_val_loss": 0.5653336644172668,
+    "lowest_raw_val_loss_epoch": 7,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.564034816795134,
+      "Traffic": 0.1259300664101466,
+      "Weather": 0.14628799474781912,
+      "ILI": 0.535220241948076,
+      "Exchange": -0.14506583183646538
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7264171838760376,
+        "recent_mean": 0.863966723283132,
+        "delta": 0.13754953940709436
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.6191712230443955
+  },
+  {
+    "epoch": 8,
+    "train_loss": 0.5644232322461903,
+    "train_pair_acc": 0.7155181230045855,
+    "train_pair_loss_mean": 0.5644232322461903,
+    "train_dataset_acc": 0.1453125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5640899121761322,
+    "val_normalized_score": 0.24661931209564955,
+    "val_pair_acc": 0.7231579303741456,
+    "val_pair_loss_mean": 0.5640899121761322,
+    "train_weight_norm": 0.6387608209624887,
+    "val_weight_norm": 0.6516451597213745,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_008.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.24661931209564955,
+    "best_val_loss_at_best_score": 0.5640899121761322,
+    "lowest_raw_val_loss": 0.5640899121761322,
+    "lowest_raw_val_loss_epoch": 8,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5713397661826752,
+      "Traffic": 0.12241706713256455,
+      "Weather": 0.14388050219363271,
+      "ILI": 0.5418204941450493,
+      "Exchange": -0.146361269175674
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7620528936386108,
+        "recent_mean": 0.8639380733172098,
+        "delta": 0.101885179678599
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 1.6300009401515125
+  },
+  {
+    "epoch": 9,
+    "train_loss": 0.5704854603391141,
+    "train_pair_acc": 0.7131743707694114,
+    "train_pair_loss_mean": 0.5704854603391141,
+    "train_dataset_acc": 0.1546875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5623944938182831,
+    "val_normalized_score": 0.24909947687228923,
+    "val_pair_acc": 0.7263158202171326,
+    "val_pair_loss_mean": 0.5623944938182831,
+    "train_weight_norm": 0.6171906891278922,
+    "val_weight_norm": 0.6221491575241089,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_009.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.24909947687228923,
+    "best_val_loss_at_best_score": 0.5623944938182831,
+    "lowest_raw_val_loss": 0.5623944938182831,
+    "lowest_raw_val_loss_epoch": 9,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5667112326642061,
+      "Traffic": 0.12160523849811787,
+      "Weather": 0.14507254510069797,
+      "ILI": 0.538142668047858,
+      "Exchange": -0.1260342999494339
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.8140559991200765,
+        "recent_mean": 0.851320743560791,
+        "delta": 0.03726474444071448
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 513,
+    "train_adaptive_task_samples": 127,
+    "train_cls_loss": 1.6136687794700264
+  },
+  {
+    "epoch": 10,
+    "train_loss": 0.5055658658966422,
+    "train_pair_acc": 0.7699095699004829,
+    "train_pair_loss_mean": 0.5055658658966422,
+    "train_dataset_acc": 0.175,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5671110868453979,
+    "val_normalized_score": 0.23905949040949434,
+    "val_pair_acc": 0.7263158202171326,
+    "val_pair_loss_mean": 0.5671110868453979,
+    "train_weight_norm": 0.7753026661463082,
+    "val_weight_norm": 0.8029527306556702,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_010.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.24909947687228923,
+    "best_val_loss_at_best_score": 0.5623944938182831,
+    "lowest_raw_val_loss": 0.5623944938182831,
+    "lowest_raw_val_loss_epoch": 9,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6409086309641437,
+      "Traffic": 0.08667393613173208,
+      "Weather": 0.0958409624592336,
+      "ILI": 0.6073927518651169,
+      "Exchange": -0.23551882937275465
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.33223413427670795,
+        "recent_mean": 0.34123759468396503,
+        "delta": 0.00900346040725708
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.3860991696516673,
+        "recent_mean": 0.39506062865257263,
+        "delta": 0.008961459000905336
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 516,
+    "train_adaptive_task_samples": 124,
+    "train_cls_loss": 1.6423618167638778
+  },
+  {
+    "epoch": 11,
+    "train_loss": 0.5542345863301307,
+    "train_pair_acc": 0.7316200948320329,
+    "train_pair_loss_mean": 0.5542345863301307,
+    "train_dataset_acc": 0.2546875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5591454088687897,
+    "val_normalized_score": 0.25282316518765946,
+    "val_pair_acc": 0.7189473867416382,
+    "val_pair_loss_mean": 0.5591454088687897,
+    "train_weight_norm": 0.6688254075590521,
+    "val_weight_norm": 0.654147493839264,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_011.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.25282316518765946,
+    "best_val_loss_at_best_score": 0.5591454088687897,
+    "lowest_raw_val_loss": 0.5591454088687897,
+    "lowest_raw_val_loss_epoch": 11,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5837231535647496,
+      "Traffic": 0.1207381331728413,
+      "Weather": 0.14679460083449483,
+      "ILI": 0.5516635723577297,
+      "Exchange": -0.13880363399151813
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6157675981521606,
+        "recent_mean": 0.6245911121368408,
+        "delta": 0.008823513984680176
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6338398059209188,
+        "recent_mean": 0.6415369311968485,
+        "delta": 0.007697125275929695
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.6001566253602504
+  },
+  {
+    "epoch": 12,
+    "train_loss": 0.5590544744860381,
+    "train_pair_acc": 0.7228536472190171,
+    "train_pair_loss_mean": 0.5590544744860381,
+    "train_dataset_acc": 0.1890625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5584520697593689,
+    "val_normalized_score": 0.25445155198603303,
+    "val_pair_acc": 0.7157894968986511,
+    "val_pair_loss_mean": 0.5584520697593689,
+    "train_weight_norm": 0.6519076156429946,
+    "val_weight_norm": 0.6213364601135254,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_012.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.25445155198603303,
+    "best_val_loss_at_best_score": 0.5584520697593689,
+    "lowest_raw_val_loss": 0.5584520697593689,
+    "lowest_raw_val_loss_epoch": 12,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5713201936187547,
+      "Traffic": 0.12554440323080795,
+      "Weather": 0.15509208770384011,
+      "ILI": 0.5373490679952625,
+      "Exchange": -0.11704799261850025
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6154748996098837,
+        "recent_mean": 0.6249839663505554,
+        "delta": 0.009509066740671757
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6316065390904745,
+        "recent_mean": 0.6408220728238424,
+        "delta": 0.00921553373336792
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.851320743560791,
+        "recent_mean": 0.8591782848040262,
+        "delta": 0.007857541243235233
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 515,
+    "train_adaptive_task_samples": 125,
+    "train_cls_loss": 1.6082783130928875
+  },
+  {
+    "epoch": 13,
+    "train_loss": 0.5447482959367335,
+    "train_pair_acc": 0.7343668059911579,
+    "train_pair_loss_mean": 0.5447482959367335,
+    "train_dataset_acc": 0.209375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5569419622421264,
+    "val_normalized_score": 0.25508375749535883,
+    "val_pair_acc": 0.7200000286102295,
+    "val_pair_loss_mean": 0.5569419622421264,
+    "train_weight_norm": 0.6753984606359154,
+    "val_weight_norm": 0.6874257802963257,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_013.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.25508375749535883,
+    "best_val_loss_at_best_score": 0.5569419622421264,
+    "lowest_raw_val_loss": 0.5569419622421264,
+    "lowest_raw_val_loss_epoch": 13,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.603921548327343,
+      "Traffic": 0.11267486878791039,
+      "Weather": 0.14385806735973836,
+      "ILI": 0.5630272704517941,
+      "Exchange": -0.1480629674499918
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6154055595397949,
+        "recent_mean": 0.6240622401237488,
+        "delta": 0.008656680583953857
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6291617552439371,
+        "recent_mean": 0.6383641759554545,
+        "delta": 0.009202420711517334
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.8388312458992004,
+        "recent_mean": 0.8569725553194681,
+        "delta": 0.018141309420267704
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 1.6139336043968797
+  },
+  {
+    "epoch": 14,
+    "train_loss": 0.4933404040988535,
+    "train_pair_acc": 0.774498386727646,
+    "train_pair_loss_mean": 0.4933404040988535,
+    "train_dataset_acc": 0.15625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5600061476230621,
+    "val_normalized_score": 0.24834703144007828,
+    "val_pair_acc": 0.7263158082962036,
+    "val_pair_loss_mean": 0.5600061476230621,
+    "train_weight_norm": 0.8282555434387178,
+    "val_weight_norm": 0.8168687343597412,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_014.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.25508375749535883,
+    "best_val_loss_at_best_score": 0.5569419622421264,
+    "lowest_raw_val_loss": 0.5569419622421264,
+    "lowest_raw_val_loss_epoch": 13,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.656894730362994,
+      "Traffic": 0.08043760458842386,
+      "Weather": 0.10781282156426515,
+      "ILI": 0.6097623740669192,
+      "Exchange": -0.21317237338221093
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.3210265239079793,
+        "recent_mean": 0.3262833853562673,
+        "delta": 0.005256861448287964
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.3744712471961975,
+        "recent_mean": 0.3845462004343669,
+        "delta": 0.01007495323816937
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.648551937751472
+  },
+  {
+    "epoch": 15,
+    "train_loss": 0.537219972955063,
+    "train_pair_acc": 0.7421217416413128,
+    "train_pair_loss_mean": 0.537219972955063,
+    "train_dataset_acc": 0.35,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5544866025447845,
+    "val_normalized_score": 0.25787660568500403,
+    "val_pair_acc": 0.7200000286102295,
+    "val_pair_loss_mean": 0.5544866025447845,
+    "train_weight_norm": 0.7111428301781416,
+    "val_weight_norm": 0.7207730531692504,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_015.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.25787660568500403,
+    "best_val_loss_at_best_score": 0.5544866025447845,
+    "lowest_raw_val_loss": 0.5544866025447845,
+    "lowest_raw_val_loss_epoch": 15,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6196344630985001,
+      "Traffic": 0.10531508732698226,
+      "Weather": 0.1447714161749969,
+      "ILI": 0.5707139085391087,
+      "Exchange": -0.15105184671456806
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6249839663505554,
+        "recent_mean": 0.6274082064628601,
+        "delta": 0.0024242401123046875
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.5885419921949506
+  },
+  {
+    "epoch": 16,
+    "train_loss": 0.5526579191908241,
+    "train_pair_acc": 0.7247615429572761,
+    "train_pair_loss_mean": 0.5526579191908241,
+    "train_dataset_acc": 0.2140625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5500550270080566,
+    "val_normalized_score": 0.2648055897172993,
+    "val_pair_acc": 0.7210526585578918,
+    "val_pair_loss_mean": 0.5500550270080566,
+    "train_weight_norm": 0.6517800939269364,
+    "val_weight_norm": 0.6619884133338928,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_016.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.2648055897172993,
+    "best_val_loss_at_best_score": 0.5500550270080566,
+    "lowest_raw_val_loss": 0.5500550270080566,
+    "lowest_raw_val_loss_epoch": 16,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6065395865685056,
+      "Traffic": 0.11456302205055975,
+      "Weather": 0.15683568735754994,
+      "ILI": 0.5510927653343797,
+      "Exchange": -0.10500311272449883
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6240622401237488,
+        "recent_mean": 0.6321416695912679,
+        "delta": 0.008079429467519161
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6383641759554545,
+        "recent_mean": 0.6386794845263163,
+        "delta": 0.0003153085708618164
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.8569725553194681,
+        "recent_mean": 0.8621066610018412,
+        "delta": 0.005134105682373047
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.6008331311866641
+  },
+  {
+    "epoch": 17,
+    "train_loss": 0.5502652470488101,
+    "train_pair_acc": 0.7241200940217822,
+    "train_pair_loss_mean": 0.5502652470488101,
+    "train_dataset_acc": 0.2296875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5486321389675141,
+    "val_normalized_score": 0.2669510880452809,
+    "val_pair_acc": 0.7189473986625672,
+    "val_pair_loss_mean": 0.5486321389675141,
+    "train_weight_norm": 0.6656761807389557,
+    "val_weight_norm": 0.651918375492096,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_017.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.2669510880452809,
+    "best_val_loss_at_best_score": 0.5486321389675141,
+    "lowest_raw_val_loss": 0.5486321389675141,
+    "lowest_raw_val_loss_epoch": 17,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6098221473611536,
+      "Traffic": 0.11045174387345764,
+      "Weather": 0.16119792617902948,
+      "ILI": 0.5419167429623102,
+      "Exchange": -0.08863312014954676
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6179782748222351,
+        "recent_mean": 0.6316998600959778,
+        "delta": 0.013721585273742676
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6265850861867269,
+        "recent_mean": 0.6354959408442179,
+        "delta": 0.008910854657490974
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.8355061213175455,
+        "recent_mean": 0.8515374263127645,
+        "delta": 0.016031304995218987
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ILI"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 1.5975636748597026
+  },
+  {
+    "epoch": 18,
+    "train_loss": 0.5061378402169794,
+    "train_pair_acc": 0.7648355575744062,
+    "train_pair_loss_mean": 0.5061378402169794,
+    "train_dataset_acc": 0.1703125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5488817691802979,
+    "val_normalized_score": 0.2631935426202228,
+    "val_pair_acc": 0.7263158202171326,
+    "val_pair_loss_mean": 0.5488817691802979,
+    "train_weight_norm": 0.7967727484181524,
+    "val_weight_norm": 0.8069832444190979,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_018.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.2669510880452809,
+    "best_val_loss_at_best_score": 0.5486321389675141,
+    "lowest_raw_val_loss": 0.5486321389675141,
+    "lowest_raw_val_loss_epoch": 17,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6704838330244168,
+      "Traffic": 0.06050029565812207,
+      "Weather": 0.1369615022299982,
+      "ILI": 0.6062048241690112,
+      "Exchange": -0.15818274198043422
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ILI",
+        "past_mean": 0.3679717679818471,
+        "recent_mean": 0.38121312856674194,
+        "delta": 0.013241360584894835
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 1.6256121519953013
+  },
+  {
+    "epoch": 19,
+    "train_loss": 0.5073215556330979,
+    "train_pair_acc": 0.7620395062025637,
+    "train_pair_loss_mean": 0.5073215556330979,
+    "train_dataset_acc": 0.246875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5511635661125183,
+    "val_normalized_score": 0.2592293858220932,
+    "val_pair_acc": 0.7252631902694702,
+    "val_pair_loss_mean": 0.5511635661125183,
+    "train_weight_norm": 0.8054422424640506,
+    "val_weight_norm": 0.8501214265823365,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_019.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.2669510880452809,
+    "best_val_loss_at_best_score": 0.5486321389675141,
+    "lowest_raw_val_loss": 0.5486321389675141,
+    "lowest_raw_val_loss_epoch": 17,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6838528765887878,
+      "Traffic": 0.04518406713494204,
+      "Weather": 0.12670789222629766,
+      "ILI": 0.6225672623925227,
+      "Exchange": -0.18216516923208426
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6321416695912679,
+        "recent_mean": 0.6351630687713623,
+        "delta": 0.003021399180094364
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.3584534426530202,
+        "recent_mean": 0.37108827630678815,
+        "delta": 0.01263483365376794
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.6108273284509778
+  },
+  {
+    "epoch": 20,
+    "train_loss": 0.5337358776479959,
+    "train_pair_acc": 0.7409293076489121,
+    "train_pair_loss_mean": 0.5337358776479959,
+    "train_dataset_acc": 0.3265625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5409551084041595,
+    "val_normalized_score": 0.2766911936994732,
+    "val_pair_acc": 0.7252631902694702,
+    "val_pair_loss_mean": 0.5409551084041595,
+    "train_weight_norm": 0.7340936114545912,
+    "val_weight_norm": 0.651794183254242,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_020.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.2766911936994732,
+    "best_val_loss_at_best_score": 0.5409551084041595,
+    "lowest_raw_val_loss": 0.5409551084041595,
+    "lowest_raw_val_loss_epoch": 20,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6231051169861214,
+      "Traffic": 0.10778266937338479,
+      "Weather": 0.16491076970027466,
+      "ILI": 0.5564634771953679,
+      "Exchange": -0.0688060647577826
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6316998600959778,
+        "recent_mean": 0.6513970692952474,
+        "delta": 0.01969720919926965
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.5921543268486857
+  },
+  {
+    "epoch": 21,
+    "train_loss": 0.5407519853441045,
+    "train_pair_acc": 0.7285608855541795,
+    "train_pair_loss_mean": 0.5407519853441045,
+    "train_dataset_acc": 0.2265625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5413760423660279,
+    "val_normalized_score": 0.27416742370577657,
+    "val_pair_acc": 0.7210526704788208,
+    "val_pair_loss_mean": 0.5413760423660279,
+    "train_weight_norm": 0.6791657794266939,
+    "val_weight_norm": 0.7553411006927491,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_021.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.2766911936994732,
+    "best_val_loss_at_best_score": 0.5409551084041595,
+    "lowest_raw_val_loss": 0.5409551084041595,
+    "lowest_raw_val_loss_epoch": 20,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.660999678904154,
+      "Traffic": 0.072123854430915,
+      "Weather": 0.15841616876049,
+      "ILI": 0.5897210650774329,
+      "Exchange": -0.11042364864410918
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6246768434842428,
+        "recent_mean": 0.652021606763204,
+        "delta": 0.02734476327896118
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6224000255266825,
+        "recent_mean": 0.6307957371075948,
+        "delta": 0.008395711580912346
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.8209687074025472,
+        "recent_mean": 0.8367921511332194,
+        "delta": 0.015823443730672127
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 1.6061304893344641
+  },
+  {
+    "epoch": 22,
+    "train_loss": 0.5434638374485076,
+    "train_pair_acc": 0.7254112153779715,
+    "train_pair_loss_mean": 0.5434638374485076,
+    "train_dataset_acc": 0.234375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5375468790531158,
+    "val_normalized_score": 0.2807307148981616,
+    "val_pair_acc": 0.7252631902694702,
+    "val_pair_loss_mean": 0.5375468790531158,
+    "train_weight_norm": 0.6954578832257539,
+    "val_weight_norm": 0.6760590434074402,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_022.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.2807307148981616,
+    "best_val_loss_at_best_score": 0.5375468790531158,
+    "lowest_raw_val_loss": 0.5375468790531158,
+    "lowest_raw_val_loss_epoch": 22,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6432963326229525,
+      "Traffic": 0.09034028364839065,
+      "Weather": 0.16796174512554637,
+      "ILI": 0.5607514595067575,
+      "Exchange": -0.05869624641283898
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6351630687713623,
+        "recent_mean": 0.649301807085673,
+        "delta": 0.014138738314310673
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.624315877755483,
+        "recent_mean": 0.6255326867103577,
+        "delta": 0.0012168089548746375
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.8227190176645914,
+        "recent_mean": 0.8250694672266642,
+        "delta": 0.002350449562072754
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 1.600881366059184
+  },
+  {
+    "epoch": 23,
+    "train_loss": 0.48785750116221605,
+    "train_pair_acc": 0.768486873107031,
+    "train_pair_loss_mean": 0.48785750116221605,
+    "train_dataset_acc": 0.171875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.548056349158287,
+    "val_normalized_score": 0.2620766626452225,
+    "val_pair_acc": 0.7242105603218079,
+    "val_pair_loss_mean": 0.548056349158287,
+    "train_weight_norm": 0.8472616219427437,
+    "val_weight_norm": 0.9219326138496399,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_023.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.2807307148981616,
+    "best_val_loss_at_best_score": 0.5375468790531158,
+    "lowest_raw_val_loss": 0.5375468790531158,
+    "lowest_raw_val_loss_epoch": 22,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7114171110608488,
+      "Traffic": -0.00621841544228655,
+      "Weather": 0.14104796267815548,
+      "ILI": 0.6380316336850803,
+      "Exchange": -0.17389497875568566
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.27233537038167316,
+        "recent_mean": 0.2819994290669759,
+        "delta": 0.009664058685302734
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.3506980240345001,
+        "recent_mean": 0.36888543764750165,
+        "delta": 0.018187413613001524
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 1.6566889967769385
+  },
+  {
+    "epoch": 24,
+    "train_loss": 0.5473745355382562,
+    "train_pair_acc": 0.7315707527566702,
+    "train_pair_loss_mean": 0.5473745355382562,
+    "train_dataset_acc": 0.3640625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.533252727985382,
+    "val_normalized_score": 0.28591536810762785,
+    "val_pair_acc": 0.7221053004264831,
+    "val_pair_loss_mean": 0.533252727985382,
+    "train_weight_norm": 0.7111543456558138,
+    "val_weight_norm": 0.6994289278984069,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_024.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.28591536810762785,
+    "best_val_loss_at_best_score": 0.533252727985382,
+    "lowest_raw_val_loss": 0.533252727985382,
+    "lowest_raw_val_loss_epoch": 24,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6531709178300692,
+      "Traffic": 0.09330170476371295,
+      "Weather": 0.16916375007076692,
+      "ILI": 0.5772150216685199,
+      "Exchange": -0.06327455379492962
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.652021606763204,
+        "recent_mean": 0.6654108365376791,
+        "delta": 0.013389229774475098
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 1.5822050094604492
+  },
+  {
+    "epoch": 25,
+    "train_loss": 0.534842279413715,
+    "train_pair_acc": 0.7403454256244004,
+    "train_pair_loss_mean": 0.534842279413715,
+    "train_dataset_acc": 0.3609375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5352005958557129,
+    "val_normalized_score": 0.2847339835823433,
+    "val_pair_acc": 0.7263158202171326,
+    "val_pair_loss_mean": 0.5352005958557129,
+    "train_weight_norm": 0.7188472606241703,
+    "val_weight_norm": 0.6351603031158447,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_025.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.28591536810762785,
+    "best_val_loss_at_best_score": 0.533252727985382,
+    "lowest_raw_val_loss": 0.533252727985382,
+    "lowest_raw_val_loss_epoch": 24,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.620489534761667,
+      "Traffic": 0.11918766869579955,
+      "Weather": 0.17288947134865182,
+      "ILI": 0.5538953331023919,
+      "Exchange": -0.042792089996793785
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.649301807085673,
+        "recent_mean": 0.6604554255803426,
+        "delta": 0.01115361849466967
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 1.5804818637669087
+  },
+  {
+    "epoch": 26,
+    "train_loss": 0.5434391989372671,
+    "train_pair_acc": 0.7258717407472431,
+    "train_pair_loss_mean": 0.5434391989372671,
+    "train_dataset_acc": 0.2296875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5311425030231476,
+    "val_normalized_score": 0.2879087336617071,
+    "val_pair_acc": 0.7273684501647949,
+    "val_pair_loss_mean": 0.5311425030231476,
+    "train_weight_norm": 0.6812667473219335,
+    "val_weight_norm": 0.7383674621582031,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_026.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.2879087336617071,
+    "best_val_loss_at_best_score": 0.5311425030231476,
+    "lowest_raw_val_loss": 0.5311425030231476,
+    "lowest_raw_val_loss_epoch": 26,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6630856305717101,
+      "Traffic": 0.08947810312813426,
+      "Weather": 0.1656220430261238,
+      "ILI": 0.5986385319255655,
+      "Exchange": -0.07728064034299788
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6387356917063395,
+        "recent_mean": 0.6537054181098938,
+        "delta": 0.014969726403554318
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.615412692228953,
+        "recent_mean": 0.6174211700757345,
+        "delta": 0.0020084778467814868
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.794763465722402,
+        "recent_mean": 0.805081307888031,
+        "delta": 0.010317842165629032
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 509,
+    "train_adaptive_task_samples": 131,
+    "train_cls_loss": 1.5984522432088852
+  },
+  {
+    "epoch": 27,
+    "train_loss": 0.4739733480848372,
+    "train_pair_acc": 0.776825690176338,
+    "train_pair_loss_mean": 0.4739733480848372,
+    "train_dataset_acc": 0.15625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5558576256036758,
+    "val_normalized_score": 0.24990053435328569,
+    "val_pair_acc": 0.7252632021903992,
+    "val_pair_loss_mean": 0.5558576256036758,
+    "train_weight_norm": 0.8946089383680373,
+    "val_weight_norm": 1.0378861904144288,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_027.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.2879087336617071,
+    "best_val_loss_at_best_score": 0.5311425030231476,
+    "lowest_raw_val_loss": 0.5311425030231476,
+    "lowest_raw_val_loss_epoch": 26,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7324057764303861,
+      "Traffic": -0.032903980906700755,
+      "Weather": 0.11302847498771146,
+      "ILI": 0.6697929424684186,
+      "Exchange": -0.23282054121338705
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.2587811201810837,
+        "recent_mean": 0.2795425256093343,
+        "delta": 0.020761405428250612
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.3456156651178996,
+        "recent_mean": 0.3623773753643036,
+        "delta": 0.016761710246403994
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 1.6540004966780544
+  },
+  {
+    "epoch": 28,
+    "train_loss": 0.548787668789737,
+    "train_pair_acc": 0.7224424636922777,
+    "train_pair_loss_mean": 0.548787668789737,
+    "train_dataset_acc": 0.2375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5296709716320038,
+    "val_normalized_score": 0.28872626758951103,
+    "val_pair_acc": 0.7263158202171326,
+    "val_pair_loss_mean": 0.5296709716320038,
+    "train_weight_norm": 0.7112852837424726,
+    "val_weight_norm": 0.7957128047943115,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_028.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.28872626758951103,
+    "best_val_loss_at_best_score": 0.5296709716320038,
+    "lowest_raw_val_loss": 0.5296709716320038,
+    "lowest_raw_val_loss_epoch": 28,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.688447857140536,
+      "Traffic": 0.0579155372164119,
+      "Weather": 0.1667153564656179,
+      "ILI": 0.6148282167545651,
+      "Exchange": -0.08427562962957566
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6604554255803426,
+        "recent_mean": 0.6608442664146423,
+        "delta": 0.0003888408342996863
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6186299920082092,
+        "recent_mean": 0.6251634558041891,
+        "delta": 0.006533463795979855
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.8089850544929504,
+        "recent_mean": 0.8229827086130778,
+        "delta": 0.013997654120127323
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 509,
+    "train_adaptive_task_samples": 131,
+    "train_cls_loss": 1.5997008362784981
+  },
+  {
+    "epoch": 29,
+    "train_loss": 0.5425126635702326,
+    "train_pair_acc": 0.7258717405144125,
+    "train_pair_loss_mean": 0.5425126635702326,
+    "train_dataset_acc": 0.2375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5270978331565856,
+    "val_normalized_score": 0.2946952064264007,
+    "val_pair_acc": 0.7263158202171326,
+    "val_pair_loss_mean": 0.5270978331565856,
+    "train_weight_norm": 0.7011482858099043,
+    "val_weight_norm": 0.6526802003383636,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_029.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.2946952064264007,
+    "best_val_loss_at_best_score": 0.5270978331565856,
+    "lowest_raw_val_loss": 0.5270978331565856,
+    "lowest_raw_val_loss_epoch": 29,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6501289333202044,
+      "Traffic": 0.10674370533499034,
+      "Weather": 0.17052725342315475,
+      "ILI": 0.5694388554664522,
+      "Exchange": -0.023362715412798427
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6537054181098938,
+        "recent_mean": 0.6751813491185507,
+        "delta": 0.021475931008656857
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6174211700757345,
+        "recent_mean": 0.6266780296961466,
+        "delta": 0.009256859620412117
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.805081307888031,
+        "recent_mean": 0.8331650296847025,
+        "delta": 0.028083721796671512
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 1.5978916734457016
+  },
+  {
+    "epoch": 30,
+    "train_loss": 0.539622769295238,
+    "train_pair_acc": 0.7278947663027793,
+    "train_pair_loss_mean": 0.539622769295238,
+    "train_dataset_acc": 0.25625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.523013573884964,
+    "val_normalized_score": 0.2986591640419716,
+    "val_pair_acc": 0.7273684501647949,
+    "val_pair_loss_mean": 0.523013573884964,
+    "train_weight_norm": 0.6971610858570785,
+    "val_weight_norm": 0.7216138899326324,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_030.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.2986591640419716,
+    "best_val_loss_at_best_score": 0.523013573884964,
+    "lowest_raw_val_loss": 0.523013573884964,
+    "lowest_raw_val_loss_epoch": 30,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6700878853461877,
+      "Traffic": 0.09112587495954018,
+      "Weather": 0.1715829054988912,
+      "ILI": 0.6049664737929514,
+      "Exchange": -0.0444673193877124
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6313133637110392,
+        "recent_mean": 0.6711413661638895,
+        "delta": 0.03982800245285034
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6113928953806559,
+        "recent_mean": 0.625474731127421,
+        "delta": 0.014081835746765137
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7813668847084045,
+        "recent_mean": 0.819930632909139,
+        "delta": 0.03856374820073449
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 1.591269032470882
+  },
+  {
+    "epoch": 31,
+    "train_loss": 0.47762432612944394,
+    "train_pair_acc": 0.7650329254567623,
+    "train_pair_loss_mean": 0.47762432612944394,
+    "train_dataset_acc": 0.1453125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5258165329694748,
+    "val_normalized_score": 0.29108387900179783,
+    "val_pair_acc": 0.7242105603218079,
+    "val_pair_loss_mean": 0.5258165329694748,
+    "train_weight_norm": 0.8834801343735308,
+    "val_weight_norm": 0.9326845288276673,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_031.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.2986591640419716,
+    "best_val_loss_at_best_score": 0.523013573884964,
+    "lowest_raw_val_loss": 0.523013573884964,
+    "lowest_raw_val_loss_epoch": 30,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7308932479868787,
+      "Traffic": 0.0007463626918508742,
+      "Weather": 0.16611390853601693,
+      "ILI": 0.6684154073880927,
+      "Exchange": -0.11074953159385012
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.25871070722738904,
+        "recent_mean": 0.26063424348831177,
+        "delta": 0.0019235362609227313
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.33596673607826233,
+        "recent_mean": 0.3454075853029887,
+        "delta": 0.009440849224726378
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 513,
+    "train_adaptive_task_samples": 127,
+    "train_cls_loss": 1.66588150318712
+  },
+  {
+    "epoch": 32,
+    "train_loss": 0.4540896162157878,
+    "train_pair_acc": 0.7790460854768753,
+    "train_pair_loss_mean": 0.4540896162157878,
+    "train_dataset_acc": 0.184375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5254617393016815,
+    "val_normalized_score": 0.28977694797515297,
+    "val_pair_acc": 0.7252632021903992,
+    "val_pair_loss_mean": 0.5254617393016815,
+    "train_weight_norm": 0.9761428307741881,
+    "val_weight_norm": 1.0444041550159455,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_032.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.2986591640419716,
+    "best_val_loss_at_best_score": 0.523013573884964,
+    "lowest_raw_val_loss": 0.523013573884964,
+    "lowest_raw_val_loss_epoch": 30,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.757071873401936,
+      "Traffic": -0.041573675592564426,
+      "Weather": 0.16739917344240496,
+      "ILI": 0.699884626779541,
+      "Exchange": -0.1338972581555527
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.2408436288436254,
+        "recent_mean": 0.24947482844193777,
+        "delta": 0.008631199598312378
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.3185837964216868,
+        "recent_mean": 0.33012022574742633,
+        "delta": 0.011536429325739506
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 513,
+    "train_adaptive_task_samples": 127,
+    "train_cls_loss": 1.672235512174666
+  },
+  {
+    "epoch": 33,
+    "train_loss": 0.5258347219321877,
+    "train_pair_acc": 0.7335526628885418,
+    "train_pair_loss_mean": 0.5258347219321877,
+    "train_dataset_acc": 0.36875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.49645895063877105,
+    "val_normalized_score": 0.3316624322832403,
+    "val_pair_acc": 0.7305263400077819,
+    "val_pair_loss_mean": 0.49645895063877105,
+    "train_weight_norm": 0.7227269998285919,
+    "val_weight_norm": 0.794437050819397,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_033.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.3316624322832403,
+    "best_val_loss_at_best_score": 0.49645895063877105,
+    "lowest_raw_val_loss": 0.49645895063877105,
+    "lowest_raw_val_loss_epoch": 33,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7162617362647643,
+      "Traffic": 0.11793676822067474,
+      "Weather": 0.16557563450691273,
+      "ILI": 0.686675416812398,
+      "Exchange": -0.02813739438854815
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6711413661638895,
+        "recent_mean": 0.6902014414469401,
+        "delta": 0.019060075283050537
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 1.5963274816051125
+  },
+  {
+    "epoch": 34,
+    "train_loss": 0.5225974201457575,
+    "train_pair_acc": 0.721496740821749,
+    "train_pair_loss_mean": 0.5225974201457575,
+    "train_dataset_acc": 0.2890625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.4873559385538101,
+    "val_normalized_score": 0.34301270177327237,
+    "val_pair_acc": 0.7357895016670227,
+    "val_pair_loss_mean": 0.4873559385538101,
+    "train_weight_norm": 0.7269331458490342,
+    "val_weight_norm": 0.8804538011550903,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_034.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.34301270177327237,
+    "best_val_loss_at_best_score": 0.4873559385538101,
+    "lowest_raw_val_loss": 0.4873559385538101,
+    "lowest_raw_val_loss_epoch": 34,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7462485667253265,
+      "Traffic": 0.1337426752016368,
+      "Weather": 0.16402649707768066,
+      "ILI": 0.7092560718587262,
+      "Exchange": -0.03821030199700845
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6421195864677429,
+        "recent_mean": 0.6839279532432556,
+        "delta": 0.041808366775512695
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6111107269922892,
+        "recent_mean": 0.6134992639223734,
+        "delta": 0.0023885369300842285
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7736984888712565,
+        "recent_mean": 0.8033195734024048,
+        "delta": 0.029621084531148312
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 517,
+    "train_adaptive_task_samples": 123,
+    "train_cls_loss": 1.6205776615068317
+  },
+  {
+    "epoch": 35,
+    "train_loss": 0.5238992789527401,
+    "train_pair_acc": 0.716949043283239,
+    "train_pair_loss_mean": 0.5238992789527401,
+    "train_dataset_acc": 0.25625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.484786793589592,
+    "val_normalized_score": 0.345994441592094,
+    "val_pair_acc": 0.7315789818763733,
+    "val_pair_loss_mean": 0.484786793589592,
+    "train_weight_norm": 0.728741814289242,
+    "val_weight_norm": 0.9484837174415588,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_035.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.345994441592094,
+    "best_val_loss_at_best_score": 0.484786793589592,
+    "lowest_raw_val_loss": 0.484786793589592,
+    "lowest_raw_val_loss_epoch": 35,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.760072540153795,
+      "Traffic": 0.1368119325648147,
+      "Weather": 0.16476239202628748,
+      "ILI": 0.7197131019155186,
+      "Exchange": -0.05138775869994558
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6112582683563232,
+        "recent_mean": 0.6140113274256388,
+        "delta": 0.0027530590693155554
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7801966269810995,
+        "recent_mean": 0.7855144937833151,
+        "delta": 0.005317866802215576
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 1.6203131698071958
+  },
+  {
+    "epoch": 36,
+    "train_loss": 0.511621898249723,
+    "train_pair_acc": 0.7248931212816387,
+    "train_pair_loss_mean": 0.511621898249723,
+    "train_dataset_acc": 0.2484375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.48390318751335143,
+    "val_normalized_score": 0.34709439348523746,
+    "val_pair_acc": 0.7284210801124573,
+    "val_pair_loss_mean": 0.48390318751335143,
+    "train_weight_norm": 0.779437617585063,
+    "val_weight_norm": 1.006962251663208,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_036.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.34709439348523746,
+    "best_val_loss_at_best_score": 0.48390318751335143,
+    "lowest_raw_val_loss": 0.48390318751335143,
+    "lowest_raw_val_loss_epoch": 36,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7687728282029915,
+      "Traffic": 0.13947472369296524,
+      "Weather": 0.16426704385264898,
+      "ILI": 0.7197458348707375,
+      "Exchange": -0.056788463193155905
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6120256185531616,
+        "recent_mean": 0.6146581570307413,
+        "delta": 0.0026325384775797156
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 1.6260381223633886
+  },
+  {
+    "epoch": 37,
+    "train_loss": 0.506614001840353,
+    "train_pair_acc": 0.7287911492399871,
+    "train_pair_loss_mean": 0.506614001840353,
+    "train_dataset_acc": 0.2609375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47978981137275695,
+    "val_normalized_score": 0.35251283498456826,
+    "val_pair_acc": 0.7273684501647949,
+    "val_pair_loss_mean": 0.47978981137275695,
+    "train_weight_norm": 0.8339708179002627,
+    "val_weight_norm": 1.0074332416057588,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_037.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.35251283498456826,
+    "best_val_loss_at_best_score": 0.47978981137275695,
+    "lowest_raw_val_loss": 0.47978981137275695,
+    "lowest_raw_val_loss_epoch": 37,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7729423699835765,
+      "Traffic": 0.1434264551694999,
+      "Weather": 0.16295440358937904,
+      "ILI": 0.7242164775189367,
+      "Exchange": -0.040975531338550863
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6134992639223734,
+        "recent_mean": 0.6149791677792867,
+        "delta": 0.0014799038569133227
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 1.641502221673727
+  },
+  {
+    "epoch": 38,
+    "train_loss": 0.5082482131198048,
+    "train_pair_acc": 0.7252549648284912,
+    "train_pair_loss_mean": 0.5082482131198048,
+    "train_dataset_acc": 0.2625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.4786175310611725,
+    "val_normalized_score": 0.35390639086993486,
+    "val_pair_acc": 0.7231579184532165,
+    "val_pair_loss_mean": 0.4786175310611725,
+    "train_weight_norm": 0.8356575905811041,
+    "val_weight_norm": 1.0676441609859466,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_038.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.35390639086993486,
+    "best_val_loss_at_best_score": 0.4786175310611725,
+    "lowest_raw_val_loss": 0.4786175310611725,
+    "lowest_raw_val_loss_epoch": 38,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7821218268925366,
+      "Traffic": 0.14126225809442652,
+      "Weather": 0.16421666671661184,
+      "ILI": 0.725689042636276,
+      "Exchange": -0.043757839990176566
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6140113274256388,
+        "recent_mean": 0.6152421633402506,
+        "delta": 0.0012308359146118164
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Weather",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 516,
+    "train_adaptive_task_samples": 124,
+    "train_cls_loss": 1.6458745323121549
+  },
+  {
+    "epoch": 39,
+    "train_loss": 0.4999912906670943,
+    "train_pair_acc": 0.7280016745906324,
+    "train_pair_loss_mean": 0.4999912906670943,
+    "train_dataset_acc": 0.2125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47693135142326354,
+    "val_normalized_score": 0.3559567347566546,
+    "val_pair_acc": 0.7305263400077819,
+    "val_pair_loss_mean": 0.47693135142326354,
+    "train_weight_norm": 0.8747140566352755,
+    "val_weight_norm": 1.0968497335910796,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_039.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.3559567347566546,
+    "best_val_loss_at_best_score": 0.47693135142326354,
+    "lowest_raw_val_loss": 0.47693135142326354,
+    "lowest_raw_val_loss_epoch": 39,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.787317908087391,
+      "Traffic": 0.14022626592113044,
+      "Weather": 0.16555724928202456,
+      "ILI": 0.7304993419283109,
+      "Exchange": -0.04381709143558401
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Weather",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6146581570307413,
+        "recent_mean": 0.6153760353724161,
+        "delta": 0.0007178783416748047
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7652621666590372,
+        "recent_mean": 0.771100640296936,
+        "delta": 0.0058384736378988
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.6553427543491126
+  },
+  {
+    "epoch": 40,
+    "train_loss": 0.506196525041014,
+    "train_pair_acc": 0.7271464123390615,
+    "train_pair_loss_mean": 0.506196525041014,
+    "train_dataset_acc": 0.25625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47532043755054476,
+    "val_normalized_score": 0.35827583303558874,
+    "val_pair_acc": 0.724210548400879,
+    "val_pair_loss_mean": 0.47532043755054476,
+    "train_weight_norm": 0.8736587509978563,
+    "val_weight_norm": 1.0158236622810364,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_040.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.35827583303558874,
+    "best_val_loss_at_best_score": 0.47532043755054476,
+    "lowest_raw_val_loss": 0.47532043755054476,
+    "lowest_raw_val_loss_epoch": 40,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7758738904188823,
+      "Traffic": 0.14159357859768046,
+      "Weather": 0.1644293521816175,
+      "ILI": 0.7318550260199136,
+      "Exchange": -0.0223726820401503
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6149791677792867,
+        "recent_mean": 0.6150595347086588,
+        "delta": 8.036692937207768e-05
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 1.6370673635974526
+  },
+  {
+    "epoch": 41,
+    "train_loss": 0.4747394895646721,
+    "train_pair_acc": 0.7470230567734688,
+    "train_pair_loss_mean": 0.4747394895646721,
+    "train_dataset_acc": 0.2421875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47564978897571564,
+    "val_normalized_score": 0.3577366996462377,
+    "val_pair_acc": 0.7242105364799499,
+    "val_pair_loss_mean": 0.47564978897571564,
+    "train_weight_norm": 0.9987955910153687,
+    "val_weight_norm": 1.0861124694347382,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_041.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.35827583303558874,
+    "best_val_loss_at_best_score": 0.47532043755054476,
+    "lowest_raw_val_loss": 0.47532043755054476,
+    "lowest_raw_val_loss_epoch": 40,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.784204850232479,
+      "Traffic": 0.14216027081672628,
+      "Weather": 0.16473201995874096,
+      "ILI": 0.7311982775779675,
+      "Exchange": -0.03361192035472513
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 1.671553367190063
+  },
+  {
+    "epoch": 42,
+    "train_loss": 0.4906022854382172,
+    "train_pair_acc": 0.7422450971789658,
+    "train_pair_loss_mean": 0.4906022854382172,
+    "train_dataset_acc": 0.3375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47382322549819944,
+    "val_normalized_score": 0.3600790029469173,
+    "val_pair_acc": 0.7315789699554444,
+    "val_pair_loss_mean": 0.47382322549819944,
+    "train_weight_norm": 0.9064733190927654,
+    "val_weight_norm": 1.0469749033451081,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_042.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.3600790029469173,
+    "best_val_loss_at_best_score": 0.47382322549819944,
+    "lowest_raw_val_loss": 0.47382322549819944,
+    "lowest_raw_val_loss_epoch": 42,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7828165962344049,
+      "Traffic": 0.14088500104779472,
+      "Weather": 0.16457044055939354,
+      "ILI": 0.7356984147081564,
+      "Exchange": -0.023575437815162848
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6027206977208456,
+        "recent_mean": 0.6027635931968689,
+        "delta": 4.289547602331911e-05
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 507,
+    "train_adaptive_task_samples": 133,
+    "train_cls_loss": 1.6404655363410712
+  },
+  {
+    "epoch": 43,
+    "train_loss": 0.49106349914800373,
+    "train_pair_acc": 0.7409375308081507,
+    "train_pair_loss_mean": 0.49106349914800373,
+    "train_dataset_acc": 0.3265625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47720504701137545,
+    "val_normalized_score": 0.3553568056399295,
+    "val_pair_acc": 0.7294737100601196,
+    "val_pair_loss_mean": 0.47720504701137545,
+    "train_weight_norm": 0.9134180764202029,
+    "val_weight_norm": 1.1633848428726197,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_043.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.3600790029469173,
+    "best_val_loss_at_best_score": 0.47382322549819944,
+    "lowest_raw_val_loss": 0.47382322549819944,
+    "lowest_raw_val_loss_epoch": 42,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7929060451186138,
+      "Traffic": 0.1383644348922096,
+      "Weather": 0.16718413920417569,
+      "ILI": 0.734553283609885,
+      "Exchange": -0.05622387462523663
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6025448441505432,
+        "recent_mean": 0.6026094555854797,
+        "delta": 6.461143493652344e-05
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 515,
+    "train_adaptive_task_samples": 125,
+    "train_cls_loss": 1.637350619584322
+  },
+  {
+    "epoch": 44,
+    "train_loss": 0.5022044495446607,
+    "train_pair_acc": 0.7307319394312799,
+    "train_pair_loss_mean": 0.5022044495446607,
+    "train_dataset_acc": 0.265625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.4750954180955887,
+    "val_normalized_score": 0.3583853772741394,
+    "val_pair_acc": 0.730526351928711,
+    "val_pair_loss_mean": 0.4750954180955887,
+    "train_weight_norm": 0.8857555544935167,
+    "val_weight_norm": 1.0762630164623261,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_044.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.3600790029469173,
+    "best_val_loss_at_best_score": 0.47382322549819944,
+    "lowest_raw_val_loss": 0.47382322549819944,
+    "lowest_raw_val_loss_epoch": 42,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7846786347479209,
+      "Traffic": 0.1404760724102573,
+      "Weather": 0.16565800355409885,
+      "ILI": 0.733719307108804,
+      "Exchange": -0.03260513145038391
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6029737194379171,
+        "recent_mean": 0.6033650437990824,
+        "delta": 0.00039132436116529057
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7633506059646606,
+        "recent_mean": 0.764200766881307,
+        "delta": 0.0008501609166463586
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 1.654920812509954
+  },
+  {
+    "epoch": 45,
+    "train_loss": 0.4937367547769099,
+    "train_pair_acc": 0.7380263465456665,
+    "train_pair_loss_mean": 0.4937367547769099,
+    "train_dataset_acc": 0.2671875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47316128611564634,
+    "val_normalized_score": 0.36080487683837165,
+    "val_pair_acc": 0.7326315999031067,
+    "val_pair_loss_mean": 0.47316128611564634,
+    "train_weight_norm": 0.8970162271521985,
+    "val_weight_norm": 1.0685303390026093,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_045.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.36080487683837165,
+    "best_val_loss_at_best_score": 0.47316128611564634,
+    "lowest_raw_val_loss": 0.47316128611564634,
+    "lowest_raw_val_loss_epoch": 45,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7869843810184217,
+      "Traffic": 0.14031499732192498,
+      "Weather": 0.16857663775704793,
+      "ILI": 0.7390547962206391,
+      "Exchange": -0.03090642812617547
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6027635931968689,
+        "recent_mean": 0.6037591298421224,
+        "delta": 0.0009955366452535364
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7608602444330851,
+        "recent_mean": 0.7639536460240682,
+        "delta": 0.003093401590983147
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 509,
+    "train_adaptive_task_samples": 131,
+    "train_cls_loss": 1.6520050480961799
+  },
+  {
+    "epoch": 46,
+    "train_loss": 0.5001515484647825,
+    "train_pair_acc": 0.7303618717007339,
+    "train_pair_loss_mean": 0.5001515484647825,
+    "train_dataset_acc": 0.26875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47274224162101747,
+    "val_normalized_score": 0.36137142714804055,
+    "val_pair_acc": 0.7357895016670227,
+    "val_pair_loss_mean": 0.47274224162101747,
+    "train_weight_norm": 0.8867810701485723,
+    "val_weight_norm": 1.0768974363803863,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_046.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.36137142714804055,
+    "best_val_loss_at_best_score": 0.47274224162101747,
+    "lowest_raw_val_loss": 0.47274224162101747,
+    "lowest_raw_val_loss_epoch": 46,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7894591201308807,
+      "Traffic": 0.13963240236404226,
+      "Weather": 0.1665164396712333,
+      "ILI": 0.7378437639332699,
+      "Exchange": -0.02659459035922322
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6026094555854797,
+        "recent_mean": 0.6038925051689148,
+        "delta": 0.0012830495834350586
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.7558918396631876,
+        "recent_mean": 0.7657530705134074,
+        "delta": 0.009861230850219727
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 1.6582429353147745
+  },
+  {
+    "epoch": 47,
+    "train_loss": 0.493965696496889,
+    "train_pair_acc": 0.7404029903933406,
+    "train_pair_loss_mean": 0.493965696496889,
+    "train_dataset_acc": 0.3328125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.473619270324707,
+    "val_normalized_score": 0.36024481080810294,
+    "val_pair_acc": 0.733684241771698,
+    "val_pair_loss_mean": 0.473619270324707,
+    "train_weight_norm": 0.9047054897528142,
+    "val_weight_norm": 1.0902903258800507,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_047.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.36137142714804055,
+    "best_val_loss_at_best_score": 0.47274224162101747,
+    "lowest_raw_val_loss": 0.47274224162101747,
+    "lowest_raw_val_loss_epoch": 46,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7893264007664585,
+      "Traffic": 0.13916726302092974,
+      "Weather": 0.16713497695084042,
+      "ILI": 0.7357854007955362,
+      "Exchange": -0.030189987493250234
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6033650437990824,
+        "recent_mean": 0.6035958131154379,
+        "delta": 0.00023076931635546138
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 1.652080593816936
+  },
+  {
+    "epoch": 48,
+    "train_loss": 0.49738130904734135,
+    "train_pair_acc": 0.7353783192113041,
+    "train_pair_loss_mean": 0.49738130904734135,
+    "train_dataset_acc": 0.325,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.4747950524091721,
+    "val_normalized_score": 0.358712557681344,
+    "val_pair_acc": 0.7315789818763733,
+    "val_pair_loss_mean": 0.4747950524091721,
+    "train_weight_norm": 0.8971082102041692,
+    "val_weight_norm": 1.1202122449874878,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_048.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.36137142714804055,
+    "best_val_loss_at_best_score": 0.47274224162101747,
+    "lowest_raw_val_loss": 0.47274224162101747,
+    "lowest_raw_val_loss_epoch": 46,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7902778238543305,
+      "Traffic": 0.13841699444923528,
+      "Weather": 0.1638918070821344,
+      "ILI": 0.7331533403841511,
+      "Exchange": -0.032177177363130985
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6037591298421224,
+        "recent_mean": 0.6039020617802938,
+        "delta": 0.00014293193817138672
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 1.6519085982814432
+  },
+  {
+    "epoch": 49,
+    "train_loss": 0.471866952534765,
+    "train_pair_acc": 0.7475164771080017,
+    "train_pair_loss_mean": 0.471866952534765,
+    "train_dataset_acc": 0.2578125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.47523820102214814,
+    "val_normalized_score": 0.3581725851938408,
+    "val_pair_acc": 0.7326316118240357,
+    "val_pair_loss_mean": 0.47523820102214814,
+    "train_weight_norm": 1.0462437749840319,
+    "val_weight_norm": 1.0716087102890015,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_049.pth",
+    "early_stopping_counter": 3,
+    "best_val_normalized_score": 0.36137142714804055,
+    "best_val_loss_at_best_score": 0.47274224162101747,
+    "lowest_raw_val_loss": 0.47274224162101747,
+    "lowest_raw_val_loss_epoch": 46,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7846578152832101,
+      "Traffic": 0.13752798223266205,
+      "Weather": 0.16531459671037302,
+      "ILI": 0.7334606471179886,
+      "Exchange": -0.030098115375029676
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6038925051689148,
+        "recent_mean": 0.6043461759885153,
+        "delta": 0.0004536708196004602
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6129276752471924,
+        "recent_mean": 0.6138783891995748,
+        "delta": 0.0009507139523824426
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.2261337290207545,
+        "recent_mean": 0.226289172967275,
+        "delta": 0.00015544394652050597
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "ILI",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 508,
+    "train_adaptive_task_samples": 132,
+    "train_cls_loss": 1.6567004952579736
+  },
+  {
+    "epoch": 50,
+    "train_loss": 0.4685196810401976,
+    "train_pair_acc": 0.7499753608833999,
+    "train_pair_loss_mean": 0.4685196810401976,
+    "train_dataset_acc": 0.2421875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.4753338724374771,
+    "val_normalized_score": 0.3579080310625956,
+    "val_pair_acc": 0.7284210681915283,
+    "val_pair_loss_mean": 0.4753338724374771,
+    "train_weight_norm": 1.0412890028674155,
+    "val_weight_norm": 1.1475614428520202,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_050.pth",
+    "early_stopping_counter": 4,
+    "best_val_normalized_score": 0.36137142714804055,
+    "best_val_loss_at_best_score": 0.47274224162101747,
+    "lowest_raw_val_loss": 0.47274224162101747,
+    "lowest_raw_val_loss_epoch": 46,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.793463560911368,
+      "Traffic": 0.13839355917017376,
+      "Weather": 0.16703381771786552,
+      "ILI": 0.7340047628539181,
+      "Exchange": -0.04335554534034734
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "ILI",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6035958131154379,
+        "recent_mean": 0.6048385898272196,
+        "delta": 0.0012427767117817456
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6130914688110352,
+        "recent_mean": 0.6141732136408488,
+        "delta": 0.0010817448298136023
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.2251950204372406,
+        "recent_mean": 0.22753958900769553,
+        "delta": 0.0023445685704549246
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.758480429649353,
+        "recent_mean": 0.759059488773346,
+        "delta": 0.0005790591239929199
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "ILI",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 507,
+    "train_adaptive_task_samples": 133,
+    "train_cls_loss": 1.668301011994481
+  },
+  {
+    "epoch": 51,
+    "train_loss": 0.4745801713550463,
+    "train_pair_acc": 0.7449177942238748,
+    "train_pair_loss_mean": 0.4745801713550463,
+    "train_dataset_acc": 0.1953125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.4736265867948532,
+    "val_normalized_score": 0.3599687805328151,
+    "val_pair_acc": 0.7326315999031067,
+    "val_pair_loss_mean": 0.4736265867948532,
+    "train_weight_norm": 1.0048973788972944,
+    "val_weight_norm": 1.1572152733802796,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260526_055439/epoch_checkpoints/epoch_051.pth",
+    "early_stopping_counter": 5,
+    "best_val_normalized_score": 0.36137142714804055,
+    "best_val_loss_at_best_score": 0.47274224162101747,
+    "lowest_raw_val_loss": 0.47274224162101747,
+    "lowest_raw_val_loss_epoch": 46,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.7965993463670488,
+      "Traffic": 0.13859471198211853,
+      "Weather": 0.16666991985256832,
+      "ILI": 0.7406307661364068,
+      "Exchange": -0.042650841674067026
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Weather",
+      "ILI",
+      "Exchange"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.6039020617802938,
+        "recent_mean": 0.6050196290016174,
+        "delta": 0.001117567221323612
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6127291520436605,
+        "recent_mean": 0.6141980290412903,
+        "delta": 0.0014688769976297644
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.22460560500621796,
+        "recent_mean": 0.2280475695927938,
+        "delta": 0.0034419645865758353
+      },
+      {
+        "dataset": "Exchange",
+        "past_mean": 0.757887621720632,
+        "recent_mean": 0.7622910340627035,
+        "delta": 0.004403412342071533
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Exchange"
+    ],
+    "train_uniform_task_samples": 508,
+    "train_adaptive_task_samples": 132,
+    "train_cls_loss": 1.6730243287980557
+  }
+]

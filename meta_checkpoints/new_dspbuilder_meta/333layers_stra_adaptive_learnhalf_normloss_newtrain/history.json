@@ -1,0 +1,2490 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 0.7338848941028118,
+    "train_pair_acc": 0.4593832429614849,
+    "train_pair_loss_mean": 0.7338848941028118,
+    "train_dataset_acc": 0.115625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.711739219725132,
+    "val_normalized_score": 0.0,
+    "val_pair_acc": 0.4769737012684345,
+    "val_pair_loss_mean": 0.711739219725132,
+    "train_weight_norm": 0.2705624587601051,
+    "val_weight_norm": 0.25240280851721764,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_001.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.0,
+    "best_val_loss_at_best_score": 0.711739219725132,
+    "lowest_raw_val_loss": 0.711739219725132,
+    "lowest_raw_val_loss_epoch": 1,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.0,
+      "ILI": 0.0,
+      "Traffic": 0.0,
+      "M4_Quarterly": 0.0,
+      "Etth1": 0.0,
+      "M1_Yearly": 0.0,
+      "aus_electricity_demand": 0.0,
+      "Weather": 0.0
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 2.0888400238007305
+  },
+  {
+    "epoch": 2,
+    "train_loss": 0.6991065560840071,
+    "train_pair_acc": 0.5146052854834124,
+    "train_pair_loss_mean": 0.6991065560840071,
+    "train_dataset_acc": 0.1296875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6749856024980545,
+    "val_normalized_score": 0.046823513929557276,
+    "val_pair_acc": 0.6052631884813309,
+    "val_pair_loss_mean": 0.6749856024980545,
+    "train_weight_norm": 0.2501095267944038,
+    "val_weight_norm": 0.2503657676279545,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_002.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.046823513929557276,
+    "best_val_loss_at_best_score": 0.6749856024980545,
+    "lowest_raw_val_loss": 0.6749856024980545,
+    "lowest_raw_val_loss_epoch": 2,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.15522174552264867,
+      "ILI": 0.1380924951076858,
+      "Traffic": 0.04059125285973653,
+      "M4_Quarterly": 0.12497718476284807,
+      "Etth1": -0.08121322786891931,
+      "M1_Yearly": 0.006903852677681609,
+      "aus_electricity_demand": -0.07223071230730338,
+      "Weather": 0.062245520682080245
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 2.0803055392578242
+  },
+  {
+    "epoch": 3,
+    "train_loss": 0.6795717692002654,
+    "train_pair_acc": 0.5819983795983716,
+    "train_pair_loss_mean": 0.6795717692002654,
+    "train_dataset_acc": 0.1234375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6524804905056953,
+    "val_normalized_score": 0.073652750948766,
+    "val_pair_acc": 0.6407895050942898,
+    "val_pair_loss_mean": 0.6524804905056953,
+    "train_weight_norm": 0.2975554317468777,
+    "val_weight_norm": 0.3192461244761944,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_003.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.073652750948766,
+    "best_val_loss_at_best_score": 0.6524804905056953,
+    "lowest_raw_val_loss": 0.6524804905056953,
+    "lowest_raw_val_loss_epoch": 3,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.29675763801631905,
+      "ILI": 0.2518807881935546,
+      "Traffic": 0.12060155734679646,
+      "M4_Quarterly": 0.22857444874094604,
+      "Etth1": -0.2123547811618066,
+      "M1_Yearly": -0.05174505913810301,
+      "aus_electricity_demand": -0.15738133884614408,
+      "Weather": 0.11288875443856572
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 2.0841470915824174
+  },
+  {
+    "epoch": 4,
+    "train_loss": 0.671251500537619,
+    "train_pair_acc": 0.590115156956017,
+    "train_pair_loss_mean": 0.671251500537619,
+    "train_dataset_acc": 0.14375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6460916697978973,
+    "val_normalized_score": 0.08123960357086413,
+    "val_pair_acc": 0.6368421316146851,
+    "val_pair_loss_mean": 0.6460916697978973,
+    "train_weight_norm": 0.3369021625025198,
+    "val_weight_norm": 0.36485686898231506,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_004.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.08123960357086413,
+    "best_val_loss_at_best_score": 0.6460916697978973,
+    "lowest_raw_val_loss": 0.6460916697978973,
+    "lowest_raw_val_loss_epoch": 4,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.3409138111822056,
+      "ILI": 0.2833850974269993,
+      "Traffic": 0.16277157348376364,
+      "M4_Quarterly": 0.2556525613197057,
+      "Etth1": -0.257867372913952,
+      "M1_Yearly": -0.07536193240643085,
+      "aus_electricity_demand": -0.1886248417231851,
+      "Weather": 0.12904793219780678
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 2.0816172497346996
+  },
+  {
+    "epoch": 5,
+    "train_loss": 0.6663299843668937,
+    "train_pair_acc": 0.5953125246567652,
+    "train_pair_loss_mean": 0.6663299843668937,
+    "train_dataset_acc": 0.10625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6396805942058563,
+    "val_normalized_score": 0.08890059618556079,
+    "val_pair_acc": 0.6427631862461567,
+    "val_pair_loss_mean": 0.6396805942058563,
+    "train_weight_norm": 0.3800771155161783,
+    "val_weight_norm": 0.4183124005794525,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_005.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.08890059618556079,
+    "best_val_loss_at_best_score": 0.6396805942058563,
+    "lowest_raw_val_loss": 0.6396805942058563,
+    "lowest_raw_val_loss_epoch": 5,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.37887428038807364,
+      "ILI": 0.31560838288344417,
+      "Traffic": 0.18914035211678654,
+      "M4_Quarterly": 0.28186546784990624,
+      "Etth1": -0.2891011072995079,
+      "M1_Yearly": -0.07723888132823462,
+      "aus_electricity_demand": -0.2294650436845849,
+      "Weather": 0.14152131855860312
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 2.0889869015663862
+  },
+  {
+    "epoch": 6,
+    "train_loss": 0.6644459293689579,
+    "train_pair_acc": 0.5910115380072967,
+    "train_pair_loss_mean": 0.6644459293689579,
+    "train_dataset_acc": 0.1140625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6463414505124092,
+    "val_normalized_score": 0.08358667468632221,
+    "val_pair_acc": 0.6348684541881084,
+    "val_pair_loss_mean": 0.6463414505124092,
+    "train_weight_norm": 0.41091042552143336,
+    "val_weight_norm": 0.35206759721040726,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_006.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.08890059618556079,
+    "best_val_loss_at_best_score": 0.6396805942058563,
+    "lowest_raw_val_loss": 0.6396805942058563,
+    "lowest_raw_val_loss_epoch": 5,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.2683627940729239,
+      "ILI": 0.22093354054645015,
+      "Traffic": 0.16936249544131773,
+      "M4_Quarterly": 0.23068057973732226,
+      "Etth1": -0.15917230686829908,
+      "M1_Yearly": -0.05677803488402279,
+      "aus_electricity_demand": -0.12236697479971842,
+      "Weather": 0.11767130424460384
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 2.0926560264080765
+  },
+  {
+    "epoch": 7,
+    "train_loss": 0.6727407255209983,
+    "train_pair_acc": 0.5637006831821054,
+    "train_pair_loss_mean": 0.6727407255209983,
+    "train_dataset_acc": 0.109375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6377743557095528,
+    "val_normalized_score": 0.09590162976663756,
+    "val_pair_acc": 0.6467105560004711,
+    "val_pair_loss_mean": 0.6377743557095528,
+    "train_weight_norm": 0.3779180307639763,
+    "val_weight_norm": 0.4034963343292475,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_007.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.09590162976663756,
+    "best_val_loss_at_best_score": 0.6377743557095528,
+    "lowest_raw_val_loss": 0.6377743557095528,
+    "lowest_raw_val_loss_epoch": 7,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.27971485947737823,
+      "ILI": 0.2253612710534091,
+      "Traffic": 0.19444979612651347,
+      "M4_Quarterly": 0.23260254651266346,
+      "Etth1": -0.14267628335124943,
+      "M1_Yearly": -0.030247662393833676,
+      "aus_electricity_demand": -0.12196928187863403,
+      "Weather": 0.12997779258685335
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7494180599848429,
+        "recent_mean": 0.8432948191960653,
+        "delta": 0.0938767592112224
+      },
+      {
+        "dataset": "M1_Yearly",
+        "past_mean": 0.6874506672223409,
+        "recent_mean": 0.7245992422103882,
+        "delta": 0.037148574988047245
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.6975038051605225,
+        "recent_mean": 0.7646373907725016,
+        "delta": 0.06713358561197913
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 507,
+    "train_adaptive_task_samples": 133,
+    "train_cls_loss": 2.0897838681936265
+  },
+  {
+    "epoch": 8,
+    "train_loss": 0.6733773990999907,
+    "train_pair_acc": 0.5710937743773684,
+    "train_pair_loss_mean": 0.6733773990999907,
+    "train_dataset_acc": 0.1328125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.645175963640213,
+    "val_normalized_score": 0.08779061757948303,
+    "val_pair_acc": 0.6559210866689682,
+    "val_pair_loss_mean": 0.645175963640213,
+    "train_weight_norm": 0.42229629380162803,
+    "val_weight_norm": 0.36068276688456535,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_008.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.09590162976663756,
+    "best_val_loss_at_best_score": 0.6377743557095528,
+    "lowest_raw_val_loss": 0.6377743557095528,
+    "lowest_raw_val_loss_epoch": 7,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.20527415787465206,
+      "ILI": 0.1670296031053754,
+      "Traffic": 0.16614300152855743,
+      "M4_Quarterly": 0.19959519703892,
+      "Etth1": -0.060012449730219464,
+      "M1_Yearly": -0.006638973112084097,
+      "aus_electricity_demand": -0.0774043080731939,
+      "Weather": 0.10833871200385675
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.8080931703249613,
+        "recent_mean": 0.8170842528343201,
+        "delta": 0.008991082509358761
+      },
+      {
+        "dataset": "M1_Yearly",
+        "past_mean": 0.7044655481974283,
+        "recent_mean": 0.7144135435422262,
+        "delta": 0.009947995344797844
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.7382413744926453,
+        "recent_mean": 0.7502416968345642,
+        "delta": 0.012000322341918945
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "M4_Quarterly",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 516,
+    "train_adaptive_task_samples": 124,
+    "train_cls_loss": 2.0766624389216304
+  },
+  {
+    "epoch": 9,
+    "train_loss": 0.6416328749153763,
+    "train_pair_acc": 0.6361102242488414,
+    "train_pair_loss_mean": 0.6416328749153763,
+    "train_dataset_acc": 0.1171875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6262120455503464,
+    "val_normalized_score": 0.10752648243755486,
+    "val_pair_acc": 0.6532895043492317,
+    "val_pair_loss_mean": 0.6262120455503464,
+    "train_weight_norm": 0.5586774407187477,
+    "val_weight_norm": 0.5731125809252262,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_009.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.10752648243755486,
+    "best_val_loss_at_best_score": 0.6262120455503464,
+    "lowest_raw_val_loss": 0.6262120455503464,
+    "lowest_raw_val_loss_epoch": 9,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.3630511810407753,
+      "ILI": 0.3196504493405466,
+      "Traffic": 0.22139725860268875,
+      "M4_Quarterly": 0.3422647630541042,
+      "Etth1": -0.26672381306474235,
+      "M1_Yearly": -0.022276107467183753,
+      "aus_electricity_demand": -0.2345299937554024,
+      "Weather": 0.13737812174965264
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "M4_Quarterly",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.4912395079930623,
+        "recent_mean": 0.5564243992169698,
+        "delta": 0.06518489122390753
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5448348522186279,
+        "recent_mean": 0.6050572196642557,
+        "delta": 0.06022236744562781
+      },
+      {
+        "dataset": "M4_Quarterly",
+        "past_mean": 0.5945493777592977,
+        "recent_mean": 0.6220195889472961,
+        "delta": 0.027470211187998417
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6148688991864523,
+        "recent_mean": 0.6213242014249166,
+        "delta": 0.0064553022384643555
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 2.1104320084676145
+  },
+  {
+    "epoch": 10,
+    "train_loss": 0.6243711902294308,
+    "train_pair_acc": 0.6575493690324947,
+    "train_pair_loss_mean": 0.6243711902294308,
+    "train_dataset_acc": 0.146875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6191888973116875,
+    "val_normalized_score": 0.11712727495971853,
+    "val_pair_acc": 0.6625000350177288,
+    "val_pair_loss_mean": 0.6191888973116875,
+    "train_weight_norm": 0.6608997356612235,
+    "val_weight_norm": 0.6215004585683346,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_010.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.11712727495971853,
+    "best_val_loss_at_best_score": 0.6191888973116875,
+    "lowest_raw_val_loss": 0.6191888973116875,
+    "lowest_raw_val_loss_epoch": 10,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.3849619267401507,
+      "ILI": 0.32700526105012534,
+      "Traffic": 0.24359438765322328,
+      "M4_Quarterly": 0.35669735547793,
+      "Etth1": -0.283988230647799,
+      "M1_Yearly": -0.008973345283713735,
+      "aus_electricity_demand": -0.23460386546847914,
+      "Weather": 0.1523247101563109
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.49827202161153156,
+        "recent_mean": 0.532973051071167,
+        "delta": 0.034701029459635435
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5526804327964783,
+        "recent_mean": 0.5800310373306274,
+        "delta": 0.02735060453414917
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6137450337409973,
+        "recent_mean": 0.6166932384173075,
+        "delta": 0.0029482046763101843
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 509,
+    "train_adaptive_task_samples": 131,
+    "train_cls_loss": 2.1044468034058808
+  },
+  {
+    "epoch": 11,
+    "train_loss": 0.6691666983999311,
+    "train_pair_acc": 0.5858306165318936,
+    "train_pair_loss_mean": 0.6691666983999311,
+    "train_dataset_acc": 0.1203125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6369220316410065,
+    "val_normalized_score": 0.09820648025573576,
+    "val_pair_acc": 0.6743421442806721,
+    "val_pair_loss_mean": 0.6369220316410065,
+    "train_weight_norm": 0.4648994994582608,
+    "val_weight_norm": 0.40843713469803333,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_011.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.11712727495971853,
+    "best_val_loss_at_best_score": 0.6191888973116875,
+    "lowest_raw_val_loss": 0.6191888973116875,
+    "lowest_raw_val_loss_epoch": 10,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.21300480932565233,
+      "ILI": 0.1867614799906895,
+      "Traffic": 0.16749961270401062,
+      "M4_Quarterly": 0.2595359106420568,
+      "Etth1": -0.08122973087783696,
+      "M1_Yearly": 0.008277090425571702,
+      "aus_electricity_demand": -0.0821051432743255,
+      "Weather": 0.11390781311006763
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.8170842528343201,
+        "recent_mean": 0.8215838074684143,
+        "delta": 0.004499554634094238
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.7502416968345642,
+        "recent_mean": 0.7659507791201273,
+        "delta": 0.015709082285563114
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 2.0807313749566676
+  },
+  {
+    "epoch": 12,
+    "train_loss": 0.6677024496719242,
+    "train_pair_acc": 0.5870066034374759,
+    "train_pair_loss_mean": 0.6677024496719242,
+    "train_dataset_acc": 0.1078125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6302698105573654,
+    "val_normalized_score": 0.10653684682450527,
+    "val_pair_acc": 0.6697368733584881,
+    "val_pair_loss_mean": 0.6302698105573654,
+    "train_weight_norm": 0.4720761391101405,
+    "val_weight_norm": 0.47272674925625324,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_012.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.11712727495971853,
+    "best_val_loss_at_best_score": 0.6191888973116875,
+    "lowest_raw_val_loss": 0.6191888973116875,
+    "lowest_raw_val_loss_epoch": 10,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.22511777035841032,
+      "ILI": 0.20320749290154008,
+      "Traffic": 0.18661355847555033,
+      "M4_Quarterly": 0.3067524965001706,
+      "Etth1": -0.1120306323787114,
+      "M1_Yearly": 0.010539830714677628,
+      "aus_electricity_demand": -0.08766530060727516,
+      "Weather": 0.11975955863167975
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7649574478467306,
+        "recent_mean": 0.8264115850130717,
+        "delta": 0.06145413716634107
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.7174009283383688,
+        "recent_mean": 0.7669660250345866,
+        "delta": 0.04956509669621778
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "Etth1"
+    ],
+    "train_uniform_task_samples": 515,
+    "train_adaptive_task_samples": 125,
+    "train_cls_loss": 2.081614897400141
+  },
+  {
+    "epoch": 13,
+    "train_loss": 0.6411235256586224,
+    "train_pair_acc": 0.6353125260211527,
+    "train_pair_loss_mean": 0.6411235256586224,
+    "train_dataset_acc": 0.1078125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6169465333223343,
+    "val_normalized_score": 0.12325854222381018,
+    "val_pair_acc": 0.6690789833664894,
+    "val_pair_loss_mean": 0.6169465333223343,
+    "train_weight_norm": 0.607895108545199,
+    "val_weight_norm": 0.5714609306305647,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_013.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.12325854222381018,
+    "best_val_loss_at_best_score": 0.6169465333223343,
+    "lowest_raw_val_loss": 0.6169465333223343,
+    "lowest_raw_val_loss_epoch": 13,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.3013807708638825,
+      "ILI": 0.25478804151472473,
+      "Traffic": 0.22259280731004175,
+      "M4_Quarterly": 0.3477260123116059,
+      "Etth1": -0.1755840689906105,
+      "M1_Yearly": 0.02567668589023514,
+      "aus_electricity_demand": -0.13344340801214624,
+      "Weather": 0.14293149690274817
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "Etth1"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.532973051071167,
+        "recent_mean": 0.5391537944475809,
+        "delta": 0.006180743376413944
+      },
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7894297043482462,
+        "recent_mean": 0.7912127176920573,
+        "delta": 0.0017830133438110352
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 2.1291146226227284
+  },
+  {
+    "epoch": 14,
+    "train_loss": 0.6237855123355984,
+    "train_pair_acc": 0.6598026604857296,
+    "train_pair_loss_mean": 0.6237855123355984,
+    "train_dataset_acc": 0.1203125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6116340979933739,
+    "val_normalized_score": 0.12890315998768598,
+    "val_pair_acc": 0.6651316024363041,
+    "val_pair_loss_mean": 0.6116340979933739,
+    "train_weight_norm": 0.6915564668364823,
+    "val_weight_norm": 0.647806528955698,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_014.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.12890315998768598,
+    "best_val_loss_at_best_score": 0.6116340979933739,
+    "lowest_raw_val_loss": 0.6116340979933739,
+    "lowest_raw_val_loss_epoch": 14,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.3509539433125136,
+      "ILI": 0.2984444909446144,
+      "Traffic": 0.23589235409693327,
+      "M4_Quarterly": 0.38156773693675106,
+      "Etth1": -0.24560563728813825,
+      "M1_Yearly": 0.03410900806122678,
+      "aus_electricity_demand": -0.17204639180379083,
+      "Weather": 0.14790977564137792
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.5069066484769186,
+        "recent_mean": 0.5598542292912801,
+        "delta": 0.05294758081436157
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5542627970377604,
+        "recent_mean": 0.5970885952313741,
+        "delta": 0.04282579819361376
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.536217451095581,
+        "recent_mean": 0.5485379497210184,
+        "delta": 0.012320498625437382
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6114418705304464,
+        "recent_mean": 0.6164807478586832,
+        "delta": 0.005038877328236824
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 2.0964278150349855
+  },
+  {
+    "epoch": 15,
+    "train_loss": 0.5998845979105681,
+    "train_pair_acc": 0.6897862132173032,
+    "train_pair_loss_mean": 0.5998845979105681,
+    "train_dataset_acc": 0.1703125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6091038919985294,
+    "val_normalized_score": 0.1293052199634002,
+    "val_pair_acc": 0.6605263501405716,
+    "val_pair_loss_mean": 0.6091038919985294,
+    "train_weight_norm": 0.8035110387718305,
+    "val_weight_norm": 0.7479724809527397,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_015.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.1293052199634002,
+    "best_val_loss_at_best_score": 0.6091038919985294,
+    "lowest_raw_val_loss": 0.6091038919985294,
+    "lowest_raw_val_loss_epoch": 15,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.4437847341634436,
+      "ILI": 0.3785226425785337,
+      "Traffic": 0.24221723772162,
+      "M4_Quarterly": 0.4014825182467775,
+      "Etth1": -0.35074325098972214,
+      "M1_Yearly": 0.047895065452092656,
+      "aus_electricity_demand": -0.2829267291960513,
+      "Weather": 0.15420954173050755
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.5049920082092285,
+        "recent_mean": 0.5256885488828024,
+        "delta": 0.02069654067357385
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5492604772249857,
+        "recent_mean": 0.5687753160794576,
+        "delta": 0.019514838854471916
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 2.0815843297168612
+  },
+  {
+    "epoch": 16,
+    "train_loss": 0.6695914981421083,
+    "train_pair_acc": 0.5911019990453497,
+    "train_pair_loss_mean": 0.6695914981421083,
+    "train_dataset_acc": 0.109375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6356862559914589,
+    "val_normalized_score": 0.10056378129891853,
+    "val_pair_acc": 0.6789473816752434,
+    "val_pair_loss_mean": 0.6356862559914589,
+    "train_weight_norm": 0.4888494832906872,
+    "val_weight_norm": 0.4278743267059326,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_016.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.1293052199634002,
+    "best_val_loss_at_best_score": 0.6091038919985294,
+    "lowest_raw_val_loss": 0.6091038919985294,
+    "lowest_raw_val_loss_epoch": 15,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.1701033719027597,
+      "ILI": 0.1494215822962881,
+      "Traffic": 0.16122941132326202,
+      "M4_Quarterly": 0.29409338984818434,
+      "Etth1": -0.07437591776157727,
+      "M1_Yearly": 0.043691488345959116,
+      "aus_electricity_demand": -0.047721402631562486,
+      "Weather": 0.1080683270680347
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7912127176920573,
+        "recent_mean": 0.8582651615142822,
+        "delta": 0.06705244382222497
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.7352474530537924,
+        "recent_mean": 0.7749953071276346,
+        "delta": 0.03974785407384229
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 2.0649038519710303
+  },
+  {
+    "epoch": 17,
+    "train_loss": 0.6563233072403818,
+    "train_pair_acc": 0.6069490402238443,
+    "train_pair_loss_mean": 0.6563233072403818,
+    "train_dataset_acc": 0.0890625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6246603280305862,
+    "val_normalized_score": 0.11451181724198699,
+    "val_pair_acc": 0.6625000312924385,
+    "val_pair_loss_mean": 0.6246603280305862,
+    "train_weight_norm": 0.49937730527017266,
+    "val_weight_norm": 0.5101552680134773,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_017.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.1293052199634002,
+    "best_val_loss_at_best_score": 0.6091038919985294,
+    "lowest_raw_val_loss": 0.6091038919985294,
+    "lowest_raw_val_loss_epoch": 15,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.19083912147480103,
+      "ILI": 0.18170482162351947,
+      "Traffic": 0.18756466087573218,
+      "M4_Quarterly": 0.3628365112174823,
+      "Etth1": -0.12209301462559519,
+      "M1_Yearly": 0.04622236419532272,
+      "aus_electricity_demand": -0.051586742318169794,
+      "Weather": 0.12060681549280318
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7665464480717977,
+        "recent_mean": 0.8352362712224325,
+        "delta": 0.06868982315063477
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.7133996884028116,
+        "recent_mean": 0.7564818064371744,
+        "delta": 0.04308211803436279
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Etth1",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 515,
+    "train_adaptive_task_samples": 125,
+    "train_cls_loss": 2.0878498727455734
+  },
+  {
+    "epoch": 18,
+    "train_loss": 0.6245046280324459,
+    "train_pair_acc": 0.664358579646796,
+    "train_pair_loss_mean": 0.6245046280324459,
+    "train_dataset_acc": 0.1046875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6098945401608944,
+    "val_normalized_score": 0.1306033657175203,
+    "val_pair_acc": 0.6552631892263889,
+    "val_pair_loss_mean": 0.6098945401608944,
+    "train_weight_norm": 0.6706937864888459,
+    "val_weight_norm": 0.6981440894305706,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_018.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.1306033657175203,
+    "best_val_loss_at_best_score": 0.6098945401608944,
+    "lowest_raw_val_loss": 0.6091038919985294,
+    "lowest_raw_val_loss_epoch": 15,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.34169564447619055,
+      "ILI": 0.3206880039749808,
+      "Traffic": 0.2217443986906104,
+      "M4_Quarterly": 0.41828767138115625,
+      "Etth1": -0.29506026523391443,
+      "M1_Yearly": 0.057534745643017145,
+      "aus_electricity_demand": -0.15780469827774954,
+      "Weather": 0.1377414250858713
+    },
+    "adaptive_sampling_candidate_count": 5,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Etth1",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.5256885488828024,
+        "recent_mean": 0.5437003175417582,
+        "delta": 0.018011768658955818
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5687753160794576,
+        "recent_mean": 0.580637514591217,
+        "delta": 0.011862198511759403
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5330565373102824,
+        "recent_mean": 0.5452997883160909,
+        "delta": 0.012243251005808586
+      },
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.8039485216140747,
+        "recent_mean": 0.8071322242418925,
+        "delta": 0.0031837026278177527
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.608490526676178,
+        "recent_mean": 0.6150036255518595,
+        "delta": 0.006513098875681522
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "M4_Quarterly",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 509,
+    "train_adaptive_task_samples": 131,
+    "train_cls_loss": 2.108649252541363
+  },
+  {
+    "epoch": 19,
+    "train_loss": 0.607967692008242,
+    "train_pair_acc": 0.675509897340089,
+    "train_pair_loss_mean": 0.607967692008242,
+    "train_dataset_acc": 0.09375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6076677106320858,
+    "val_normalized_score": 0.1337597547605197,
+    "val_pair_acc": 0.6539473980665207,
+    "val_pair_loss_mean": 0.6076677106320858,
+    "train_weight_norm": 0.7448596625588835,
+    "val_weight_norm": 0.7015763074159622,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_019.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.1337597547605197,
+    "best_val_loss_at_best_score": 0.6076677106320858,
+    "lowest_raw_val_loss": 0.6076677106320858,
+    "lowest_raw_val_loss_epoch": 19,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.32648880240001804,
+      "ILI": 0.31206217020472876,
+      "Traffic": 0.22624036752085364,
+      "M4_Quarterly": 0.4440266181872582,
+      "Etth1": -0.30591810997413044,
+      "M1_Yearly": 0.06497284544453347,
+      "aus_electricity_demand": -0.13580113918829062,
+      "Weather": 0.13800648348918654
+    },
+    "adaptive_sampling_candidate_count": 5,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "M4_Quarterly",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.47153158982594806,
+        "recent_mean": 0.568984587987264,
+        "delta": 0.09745299816131597
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5243303577105204,
+        "recent_mean": 0.5952994426091512,
+        "delta": 0.07096908489863085
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5204700628916422,
+        "recent_mean": 0.5499340295791626,
+        "delta": 0.029463966687520382
+      },
+      {
+        "dataset": "M4_Quarterly",
+        "past_mean": 0.4974896212418874,
+        "recent_mean": 0.5122764408588409,
+        "delta": 0.01478681961695355
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6003950238227844,
+        "recent_mean": 0.6188735167185465,
+        "delta": 0.01847849289576209
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Etth1",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 2.0931810745969415
+  },
+  {
+    "epoch": 20,
+    "train_loss": 0.6205748987384141,
+    "train_pair_acc": 0.6566858823411167,
+    "train_pair_loss_mean": 0.6205748987384141,
+    "train_dataset_acc": 0.1171875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6035474687814713,
+    "val_normalized_score": 0.14011502569644524,
+    "val_pair_acc": 0.6585526652634144,
+    "val_pair_loss_mean": 0.6035474687814713,
+    "train_weight_norm": 0.708146681310609,
+    "val_weight_norm": 0.6795868128538132,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_020.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.14011502569644524,
+    "best_val_loss_at_best_score": 0.6035474687814713,
+    "lowest_raw_val_loss": 0.6035474687814713,
+    "lowest_raw_val_loss_epoch": 20,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.31568737353669984,
+      "ILI": 0.30707690788499203,
+      "Traffic": 0.2197064098912543,
+      "M4_Quarterly": 0.4414873242834821,
+      "Etth1": -0.2645881141487805,
+      "M1_Yearly": 0.07278424063384537,
+      "aus_electricity_demand": -0.11854468861463031,
+      "Weather": 0.147310752104699
+    },
+    "adaptive_sampling_candidate_count": 5,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Etth1",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.5040448904037476,
+        "recent_mean": 0.5302528142929077,
+        "delta": 0.026207923889160156
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5510422984759012,
+        "recent_mean": 0.5540676712989807,
+        "delta": 0.003025372823079464
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5343603094418844,
+        "recent_mean": 0.5352181196212769,
+        "delta": 0.0008578101793924597
+      },
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.8352362712224325,
+        "recent_mean": 0.8471472064654032,
+        "delta": 0.01191093524297071
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6085876226425171,
+        "recent_mean": 0.6118382612864176,
+        "delta": 0.0032506386439005164
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 2.1083832582458855
+  },
+  {
+    "epoch": 21,
+    "train_loss": 0.645724146347493,
+    "train_pair_acc": 0.6171135129174218,
+    "train_pair_loss_mean": 0.645724146347493,
+    "train_dataset_acc": 0.084375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6187610067427158,
+    "val_normalized_score": 0.1228999867031308,
+    "val_pair_acc": 0.6671052873134613,
+    "val_pair_loss_mean": 0.6187610067427158,
+    "train_weight_norm": 0.5754317283630371,
+    "val_weight_norm": 0.5155727490782738,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_021.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.14011502569644524,
+    "best_val_loss_at_best_score": 0.6035474687814713,
+    "lowest_raw_val_loss": 0.6035474687814713,
+    "lowest_raw_val_loss_epoch": 20,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.14446772723564333,
+      "ILI": 0.1513495106902062,
+      "Traffic": 0.17355758027120813,
+      "M4_Quarterly": 0.42854682037523667,
+      "Etth1": -0.0813567778512506,
+      "M1_Yearly": 0.07564740393825754,
+      "aus_electricity_demand": -0.026299065812612762,
+      "Weather": 0.1172866947783579
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.8071322242418925,
+        "recent_mean": 0.8795705238978068,
+        "delta": 0.0724382996559143
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.7304659684499105,
+        "recent_mean": 0.7369268933931986,
+        "delta": 0.006460924943288093
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 509,
+    "train_adaptive_task_samples": 131,
+    "train_cls_loss": 2.0948743695393204
+  },
+  {
+    "epoch": 22,
+    "train_loss": 0.6399906313978135,
+    "train_pair_acc": 0.627376671647653,
+    "train_pair_loss_mean": 0.6399906313978135,
+    "train_dataset_acc": 0.0828125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6338276788592339,
+    "val_normalized_score": 0.10369570532933953,
+    "val_pair_acc": 0.6677631884813309,
+    "val_pair_loss_mean": 0.6338276788592339,
+    "train_weight_norm": 0.5727370273787529,
+    "val_weight_norm": 0.46465298533439636,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_022.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.14011502569644524,
+    "best_val_loss_at_best_score": 0.6035474687814713,
+    "lowest_raw_val_loss": 0.6035474687814713,
+    "lowest_raw_val_loss_epoch": 20,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.07179742158663706,
+      "ILI": 0.059834903497779354,
+      "Traffic": 0.13782005679756026,
+      "M4_Quarterly": 0.40530745309691135,
+      "Etth1": 0.0013800532060500206,
+      "M1_Yearly": 0.07240980124792595,
+      "aus_electricity_demand": -0.0023075020910386526,
+      "Weather": 0.0833234552928908
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7944621245066324,
+        "recent_mean": 0.8309444586435953,
+        "delta": 0.03648233413696289
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.703443189462026,
+        "recent_mean": 0.7085254391034445,
+        "delta": 0.005082249641418457
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 515,
+    "train_adaptive_task_samples": 125,
+    "train_cls_loss": 2.0849794134497643
+  },
+  {
+    "epoch": 23,
+    "train_loss": 0.6077945004217327,
+    "train_pair_acc": 0.6765460819471627,
+    "train_pair_loss_mean": 0.6077945004217327,
+    "train_dataset_acc": 0.0796875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6020134724676609,
+    "val_normalized_score": 0.14036725177715864,
+    "val_pair_acc": 0.6572368666529655,
+    "val_pair_loss_mean": 0.6020134724676609,
+    "train_weight_norm": 0.8108752183616161,
+    "val_weight_norm": 0.8055766560137272,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_023.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.14036725177715864,
+    "best_val_loss_at_best_score": 0.6020134724676609,
+    "lowest_raw_val_loss": 0.6020134724676609,
+    "lowest_raw_val_loss_epoch": 23,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.3507316109736793,
+      "ILI": 0.3587978974608556,
+      "Traffic": 0.2318157620909858,
+      "M4_Quarterly": 0.4758436934728005,
+      "Etth1": -0.3628004016954615,
+      "M1_Yearly": 0.08672975376320383,
+      "aus_electricity_demand": -0.1524557606872958,
+      "Weather": 0.1342754588385014
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.5302528142929077,
+        "recent_mean": 0.611258069674174,
+        "delta": 0.08100525538126624
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5540676712989807,
+        "recent_mean": 0.6291571060816447,
+        "delta": 0.07508943478266394
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5352181196212769,
+        "recent_mean": 0.558864951133728,
+        "delta": 0.023646831512451172
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6118382612864176,
+        "recent_mean": 0.6232198675473531,
+        "delta": 0.01138160626093554
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 2.094519417732954
+  },
+  {
+    "epoch": 24,
+    "train_loss": 0.601878477493301,
+    "train_pair_acc": 0.6802878582384437,
+    "train_pair_loss_mean": 0.601878477493301,
+    "train_dataset_acc": 0.0796875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.601703092455864,
+    "val_normalized_score": 0.14031588689665409,
+    "val_pair_acc": 0.659868448972702,
+    "val_pair_loss_mean": 0.601703092455864,
+    "train_weight_norm": 0.7891544358804822,
+    "val_weight_norm": 0.8158048130571842,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_024.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.14036725177715864,
+    "best_val_loss_at_best_score": 0.6020134724676609,
+    "lowest_raw_val_loss": 0.601703092455864,
+    "lowest_raw_val_loss_epoch": 24,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.364534907460732,
+      "ILI": 0.37300539741579225,
+      "Traffic": 0.2337785298902537,
+      "M4_Quarterly": 0.48367970564779483,
+      "Etth1": -0.40902332137112585,
+      "M1_Yearly": 0.09379033418385194,
+      "aus_electricity_demand": -0.1513791471653317,
+      "Weather": 0.1341406891112655
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.49933181206385296,
+        "recent_mean": 0.6025787095228831,
+        "delta": 0.1032468974590301
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5222840110460917,
+        "recent_mean": 0.616045077641805,
+        "delta": 0.09376106659571337
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5279424985249838,
+        "recent_mean": 0.5561238725980123,
+        "delta": 0.028181374073028564
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6055630246798197,
+        "recent_mean": 0.62628306945165,
+        "delta": 0.020720044771830315
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 2.0922379959374666
+  },
+  {
+    "epoch": 25,
+    "train_loss": 0.6260734671261161,
+    "train_pair_acc": 0.6396793036721646,
+    "train_pair_loss_mean": 0.6260734671261161,
+    "train_dataset_acc": 0.06875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6100816391408443,
+    "val_normalized_score": 0.1343499729201514,
+    "val_pair_acc": 0.6703947745263577,
+    "val_pair_loss_mean": 0.6100816391408443,
+    "train_weight_norm": 0.6897459479514509,
+    "val_weight_norm": 0.5894472077488899,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_025.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.14036725177715864,
+    "best_val_loss_at_best_score": 0.6020134724676609,
+    "lowest_raw_val_loss": 0.601703092455864,
+    "lowest_raw_val_loss_epoch": 24,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.146279517195078,
+      "ILI": 0.169950728106453,
+      "Traffic": 0.1907960040708868,
+      "M4_Quarterly": 0.4758302189523721,
+      "Etth1": -0.11285587014210138,
+      "M1_Yearly": 0.09068728327285543,
+      "aus_electricity_demand": -0.01745285917567632,
+      "Weather": 0.1315647610813436
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5388500889142355,
+        "recent_mean": 0.5424922307332357,
+        "delta": 0.003642141819000244
+      },
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.8309444586435953,
+        "recent_mean": 0.8579262892405192,
+        "delta": 0.026981830596923828
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.7085254391034445,
+        "recent_mean": 0.7140321731567383,
+        "delta": 0.005506734053293827
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6103697419166565,
+        "recent_mean": 0.6223224997520447,
+        "delta": 0.011952757835388184
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 2.0974657025188206
+  },
+  {
+    "epoch": 26,
+    "train_loss": 0.6296162612736225,
+    "train_pair_acc": 0.6394408169202507,
+    "train_pair_loss_mean": 0.6296162612736225,
+    "train_dataset_acc": 0.109375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6075725220143795,
+    "val_normalized_score": 0.13730599511109917,
+    "val_pair_acc": 0.6592105627059937,
+    "val_pair_loss_mean": 0.6075725220143795,
+    "train_weight_norm": 0.6324447122868151,
+    "val_weight_norm": 0.6438357122242451,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_026.pth",
+    "early_stopping_counter": 3,
+    "best_val_normalized_score": 0.14036725177715864,
+    "best_val_loss_at_best_score": 0.6020134724676609,
+    "lowest_raw_val_loss": 0.601703092455864,
+    "lowest_raw_val_loss_epoch": 24,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.13018382708921603,
+      "ILI": 0.22171427317491404,
+      "Traffic": 0.20122030054168774,
+      "M4_Quarterly": 0.48715702773130953,
+      "Etth1": -0.1646072104876709,
+      "M1_Yearly": 0.0849955406073134,
+      "aus_electricity_demand": -0.0005264854469965399,
+      "Weather": 0.1383106876790201
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7610218723615011,
+        "recent_mean": 0.8839195171991984,
+        "delta": 0.12289764483769727
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.6796946326891581,
+        "recent_mean": 0.7173031369845072,
+        "delta": 0.03760850429534912
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 2.079311213083565
+  },
+  {
+    "epoch": 27,
+    "train_loss": 0.6462086500599981,
+    "train_pair_acc": 0.6148108813911677,
+    "train_pair_loss_mean": 0.6462086500599981,
+    "train_dataset_acc": 0.0625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6019230931997299,
+    "val_normalized_score": 0.14422276146332913,
+    "val_pair_acc": 0.6710526570677757,
+    "val_pair_loss_mean": 0.6019230931997299,
+    "train_weight_norm": 0.6468429836910218,
+    "val_weight_norm": 0.6836945489048958,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_027.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.14422276146332913,
+    "best_val_loss_at_best_score": 0.6019230931997299,
+    "lowest_raw_val_loss": 0.601703092455864,
+    "lowest_raw_val_loss_epoch": 24,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.18324749291508702,
+      "ILI": 0.29106483560491886,
+      "Traffic": 0.19368696565770757,
+      "M4_Quarterly": 0.466196907310155,
+      "Etth1": -0.17825161884475968,
+      "M1_Yearly": 0.08268475239700607,
+      "aus_electricity_demand": -0.030486478808661777,
+      "Weather": 0.14563923547517996
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7833690841992696,
+        "recent_mean": 0.8388226628303528,
+        "delta": 0.055453578631083134
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 510,
+    "train_adaptive_task_samples": 130,
+    "train_cls_loss": 2.1130695993080737
+  },
+  {
+    "epoch": 28,
+    "train_loss": 0.5843303196132184,
+    "train_pair_acc": 0.6924424634082242,
+    "train_pair_loss_mean": 0.5843303196132184,
+    "train_dataset_acc": 0.0546875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6101129613816738,
+    "val_normalized_score": 0.12630316602842645,
+    "val_pair_acc": 0.6638158224523067,
+    "val_pair_loss_mean": 0.6101129613816738,
+    "train_weight_norm": 0.8409296796191483,
+    "val_weight_norm": 0.98348019272089,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_028.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.14422276146332913,
+    "best_val_loss_at_best_score": 0.6019230931997299,
+    "lowest_raw_val_loss": 0.601703092455864,
+    "lowest_raw_val_loss_epoch": 24,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.4336054588104373,
+      "ILI": 0.43916030097626846,
+      "Traffic": 0.24041131931226764,
+      "M4_Quarterly": 0.49174840524758295,
+      "Etth1": -0.6225836953589959,
+      "M1_Yearly": 0.087431200612831,
+      "aus_electricity_demand": -0.14988450990212135,
+      "Weather": 0.09053684852914146
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.5480749607086182,
+        "recent_mean": 0.6291500727335612,
+        "delta": 0.081075112024943
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.5598520636558533,
+        "recent_mean": 0.5874619285265604,
+        "delta": 0.027609864870707157
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5424922307332357,
+        "recent_mean": 0.5465013186136881,
+        "delta": 0.0040090878804524
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "Traffic",
+      "Etth1",
+      "M1_Yearly",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 2.0924297373741867
+  },
+  {
+    "epoch": 29,
+    "train_loss": 0.6024571542162448,
+    "train_pair_acc": 0.6716365410247818,
+    "train_pair_loss_mean": 0.6024571542162448,
+    "train_dataset_acc": 0.046875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5922123305499554,
+    "val_normalized_score": 0.15551010181369185,
+    "val_pair_acc": 0.6796052977442741,
+    "val_pair_loss_mean": 0.5922123305499554,
+    "train_weight_norm": 0.7871536072343588,
+    "val_weight_norm": 0.7990863472223282,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_029.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.15551010181369185,
+    "best_val_loss_at_best_score": 0.5922123305499554,
+    "lowest_raw_val_loss": 0.5922123305499554,
+    "lowest_raw_val_loss_epoch": 29,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.3313010561167144,
+      "ILI": 0.34980967584940525,
+      "Traffic": 0.23314770920456646,
+      "M4_Quarterly": 0.49097905118921786,
+      "Etth1": -0.36844635173046275,
+      "M1_Yearly": 0.08576219534999963,
+      "aus_electricity_demand": -0.024727521012500604,
+      "Weather": 0.14625499954259458
+    },
+    "adaptive_sampling_candidate_count": 5,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "Traffic",
+      "Etth1",
+      "M1_Yearly",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.5296280781428019,
+        "recent_mean": 0.5579884350299835,
+        "delta": 0.028360356887181637
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.530500570933024,
+        "recent_mean": 0.5352703730265299,
+        "delta": 0.004769802093505859
+      },
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.8839195171991984,
+        "recent_mean": 0.9022963047027588,
+        "delta": 0.01837678750356042
+      },
+      {
+        "dataset": "M1_Yearly",
+        "past_mean": 0.6160946289698283,
+        "recent_mean": 0.619728684425354,
+        "delta": 0.003634055455525753
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6109861334164938,
+        "recent_mean": 0.6169770757357279,
+        "delta": 0.005990942319234138
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 509,
+    "train_adaptive_task_samples": 131,
+    "train_cls_loss": 2.1189346842467787
+  },
+  {
+    "epoch": 30,
+    "train_loss": 0.604120803438127,
+    "train_pair_acc": 0.6706168041797355,
+    "train_pair_loss_mean": 0.604120803438127,
+    "train_dataset_acc": 0.059375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.605760607868433,
+    "val_normalized_score": 0.13289932489158185,
+    "val_pair_acc": 0.6684210859239101,
+    "val_pair_loss_mean": 0.605760607868433,
+    "train_weight_norm": 0.720136516680941,
+    "val_weight_norm": 0.9396082833409309,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_030.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.15551010181369185,
+    "best_val_loss_at_best_score": 0.5922123305499554,
+    "lowest_raw_val_loss": 0.5922123305499554,
+    "lowest_raw_val_loss_epoch": 29,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.46697536487091285,
+      "ILI": 0.44443052051715504,
+      "Traffic": 0.21546708774042522,
+      "M4_Quarterly": 0.4746014994565774,
+      "Etth1": -0.6089986629070077,
+      "M1_Yearly": 0.08907873391087638,
+      "aus_electricity_demand": -0.10365176488078044,
+      "Weather": 0.0852918204244959
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.8388226628303528,
+        "recent_mean": 0.9486778378486633,
+        "delta": 0.10985517501831055
+      },
+      {
+        "dataset": "M1_Yearly",
+        "past_mean": 0.6164861718813578,
+        "recent_mean": 0.6195555925369263,
+        "delta": 0.0030694206555684778
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.6844907601674398,
+        "recent_mean": 0.6922095815340678,
+        "delta": 0.007718821366627937
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6100378831227621,
+        "recent_mean": 0.6151102185249329,
+        "delta": 0.00507233540217078
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 2.105882902443409
+  },
+  {
+    "epoch": 31,
+    "train_loss": 0.6059641934465617,
+    "train_pair_acc": 0.672023054305464,
+    "train_pair_loss_mean": 0.6059641934465617,
+    "train_dataset_acc": 0.0671875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.6045254059135914,
+    "val_normalized_score": 0.13444076859908788,
+    "val_pair_acc": 0.6690789796411991,
+    "val_pair_loss_mean": 0.6045254059135914,
+    "train_weight_norm": 0.7642313775140792,
+    "val_weight_norm": 0.9822253808379173,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_031.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.15551010181369185,
+    "best_val_loss_at_best_score": 0.5922123305499554,
+    "lowest_raw_val_loss": 0.5922123305499554,
+    "lowest_raw_val_loss_epoch": 29,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.49377052302369095,
+      "ILI": 0.4691128629658279,
+      "Traffic": 0.21650622592017357,
+      "M4_Quarterly": 0.46979479089223947,
+      "Etth1": -0.6365658478350977,
+      "M1_Yearly": 0.08375755863760384,
+      "aus_electricity_demand": -0.07754726777695636,
+      "Weather": 0.05669730296522146
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.7863128980000814,
+        "recent_mean": 1.0466899673144023,
+        "delta": 0.2603770693143209
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.6583814024925232,
+        "recent_mean": 0.7080111900965372,
+        "delta": 0.04962978760401404
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6073358058929443,
+        "recent_mean": 0.6292914350827535,
+        "delta": 0.0219556291898092
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "M4_Quarterly",
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 513,
+    "train_adaptive_task_samples": 127,
+    "train_cls_loss": 2.0943195333704354
+  },
+  {
+    "epoch": 32,
+    "train_loss": 0.5974315505474805,
+    "train_pair_acc": 0.6754276610678062,
+    "train_pair_loss_mean": 0.5974315505474805,
+    "train_dataset_acc": 0.0609375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5860029309988022,
+    "val_normalized_score": 0.1628317166875149,
+    "val_pair_acc": 0.6921052932739258,
+    "val_pair_loss_mean": 0.5860029309988022,
+    "train_weight_norm": 0.7798328886739909,
+    "val_weight_norm": 0.91662872210145,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_032.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.1628317166875149,
+    "best_val_loss_at_best_score": 0.5860029309988022,
+    "lowest_raw_val_loss": 0.5860029309988022,
+    "lowest_raw_val_loss_epoch": 32,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.4642966673092364,
+      "ILI": 0.42597131148504563,
+      "Traffic": 0.23026719254074507,
+      "M4_Quarterly": 0.4838849587996942,
+      "Etth1": -0.5186863395339533,
+      "M1_Yearly": 0.080293532318607,
+      "aus_electricity_demand": 0.04236961320660639,
+      "Weather": 0.09425679737413784
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "M4_Quarterly",
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "M4_Quarterly",
+        "past_mean": 0.4138324558734894,
+        "recent_mean": 0.4164212743441264,
+        "delta": 0.002588818470637022
+      },
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.9022963047027588,
+        "recent_mean": 1.0498714645703633,
+        "delta": 0.1475751598676045
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.6869828502337137,
+        "recent_mean": 0.6923884153366089,
+        "delta": 0.005405565102895138
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6169770757357279,
+        "recent_mean": 0.6372434894243876,
+        "delta": 0.020266413688659668
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "M4_Quarterly",
+      "Etth1",
+      "M1_Yearly",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 2.1018463406711816
+  },
+  {
+    "epoch": 33,
+    "train_loss": 0.5825419422704726,
+    "train_pair_acc": 0.6883552924031392,
+    "train_pair_loss_mean": 0.5825419422704726,
+    "train_dataset_acc": 0.034375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5716771855950356,
+    "val_normalized_score": 0.1851123711199291,
+    "val_pair_acc": 0.6888158172369003,
+    "val_pair_loss_mean": 0.5716771855950356,
+    "train_weight_norm": 0.8093642947264016,
+    "val_weight_norm": 0.8065215162932873,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_033.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.1851123711199291,
+    "best_val_loss_at_best_score": 0.5716771855950356,
+    "lowest_raw_val_loss": 0.5716771855950356,
+    "lowest_raw_val_loss_epoch": 33,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.37887428038807364,
+      "ILI": 0.38602271507177616,
+      "Traffic": 0.2082570188346538,
+      "M4_Quarterly": 0.49719506021841564,
+      "Etth1": -0.2785751564053024,
+      "M1_Yearly": 0.09067029930070915,
+      "aus_electricity_demand": 0.07292131623017653,
+      "Weather": 0.12553343532093034
+    },
+    "adaptive_sampling_candidate_count": 5,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "M4_Quarterly",
+      "Etth1",
+      "M1_Yearly",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.528043270111084,
+        "recent_mean": 0.5291763146718343,
+        "delta": 0.0011330445607503625
+      },
+      {
+        "dataset": "M4_Quarterly",
+        "past_mean": 0.4128152330716451,
+        "recent_mean": 0.4183093508084615,
+        "delta": 0.005494117736816406
+      },
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.9486778378486633,
+        "recent_mean": 1.084057052930196,
+        "delta": 0.13537921508153272
+      },
+      {
+        "dataset": "M1_Yearly",
+        "past_mean": 0.6195555925369263,
+        "recent_mean": 0.620176096757253,
+        "delta": 0.0006205042203267785
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6151102185249329,
+        "recent_mean": 0.6494626998901367,
+        "delta": 0.03435248136520386
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "M4_Quarterly",
+      "M1_Yearly",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 512,
+    "train_adaptive_task_samples": 128,
+    "train_cls_loss": 2.1090701328590513
+  },
+  {
+    "epoch": 34,
+    "train_loss": 0.5802274944260717,
+    "train_pair_acc": 0.6874506870284677,
+    "train_pair_loss_mean": 0.5802274944260717,
+    "train_dataset_acc": 0.0328125,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5695999599993229,
+    "val_normalized_score": 0.1871738251791731,
+    "val_pair_acc": 0.6927631869912148,
+    "val_pair_loss_mean": 0.5695999599993229,
+    "train_weight_norm": 0.8462583910208196,
+    "val_weight_norm": 0.868087999522686,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_034.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.1871738251791731,
+    "best_val_loss_at_best_score": 0.5695999599993229,
+    "lowest_raw_val_loss": 0.5695999599993229,
+    "lowest_raw_val_loss_epoch": 34,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.4129172000356502,
+      "ILI": 0.4186679111993047,
+      "Traffic": 0.2236243970580426,
+      "M4_Quarterly": 0.5089787709490534,
+      "Etth1": -0.34442958397486234,
+      "M1_Yearly": 0.09978682034961463,
+      "aus_electricity_demand": 0.07363418286110021,
+      "Weather": 0.10421090295548152
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "Traffic",
+      "M4_Quarterly",
+      "M1_Yearly",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5231131116549174,
+        "recent_mean": 0.5308083891868591,
+        "delta": 0.007695277531941769
+      },
+      {
+        "dataset": "M4_Quarterly",
+        "past_mean": 0.4105783700942993,
+        "recent_mean": 0.4122961262861888,
+        "delta": 0.0017177561918894635
+      },
+      {
+        "dataset": "M1_Yearly",
+        "past_mean": 0.6181119879086813,
+        "recent_mean": 0.6198167602221171,
+        "delta": 0.0017047723134357984
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6292914350827535,
+        "recent_mean": 0.6400062044461569,
+        "delta": 0.01071476936340332
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic"
+    ],
+    "train_uniform_task_samples": 514,
+    "train_adaptive_task_samples": 126,
+    "train_cls_loss": 2.1159976487979293
+  },
+  {
+    "epoch": 35,
+    "train_loss": 0.5450881458353252,
+    "train_pair_acc": 0.7213075967971235,
+    "train_pair_loss_mean": 0.5450881458353252,
+    "train_dataset_acc": 0.04375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5563486665487289,
+    "val_normalized_score": 0.20420574402468716,
+    "val_pair_acc": 0.7000000327825546,
+    "val_pair_loss_mean": 0.5563486665487289,
+    "train_weight_norm": 0.9457442350685596,
+    "val_weight_norm": 0.9693595916032791,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_035.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.20420574402468716,
+    "best_val_loss_at_best_score": 0.5563486665487289,
+    "lowest_raw_val_loss": 0.5563486665487289,
+    "lowest_raw_val_loss_epoch": 35,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5465403796520224,
+      "ILI": 0.4892891822056912,
+      "Traffic": 0.23859205948866397,
+      "M4_Quarterly": 0.5060350548047191,
+      "Etth1": -0.4103720275919831,
+      "M1_Yearly": 0.08155237025411279,
+      "aus_electricity_demand": 0.08008429654810272,
+      "Weather": 0.1019246368361682
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI",
+      "Traffic"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.4230064849058787,
+        "recent_mean": 0.4319123526414235,
+        "delta": 0.008905867735544803
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.44026543696721393,
+        "recent_mean": 0.4485531151294708,
+        "delta": 0.008287678162256895
+      },
+      {
+        "dataset": "Traffic",
+        "past_mean": 0.5285242795944214,
+        "recent_mean": 0.529197116692861,
+        "delta": 0.0006728370984395715
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "train_uniform_task_samples": 513,
+    "train_adaptive_task_samples": 127,
+    "train_cls_loss": 2.1061965707689523
+  },
+  {
+    "epoch": 36,
+    "train_loss": 0.5176263534696772,
+    "train_pair_acc": 0.7376727276947349,
+    "train_pair_loss_mean": 0.5176263534696772,
+    "train_dataset_acc": 0.040625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5419132970273495,
+    "val_normalized_score": 0.22524453116686655,
+    "val_pair_acc": 0.7065789811313152,
+    "val_pair_loss_mean": 0.5419132970273495,
+    "train_weight_norm": 1.0620395799167455,
+    "val_weight_norm": 0.9251149445772171,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_036.pth",
+    "early_stopping_counter": 0,
+    "best_val_normalized_score": 0.22524453116686655,
+    "best_val_loss_at_best_score": 0.5419132970273495,
+    "lowest_raw_val_loss": 0.5419132970273495,
+    "lowest_raw_val_loss_epoch": 36,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.558474006770487,
+      "ILI": 0.5050554044300033,
+      "Traffic": 0.22611037650436513,
+      "M4_Quarterly": 0.49306271220969966,
+      "Etth1": -0.2798213518723537,
+      "M1_Yearly": 0.10134476979457753,
+      "aus_electricity_demand": 0.08265287948809755,
+      "Weather": 0.11507745201005581
+    },
+    "adaptive_sampling_candidate_count": 2,
+    "adaptive_sampling_candidate_datasets": [
+      "ECL",
+      "ILI"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "ECL",
+        "past_mean": 0.3900676369667053,
+        "recent_mean": 0.4115431606769562,
+        "delta": 0.021475523710250854
+      },
+      {
+        "dataset": "ILI",
+        "past_mean": 0.420957346757253,
+        "recent_mean": 0.4325011074542999,
+        "delta": 0.011543760697046934
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [],
+    "train_uniform_task_samples": 513,
+    "train_adaptive_task_samples": 127,
+    "train_cls_loss": 2.1214153630658985
+  },
+  {
+    "epoch": 37,
+    "train_loss": 0.5737943989923224,
+    "train_pair_acc": 0.6927385165356099,
+    "train_pair_loss_mean": 0.5737943989923224,
+    "train_dataset_acc": 0.0484375,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5517820380628109,
+    "val_normalized_score": 0.20969839724342995,
+    "val_pair_acc": 0.7078947648406029,
+    "val_pair_loss_mean": 0.5517820380628109,
+    "train_weight_norm": 0.8755629157181829,
+    "val_weight_norm": 0.9925679340958595,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_037.pth",
+    "early_stopping_counter": 1,
+    "best_val_normalized_score": 0.22524453116686655,
+    "best_val_loss_at_best_score": 0.5419132970273495,
+    "lowest_raw_val_loss": 0.5419132970273495,
+    "lowest_raw_val_loss_epoch": 36,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.595837712393967,
+      "ILI": 0.5500974152436439,
+      "Traffic": 0.22868061751438043,
+      "M4_Quarterly": 0.4970390394555607,
+      "Etth1": -0.4129402101225964,
+      "M1_Yearly": 0.10401186942053416,
+      "aus_electricity_demand": 0.05467987881727247,
+      "Weather": 0.060180855224677365
+    },
+    "adaptive_sampling_candidate_count": 0,
+    "adaptive_sampling_candidate_datasets": [],
+    "adaptive_sampling_candidate_details": [],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "train_uniform_task_samples": 640,
+    "train_adaptive_task_samples": 0,
+    "train_cls_loss": 2.1099254488945007
+  },
+  {
+    "epoch": 38,
+    "train_loss": 0.573510108795017,
+    "train_pair_acc": 0.6922122010029852,
+    "train_pair_loss_mean": 0.573510108795017,
+    "train_dataset_acc": 0.0515625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5713628455996513,
+    "val_normalized_score": 0.18095840073641126,
+    "val_pair_acc": 0.703947402536869,
+    "val_pair_loss_mean": 0.5713628455996513,
+    "train_weight_norm": 0.8706635192036629,
+    "val_weight_norm": 1.0246282927691936,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_038.pth",
+    "early_stopping_counter": 2,
+    "best_val_normalized_score": 0.22524453116686655,
+    "best_val_loss_at_best_score": 0.5419132970273495,
+    "lowest_raw_val_loss": 0.5419132970273495,
+    "lowest_raw_val_loss_epoch": 36,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6057944949662563,
+      "ILI": 0.5395733557161118,
+      "Traffic": 0.2376024249775851,
+      "M4_Quarterly": 0.49832874888592593,
+      "Etth1": -0.6255228026614725,
+      "M1_Yearly": 0.09781412758483075,
+      "aus_electricity_demand": 0.040058799307758575,
+      "Weather": 0.05401805711429437
+    },
+    "adaptive_sampling_candidate_count": 1,
+    "adaptive_sampling_candidate_datasets": [
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6288408438364664,
+        "recent_mean": 0.6398427883783976,
+        "delta": 0.011001944541931152
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "M4_Quarterly",
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 513,
+    "train_adaptive_task_samples": 127,
+    "train_cls_loss": 2.1336090490221977
+  },
+  {
+    "epoch": 39,
+    "train_loss": 0.5630947074154392,
+    "train_pair_acc": 0.6911924632731825,
+    "train_pair_loss_mean": 0.5630947074154392,
+    "train_dataset_acc": 0.06875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5757410302758217,
+    "val_normalized_score": 0.1741837487901249,
+    "val_pair_acc": 0.7032895125448704,
+    "val_pair_loss_mean": 0.5757410302758217,
+    "train_weight_norm": 0.8362619483843445,
+    "val_weight_norm": 1.098618272691965,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_039.pth",
+    "early_stopping_counter": 3,
+    "best_val_normalized_score": 0.22524453116686655,
+    "best_val_loss_at_best_score": 0.5419132970273495,
+    "lowest_raw_val_loss": 0.5419132970273495,
+    "lowest_raw_val_loss_epoch": 36,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.5998930013084838,
+      "ILI": 0.548693358286683,
+      "Traffic": 0.23608167929785542,
+      "M4_Quarterly": 0.5177013020567195,
+      "Etth1": -0.6279301463432694,
+      "M1_Yearly": 0.08249784070354124,
+      "aus_electricity_demand": 0.03002291771003945,
+      "Weather": 0.006510037300946212
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "M4_Quarterly",
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "M4_Quarterly",
+        "past_mean": 0.39597220222155255,
+        "recent_mean": 0.40230076511700946,
+        "delta": 0.006328562895456913
+      },
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.917754054069519,
+        "recent_mean": 0.982581893603007,
+        "delta": 0.06482783953348792
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.5989664594332377,
+        "recent_mean": 0.609602669874827,
+        "delta": 0.010636210441589355
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6270389556884766,
+        "recent_mean": 0.6511004964510599,
+        "delta": 0.024061540762583378
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 513,
+    "train_adaptive_task_samples": 127,
+    "train_cls_loss": 2.106883280351758
+  },
+  {
+    "epoch": 40,
+    "train_loss": 0.5660079777706415,
+    "train_pair_acc": 0.6872944375965744,
+    "train_pair_loss_mean": 0.5660079777706415,
+    "train_dataset_acc": 0.046875,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5631461478769779,
+    "val_normalized_score": 0.19230622404964068,
+    "val_pair_acc": 0.7019737213850021,
+    "val_pair_loss_mean": 0.5631461478769779,
+    "train_weight_norm": 0.855996344331652,
+    "val_weight_norm": 1.0974786505103111,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_040.pth",
+    "early_stopping_counter": 4,
+    "best_val_normalized_score": 0.22524453116686655,
+    "best_val_loss_at_best_score": 0.5419132970273495,
+    "lowest_raw_val_loss": 0.5419132970273495,
+    "lowest_raw_val_loss_epoch": 36,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6130263727146759,
+      "ILI": 0.5622772204288309,
+      "Traffic": 0.23222838043569372,
+      "M4_Quarterly": 0.5188750410301013,
+      "Etth1": -0.49549271392156286,
+      "M1_Yearly": 0.0839478143255845,
+      "aus_electricity_demand": 0.02846416016785714,
+      "Weather": -0.004876482784055101
+    },
+    "adaptive_sampling_candidate_count": 3,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.9180376132329305,
+        "recent_mean": 1.0617905259132385,
+        "delta": 0.143752912680308
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.5968647201855978,
+        "recent_mean": 0.6209692358970642,
+        "delta": 0.024104515711466434
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6294960379600525,
+        "recent_mean": 0.6766130725542704,
+        "delta": 0.0471170345942179
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 515,
+    "train_adaptive_task_samples": 125,
+    "train_cls_loss": 2.111967134475708
+  },
+  {
+    "epoch": 41,
+    "train_loss": 0.5577399567468092,
+    "train_pair_acc": 0.6991036479827016,
+    "train_pair_loss_mean": 0.5577399567468092,
+    "train_dataset_acc": 0.0515625,
+    "train_signature_cosine": 0.0,
+    "val_loss": 0.5651788264513016,
+    "val_normalized_score": 0.18898385476716312,
+    "val_pair_acc": 0.7019737213850021,
+    "val_pair_loss_mean": 0.5651788264513016,
+    "train_weight_norm": 0.8951535123866051,
+    "val_weight_norm": 1.1482394635677338,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260513_142754/epoch_checkpoints/epoch_041.pth",
+    "early_stopping_counter": 5,
+    "best_val_normalized_score": 0.22524453116686655,
+    "best_val_loss_at_best_score": 0.5419132970273495,
+    "lowest_raw_val_loss": 0.5419132970273495,
+    "lowest_raw_val_loss_epoch": 36,
+    "val_dataset_normalized_scores": {
+      "ECL": 0.6313296227939141,
+      "ILI": 0.5649442664114904,
+      "Traffic": 0.24700917529433397,
+      "M4_Quarterly": 0.5200099614404763,
+      "Etth1": -0.6046051951995978,
+      "M1_Yearly": 0.09250606429005456,
+      "aus_electricity_demand": 0.0336223008306382,
+      "Weather": 0.027054642275995213
+    },
+    "adaptive_sampling_candidate_count": 4,
+    "adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "adaptive_sampling_candidate_details": [
+      {
+        "dataset": "Etth1",
+        "past_mean": 0.9336265126864115,
+        "recent_mean": 1.0805745124816895,
+        "delta": 0.14694799979527795
+      },
+      {
+        "dataset": "M1_Yearly",
+        "past_mean": 0.6125495831171671,
+        "recent_mean": 0.6176632245381674,
+        "delta": 0.005113641421000237
+      },
+      {
+        "dataset": "aus_electricity_demand",
+        "past_mean": 0.6009583075841268,
+        "recent_mean": 0.6266310811042786,
+        "delta": 0.025672773520151737
+      },
+      {
+        "dataset": "Weather",
+        "past_mean": 0.6398427883783976,
+        "recent_mean": 0.6919010877609253,
+        "delta": 0.052058299382527706
+      }
+    ],
+    "next_adaptive_sampling_candidate_datasets": [
+      "Etth1",
+      "M1_Yearly",
+      "aus_electricity_demand",
+      "Weather"
+    ],
+    "train_uniform_task_samples": 511,
+    "train_adaptive_task_samples": 129,
+    "train_cls_loss": 2.119876862317324
+  }
+]

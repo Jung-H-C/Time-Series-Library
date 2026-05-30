@@ -14,17 +14,17 @@ from .test import compute_spearman_correlation, flip_spearman_for_lower_is_bette
 
 
 def _sample_support_indices(
-    train_population: list[int],
+    train_population_size: int,
     support_size: int,
     rng: random.Random,
 ) -> tuple[int, ...]:
-    if len(train_population) >= support_size:
-        return tuple(sorted(rng.sample(train_population, support_size)))
-    return tuple(sorted(rng.choice(train_population) for _ in range(support_size)))
+    if train_population_size >= support_size:
+        return tuple(sorted(rng.sample(range(train_population_size), support_size)))
+    return tuple(sorted(rng.randrange(train_population_size) for _ in range(support_size)))
 
 
 def _sample_distinct_support_sets(
-    train_population: list[int],
+    train_population_size: int,
     support_size: int,
     num_support_sets: int,
     rng: random.Random,
@@ -35,7 +35,7 @@ def _sample_distinct_support_sets(
     attempts = 0
 
     while len(support_sets) < num_support_sets and attempts < max_attempts:
-        sampled_indices = _sample_support_indices(train_population, support_size=support_size, rng=rng)
+        sampled_indices = _sample_support_indices(train_population_size, support_size=support_size, rng=rng)
         attempts += 1
         if sampled_indices in seen:
             continue
@@ -71,16 +71,18 @@ def build_fixed_evaluation_plans(
     plans: dict[str, FixedEvaluationPlan] = {}
     required_candidates = query_size * iterations_per_dataset
     for task in tasks:
-        train_population = list(range(len(task.train_dataset)))
-        if not train_population:
+        train_population_size = len(task.train_dataset)
+        if train_population_size <= 0:
             raise ValueError(f"Train dataset is empty for task: {task.benchmark.display_name}")
 
         support_index_sets = _sample_distinct_support_sets(
-            train_population,
+            train_population_size,
             support_size=support_size,
             num_support_sets=num_support_sets,
             rng=rng,
         )
+        loss_support_index_sets = support_index_sets[:1]
+        spearman_support_index_sets = support_index_sets[:num_support_sets]
 
         if task.benchmark.num_candidates < required_candidates:
             raise ValueError(
@@ -88,14 +90,13 @@ def build_fixed_evaluation_plans(
                 f"{required_candidates} benchmark candidates, found {task.benchmark.num_candidates}."
             )
 
-        candidate_indices = list(range(required_candidates))
         query_batches = tuple(
-            tuple(candidate_indices[start : start + query_size])
+            tuple(range(start, start + query_size))
             for start in range(0, required_candidates, query_size)
         )
         plans[task.benchmark.key] = FixedEvaluationPlan(
-            loss_support_indices=support_index_sets[0],
-            spearman_support_indices_sets=support_index_sets,
+            loss_support_indices_sets=loss_support_index_sets,
+            spearman_support_indices_sets=spearman_support_index_sets,
             query_batches=query_batches,
         )
     return plans

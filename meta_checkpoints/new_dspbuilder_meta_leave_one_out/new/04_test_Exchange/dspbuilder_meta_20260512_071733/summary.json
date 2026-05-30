@@ -1,0 +1,279 @@
+{
+  "best_checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/best_checkpoint.pth",
+  "all_checkpoints": {
+    "1": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_001.pth",
+    "2": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_002.pth",
+    "3": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_003.pth",
+    "4": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_004.pth",
+    "5": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_005.pth",
+    "6": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_006.pth",
+    "7": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_007.pth",
+    "8": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_008.pth",
+    "9": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_009.pth",
+    "10": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_010.pth",
+    "11": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_011.pth",
+    "12": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_012.pth",
+    "13": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_013.pth"
+  },
+  "num_epochs_ran": 13,
+  "best_val_loss": 0.48104532275881084,
+  "best_epoch": 8,
+  "test_spearman_by_epoch_path": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/test_spearman_by_epoch.txt",
+  "test_spearman_by_epoch_json_path": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/test_spearman_by_epoch.json",
+  "test_epoch_results": [
+    {
+      "epoch": 1,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_001.pth",
+      "spearman_mean": -0.022394239423942395,
+      "spearman_std": 0.00048535915809504876,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": -0.022394239423942395,
+          "spearman_std": 0.00048535915809504876,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_002.pth",
+      "spearman_mean": 0.32609180918091807,
+      "spearman_std": 0.00046446970220190536,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.32609180918091807,
+          "spearman_std": 0.00046446970220190536,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 3,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_003.pth",
+      "spearman_mean": 0.31725652565256524,
+      "spearman_std": 0.0003292443458646566,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.31725652565256524,
+          "spearman_std": 0.0003292443458646566,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 4,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_004.pth",
+      "spearman_mean": 0.3364512451245124,
+      "spearman_std": 0.0014458811616315575,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.3364512451245124,
+          "spearman_std": 0.0014458811616315575,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 5,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_005.pth",
+      "spearman_mean": 0.33783378337833786,
+      "spearman_std": 0.00041441518586056805,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.33783378337833786,
+          "spearman_std": 0.00041441518586056805,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 6,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_006.pth",
+      "spearman_mean": 0.3311587158715872,
+      "spearman_std": 5.1142576063983725e-05,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.3311587158715872,
+          "spearman_std": 5.1142576063983725e-05,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 7,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_007.pth",
+      "spearman_mean": 0.3394059405940594,
+      "spearman_std": 0.0011001114656910642,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.3394059405940594,
+          "spearman_std": 0.0011001114656910642,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 8,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_008.pth",
+      "spearman_mean": 0.3319219921992199,
+      "spearman_std": 0.0014856031574004142,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.3319219921992199,
+          "spearman_std": 0.0014856031574004142,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 9,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_009.pth",
+      "spearman_mean": 0.3396363636363636,
+      "spearman_std": 0.0004908124050535406,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.3396363636363636,
+          "spearman_std": 0.0004908124050535406,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 10,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_010.pth",
+      "spearman_mean": 0.33813381338133813,
+      "spearman_std": 0.0003447500098989742,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.33813381338133813,
+          "spearman_std": 0.0003447500098989742,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 11,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_011.pth",
+      "spearman_mean": 0.34080768076807677,
+      "spearman_std": 0.000236201180440781,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.34080768076807677,
+          "spearman_std": 0.000236201180440781,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 12,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_012.pth",
+      "spearman_mean": 0.34948454845484545,
+      "spearman_std": 0.0005388204734391896,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.34948454845484545,
+          "spearman_std": 0.0005388204734391896,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    },
+    {
+      "epoch": 13,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/epoch_checkpoints/epoch_013.pth",
+      "spearman_mean": 0.34397119711971197,
+      "spearman_std": 0.0002959798640785268,
+      "dataset_results": {
+        "Exchange": {
+          "dataset": "Exchange",
+          "metric_name": "mse",
+          "spearman_mean": 0.34397119711971197,
+          "spearman_std": 0.0002959798640785268,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "synflow",
+          "baseline_coefficient": 0.3765
+        }
+      }
+    }
+  ],
+  "best_test_epoch": 12,
+  "best_test_spearman_mean": 0.34948454845484545,
+  "test_log_plot_paths": [
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/test_logs/Exchange.png"
+  ],
+  "valid_loss_log_path": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/val_loss.txt",
+  "valid_log_plot_paths": [
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/ECL.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/ILI.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/M4_Hourly.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/M4_Monthly.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/M4_Quarterly.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/Traffic.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/Weather.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs/val_loss.png"
+  ],
+  "train_log_dir": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/train_logs",
+  "valid_log_dir": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/valid_logs",
+  "test_log_dir": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/04_test_Exchange/dspbuilder_meta_20260512_071733/test_logs",
+  "train_only": false
+}

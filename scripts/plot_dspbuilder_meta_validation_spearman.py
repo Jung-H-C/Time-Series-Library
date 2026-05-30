@@ -31,7 +31,12 @@ def parse_args() -> argparse.Namespace:
         description="Plot validation spearman trajectories for DSPBuilder meta leave-one-out runs."
     )
     parser.add_argument("--csv", type=Path, required=True, help="Input CSV exported from validation logs.")
-    parser.add_argument("--output", type=Path, required=True, help="Output image path, e.g. .png")
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help="Output image path. Defaults to spearman.png in the input CSV directory.",
+    )
     parser.add_argument(
         "--title",
         type=str,
@@ -231,16 +236,19 @@ def plot_grouped_series(
 
 def main() -> int:
     args = parse_args()
-    grouped = load_points(args.csv.resolve())
+    csv_path = args.csv.resolve()
+    output_path = args.output.resolve() if args.output is not None else csv_path.parent / "spearman.png"
+
+    grouped = load_points(csv_path)
     if not grouped:
-        raise ValueError(f"No rows found in {args.csv.resolve()}")
+        raise ValueError(f"No rows found in {csv_path}")
     plot_grouped_series(
         grouped=grouped,
-        output_path=args.output.resolve(),
+        output_path=output_path,
         title=args.title,
         dpi=args.dpi,
     )
-    print(f"Saved figure to {args.output.resolve()}")
+    print(f"Saved figure to {output_path}")
     return 0
 
 

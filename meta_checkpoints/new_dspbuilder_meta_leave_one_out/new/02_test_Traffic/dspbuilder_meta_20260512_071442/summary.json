@@ -1,0 +1,412 @@
+{
+  "best_checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/best_checkpoint.pth",
+  "all_checkpoints": {
+    "1": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_001.pth",
+    "2": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_002.pth",
+    "3": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_003.pth",
+    "4": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_004.pth",
+    "5": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_005.pth",
+    "6": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_006.pth",
+    "7": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_007.pth",
+    "8": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_008.pth",
+    "9": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_009.pth",
+    "10": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_010.pth",
+    "11": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_011.pth",
+    "12": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_012.pth",
+    "13": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_013.pth",
+    "14": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_014.pth",
+    "15": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_015.pth",
+    "16": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_016.pth",
+    "17": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_017.pth",
+    "18": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_018.pth",
+    "19": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_019.pth",
+    "20": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_020.pth"
+  },
+  "num_epochs_ran": 20,
+  "best_val_loss": 0.48257032888276236,
+  "best_epoch": 15,
+  "test_spearman_by_epoch_path": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/test_spearman_by_epoch.txt",
+  "test_spearman_by_epoch_json_path": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/test_spearman_by_epoch.json",
+  "test_epoch_results": [
+    {
+      "epoch": 1,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_001.pth",
+      "spearman_mean": -0.3895157515751575,
+      "spearman_std": 0.00011170790306122326,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": -0.3895157515751575,
+          "spearman_std": 0.00011170790306122326,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_002.pth",
+      "spearman_mean": 0.023894389438943897,
+      "spearman_std": 0.002264165638362867,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.023894389438943897,
+          "spearman_std": 0.002264165638362867,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 3,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_003.pth",
+      "spearman_mean": 0.48277227722772276,
+      "spearman_std": 0.0006273770130051576,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.48277227722772276,
+          "spearman_std": 0.0006273770130051576,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 4,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_004.pth",
+      "spearman_mean": 0.5057233723372339,
+      "spearman_std": 0.0005801733162162564,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5057233723372339,
+          "spearman_std": 0.0005801733162162564,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 5,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_005.pth",
+      "spearman_mean": 0.522025802580258,
+      "spearman_std": 0.00012550294833388534,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.522025802580258,
+          "spearman_std": 0.00012550294833388534,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 6,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_006.pth",
+      "spearman_mean": 0.5329372937293729,
+      "spearman_std": 0.00037515989602042844,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5329372937293729,
+          "spearman_std": 0.00037515989602042844,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 7,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_007.pth",
+      "spearman_mean": 0.5231323132313233,
+      "spearman_std": 0.0007741285739572615,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5231323132313233,
+          "spearman_std": 0.0007741285739572615,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 8,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_008.pth",
+      "spearman_mean": 0.5236267626762676,
+      "spearman_std": 0.0002795429628378559,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5236267626762676,
+          "spearman_std": 0.0002795429628378559,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 9,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_009.pth",
+      "spearman_mean": 0.528002400240024,
+      "spearman_std": 0.00013796683216992203,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.528002400240024,
+          "spearman_std": 0.00013796683216992203,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 10,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_010.pth",
+      "spearman_mean": 0.5280096009600961,
+      "spearman_std": 0.0003472144443546489,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5280096009600961,
+          "spearman_std": 0.0003472144443546489,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 11,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_011.pth",
+      "spearman_mean": 0.5261830183018302,
+      "spearman_std": 0.0007981799620883832,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5261830183018302,
+          "spearman_std": 0.0007981799620883832,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 12,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_012.pth",
+      "spearman_mean": 0.5407476747674768,
+      "spearman_std": 0.0008158133019344671,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5407476747674768,
+          "spearman_std": 0.0008158133019344671,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 13,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_013.pth",
+      "spearman_mean": 0.5290849084908491,
+      "spearman_std": 0.0010201443664985613,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5290849084908491,
+          "spearman_std": 0.0010201443664985613,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 14,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_014.pth",
+      "spearman_mean": 0.5273807380738075,
+      "spearman_std": 0.0004569920855603925,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5273807380738075,
+          "spearman_std": 0.0004569920855603925,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 15,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_015.pth",
+      "spearman_mean": 0.5303162316231622,
+      "spearman_std": 0.00014690567054880937,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5303162316231622,
+          "spearman_std": 0.00014690567054880937,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 16,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_016.pth",
+      "spearman_mean": 0.5313099309930992,
+      "spearman_std": 0.00043248302445631794,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5313099309930992,
+          "spearman_std": 0.00043248302445631794,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 17,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_017.pth",
+      "spearman_mean": 0.5257773777377738,
+      "spearman_std": 0.001148323593865752,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5257773777377738,
+          "spearman_std": 0.001148323593865752,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 18,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_018.pth",
+      "spearman_mean": 0.5247308730873087,
+      "spearman_std": 0.001780783997742976,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5247308730873087,
+          "spearman_std": 0.001780783997742976,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 19,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_019.pth",
+      "spearman_mean": 0.5156699669966998,
+      "spearman_std": 0.0004281855984826154,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5156699669966998,
+          "spearman_std": 0.0004281855984826154,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    },
+    {
+      "epoch": 20,
+      "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/epoch_checkpoints/epoch_020.pth",
+      "spearman_mean": 0.5126144614461446,
+      "spearman_std": 0.0003281049976781471,
+      "dataset_results": {
+        "Traffic": {
+          "dataset": "Traffic",
+          "metric_name": "mse",
+          "spearman_mean": 0.5126144614461446,
+          "spearman_std": 0.0003281049976781471,
+          "support_sets": 5,
+          "num_candidates": 100,
+          "baseline_best_proxy": "params",
+          "baseline_coefficient": 0.5493
+        }
+      }
+    }
+  ],
+  "best_test_epoch": 12,
+  "best_test_spearman_mean": 0.5407476747674768,
+  "test_log_plot_paths": [
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/test_logs/Traffic.png"
+  ],
+  "valid_loss_log_path": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/val_loss.txt",
+  "valid_log_plot_paths": [
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/ECL.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/Exchange.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/ILI.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/M4_Hourly.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/M4_Monthly.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/M4_Quarterly.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/Weather.png",
+    "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs/val_loss.png"
+  ],
+  "train_log_dir": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/train_logs",
+  "valid_log_dir": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/valid_logs",
+  "test_log_dir": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta_leave_one_out/suite_20260512_071328/02_test_Traffic/dspbuilder_meta_20260512_071442/test_logs",
+  "train_only": false
+}

@@ -25,12 +25,23 @@ RUN_PATTERN = re.compile(
     r"_df(?P<d_ff>\d+)"
     r"_expand(?P<expand>\d+)"
     r"_dc(?P<d_conv>\d+)"
+    r"(?:_dtr(?P<dt_rank>\d+))?"
     r"_(?P<candidate_id>\d+)$"
 )
 
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
+
+
+def _safe_filename_fragment(value: str) -> str:
+    fragment = re.sub(r"[^A-Za-z0-9_.-]+", "_", value.strip()).strip("._")
+    return fragment or "all"
+
+
+def _default_output_path(repo_root: Path, name_filter: str) -> Path:
+    name_fragment = _safe_filename_fragment(name_filter)
+    return repo_root / "results" / f"results_metrics_summary_{name_fragment}.csv"
 
 
 def _detect_task_name(result_dir_name: str) -> str:
@@ -90,6 +101,7 @@ def _parse_result_row(result_dir: Path) -> dict[str, object]:
                 "d_ff": int(run_match.group("d_ff")),
                 "expand": int(run_match.group("expand")),
                 "d_conv": int(run_match.group("d_conv")),
+                "dt_rank": int(run_match.group("dt_rank")) if run_match.group("dt_rank") is not None else "",
             }
         )
     else:
@@ -103,6 +115,7 @@ def _parse_result_row(result_dir: Path) -> dict[str, object]:
                 "d_ff": "",
                 "expand": "",
                 "d_conv": "",
+                "dt_rank": "",
             }
         )
 
@@ -119,9 +132,13 @@ def _sort_key(row: dict[str, object]) -> tuple[int, str]:
     return 10**9, str(row.get("result_dir", ""))
 
 
-def aggregate_results(results_root: Path) -> list[dict[str, object]]:
+def aggregate_results(results_root: Path, name_filter: str) -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
+    normalized_name_filter = name_filter.lower()
     for result_dir in sorted(path for path in results_root.iterdir() if path.is_dir()):
+        if normalized_name_filter not in result_dir.name.lower():
+            continue
+
         metrics_path = result_dir / "metrics.npy"
         if not metrics_path.exists():
             continue
@@ -142,6 +159,7 @@ def write_csv(output_path: Path, rows: list[dict[str, object]]) -> None:
         "d_ff",
         "expand",
         "d_conv",
+        "dt_rank",
         "mae",
         "mse",
         "rmse",
@@ -169,6 +187,11 @@ def main() -> int:
         description="Aggregate Time-Series-Library result directories with metrics.npy into a single CSV."
     )
     parser.add_argument(
+        "--name",
+        required=True,
+        help="Only aggregate result folders whose names contain this string, case-insensitively.",
+    )
+    parser.add_argument(
         "--results-root",
         type=Path,
         default=repo_root / "results",
@@ -177,15 +200,20 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=repo_root / "results" / "results_metrics_summary.csv",
-        help="Destination CSV path.",
+        default=None,
+        help="Destination CSV path. Defaults to results/results_metrics_summary_<name>.csv.",
     )
     args = parser.parse_args()
+    output_path = args.output if args.output is not None else _default_output_path(repo_root, args.name)
 
-    rows = aggregate_results(args.results_root)
-    write_csv(args.output, rows)
+    rows = aggregate_results(args.results_root, args.name)
+    if not rows:
+        raise SystemExit(f"No results containing '{args.name}' with metrics.npy were found in '{args.results_root}'.")
 
-    print(f"Wrote {len(rows)} rows to {args.output}")
+    write_csv(output_path, rows)
+
+    print(f"Wrote {len(rows)} rows to {output_path}")
+    print(f"Name filter: {args.name}")
     return 0
 
 

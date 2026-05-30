@@ -13,9 +13,13 @@ from .model import DSPBuilderMetaModel
 
 @dataclass(frozen=True)
 class FixedEvaluationPlan:
-    loss_support_indices: tuple[int, ...]
+    loss_support_indices_sets: tuple[tuple[int, ...], ...]
     spearman_support_indices_sets: tuple[tuple[int, ...], ...]
     query_batches: tuple[tuple[int, ...], ...]
+
+    @property
+    def loss_support_indices(self) -> tuple[int, ...]:
+        return self.loss_support_indices_sets[0]
 
 
 def sample_query_indices(num_candidates: int, query_size: int, rng: random.Random) -> list[int]:
@@ -24,10 +28,10 @@ def sample_query_indices(num_candidates: int, query_size: int, rng: random.Rando
     if query_size < 2:
         raise ValueError("query_size must be at least 2 for pairwise ranking.")
 
-    population = list(range(num_candidates))
+    population = range(num_candidates)
     if num_candidates >= query_size:
         return rng.sample(population, query_size)
-    return [rng.choice(population) for _ in range(query_size)]
+    return [rng.randrange(num_candidates) for _ in range(query_size)]
 
 
 def compute_pairwise_loss(
@@ -109,14 +113,14 @@ def sample_support_samples(
     if support_size <= 0:
         raise ValueError("support_size must be positive.")
 
-    population = list(range(len(task.train_dataset)))
-    if not population:
+    population_size = len(task.train_dataset)
+    if population_size <= 0:
         raise ValueError(f"Train dataset is empty for task: {task.benchmark.display_name}")
 
-    if len(population) >= support_size:
-        indices = rng.sample(population, support_size)
+    if population_size >= support_size:
+        indices = rng.sample(range(population_size), support_size)
     else:
-        indices = [rng.choice(population) for _ in range(support_size)]
+        indices = [rng.randrange(population_size) for _ in range(support_size)]
 
     return load_support_samples_from_indices(task, indices=indices, device=device)
 
@@ -287,15 +291,23 @@ def run_split_epoch(
     with torch.set_grad_enabled(is_training):
         for task in tasks:
             task_plan = fixed_plans.get(task.benchmark.key) if fixed_plans is not None else None
-            effective_iterations = (
-                len(task_plan.query_batches) if task_plan is not None else iterations_per_dataset
-            )
+            fixed_loss_support_samples: list[list[torch.Tensor]] | None = None
+            fixed_loss_support_indices_sets: tuple[tuple[int, ...], ...] | None = None
+            fixed_query_batches: tuple[tuple[int, ...], ...] | None = None
+            effective_iterations = iterations_per_dataset
             if task_plan is not None:
-                shared_support_samples = load_support_samples_from_indices(
-                    task,
-                    indices=task_plan.loss_support_indices,
-                    device=device,
-                )
+                fixed_loss_support_indices_sets = task_plan.loss_support_indices_sets
+                fixed_query_batches = task_plan.query_batches
+                fixed_loss_support_samples = [
+                    load_support_samples_from_indices(
+                        task,
+                        indices=support_indices,
+                        device=device,
+                    )
+                    for support_indices in fixed_loss_support_indices_sets
+                ]
+                effective_iterations = len(fixed_loss_support_samples) * len(fixed_query_batches)
+                shared_support_samples = None
             elif is_training:
                 shared_support_samples = sample_support_samples(
                     task,
@@ -310,6 +322,19 @@ def run_split_epoch(
             task_cls_loss_sum = 0.0
             task_signature_cosine_sum = 0.0
             for iteration_index in range(1, effective_iterations + 1):
+                support_samples = shared_support_samples
+                support_indices = None
+                query_indices = None
+                if task_plan is not None:
+                    assert fixed_loss_support_samples is not None
+                    assert fixed_loss_support_indices_sets is not None
+                    assert fixed_query_batches is not None
+                    support_set_index = (iteration_index - 1) // len(fixed_query_batches)
+                    query_batch_index = (iteration_index - 1) % len(fixed_query_batches)
+                    support_samples = fixed_loss_support_samples[support_set_index]
+                    support_indices = fixed_loss_support_indices_sets[support_set_index]
+                    query_indices = fixed_query_batches[query_batch_index]
+
                 stats = run_task_iteration(
                     model=model,
                     task=task,
@@ -318,9 +343,9 @@ def run_split_epoch(
                     rng=rng,
                     support_size=support_size,
                     query_size=query_size,
-                    support_samples=shared_support_samples,
-                    support_indices=task_plan.loss_support_indices if task_plan is not None else None,
-                    query_indices=task_plan.query_batches[iteration_index - 1] if task_plan is not None else None,
+                    support_samples=support_samples,
+                    support_indices=support_indices,
+                    query_indices=query_indices,
                     cls_loss_weight=cls_loss_weight,
                     use_proxy_signature_regression=use_proxy_signature_regression,
                 )

@@ -1,0 +1,2256 @@
+dataset.py downloaded-dataset sanity report
+generated_at=2026-05-04T07:45:29+00:00
+python_command=/home/gpuadmin/anaconda3/envs/tslib/bin/python
+root_path=./dataset
+
+================================================================================
+DATASET: dominick_tsf
+MODE: tsf
+DATA_PATH: dominick_dataset.tsf
+SIZE: seq_len=16, label_len=8, pred_len=8
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path dominick_dataset.tsf --mode tsf --seq_len 16 --label_len 8 --pred_len 8
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/dominick_dataset.tsf
+
+[Format]
+- detected_format: dominick_tsf
+- note: TSF file is useful for series-scale inspection, but not for the new panel short-term spec.
+- window_spec: L=16, label_len=8, P=8
+
+[Dimension Meanings]
+- L=16: number of past weekly values used as input
+- label_len=8: decoder warm-up length used by the legacy forecast interface
+- P=8: forecast horizon in weeks
+- D=1: value channels per time step; TSF file is univariate so D=1
+- M=2: mark feature count returned by the generic forecast interface
+
+[Series Counts]
+- series: 115704
+- train_windows: 11451836
+- val_windows: 1595563
+- test_windows: 3384396
+
+[Count Meanings]
+- `series`: independent weekly sequences in the TSF file
+- `train_windows` / `val_windows` / `test_windows`: number of sliding windows produced from all series
+
+[Series Lengths]
+- min: 28.0
+- mean: 165.01579029247046
+- median: 138.0
+- max: 393.0
+
+[Series Length Meaning]
+- These statistics are measured in weekly observations per TSF series.
+
+[Tensor Meanings]
+- `seq_x`: past value window, shape (16, 1) = (L, 1)
+- `seq_y`: decoder context plus target horizon, shape (16, 1) = (label_len + P, 1)
+- This legacy TSF loader returns the last `label_len` context values together with the future horizon
+- `seq_x_mark`: placeholder time features aligned with `seq_x`, shape (16, 2) = (L, M)
+- `seq_y_mark`: placeholder time features aligned with `seq_y`, shape (16, 2) = (label_len + P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [41.83000183105469, 0.0, 0.0, 0.0, 41.83000183105469]
+
+[Example Window]
+seq_x head:
+    value
+ 1.520282
+-0.916454
+-0.916454
+-0.916454
+ 1.520282
+seq_y head:
+    value
+-0.916454
+-0.916454
+-0.916454
+-0.916454
+-0.916454
+
+STATUS: 0
+
+================================================================================
+DATASET: tourism_monthly
+MODE: tourism
+DATA_PATH: tourism_monthly_dataset.tsf
+SIZE: seq_len=48, label_len=24, pred_len=24
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path tourism_monthly_dataset.tsf --mode tourism --seq_len 48 --label_len 24 --pred_len 24
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/tourism_monthly_dataset.tsf
+
+[Format]
+- detected_format: tourism_monthly_tsf
+- resolved_target: tourism
+- frequency: monthly
+- window_spec: L=48, label_len=24, P=24
+- internal_freq_token: tourism_monthly
+
+[Dimension Meanings]
+- L=48: number of past monthly tourism values used as input
+- P=24: number of future monthly tourism values to predict
+- label_len=24: decoder compatibility length; decoder input reuses the last label_len values from seq_x
+- D=1: input feature count; Tourism monthly is univariate so D=1
+- M=2: calendar mark dimension -> month_sin, month_cos
+
+[Series Counts]
+- raw_series: 366
+- usable_series: 366
+- train_windows: 50373
+- val_windows: 2798
+- test_windows: 13535
+
+[Count Meanings]
+- `raw_series`: independent tourism time series in the TSF file
+- `usable_series`: series that are long enough for the requested fixed window
+- `train_windows` / `val_windows` / `test_windows`: number of temporal sliding windows across all usable series
+
+[Series Lengths]
+- min: 91.0
+- mean: 298.57923497267757
+- median: 330.0
+- max: 333.0
+
+[Series Length Meaning]
+- These statistics are measured in monthly observations per tourism series.
+
+[Tensor Meanings]
+- `seq_x`: past monthly tourism window, shape (48, 1) = (L, 1)
+- `seq_y`: future monthly tourism target window, shape (24, 1) = (P, 1)
+- `seq_x_mark`: month-of-year marks aligned with `seq_x`, shape (48, 2) = (L, M)
+- `seq_y_mark`: month-of-year marks aligned with `seq_y`, shape (24, 2) = (P, M)
+- Mark columns are `[month_sin, month_cos]`, so the model can identify annual monthly seasonality
+
+[Example Series]
+- series_id: T1
+- first_values: [1149.8699951171875, 1053.8001708984375, 1388.8797607421875, 1783.3702392578125, 1921.025146484375]
+
+[Example Marks]
+ month_sin     month_cos
+  0.500000  8.660254e-01
+  0.866025  5.000000e-01
+  1.000000 -4.371139e-08
+  0.866025 -5.000001e-01
+  0.500000 -8.660255e-01
+
+[Example Window]
+seq_x head:
+  tourism
+-0.251252
+-0.254957
+-0.242036
+-0.226824
+-0.221516
+seq_y head:
+  tourism
+-0.249976
+-0.253883
+-0.240678
+-0.227165
+-0.214020
+
+STATUS: 0
+
+================================================================================
+DATASET: nn5
+MODE: nn5
+DATA_PATH: nn5_daily_dataset_without_missing_values.tsf
+SIZE: seq_len=112, label_len=56, pred_len=56
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path nn5_daily_dataset_without_missing_values.tsf --mode nn5 --seq_len 112 --label_len 56 --pred_len 56
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/nn5_daily_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: nn5_daily_tsf
+- resolved_target: cash
+- frequency: daily
+- window_spec: L=112, label_len=56, P=56
+- internal_freq_token: nn5_daily
+
+[Dimension Meanings]
+- L=112: number of past daily ATM cash-withdrawal values used as input
+- P=56: number of future daily ATM cash-withdrawal values to predict
+- label_len=56: decoder compatibility length; decoder input reuses the last label_len values from seq_x
+- D=1: input feature count; NN5 daily is univariate so D=1
+- M=4: calendar mark dimension -> dow_sin, dow_cos, month_sin, month_cos
+
+[Series Counts]
+- raw_series: 111
+- usable_series: 111
+- series_length_days: 791
+- train_windows: 42846
+- val_windows: 2664
+- test_windows: 11544
+
+[Count Meanings]
+- `raw_series`: independent ATM cash-withdrawal series in the TSF file
+- `usable_series`: series that are long enough for the requested fixed window
+- `series_length_days`: number of daily observations per ATM series
+- `train_windows` / `val_windows` / `test_windows`: number of temporal sliding windows across all usable series
+
+[Series Lengths]
+- min: 791.0
+- mean: 791.0
+- median: 791.0
+- max: 791.0
+
+[Series Length Meaning]
+- These statistics are measured in daily observations per NN5 ATM series.
+
+[Tensor Meanings]
+- `seq_x`: past daily ATM cash-withdrawal window, shape (112, 1) = (L, 1)
+- `seq_y`: future daily ATM cash-withdrawal target window, shape (56, 1) = (P, 1)
+- `seq_x_mark`: daily calendar marks aligned with `seq_x`, shape (112, 4) = (L, M)
+- `seq_y_mark`: daily calendar marks aligned with `seq_y`, shape (56, 4) = (P, M)
+- Mark columns are `[dow_sin, dow_cos, month_sin, month_cos]`, so the model can use weekly and monthly seasonality
+
+[Example Series]
+- series_id: T1
+- first_values: [13.407029151916504, 14.725056648254395, 20.564058303833008, 34.70804977416992, 26.629817962646484]
+
+[Example Marks]
+  dow_sin   dow_cos  month_sin     month_cos
+ 0.000000  1.000000        1.0 -4.371139e-08
+ 0.781832  0.623490        1.0 -4.371139e-08
+ 0.974928 -0.222521        1.0 -4.371139e-08
+ 0.433884 -0.900969        1.0 -4.371139e-08
+-0.433884 -0.900969        1.0 -4.371139e-08
+
+[Example Window]
+seq_x head:
+     cash
+-0.504668
+-0.361399
+ 0.273297
+ 1.810739
+ 0.932641
+seq_y head:
+     cash
+-0.264346
+ 0.284080
+ 0.914155
+ 2.095737
+ 1.410203
+
+STATUS: 0
+
+================================================================================
+DATASET: car_parts
+MODE: car_parts
+DATA_PATH: car_parts_dataset_without_missing_values.tsf
+SIZE: seq_len=24, label_len=12, pred_len=12
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path car_parts_dataset_without_missing_values.tsf --mode car_parts --seq_len 24 --label_len 12 --pred_len 12
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/car_parts_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: car_parts_tsf
+- resolved_target: sales
+- frequency: monthly
+- window_spec: L=24, label_len=12, P=12
+- internal_freq_token: car_parts_monthly
+
+[Dimension Meanings]
+- L=24: number of past monthly sales vectors used as input
+- P=12: number of future monthly sales vectors to predict
+- label_len=12: decoder compatibility length; decoder input reuses the last label_len vectors from seq_x
+- D=2674: input feature count; each feature/channel is one car-part series
+- M=2: calendar mark dimension -> month_sin, month_cos
+- Unlike most TSF loaders here, Car Parts is loaded as one aligned multivariate matrix, not as many D=1 samples
+
+[Series Counts]
+- raw_part_series: 2674
+- feature_dim: 2674
+- series_length_months: 51
+- train_windows: 11
+- val_windows: 1
+- test_windows: 4
+
+[Count Meanings]
+- `raw_part_series`: independent car-part demand series in the TSF file
+- `feature_dim`: number of part series stacked into the multivariate input channel dimension D
+- `series_length_months`: common monthly timeline length shared by every part series
+- `train_windows` / `val_windows` / `test_windows`: number of temporal windows from the single aligned multivariate matrix
+
+[Series Lengths]
+- min: 51.0
+- mean: 51.0
+- median: 51.0
+- max: 51.0
+
+[Series Length Meaning]
+- These statistics are measured in monthly observations per car-part series.
+
+[Tensor Meanings]
+- `seq_x`: past monthly multivariate sales window, shape (24, 2674) = (L, D)
+- `seq_y`: future monthly multivariate sales target, shape (12, 2674) = (P, D)
+- `seq_x_mark`: month-of-year marks aligned with `seq_x`, shape (24, 2) = (L, M)
+- `seq_y_mark`: month-of-year marks aligned with `seq_y`, shape (12, 2) = (P, M)
+- Mark columns are `[month_sin, month_cos]`, so the model can identify annual monthly seasonality
+
+[Example Channels]
+- first_channels: ['T1', 'T2', 'T3', 'T4', 'T5']
+- raw_first_values_for_first_channel: [0.0, 0.0, 0.0, 0.0, 0.0]
+
+[Example Marks]
+ month_sin     month_cos
+  0.500000  8.660254e-01
+  0.866025  5.000000e-01
+  1.000000 -4.371139e-08
+  0.866025 -5.000001e-01
+  0.500000 -8.660255e-01
+
+[Example Window]
+Showing first 5 of 2674 channels.
+seq_x head:
+       T1        T2        T3        T4        T5
+-0.201802 -0.201802 -0.264135 -0.201802  3.785939
+-0.201802 -0.201802 -0.264135 -0.201802 -0.264135
+-0.201802 -0.201802 -0.264135 -0.201802  3.785939
+-0.201802 -0.201802 -0.264135 -0.201802 -0.264135
+-0.201802 -0.201802 -0.264135 -0.201802 -0.264135
+seq_y head:
+       T1        T2        T3        T4        T5
+-0.201802 -0.201802 -0.264135 -0.201802 -0.264135
+-0.201802 -0.201802 -0.264135 -0.201802 -0.264135
+-0.201802 -0.201802 -0.264135 -0.201802 -0.264135
+-0.201802 -0.201802 -0.264135 -0.201802 -0.264135
+-0.201802 -0.201802 -0.264135 -0.201802 -0.264135
+
+STATUS: 0
+
+================================================================================
+DATASET: web_traffic
+MODE: web
+DATA_PATH: kaggle_web_traffic_dataset_without_missing_values.tsf
+SIZE: seq_len=90, label_len=30, pred_len=30
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path kaggle_web_traffic_dataset_without_missing_values.tsf --mode web --seq_len 90 --label_len 30 --pred_len 30
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/kaggle_web_traffic_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: web_traffic_tsf
+- resolved_target: traffic
+- window_spec: L=90, label_len=30, P=30
+- internal_freq_token: web
+
+[Dimension Meanings]
+- L=90: number of past daily traffic values used as input
+- P=30: number of future daily traffic values to predict
+- label_len=30: decoder compatibility length; the short-term target itself is the future P days
+- D=1: input feature count; Web Traffic is univariate so D=1
+- M=4: calendar mark dimension -> dow_sin, dow_cos, month_sin, month_cos
+
+[Series Counts]
+- pages: 145063
+- series_length_days: 803
+- train_windows: 64262909
+- val_windows: 7398213
+- test_windows: 19148316
+
+[Count Meanings]
+- `pages`: independent Wikipedia page series
+- `series_length_days`: number of daily observations per page after loading the TSF file
+- `train_windows` / `val_windows` / `test_windows`: number of fixed sliding windows across all pages
+
+[Series Lengths]
+- min: 803
+- mean: 803.0
+- median: 803.0
+- max: 803
+
+[Series Length Meaning]
+- All page series in this TSF file are equal-length daily sequences.
+
+[Tensor Meanings]
+- `seq_x`: past daily traffic window, shape (90, 1) = (L, 1)
+- `seq_y`: future daily traffic target window, shape (30, 1) = (P, 1)
+- `seq_x_mark`: calendar marks aligned with `seq_x`, shape (90, 4) = (L, M)
+- `seq_y_mark`: calendar marks aligned with `seq_y`, shape (30, 4) = (P, M)
+- Mark columns are `[dow_sin, dow_cos, month_sin, month_cos]` in the first implementation
+
+[Example Series]
+- series_id: T1
+- first_values: [18.0, 11.0, 5.0, 13.0, 14.0]
+
+[Example Marks]
+  dow_sin   dow_cos  month_sin  month_cos
+ 0.974928 -0.222521       -0.5  -0.866025
+ 0.433884 -0.900969       -0.5  -0.866025
+-0.433884 -0.900969       -0.5  -0.866025
+-0.974928 -0.222521       -0.5  -0.866025
+-0.781832  0.623490       -0.5  -0.866025
+
+[Example Window]
+seq_x head:
+ traffic
+    18.0
+    11.0
+     5.0
+    13.0
+    14.0
+seq_y head:
+ traffic
+    10.0
+    20.0
+     7.0
+    15.0
+     8.0
+
+STATUS: 0
+
+================================================================================
+DATASET: aus_electricity_demand
+MODE: monash
+DATASET_KEY: aus_electricity_demand
+DATA_PATH: aus_electricity_demand/australian_electricity_demand_dataset.tsf
+SIZE: seq_len=336, label_len=48, pred_len=48
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path aus_electricity_demand/australian_electricity_demand_dataset.tsf --mode monash --dataset_key aus_electricity_demand --seq_len 336 --label_len 48 --pred_len 48
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/aus_electricity_demand/australian_electricity_demand_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: aus_electricity_demand
+- display_name: Aus. Electricity Demand
+- window_spec: L=336, label_len=48, P=48
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=336: number of past values used as input
+- P=48: number of future values to predict
+- label_len=48: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 5
+- train_windows: 806768
+- val_windows: 115290
+- test_windows: 230821
+
+[Series Lengths]
+- min: 230736.0
+- mean: 231052.8
+- median: 230736.0
+- max: 232272.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (336, 1) = (L, 1)
+- `seq_y`: future target window, shape (48, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (336, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (48, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [5714.044921875, 5360.18896484375, 5014.8349609375, 4602.75537109375, 4285.1796875]
+
+[Example Window]
+seq_x head:
+   value
+0.883995
+0.740499
+0.600451
+0.433343
+0.304560
+seq_y head:
+   value
+0.807200
+0.687778
+0.550276
+0.420347
+0.331431
+
+STATUS: 0
+
+================================================================================
+DATASET: bitcoin
+MODE: monash
+DATASET_KEY: bitcoin
+DATA_PATH: bitcoin/bitcoin_dataset_without_missing_values.tsf
+SIZE: seq_len=90, label_len=30, pred_len=30
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path bitcoin/bitcoin_dataset_without_missing_values.tsf --mode monash --dataset_key bitcoin --seq_len 90 --label_len 30 --pred_len 30
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/bitcoin/bitcoin_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: bitcoin
+- display_name: Bitcoin
+- window_spec: L=90, label_len=30, P=30
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=90: number of past values used as input
+- P=30: number of future values to predict
+- label_len=30: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 18
+- train_windows: 50603
+- val_windows: 7016
+- test_windows: 14559
+
+[Series Lengths]
+- min: 2659.0
+- mean: 4186.888888888889
+- median: 4110.0
+- max: 4581.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (90, 1) = (L, 1)
+- `seq_y`: future target window, shape (30, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (90, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (30, 1) = (P, M)
+
+[Example Series]
+- series_id: difficulty
+- first_values: [1.0, 1.0, 1.0, 1.0, 1.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.100467
+-0.100467
+-0.100467
+-0.100467
+-0.100467
+seq_y head:
+    value
+-0.100467
+-0.100467
+-0.100467
+-0.100467
+-0.100467
+
+STATUS: 0
+
+================================================================================
+DATASET: cif_2016
+MODE: monash
+DATASET_KEY: cif_2016
+DATA_PATH: cif_2016/cif_2016_dataset.tsf
+SIZE: seq_len=48, label_len=12, pred_len=12
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path cif_2016/cif_2016_dataset.tsf --mode monash --dataset_key cif_2016 --seq_len 48 --label_len 12 --pred_len 12
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/cif_2016/cif_2016_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: cif_2016
+- display_name: CIF 2016
+- window_spec: L=48, label_len=12, P=12
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=48: number of past values used as input
+- P=12: number of future values to predict
+- label_len=12: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 72
+- train_windows: 1213
+- val_windows: 48
+- test_windows: 650
+
+[Series Lengths]
+- min: 28.0
+- mean: 98.72222222222223
+- median: 120.0
+- max: 120.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (48, 1) = (L, 1)
+- `seq_y`: future target window, shape (12, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (48, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (12, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [855.1448364257812, 847.2920532226562, 824.731689453125, 866.6453857421875, 928.3333129882812]
+
+[Example Window]
+seq_x head:
+    value
+-0.108802
+-0.108802
+-0.108802
+-0.108802
+-0.108802
+seq_y head:
+    value
+-0.108800
+-0.108800
+-0.108800
+-0.108799
+-0.108800
+
+STATUS: 0
+
+================================================================================
+DATASET: covid_deaths
+MODE: monash
+DATASET_KEY: covid_deaths
+DATA_PATH: covid_deaths/covid_deaths_dataset.tsf
+SIZE: seq_len=90, label_len=30, pred_len=30
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path covid_deaths/covid_deaths_dataset.tsf --mode monash --dataset_key covid_deaths --seq_len 90 --label_len 30 --pred_len 30
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/covid_deaths/covid_deaths_dataset.tsf
+Traceback (most recent call last):
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 924, in <module>
+    main()
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 903, in main
+    summarize_generic_monash_tsf(
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 749, in summarize_generic_monash_tsf
+    val_dataset = Dataset_MonashTSFGeneric(flag="val", **init_args)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1478, in __init__
+    self.__read_data__()
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1617, in __read_data__
+    raise ValueError(
+ValueError: No series in `/home/junghc/TSLib/Time-Series-Library/dataset/covid_deaths/covid_deaths_dataset.tsf` were long enough for seq_len=90, pred_len=30.
+
+STATUS: 1
+
+================================================================================
+DATASET: electricity_hourly
+MODE: monash
+DATASET_KEY: electricity_hourly
+DATA_PATH: electricity_hourly/electricity_hourly_dataset.tsf
+SIZE: seq_len=168, label_len=24, pred_len=24
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path electricity_hourly/electricity_hourly_dataset.tsf --mode monash --dataset_key electricity_hourly --seq_len 168 --label_len 24 --pred_len 24
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/electricity_hourly/electricity_hourly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: electricity_hourly
+- display_name: Electricity Hourly
+- window_spec: L=168, label_len=24, P=24
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=168: number of past values used as input
+- P=24: number of future values to predict
+- label_len=24: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 321
+- train_windows: 5848941
+- val_windows: 837168
+- test_windows: 1681398
+
+[Series Lengths]
+- min: 26304.0
+- mean: 26304.0
+- median: 26304.0
+- max: 26304.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (168, 1) = (L, 1)
+- `seq_y`: future target window, shape (24, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (168, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (24, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [14.0, 18.0, 21.0, 20.0, 22.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.168704
+-0.168438
+-0.168238
+-0.168305
+-0.168172
+seq_y head:
+    value
+-0.168039
+-0.168172
+-0.168172
+-0.168305
+-0.168172
+
+STATUS: 0
+
+================================================================================
+DATASET: electricity_weekly
+MODE: monash
+DATASET_KEY: electricity_weekly
+DATA_PATH: electricity_weekly/electricity_weekly_dataset.tsf
+SIZE: seq_len=52, label_len=13, pred_len=13
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path electricity_weekly/electricity_weekly_dataset.tsf --mode monash --dataset_key electricity_weekly --seq_len 52 --label_len 13 --pred_len 13
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/electricity_weekly/electricity_weekly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: electricity_weekly
+- display_name: Electricity Weekly
+- window_spec: L=52, label_len=13, P=13
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=52: number of past values used as input
+- P=13: number of future values to predict
+- label_len=13: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 321
+- train_windows: 14445
+- val_windows: 963
+- test_windows: 6420
+
+[Series Lengths]
+- min: 156.0
+- mean: 156.0
+- median: 156.0
+- max: 156.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (52, 1) = (L, 1)
+- `seq_y`: future target window, shape (13, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (52, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (13, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [8032.0, 9097.0, 9394.0, 8845.0, 5619.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.189056
+-0.188578
+-0.188445
+-0.188691
+-0.190139
+seq_y head:
+    value
+-0.191677
+-0.191853
+-0.191838
+-0.191769
+-0.191710
+
+STATUS: 0
+
+================================================================================
+DATASET: fred_md
+MODE: monash
+DATASET_KEY: fred_md
+DATA_PATH: fred_md/fred_md_dataset.tsf
+SIZE: seq_len=48, label_len=12, pred_len=12
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path fred_md/fred_md_dataset.tsf --mode monash --dataset_key fred_md --seq_len 48 --label_len 12 --pred_len 12
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/fred_md/fred_md_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: fred_md
+- display_name: FRED-MD
+- window_spec: L=48, label_len=12, P=12
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=48: number of past values used as input
+- P=12: number of future values to predict
+- label_len=12: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 107
+- train_windows: 48150
+- val_windows: 6634
+- test_windows: 14445
+
+[Series Lengths]
+- min: 728.0
+- mean: 728.0
+- median: 728.0
+- max: 728.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (48, 1) = (L, 1)
+- `seq_y`: future target window, shape (12, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (48, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (12, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [2437.2958984375, 2446.902099609375, 2462.68896484375, 2478.743896484375, 2493.22802734375]
+
+[Example Window]
+seq_x head:
+    value
+-0.199129
+-0.198937
+-0.198621
+-0.198300
+-0.198011
+seq_y head:
+    value
+-0.190791
+-0.191092
+-0.190838
+-0.190681
+-0.190435
+
+STATUS: 0
+
+================================================================================
+DATASET: hospital
+MODE: monash
+DATASET_KEY: hospital
+DATA_PATH: hospital/hospital_dataset.tsf
+SIZE: seq_len=48, label_len=12, pred_len=12
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path hospital/hospital_dataset.tsf --mode monash --dataset_key hospital --seq_len 48 --label_len 12 --pred_len 12
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/hospital/hospital_dataset.tsf
+Traceback (most recent call last):
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 924, in <module>
+    main()
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 903, in main
+    summarize_generic_monash_tsf(
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 749, in summarize_generic_monash_tsf
+    val_dataset = Dataset_MonashTSFGeneric(flag="val", **init_args)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1478, in __init__
+    self.__read_data__()
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1617, in __read_data__
+    raise ValueError(
+ValueError: No series in `/home/junghc/TSLib/Time-Series-Library/dataset/hospital/hospital_dataset.tsf` were long enough for seq_len=48, pred_len=12.
+
+STATUS: 1
+
+================================================================================
+DATASET: kdd_cup_2018
+MODE: monash
+DATASET_KEY: kdd_cup_2018
+DATA_PATH: kdd_cup_2018/kdd_cup_2018_dataset_without_missing_values.tsf
+SIZE: seq_len=90, label_len=30, pred_len=30
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path kdd_cup_2018/kdd_cup_2018_dataset_without_missing_values.tsf --mode monash --dataset_key kdd_cup_2018 --seq_len 90 --label_len 30 --pred_len 30
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/kdd_cup_2018/kdd_cup_2018_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: kdd_cup_2018
+- display_name: KDD Cup 2018
+- window_spec: L=90, label_len=30, P=30
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=90: number of past values used as input
+- P=30: number of future values to predict
+- label_len=30: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 270
+- train_windows: 2027339
+- val_windows: 286508
+- test_windows: 580727
+
+[Series Lengths]
+- min: 9504.0
+- mean: 10897.644444444444
+- median: 10898.0
+- max: 10920.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (90, 1) = (L, 1)
+- `seq_y`: future target window, shape (30, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (90, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (30, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [453.0, 417.0, 395.0, 420.0, 453.0]
+
+[Example Window]
+seq_x head:
+   value
+6.601181
+6.022108
+5.668230
+6.070364
+6.601181
+seq_y head:
+   value
+1.920342
+2.274220
+2.258135
+2.386818
+2.837208
+
+STATUS: 0
+
+================================================================================
+DATASET: london_smart_meters
+MODE: monash
+DATASET_KEY: london_smart_meters
+DATA_PATH: london_smart_meters/london_smart_meters_dataset_without_missing_values.tsf
+SIZE: seq_len=168, label_len=24, pred_len=24
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path london_smart_meters/london_smart_meters_dataset_without_missing_values.tsf --mode monash --dataset_key london_smart_meters --seq_len 168 --label_len 24 --pred_len 24
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/london_smart_meters/london_smart_meters_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: london_smart_meters
+- display_name: London Smart Meters
+- window_spec: L=168, label_len=24, P=24
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=168: number of past values used as input
+- P=24: number of future values to predict
+- label_len=24: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 5560
+- train_windows: 115506026
+- val_windows: 16525048
+- test_windows: 33180102
+
+[Series Lengths]
+- min: 288.0
+- mean: 29951.240287769786
+- median: 30864.0
+- max: 39648.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (168, 1) = (L, 1)
+- `seq_y`: future target window, shape (24, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (168, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (24, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [0.2630000114440918, 0.26899999380111694, 0.2750000059604645, 0.25600001215934753, 0.210999995470047]
+
+[Example Window]
+seq_x head:
+   value
+0.179358
+0.199723
+0.220089
+0.155598
+0.002858
+seq_y head:
+    value
+-0.068421
+ 2.650362
+ 0.338887
+-0.302624
+-0.329777
+
+STATUS: 0
+
+================================================================================
+DATASET: m1_monthly
+MODE: monash
+DATASET_KEY: m1_monthly
+DATA_PATH: m1_monthly/m1_monthly_dataset.tsf
+SIZE: seq_len=48, label_len=12, pred_len=12
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path m1_monthly/m1_monthly_dataset.tsf --mode monash --dataset_key m1_monthly --seq_len 48 --label_len 12 --pred_len 12
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/m1_monthly/m1_monthly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: m1_monthly
+- display_name: M1 Monthly
+- window_spec: L=48, label_len=12, P=12
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=48: number of past values used as input
+- P=12: number of future values to predict
+- label_len=12: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 617
+- train_windows: 6475
+- val_windows: 378
+- test_windows: 4352
+
+[Series Lengths]
+- min: 48.0
+- mean: 90.75850891410049
+- median: 84.0
+- max: 150.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (48, 1) = (L, 1)
+- `seq_y`: future target window, shape (12, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (48, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (12, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [697458.0, 1187650.0, 1069690.0, 1078430.0, 1059910.0]
+
+[Example Window]
+seq_x head:
+    value
+12.514288
+21.436083
+19.289139
+19.448212
+19.111137
+seq_y head:
+    value
+16.477434
+23.170965
+22.896864
+21.783169
+25.425838
+
+STATUS: 0
+
+================================================================================
+DATASET: m1_quarterly
+MODE: monash
+DATASET_KEY: m1_quarterly
+DATA_PATH: m1_quarterly/m1_quarterly_dataset.tsf
+SIZE: seq_len=16, label_len=4, pred_len=4
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path m1_quarterly/m1_quarterly_dataset.tsf --mode monash --dataset_key m1_quarterly --seq_len 16 --label_len 4 --pred_len 4
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/m1_quarterly/m1_quarterly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: m1_quarterly
+- display_name: M1 Quarterly
+- window_spec: L=16, label_len=4, P=4
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=16: number of past values used as input
+- P=4: number of future values to predict
+- label_len=4: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 203
+- train_windows: 3169
+- val_windows: 446
+- test_windows: 1409
+
+[Series Lengths]
+- min: 18.0
+- mean: 48.98522167487685
+- median: 48.0
+- max: 114.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (16, 1) = (L, 1)
+- `seq_y`: future target window, shape (4, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (16, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (4, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [0.5400000214576721, 0.7799999713897705, 0.8199999928474426, 0.46000000834465027, 0.5199999809265137]
+
+[Example Window]
+seq_x head:
+    value
+-0.199103
+-0.199100
+-0.199099
+-0.199105
+-0.199104
+seq_y head:
+    value
+-0.199002
+-0.198980
+-0.198992
+-0.199037
+
+STATUS: 0
+
+================================================================================
+DATASET: m1_yearly
+MODE: monash
+DATASET_KEY: m1_yearly
+DATA_PATH: m1_yearly/m1_yearly_dataset.tsf
+SIZE: seq_len=8, label_len=2, pred_len=2
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path m1_yearly/m1_yearly_dataset.tsf --mode monash --dataset_key m1_yearly --seq_len 8 --label_len 2 --pred_len 2
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/m1_yearly/m1_yearly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: m1_yearly
+- display_name: M1 Yearly
+- window_spec: L=8, label_len=2, P=2
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=8: number of past values used as input
+- P=2: number of future values to predict
+- label_len=2: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 181
+- train_windows: 1446
+- val_windows: 294
+- test_windows: 784
+
+[Series Lengths]
+- min: 15.0
+- mean: 24.944751381215468
+- median: 21.0
+- max: 58.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (8, 1) = (L, 1)
+- `seq_y`: future target window, shape (2, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (8, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (2, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [3600.0, 7700.0, 12300.0, 30500.0, 47390.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.188918
+-0.187033
+-0.184917
+-0.176548
+-0.168781
+seq_y head:
+    value
+-0.137644
+-0.129062
+
+STATUS: 0
+
+================================================================================
+DATASET: m3_monthly
+MODE: monash
+DATASET_KEY: m3_monthly
+DATA_PATH: m3_monthly/m3_monthly_dataset.tsf
+SIZE: seq_len=48, label_len=12, pred_len=12
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path m3_monthly/m3_monthly_dataset.tsf --mode monash --dataset_key m3_monthly --seq_len 48 --label_len 12 --pred_len 12
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/m3_monthly/m3_monthly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: m3_monthly
+- display_name: M3 Monthly
+- window_spec: L=48, label_len=12, P=12
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=48: number of past values used as input
+- P=12: number of future values to predict
+- label_len=12: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 1428
+- train_windows: 36372
+- val_windows: 2733
+- test_windows: 17247
+
+[Series Lengths]
+- min: 66.0
+- mean: 117.34033613445378
+- median: 133.0
+- max: 144.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (48, 1) = (L, 1)
+- `seq_y`: future target window, shape (12, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (48, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (12, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [2640.0, 2640.0, 2160.0, 4200.0, 3360.0]
+
+[Example Window]
+seq_x head:
+    value
+-1.027742
+-1.027742
+-1.250292
+-0.304456
+-0.693918
+seq_y head:
+    value
+-1.027742
+-1.139017
+-1.194654
+-2.029216
+ 0.085006
+
+STATUS: 0
+
+================================================================================
+DATASET: m3_other
+MODE: monash
+DATASET_KEY: m3_other
+DATA_PATH: m3_other/m3_other_dataset.tsf
+SIZE: seq_len=48, label_len=12, pred_len=12
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path m3_other/m3_other_dataset.tsf --mode monash --dataset_key m3_other --seq_len 48 --label_len 12 --pred_len 12
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/m3_other/m3_other_dataset.tsf
+Traceback (most recent call last):
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 924, in <module>
+    main()
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 903, in main
+    summarize_generic_monash_tsf(
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 749, in summarize_generic_monash_tsf
+    val_dataset = Dataset_MonashTSFGeneric(flag="val", **init_args)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1478, in __init__
+    self.__read_data__()
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1617, in __read_data__
+    raise ValueError(
+ValueError: No series in `/home/junghc/TSLib/Time-Series-Library/dataset/m3_other/m3_other_dataset.tsf` were long enough for seq_len=48, pred_len=12.
+
+STATUS: 1
+
+================================================================================
+DATASET: m3_quarterly
+MODE: monash
+DATASET_KEY: m3_quarterly
+DATA_PATH: m3_quarterly/m3_quarterly_dataset.tsf
+SIZE: seq_len=16, label_len=4, pred_len=4
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path m3_quarterly/m3_quarterly_dataset.tsf --mode monash --dataset_key m3_quarterly --seq_len 16 --label_len 4 --pred_len 4
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/m3_quarterly/m3_quarterly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: m3_quarterly
+- display_name: M3 Quarterly
+- window_spec: L=16, label_len=4, P=4
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=16: number of past values used as input
+- P=4: number of future values to predict
+- label_len=4: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 756
+- train_windows: 11360
+- val_windows: 1514
+- test_windows: 5386
+
+[Series Lengths]
+- min: 24.0
+- mean: 48.94708994708995
+- median: 52.0
+- max: 72.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (16, 1) = (L, 1)
+- `seq_y`: future target window, shape (4, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (16, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (4, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [3142.6298828125, 3190.75, 3178.68994140625, 3170.93994140625, 3124.3798828125]
+
+[Example Window]
+seq_x head:
+    value
+-0.905386
+-0.876616
+-0.883826
+-0.888460
+-0.916297
+seq_y head:
+   value
+0.256578
+0.327038
+0.386109
+0.365781
+
+STATUS: 0
+
+================================================================================
+DATASET: m3_yearly
+MODE: monash
+DATASET_KEY: m3_yearly
+DATA_PATH: m3_yearly/m3_yearly_dataset.tsf
+SIZE: seq_len=8, label_len=2, pred_len=2
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path m3_yearly/m3_yearly_dataset.tsf --mode monash --dataset_key m3_yearly --seq_len 8 --label_len 2 --pred_len 2
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/m3_yearly/m3_yearly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: m3_yearly
+- display_name: M3 Yearly
+- window_spec: L=8, label_len=2, P=2
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=8: number of past values used as input
+- P=2: number of future values to predict
+- label_len=2: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 645
+- train_windows: 6782
+- val_windows: 1227
+- test_windows: 3215
+
+[Series Lengths]
+- min: 20.0
+- mean: 28.4015503875969
+- median: 25.0
+- max: 47.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (8, 1) = (L, 1)
+- `seq_y`: future target window, shape (2, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (8, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (2, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [940.6599731445312, 1084.8599853515625, 1244.97998046875, 1445.02001953125, 1683.1700439453125]
+
+[Example Window]
+seq_x head:
+    value
+-1.471259
+-1.405624
+-1.332742
+-1.241689
+-1.133290
+seq_y head:
+    value
+-0.566739
+-0.486588
+
+STATUS: 0
+
+================================================================================
+DATASET: pedestrian_counts
+MODE: monash
+DATASET_KEY: pedestrian_counts
+DATA_PATH: pedestrian_counts/pedestrian_counts_dataset.tsf
+SIZE: seq_len=168, label_len=24, pred_len=24
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path pedestrian_counts/pedestrian_counts_dataset.tsf --mode monash --dataset_key pedestrian_counts --seq_len 168 --label_len 24 --pred_len 24
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/pedestrian_counts/pedestrian_counts_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: pedestrian_counts
+- display_name: Pedestrian Counts
+- window_spec: L=168, label_len=24, P=24
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=168: number of past values used as input
+- P=24: number of future values to predict
+- label_len=24: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 66
+- train_windows: 2180001
+- val_windows: 311723
+- test_windows: 624980
+
+[Series Lengths]
+- min: 576.0
+- mean: 47459.78787878788
+- median: 45870.5
+- max: 96424.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (168, 1) = (L, 1)
+- `seq_y`: future target window, shape (24, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (168, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (24, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [53.0, 43.0, 10.0, 5.0, 25.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.659178
+-0.671347
+-0.711504
+-0.717588
+-0.693251
+seq_y head:
+    value
+-0.633624
+-0.660395
+-0.688383
+-0.706636
+-0.687166
+
+STATUS: 0
+
+================================================================================
+DATASET: rideshare
+MODE: monash
+DATASET_KEY: rideshare
+DATA_PATH: rideshare/rideshare_dataset_without_missing_values.tsf
+SIZE: seq_len=52, label_len=13, pred_len=13
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path rideshare/rideshare_dataset_without_missing_values.tsf --mode monash --dataset_key rideshare --seq_len 52 --label_len 13 --pred_len 13
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/rideshare/rideshare_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: rideshare
+- display_name: Rideshare
+- window_spec: L=52, label_len=13, P=13
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=52: number of past values used as input
+- P=13: number of future values to predict
+- label_len=13: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 2304
+- train_windows: 723456
+- val_windows: 96768
+- test_windows: 223488
+
+[Series Lengths]
+- min: 541.0
+- mean: 541.0
+- median: 541.0
+- max: 541.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (52, 1) = (L, 1)
+- `seq_y`: future target window, shape (13, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (52, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (13, 1) = (P, M)
+
+[Example Series]
+- series_id: T0
+- first_values: [11.0, 13.5, 13.5, 13.5, 13.5]
+
+[Example Window]
+seq_x head:
+   value
+0.713112
+0.973271
+0.973271
+0.973271
+0.973271
+seq_y head:
+   value
+0.661081
+0.713112
+0.973271
+0.661081
+0.661081
+
+STATUS: 0
+
+================================================================================
+DATASET: san_francisco_traffic_hourly
+MODE: monash
+DATASET_KEY: san_francisco_traffic_hourly
+DATA_PATH: san_francisco_traffic_hourly/traffic_hourly_dataset.tsf
+SIZE: seq_len=168, label_len=24, pred_len=24
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path san_francisco_traffic_hourly/traffic_hourly_dataset.tsf --mode monash --dataset_key san_francisco_traffic_hourly --seq_len 168 --label_len 24 --pred_len 24
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/san_francisco_traffic_hourly/traffic_hourly_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: san_francisco_traffic_hourly
+- display_name: San Francisco Traffic Hourly
+- window_spec: L=168, label_len=24, P=24
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=168: number of past values used as input
+- P=24: number of future values to predict
+- label_len=24: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 862
+- train_windows: 10420718
+- val_windows: 1492984
+- test_windows: 3004932
+
+[Series Lengths]
+- min: 17544.0
+- mean: 17544.0
+- median: 17544.0
+- max: 17544.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (168, 1) = (L, 1)
+- `seq_y`: future target window, shape (24, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (168, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (24, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [0.004800000227987766, 0.007199999876320362, 0.004000000189989805, 0.0038999998942017555, 0.00419999985024333]
+
+[Example Window]
+seq_x head:
+    value
+-0.962565
+-0.917321
+-0.977646
+-0.979531
+-0.973876
+seq_y head:
+    value
+-0.983301
+-0.981416
+-0.983301
+-0.983301
+-0.889044
+
+STATUS: 0
+
+================================================================================
+DATASET: san_francisco_traffic_weekly
+MODE: monash
+DATASET_KEY: san_francisco_traffic_weekly
+DATA_PATH: san_francisco_traffic_weekly/traffic_weekly_dataset.tsf
+SIZE: seq_len=52, label_len=13, pred_len=13
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path san_francisco_traffic_weekly/traffic_weekly_dataset.tsf --mode monash --dataset_key san_francisco_traffic_weekly --seq_len 52 --label_len 13 --pred_len 13
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/san_francisco_traffic_weekly/traffic_weekly_dataset.tsf
+Traceback (most recent call last):
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 924, in <module>
+    main()
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 903, in main
+    summarize_generic_monash_tsf(
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 749, in summarize_generic_monash_tsf
+    val_dataset = Dataset_MonashTSFGeneric(flag="val", **init_args)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1478, in __init__
+    self.__read_data__()
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1617, in __read_data__
+    raise ValueError(
+ValueError: No series in `/home/junghc/TSLib/Time-Series-Library/dataset/san_francisco_traffic_weekly/traffic_weekly_dataset.tsf` were long enough for seq_len=52, pred_len=13.
+
+STATUS: 1
+
+================================================================================
+DATASET: saugeen_river_flow
+MODE: monash
+DATASET_KEY: saugeen_river_flow
+DATA_PATH: saugeen_river_flow/saugeenday_dataset.tsf
+SIZE: seq_len=90, label_len=30, pred_len=30
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path saugeen_river_flow/saugeenday_dataset.tsf --mode monash --dataset_key saugeen_river_flow --seq_len 90 --label_len 30 --pred_len 30
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/saugeen_river_flow/saugeenday_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: saugeen_river_flow
+- display_name: Saugeen River Flow
+- window_spec: L=90, label_len=30, P=30
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=90: number of past values used as input
+- P=30: number of future values to predict
+- label_len=30: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 1
+- train_windows: 16499
+- val_windows: 2345
+- test_windows: 4720
+
+[Series Lengths]
+- min: 23741.0
+- mean: 23741.0
+- median: 23741.0
+- max: 23741.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (90, 1) = (L, 1)
+- `seq_y`: future target window, shape (30, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (90, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (30, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [11.5, 10.800000190734863, 13.699999809265137, 13.699999809265137, 14.399999618530273]
+
+[Example Window]
+seq_x head:
+    value
+-0.475753
+-0.493409
+-0.420261
+-0.420261
+-0.402604
+seq_y head:
+    value
+ 0.033764
+-0.069653
+-0.069653
+-0.132712
+ 0.069077
+
+STATUS: 0
+
+================================================================================
+DATASET: solar_10min
+MODE: monash
+DATASET_KEY: solar_10min
+DATA_PATH: solar_10min/solar_10_minutes_dataset.tsf
+SIZE: seq_len=1008, label_len=144, pred_len=144
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path solar_10min/solar_10_minutes_dataset.tsf --mode monash --dataset_key solar_10min --seq_len 1008 --label_len 144 --pred_len 144
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/solar_10min/solar_10_minutes_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: solar_10min
+- display_name: Solar 10 Minutes
+- window_spec: L=1008, label_len=144, P=144
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=1008: number of past values used as input
+- P=144: number of future values to predict
+- label_len=144: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 137
+- train_windows: 4882817
+- val_windows: 700481
+- test_windows: 1420553
+
+[Series Lengths]
+- min: 52560.0
+- mean: 52560.0
+- median: 52560.0
+- max: 52560.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (1008, 1) = (L, 1)
+- `seq_y`: future target window, shape (144, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (1008, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (144, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [0.0, 0.0, 0.0, 0.0, 0.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.648166
+-0.648166
+-0.648166
+-0.648166
+-0.648166
+seq_y head:
+    value
+-0.648166
+-0.648166
+-0.648166
+-0.648166
+-0.648166
+
+STATUS: 0
+
+================================================================================
+DATASET: solar_power
+MODE: monash
+DATASET_KEY: solar_power
+DATA_PATH: solar_power/solar_4_seconds_dataset.tsf
+SIZE: seq_len=900, label_len=225, pred_len=225
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path solar_power/solar_4_seconds_dataset.tsf --mode monash --dataset_key solar_power --seq_len 900 --label_len 225 --pred_len 225
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/solar_power/solar_4_seconds_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: solar_power
+- display_name: Solar Power
+- window_spec: L=900, label_len=225, P=225
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=900: number of past values used as input
+- P=225: number of future values to predict
+- label_len=225: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 1
+- train_windows: 5176931
+- val_windows: 739498
+- test_windows: 1479221
+
+[Series Lengths]
+- min: 7397222.0
+- mean: 7397222.0
+- median: 7397222.0
+- max: 7397222.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (900, 1) = (L, 1)
+- `seq_y`: future target window, shape (225, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (900, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (225, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [0.0, 0.0, 0.0, 0.0, 0.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.787275
+-0.787275
+-0.787275
+-0.787275
+-0.787275
+seq_y head:
+    value
+-0.787275
+-0.787275
+-0.787275
+-0.787275
+-0.787275
+
+STATUS: 0
+
+================================================================================
+DATASET: solar_weekly
+MODE: monash
+DATASET_KEY: solar_weekly
+DATA_PATH: solar_weekly/solar_weekly_dataset.tsf
+SIZE: seq_len=52, label_len=13, pred_len=13
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path solar_weekly/solar_weekly_dataset.tsf --mode monash --dataset_key solar_weekly --seq_len 52 --label_len 13 --pred_len 13
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/solar_weekly/solar_weekly_dataset.tsf
+Traceback (most recent call last):
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 924, in <module>
+    main()
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 903, in main
+    summarize_generic_monash_tsf(
+  File "/home/junghc/TSLib/Time-Series-Library/dataset.py", line 748, in summarize_generic_monash_tsf
+    train_dataset = Dataset_MonashTSFGeneric(flag="train", **init_args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1478, in __init__
+    self.__read_data__()
+  File "/home/junghc/TSLib/Time-Series-Library/data_provider/data_loader.py", line 1617, in __read_data__
+    raise ValueError(
+ValueError: No series in `/home/junghc/TSLib/Time-Series-Library/dataset/solar_weekly/solar_weekly_dataset.tsf` were long enough for seq_len=52, pred_len=13.
+
+STATUS: 1
+
+================================================================================
+DATASET: sunspot
+MODE: monash
+DATASET_KEY: sunspot
+DATA_PATH: sunspot/sunspot_dataset_without_missing_values.tsf
+SIZE: seq_len=365, label_len=90, pred_len=90
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path sunspot/sunspot_dataset_without_missing_values.tsf --mode monash --dataset_key sunspot --seq_len 365 --label_len 90 --pred_len 90
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/sunspot/sunspot_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: sunspot
+- display_name: Sunspot
+- window_spec: L=365, label_len=90, P=90
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=365: number of past values used as input
+- P=90: number of future values to predict
+- label_len=90: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 1
+- train_windows: 51292
+- val_windows: 7304
+- test_windows: 14696
+
+[Series Lengths]
+- min: 73924.0
+- mean: 73924.0
+- median: 73924.0
+- max: 73924.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (365, 1) = (L, 1)
+- `seq_y`: future target window, shape (90, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (365, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (90, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [65.0, 65.0, 65.0, 65.0, 65.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.228422
+-0.228422
+-0.228422
+-0.228422
+-0.228422
+seq_y head:
+    value
+-0.355336
+-0.355336
+-0.355336
+-0.355336
+ 0.063482
+
+STATUS: 0
+
+================================================================================
+DATASET: temperature_rain
+MODE: monash
+DATASET_KEY: temperature_rain
+DATA_PATH: temperature_rain/temperature_rain_dataset_without_missing_values.tsf
+SIZE: seq_len=90, label_len=30, pred_len=30
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path temperature_rain/temperature_rain_dataset_without_missing_values.tsf --mode monash --dataset_key temperature_rain --seq_len 90 --label_len 30 --pred_len 30
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/temperature_rain/temperature_rain_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: temperature_rain
+- display_name: Temperature Rain
+- window_spec: L=90, label_len=30, P=30
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=90: number of past values used as input
+- P=30: number of future values to predict
+- label_len=30: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 32072
+- train_windows: 12443936
+- val_windows: 1411168
+- test_windows: 3720352
+
+[Series Lengths]
+- min: 725.0
+- mean: 725.0
+- median: 725.0
+- max: 725.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (90, 1) = (L, 1)
+- `seq_y`: future target window, shape (30, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (90, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (30, 1) = (P, M)
+
+[Example Series]
+- series_id: T0
+- first_values: [24.791669845581055, 25.116670608520508, 26.8416690826416, 27.879169464111328, 28.3416690826416]
+
+[Example Window]
+seq_x head:
+   value
+1.296558
+1.319317
+1.440112
+1.512765
+1.545152
+seq_y head:
+   value
+1.333906
+1.303852
+1.300935
+1.341200
+1.133163
+
+STATUS: 0
+
+================================================================================
+DATASET: us_births
+MODE: monash
+DATASET_KEY: us_births
+DATA_PATH: us_births/us_births_dataset.tsf
+SIZE: seq_len=90, label_len=30, pred_len=30
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path us_births/us_births_dataset.tsf --mode monash --dataset_key us_births --seq_len 90 --label_len 30 --pred_len 30
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/us_births/us_births_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: us_births
+- display_name: US Births
+- window_spec: L=90, label_len=30, P=30
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=90: number of past values used as input
+- P=30: number of future values to predict
+- label_len=30: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 1
+- train_windows: 4994
+- val_windows: 702
+- test_windows: 1432
+
+[Series Lengths]
+- min: 7305.0
+- mean: 7305.0
+- median: 7305.0
+- max: 7305.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (90, 1) = (L, 1)
+- `seq_y`: future target window, shape (30, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (90, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (30, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [8486.0, 9002.0, 9542.0, 8960.0, 8390.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.885837
+-0.369645
+ 0.170557
+-0.411660
+-0.981873
+seq_y head:
+    value
+ 0.588713
+ 0.606720
+ 0.158553
+ 0.200568
+-0.623739
+
+STATUS: 0
+
+================================================================================
+DATASET: vehicle_trips
+MODE: monash
+DATASET_KEY: vehicle_trips
+DATA_PATH: vehicle_trips/vehicle_trips_dataset_without_missing_values.tsf
+SIZE: seq_len=52, label_len=13, pred_len=13
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path vehicle_trips/vehicle_trips_dataset_without_missing_values.tsf --mode monash --dataset_key vehicle_trips --seq_len 52 --label_len 13 --pred_len 13
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/vehicle_trips/vehicle_trips_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: vehicle_trips
+- display_name: Vehicle Trips
+- window_spec: L=52, label_len=13, P=13
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=52: number of past values used as input
+- P=13: number of future values to predict
+- label_len=13: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 329
+- train_windows: 8760
+- val_windows: 588
+- test_windows: 4686
+
+[Series Lengths]
+- min: 70.0
+- mean: 128.8206686930091
+- median: 122.0
+- max: 243.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (52, 1) = (L, 1)
+- `seq_y`: future target window, shape (13, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (52, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (13, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [26.0, 79.0, 62.0, 76.0, 292.0]
+
+[Example Window]
+seq_x head:
+    value
+-0.427056
+-0.165550
+-0.249430
+-0.180352
+ 0.885408
+seq_y head:
+   value
+0.051549
+1.467629
+1.793279
+1.709399
+1.916631
+
+STATUS: 0
+
+================================================================================
+DATASET: weather_tsf
+MODE: monash
+DATASET_KEY: weather_tsf
+DATA_PATH: weather_tsf/weather_dataset.tsf
+SIZE: seq_len=90, label_len=30, pred_len=30
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path weather_tsf/weather_dataset.tsf --mode monash --dataset_key weather_tsf --seq_len 90 --label_len 30 --pred_len 30
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/weather_tsf/weather_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: weather_tsf
+- display_name: Weather
+- window_spec: L=90, label_len=30, P=30
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=90: number of past values used as input
+- P=30: number of future values to predict
+- label_len=30: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 3010
+- train_windows: 29762721
+- val_windows: 4216157
+- test_windows: 8520352
+
+[Series Lengths]
+- min: 1332.0
+- mean: 14296.345514950166
+- median: 10828.0
+- max: 65981.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (90, 1) = (L, 1)
+- `seq_y`: future target window, shape (30, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (90, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (30, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [1.6492334604263306, 1.6492334604263306, 1.6492334604263306, 1.6492334604263306, 1.6492334604263306]
+
+[Example Window]
+seq_x head:
+    value
+-0.948915
+-0.948915
+-0.948915
+-0.948915
+-0.948915
+seq_y head:
+    value
+-0.948915
+-0.948915
+-0.948915
+-0.948915
+-0.948915
+
+STATUS: 0
+
+================================================================================
+DATASET: wind_farms
+MODE: monash
+DATASET_KEY: wind_farms
+DATA_PATH: wind_farms/wind_farms_minutely_dataset_without_missing_values.tsf
+SIZE: seq_len=168, label_len=24, pred_len=24
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path wind_farms/wind_farms_minutely_dataset_without_missing_values.tsf --mode monash --dataset_key wind_farms --seq_len 168 --label_len 24 --pred_len 24
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/wind_farms/wind_farms_minutely_dataset_without_missing_values.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: wind_farms
+- display_name: Wind Farms
+- window_spec: L=168, label_len=24, P=24
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=168: number of past values used as input
+- P=24: number of future values to predict
+- label_len=24: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 339
+- train_windows: 120459886
+- val_windows: 17210016
+- test_windows: 34427815
+
+[Series Lengths]
+- min: 6345.0
+- mean: 507899.8820058997
+- median: 527040.0
+- max: 527040.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (168, 1) = (L, 1)
+- `seq_y`: future target window, shape (24, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (168, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (24, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [559.0, 560.0, 559.0, 558.0, 559.0]
+
+[Example Window]
+seq_x head:
+   value
+4.061978
+4.069965
+4.061978
+4.053992
+4.061978
+seq_y head:
+   value
+4.046005
+4.061978
+4.061978
+4.061978
+4.069965
+
+STATUS: 0
+
+================================================================================
+DATASET: wind_power
+MODE: monash
+DATASET_KEY: wind_power
+DATA_PATH: wind_power/wind_4_seconds_dataset.tsf
+SIZE: seq_len=900, label_len=225, pred_len=225
+COMMAND: /home/gpuadmin/anaconda3/envs/tslib/bin/python dataset.py --root_path ./dataset --data_path wind_power/wind_4_seconds_dataset.tsf --mode monash --dataset_key wind_power --seq_len 900 --label_len 225 --pred_len 225
+--------------------------------------------------------------------------------
+Resolved dataset file: ./dataset/wind_power/wind_4_seconds_dataset.tsf
+
+[Format]
+- detected_format: generic_monash_tsf
+- dataset_key: wind_power
+- display_name: Wind Power
+- window_spec: L=900, label_len=225, P=225
+- task: short_term_forecast
+
+[Dimension Meanings]
+- L=900: number of past values used as input
+- P=225: number of future values to predict
+- label_len=225: compatibility field kept aligned with the short-term pipeline
+- D=1: feature dimension; first-pass generic integration is univariate so D=1
+- M=1: compatibility mark dimension; generic integration currently uses zero marks
+
+[Series Counts]
+- raw_series: 1
+- train_windows: 5176878
+- val_windows: 739491
+- test_windows: 1479206
+
+[Series Lengths]
+- min: 7397147.0
+- mean: 7397147.0
+- median: 7397147.0
+- max: 7397147.0
+
+[Tensor Meanings]
+- `seq_x`: past window, shape (900, 1) = (L, 1)
+- `seq_y`: future target window, shape (225, 1) = (P, 1)
+- `seq_x_mark`: zero compatibility mark, shape (900, 1) = (L, M)
+- `seq_y_mark`: zero compatibility mark, shape (225, 1) = (P, M)
+
+[Example Series]
+- series_id: T1
+- first_values: [18.600000381469727, 18.600000381469727, 18.600000381469727, 18.600000381469727, 18.600000381469727]
+
+[Example Window]
+seq_x head:
+    value
+-0.615672
+-0.615672
+-0.615672
+-0.615672
+-0.615672
+seq_y head:
+    value
+-0.574484
+-0.574484
+-0.574484
+-0.574484
+-0.604688
+
+STATUS: 0
+
+
+================================================================================
+SUMMARY
+total_datasets=37
+status_0=32
+status_nonzero=5
+failed_datasets=covid_deaths,hospital,m3_other,san_francisco_traffic_weekly,solar_weekly
+failure_reason=No usable series long enough for the configured dataset default seq_len + pred_len. See traceback sections above.

@@ -1,0 +1,11 @@
+# Validation normalized score logs
+# normalized score = (val_loss(first_epoch) - val_loss(current_epoch)) / val_loss(first_epoch)
+[VAL-NORMALIZED-SCORE] epoch=001 normalized_score=0.000000 best_normalized_score=0.000000 early_stopping_counter=0
+[VAL-NORMALIZED-SCORE] epoch=002 normalized_score=0.040596 best_normalized_score=0.040596 early_stopping_counter=0
+[VAL-NORMALIZED-SCORE] epoch=003 normalized_score=0.084148 best_normalized_score=0.084148 early_stopping_counter=0
+[VAL-NORMALIZED-SCORE] epoch=004 normalized_score=0.153507 best_normalized_score=0.153507 early_stopping_counter=0
+[VAL-NORMALIZED-SCORE] epoch=005 normalized_score=0.141365 best_normalized_score=0.153507 early_stopping_counter=1
+[VAL-NORMALIZED-SCORE] epoch=006 normalized_score=0.142059 best_normalized_score=0.153507 early_stopping_counter=2
+[VAL-NORMALIZED-SCORE] epoch=007 normalized_score=0.144060 best_normalized_score=0.153507 early_stopping_counter=3
+[VAL-NORMALIZED-SCORE] epoch=008 normalized_score=0.145652 best_normalized_score=0.153507 early_stopping_counter=4
+[VAL-NORMALIZED-SCORE] epoch=009 normalized_score=0.148690 best_normalized_score=0.153507 early_stopping_counter=5

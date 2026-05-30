@@ -7,11 +7,17 @@ import math
 from pathlib import Path
 
 
+LOG1P_COLUMNS = {"synflow"}
+ZSCORE_CLIP_MIN = -3.0
+ZSCORE_CLIP_MAX = 3.0
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Z-score normalize every column except the first column in a CSV file. "
-            "The first column is copied as-is."
+            "The first column is copied as-is. The synflow column is log1p-transformed before normalization, "
+            "and normalized values are clipped to [-3, 3]."
         )
     )
     parser.add_argument("input_csv", type=Path, help="Path to the input CSV file.")
@@ -52,18 +58,37 @@ def compute_population_std(values: list[float], mean: float) -> float:
     return math.sqrt(variance)
 
 
-def zscore_normalize_rows(data_rows: list[list[str]]) -> list[list[str]]:
+def clip_zscore(value: float) -> float:
+    return min(max(value, ZSCORE_CLIP_MIN), ZSCORE_CLIP_MAX)
+
+
+def transform_column_value(column_name: str, value: float, row_index: int) -> float:
+    if column_name.strip().lower() not in LOG1P_COLUMNS:
+        return value
+    if value < 0.0:
+        raise ValueError(
+            f"Cannot log1p-transform negative value in column '{column_name}' at row {row_index}: {value}"
+        )
+    return math.log1p(value)
+
+
+def zscore_normalize_rows(header: list[str], data_rows: list[list[str]]) -> list[list[str]]:
     if not data_rows:
         return []
 
+    numeric_columns = header[1:]
     numeric_matrix: list[list[float]] = []
     for row_index, row in enumerate(data_rows, start=2):
-        try:
-            numeric_matrix.append([float(value) for value in row[1:]])
-        except ValueError as exc:
-            raise ValueError(
-                f"Failed to parse numeric value outside the first column at row {row_index}: {row[1:]}"
-            ) from exc
+        numeric_row: list[float] = []
+        for column_name, raw_value in zip(numeric_columns, row[1:]):
+            try:
+                value = float(raw_value)
+            except ValueError as exc:
+                raise ValueError(
+                    f"Failed to parse numeric value in column '{column_name}' at row {row_index}: {raw_value}"
+                ) from exc
+            numeric_row.append(transform_column_value(column_name, value, row_index))
+        numeric_matrix.append(numeric_row)
 
     num_numeric_columns = len(numeric_matrix[0])
     normalized_columns: list[list[float]] = []
@@ -75,7 +100,7 @@ def zscore_normalize_rows(data_rows: list[list[str]]) -> list[list[str]]:
             normalized_columns.append([0.0] * len(column_values))
         else:
             normalized_columns.append(
-                [(value - column_mean) / column_std for value in column_values]
+                [clip_zscore((value - column_mean) / column_std) for value in column_values]
             )
 
     normalized_rows: list[list[str]] = []
@@ -99,7 +124,7 @@ def write_csv_rows(csv_path: Path, header: list[str], data_rows: list[list[str]]
 def main() -> int:
     args = parse_args()
     header, data_rows = read_csv_rows(args.input_csv)
-    normalized_rows = zscore_normalize_rows(data_rows)
+    normalized_rows = zscore_normalize_rows(header, data_rows)
     write_csv_rows(args.output_csv, header, normalized_rows)
     print(f"Saved z-score normalized CSV to {args.output_csv}")
     return 0

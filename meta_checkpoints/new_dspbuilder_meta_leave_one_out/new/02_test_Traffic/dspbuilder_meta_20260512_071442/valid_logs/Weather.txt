@@ -1,0 +1,43 @@
+# Validation iteration logs
+# val_candidate_indices=[80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+# fixed_support_indices=[15377, 15572, 23193, 32675, 34081]
+[VALID] epoch=001 dataset=Weather iteration=001 loss=0.708646 pair_acc=0.4526 pair_loss_mean=0.708646 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.257708 weight_vector=[-0.023532, -0.070959, 0.038437, -0.010713, -0.181094, 0.034634, 0.111772, 0.111920, -0.014799]
+[EPOCH-SUMMARY] epoch=001 val_loss=0.680483 early_stopping_counter=0
+[VALID] epoch=002 dataset=Weather iteration=001 loss=0.595779 pair_acc=0.6895 pair_loss_mean=0.595779 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.429650 weight_vector=[0.102441, 0.097307, 0.096619, -0.144729, -0.244570, 0.091293, 0.039152, 0.247317, 0.059223]
+[EPOCH-SUMMARY] epoch=002 val_loss=0.554934 early_stopping_counter=0
+[VALID] epoch=003 dataset=Weather iteration=001 loss=0.560986 pair_acc=0.7316 pair_loss_mean=0.560986 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.560219 weight_vector=[0.188059, 0.277043, -0.075863, -0.218051, -0.159142, 0.150582, 0.059894, 0.245325, 0.191447]
+[EPOCH-SUMMARY] epoch=003 val_loss=0.507407 early_stopping_counter=0
+[VALID] epoch=004 dataset=Weather iteration=001 loss=0.565316 pair_acc=0.7053 pair_loss_mean=0.565316 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.646509 weight_vector=[0.186875, 0.329779, -0.149717, -0.127884, -0.054303, 0.150775, 0.165295, 0.264080, 0.335835]
+[EPOCH-SUMMARY] epoch=004 val_loss=0.491769 early_stopping_counter=0
+[VALID] epoch=005 dataset=Weather iteration=001 loss=0.565228 pair_acc=0.7053 pair_loss_mean=0.565228 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.692165 weight_vector=[0.126525, 0.317514, -0.153958, -0.093310, 0.026332, 0.215289, 0.184679, 0.288806, 0.406572]
+[EPOCH-SUMMARY] epoch=005 val_loss=0.490623 early_stopping_counter=0
+[VALID] epoch=006 dataset=Weather iteration=001 loss=0.567810 pair_acc=0.7053 pair_loss_mean=0.567810 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.711309 weight_vector=[0.078443, 0.303287, -0.181072, -0.051428, 0.098994, 0.221506, 0.213721, 0.266436, 0.443692]
+[EPOCH-SUMMARY] epoch=006 val_loss=0.495785 early_stopping_counter=1
+[VALID] epoch=007 dataset=Weather iteration=001 loss=0.571621 pair_acc=0.7053 pair_loss_mean=0.571621 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.664995 weight_vector=[0.028769, 0.251516, -0.141597, -0.014573, 0.101621, 0.229198, 0.213406, 0.257929, 0.427715]
+[EPOCH-SUMMARY] epoch=007 val_loss=0.497207 early_stopping_counter=2
+[VALID] epoch=008 dataset=Weather iteration=001 loss=0.568244 pair_acc=0.7053 pair_loss_mean=0.568244 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.779878 weight_vector=[0.030660, 0.306246, -0.135716, -0.013275, 0.143443, 0.269618, 0.221675, 0.304049, 0.509934]
+[EPOCH-SUMMARY] epoch=008 val_loss=0.485791 early_stopping_counter=0
+[VALID] epoch=009 dataset=Weather iteration=001 loss=0.567192 pair_acc=0.7105 pair_loss_mean=0.567192 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.778169 weight_vector=[0.005637, 0.298330, -0.118108, -0.021381, 0.155926, 0.270447, 0.209444, 0.304627, 0.517677]
+[EPOCH-SUMMARY] epoch=009 val_loss=0.485531 early_stopping_counter=0
+[VALID] epoch=010 dataset=Weather iteration=001 loss=0.568798 pair_acc=0.7053 pair_loss_mean=0.568798 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.752563 weight_vector=[-0.017735, 0.270785, -0.096310, -0.021720, 0.158836, 0.253566, 0.210415, 0.297464, 0.510569]
+[EPOCH-SUMMARY] epoch=010 val_loss=0.484467 early_stopping_counter=0
+[VALID] epoch=011 dataset=Weather iteration=001 loss=0.573457 pair_acc=0.7053 pair_loss_mean=0.573457 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.666201 weight_vector=[-0.040833, 0.215425, -0.070774, -0.024074, 0.130226, 0.234267, 0.195678, 0.267881, 0.456367]
+[EPOCH-SUMMARY] epoch=011 val_loss=0.486739 early_stopping_counter=1
+[VALID] epoch=012 dataset=Weather iteration=001 loss=0.575576 pair_acc=0.6947 pair_loss_mean=0.575576 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.638326 weight_vector=[-0.048441, 0.196356, -0.073444, -0.034394, 0.131961, 0.222344, 0.185486, 0.253302, 0.441093]
+[EPOCH-SUMMARY] epoch=012 val_loss=0.489854 early_stopping_counter=2
+[VALID] epoch=013 dataset=Weather iteration=001 loss=0.583776 pair_acc=0.7000 pair_loss_mean=0.583776 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.561593 weight_vector=[-0.049822, 0.147529, -0.042987, -0.029930, 0.096337, 0.197945, 0.177291, 0.235561, 0.391168]
+[EPOCH-SUMMARY] epoch=013 val_loss=0.488392 early_stopping_counter=3
+[VALID] epoch=014 dataset=Weather iteration=001 loss=0.587363 pair_acc=0.7000 pair_loss_mean=0.587363 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.554096 weight_vector=[-0.062924, 0.132890, -0.031587, -0.032077, 0.102618, 0.185668, 0.181856, 0.232153, 0.389111]
+[EPOCH-SUMMARY] epoch=014 val_loss=0.489384 early_stopping_counter=4
+[VALID] epoch=015 dataset=Weather iteration=001 loss=0.575438 pair_acc=0.7000 pair_loss_mean=0.575438 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.641795 weight_vector=[-0.065869, 0.181870, -0.033336, -0.031701, 0.136323, 0.204578, 0.179969, 0.267775, 0.455895]
+[EPOCH-SUMMARY] epoch=015 val_loss=0.482570 early_stopping_counter=0
+[VALID] epoch=016 dataset=Weather iteration=001 loss=0.583047 pair_acc=0.7000 pair_loss_mean=0.583047 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.592686 weight_vector=[-0.084766, 0.149407, -0.027290, -0.027994, 0.123210, 0.183090, 0.178011, 0.245715, 0.423644]
+[EPOCH-SUMMARY] epoch=016 val_loss=0.486484 early_stopping_counter=1
+[VALID] epoch=017 dataset=Weather iteration=001 loss=0.584706 pair_acc=0.7000 pair_loss_mean=0.584706 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.581335 weight_vector=[-0.093241, 0.137680, -0.010524, -0.031035, 0.113303, 0.178694, 0.171329, 0.241927, 0.420209]
+[EPOCH-SUMMARY] epoch=017 val_loss=0.485812 early_stopping_counter=2
+[VALID] epoch=018 dataset=Weather iteration=001 loss=0.584148 pair_acc=0.7000 pair_loss_mean=0.584148 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.585993 weight_vector=[-0.095401, 0.140840, -0.018777, -0.024491, 0.117612, 0.172974, 0.172931, 0.240912, 0.426383]
+[EPOCH-SUMMARY] epoch=018 val_loss=0.485104 early_stopping_counter=3
+[VALID] epoch=019 dataset=Weather iteration=001 loss=0.583777 pair_acc=0.7000 pair_loss_mean=0.583777 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.590040 weight_vector=[-0.098412, 0.140629, -0.015201, -0.022506, 0.117711, 0.171325, 0.172314, 0.244368, 0.430503]
+[EPOCH-SUMMARY] epoch=019 val_loss=0.483215 early_stopping_counter=4
+[VALID] epoch=020 dataset=Weather iteration=001 loss=0.588212 pair_acc=0.7000 pair_loss_mean=0.588212 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.551672 weight_vector=[-0.096145, 0.121118, -0.013022, -0.024185, 0.101712, 0.162276, 0.163445, 0.229654, 0.404400]
+[EPOCH-SUMMARY] epoch=020 val_loss=0.485100 early_stopping_counter=5

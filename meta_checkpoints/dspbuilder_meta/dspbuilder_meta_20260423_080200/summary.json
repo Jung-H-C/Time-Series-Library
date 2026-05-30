@@ -1,0 +1,16 @@
+{
+  "best_checkpoint": "/home/gpuadmin/TSLib/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260423_080200/best_checkpoint.pth",
+  "num_epochs_ran": 20,
+  "best_val_loss": 0.6160080432891846,
+  "best_epoch": 15,
+  "final_test_loss": null,
+  "final_test_pair_acc": null,
+  "final_test_pair_loss_mean": null,
+  "final_test_spearman_mean": null,
+  "final_test_spearman_std": null,
+  "final_test_dataset_results": null,
+  "train_log_dir": "/home/gpuadmin/TSLib/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260423_080200/train_logs",
+  "valid_log_dir": "/home/gpuadmin/TSLib/Time-Series-Library/meta_checkpoints/dspbuilder_meta/dspbuilder_meta_20260423_080200/valid_logs",
+  "test_log_dir": null,
+  "train_only": true
+}

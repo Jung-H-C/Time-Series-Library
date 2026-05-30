@@ -61,6 +61,32 @@ def task_id_map_for_logging(
     return {available_tasks[key].display_name: dataset_class_ids[key] for key in dataset_class_ids}
 
 
+def query_batches_for_logging(plan: FixedEvaluationPlan) -> list[list[int]]:
+    return [list(indices) for indices in plan.query_batches]
+
+
+def index_sets_for_logging(index_sets: tuple[tuple[int, ...], ...]) -> list[list[int]]:
+    return [list(indices) for indices in index_sets]
+
+
+def summarize_index_sets(index_sets: tuple[tuple[int, ...], ...], max_sets: int = 3) -> str:
+    sets_for_log = index_sets_for_logging(index_sets)
+    shown_sets = sets_for_log[:max_sets]
+    suffix = ""
+    if len(sets_for_log) > max_sets:
+        suffix = f", ... total_sets={len(sets_for_log)}"
+    return f"{shown_sets}{suffix}"
+
+
+def summarize_query_batches(plan: FixedEvaluationPlan, max_batches: int = 3) -> str:
+    batches = query_batches_for_logging(plan)
+    shown_batches = batches[:max_batches]
+    suffix = ""
+    if len(batches) > max_batches:
+        suffix = f", ... total_batches={len(batches)}"
+    return f"{shown_batches}{suffix}"
+
+
 def initialize_log_files(
     train_log_dir: Path,
     val_log_dir: Path,
@@ -87,11 +113,10 @@ def initialize_log_files(
             lines = [header]
             if log_dir == val_log_dir:
                 plan = fixed_val_plans[task.benchmark.key]
-                query_ranges = [f"{batch[0]}-{batch[-1]}" for batch in plan.query_batches]
-                spearman_support_sets = [list(indices) for indices in plan.spearman_support_indices_sets]
+                spearman_support_sets = index_sets_for_logging(plan.spearman_support_indices_sets)
                 lines.append(f"# fixed_loss_support_indices={list(plan.loss_support_indices)}")
                 lines.append(f"# fixed_spearman_support_indices={spearman_support_sets}")
-                lines.append(f"# fixed_query_ranges={query_ranges}")
+                lines.append(f"# fixed_query_batches={query_batches_for_logging(plan)}")
             (log_dir / f"{task.benchmark.display_name}.txt").write_text(
                 "\n".join(lines) + "\n",
                 encoding="utf-8",
@@ -123,8 +148,13 @@ def print_run_overview(
     print(
         f"raw_stat_emb={model.support_encoder.raw_stat_emb} "
         f"sample_embedding_dim={model.sample_embedding_dim} "
+        f"number_of_conv1d_layer={model.support_encoder.number_of_conv1d_layer} "
+        f"sample_encoder_norm={model.support_encoder.sample_encoder_norm} "
+        f"number_of_setencoder_mlp_layers={model.set_encoder.number_of_setencoder_mlp_layers} "
+        f"set_encoder_norm={model.set_encoder.set_encoder_norm} "
         f"dataset_description_dim={model.dataset_description_dim} "
-        f"weight_head_layers={model.weight_head_layers}"
+        f"weight_head_layers={model.weight_head_layers} "
+        f"mlp_norm={model.mlp_norm}"
     )
     print(
         "Auxiliary mode:",
@@ -155,13 +185,12 @@ def print_run_overview(
             )
     for task in val_tasks:
         plan = fixed_val_plans[task.benchmark.key]
-        query_ranges = ", ".join(f"{batch[0]}-{batch[-1]}" for batch in plan.query_batches)
         spearman_support_sets = ", ".join(str(list(indices)) for indices in plan.spearman_support_indices_sets)
         print(
             f"[valid-plan] {task.benchmark.display_name}: "
             f"loss_support_indices={list(plan.loss_support_indices)} "
             f"spearman_support_indices={spearman_support_sets} "
-            f"query_ranges={query_ranges}"
+            f"query_batches={summarize_query_batches(plan)}"
         )
 
 
@@ -234,7 +263,12 @@ def run_pipeline(args: Namespace) -> int:
         head_hidden_dim=args.hidden_dim,
         dropout=args.dropout,
         raw_stat_emb=args.raw_stat_emb,
+        number_of_conv1d_layer=args.number_of_conv1d_layer,
+        sample_encoder_norm=args.sample_encoder_norm,
+        number_of_setencoder_mlp_layers=args.number_of_setencoder_mlp_layers,
+        set_encoder_norm=args.set_encoder_norm,
         weight_head_layers=args.weight_head_layers,
+        mlp_norm=args.mlp_norm,
     ).to(device)
     model.proxy_signature_regression = bool(args.proxy_signature_regression)
     optimizer = torch.optim.AdamW(
@@ -276,8 +310,13 @@ def run_pipeline(args: Namespace) -> int:
         "val_query_size": args.val_query_size,
         "test_query_size": args.test_query_size,
         "encoder_hidden_dim": args.encoder_hidden_dim,
+        "number_of_conv1d_layer": args.number_of_conv1d_layer,
+        "sample_encoder_norm": args.sample_encoder_norm,
+        "number_of_setencoder_mlp_layers": args.number_of_setencoder_mlp_layers,
+        "set_encoder_norm": args.set_encoder_norm,
         "hidden_dim": args.hidden_dim,
         "weight_head_layers": args.weight_head_layers,
+        "mlp_norm": args.mlp_norm,
         "raw_stat_emb": args.raw_stat_emb,
         "dropout": args.dropout,
         "learning_rate": args.learning_rate,

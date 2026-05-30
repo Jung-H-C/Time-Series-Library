@@ -1,0 +1,168 @@
+{
+  "benchmark_dir": "/home/junghc/TSLib/Time-Series-Library/benchmark",
+  "candidate_dir": "/home/junghc/TSLib/Time-Series-Library/candidates",
+  "train_datasets": [
+    "Weather",
+    "Traffic",
+    "ECL",
+    "Exchange",
+    "M4_Hourly",
+    "M4_Monthly",
+    "M4_Quarterly"
+  ],
+  "val_datasets": [
+    "Weather",
+    "Traffic",
+    "ECL",
+    "Exchange",
+    "M4_Hourly",
+    "M4_Monthly",
+    "M4_Quarterly"
+  ],
+  "test_datasets": [
+    "ILI"
+  ],
+  "candidate_train_count": 80,
+  "candidate_val_count": 20,
+  "candidate_split_rule": "first candidate_train_count rows for train; remaining candidate_val_count rows for validation",
+  "epochs": 100,
+  "train_iterations_per_epoch": 40,
+  "train_batch_size": 16,
+  "test_iterations_per_dataset": 5,
+  "support_size": 5,
+  "train_query_size": 20,
+  "val_query_size": 20,
+  "test_query_size": "all_candidates",
+  "encoder_hidden_dim": 64,
+  "number_of_conv1d_layer": 1,
+  "sample_encoder_norm": false,
+  "number_of_setencoder_mlp_layers": null,
+  "set_encoder_norm": false,
+  "hidden_dim": 64,
+  "weight_head_layers": 1,
+  "mlp_norm": false,
+  "raw_stat_emb": false,
+  "dropout": 0.1,
+  "learning_rate": 0.0001,
+  "weight_decay": 0.0001,
+  "cls_loss_weight": 0,
+  "proxy_signature_regression": false,
+  "proxy_signature_lookup": null,
+  "patience": 5,
+  "seed": 2026,
+  "device": "cuda:0",
+  "train_only": false,
+  "train_dataset_class_ids": {
+    "Weather": 0,
+    "Traffic": 1,
+    "ECL": 2,
+    "Exchange": 3,
+    "M4_Hourly": 4,
+    "M4_Monthly": 5,
+    "M4_Quarterly": 6
+  },
+  "fixed_val_support_indices": {
+    "Weather": [
+      [
+        15377,
+        15572,
+        23193,
+        32675,
+        34081
+      ]
+    ],
+    "Traffic": [
+      [
+        7310,
+        10135,
+        10145,
+        10823,
+        12025
+      ]
+    ],
+    "ECL": [
+      [
+        2246,
+        7714,
+        10271,
+        15433,
+        15916
+      ]
+    ],
+    "Exchange": [
+      [
+        1272,
+        1560,
+        1789,
+        2161,
+        3715
+      ]
+    ],
+    "M4_Hourly": [
+      [
+        32,
+        91,
+        125,
+        145,
+        277
+      ]
+    ],
+    "M4_Monthly": [
+      [
+        10638,
+        13454,
+        24322,
+        32227,
+        37062
+      ]
+    ],
+    "M4_Quarterly": [
+      [
+        4299,
+        8827,
+        10679,
+        21254,
+        22387
+      ]
+    ]
+  },
+  "fixed_test_support_indices": {
+    "ILI": [
+      [
+        14,
+        17,
+        175,
+        329,
+        347
+      ],
+      [
+        249,
+        362,
+        451,
+        477,
+        554
+      ],
+      [
+        165,
+        255,
+        292,
+        435,
+        451
+      ],
+      [
+        99,
+        164,
+        274,
+        336,
+        557
+      ],
+      [
+        0,
+        195,
+        418,
+        458,
+        471
+      ]
+    ]
+  }
+}

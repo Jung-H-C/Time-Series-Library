@@ -1,0 +1,2688 @@
+[
+  {
+    "epoch": 1,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_001.pth",
+    "spearman_mean": 0.0076655665566556655,
+    "spearman_std": 0.19214272436987404,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": 0.43974797479747973,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": -0.15153915391539155,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": 0.18604260426042604,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": -0.08820882088208822,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": -0.09032103210321032,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.034203420342034205,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.08768076807680768,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": 0.05826582658265826,
+        "spearman_std": 6.938893903907228e-18,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.2874167416741674,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": 0.14255025502550256,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": -0.14385838583858385,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.23426342634263425,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": 0.1275967596759676,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": -0.28385238523852385,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.012709270927092708,
+        "spearman_std": 1.734723475976807e-18,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 2,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_002.pth",
+    "spearman_mean": -0.05394139413941395,
+    "spearman_std": 0.1958425924959734,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.4424002400240024,
+        "spearman_std": 0.00028022224057983004,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.02482088208820882,
+        "spearman_std": 0.0027890789078907894,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.33070747074707463,
+        "spearman_std": 0.003408403374975025,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.2564776477647765,
+        "spearman_std": 0.001050965315590207,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.04104170417041704,
+        "spearman_std": 0.00038481769118667476,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.14464326432643265,
+        "spearman_std": 0.001534551369629818,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.07738373837383739,
+        "spearman_std": 0.00045925568156208275,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.06133333333333333,
+        "spearman_std": 0.0012367316789643997,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.14056765676567656,
+        "spearman_std": 0.0005163808353985798,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.16474047404740472,
+        "spearman_std": 0.000581581674458924,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": -0.07487068706870688,
+        "spearman_std": 0.0010905281282145662,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.2847068706870687,
+        "spearman_std": 0.0003523859729515907,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.07512991299129915,
+        "spearman_std": 0.00032508856556062553,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.23663246324632464,
+        "spearman_std": 0.00211356910230025,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.14102370237023704,
+        "spearman_std": 0.0008994785401765969,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 3,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_003.pth",
+    "spearman_mean": -0.03458873887388739,
+    "spearman_std": 0.24970107410192866,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.4900354035403541,
+        "spearman_std": 0.00019327522005828046,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.07200000000000001,
+        "spearman_std": 0.0006384638463846404,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.36330513051305136,
+        "spearman_std": 0.001262366530733407,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.2570801080108011,
+        "spearman_std": 0.001984671959082373,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.08428922892289228,
+        "spearman_std": 0.00035043504350434906,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.10563216321632163,
+        "spearman_std": 0.0006017091050905685,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": 0.018474647464746478,
+        "spearman_std": 0.00018226026288935596,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.07816621662166216,
+        "spearman_std": 0.00032017798450738674,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.3458769876987699,
+        "spearman_std": 0.0005140886059582285,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.15531713171317132,
+        "spearman_std": 0.0003353814768620899,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.04517731773177318,
+        "spearman_std": 0.00039254015847340457,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4224662466246625,
+        "spearman_std": 0.0005681018788223917,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13833543354335434,
+        "spearman_std": 0.00030751187255895673,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.36187698769876986,
+        "spearman_std": 0.0009321031673450865,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.10352715271527153,
+        "spearman_std": 0.0007483438769118337,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 4,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_004.pth",
+    "spearman_mean": -0.029487908790879095,
+    "spearman_std": 0.25723463063892044,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.49442304230423045,
+        "spearman_std": 0.00022341580612241933,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.05268286828682869,
+        "spearman_std": 0.0012433243324332433,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.36952655265526557,
+        "spearman_std": 0.0006007988250954344,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.26602820282028206,
+        "spearman_std": 0.00084947475198195,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.10035643564356436,
+        "spearman_std": 7.055235982813778e-05,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.07442184218421842,
+        "spearman_std": 0.0001950555022277565,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": 0.001540954095409541,
+        "spearman_std": 0.00032001600120010003,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.08012721272127213,
+        "spearman_std": 0.0005075017921527243,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.36599339933993397,
+        "spearman_std": 0.0007198559531856019,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.1535817581758176,
+        "spearman_std": 0.0007872787278727867,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.07653165316531653,
+        "spearman_std": 0.0002535635191598065,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42399999999999993,
+        "spearman_std": 0.0006871732508569193,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.14059405940594058,
+        "spearman_std": 0.0004667217197157611,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.39883348334833485,
+        "spearman_std": 0.00030393142966636717,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.08362436243624363,
+        "spearman_std": 0.00021682020600081648,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 5,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_005.pth",
+    "spearman_mean": -0.027817341734173415,
+    "spearman_std": 0.26017878222749197,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.5078283828382839,
+        "spearman_std": 4.115554323309228e-05,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.03976477647764776,
+        "spearman_std": 0.0003696369636963681,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.3692145214521452,
+        "spearman_std": 0.00100286957248609,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.2678739873987398,
+        "spearman_std": 0.00074305166686757,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.10370717071707172,
+        "spearman_std": 0.00011170790306122327,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.06732673267326734,
+        "spearman_std": 0.00021827672452473054,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.010762676267626763,
+        "spearman_std": 0.0004224967916123734,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.07347134713471346,
+        "spearman_std": 0.0013308243313710682,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.3758679867986799,
+        "spearman_std": 0.0007239579116015136,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.1431047104710471,
+        "spearman_std": 2.8802880288025802e-05,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.09910831083108311,
+        "spearman_std": 0.000595791599450948,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4227422742274228,
+        "spearman_std": 0.0003037987126513664,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13206120612061206,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4061878187818782,
+        "spearman_std": 0.0004562098019501603,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.07700690069006902,
+        "spearman_std": 0.0007236076812604977,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 6,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_006.pth",
+    "spearman_mean": -0.027526592659265915,
+    "spearman_std": 0.26346963654525385,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.5084788478847886,
+        "spearman_std": 7.200720072009226e-05,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.029930993099309928,
+        "spearman_std": 0.0002987310615872235,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.3754359435943594,
+        "spearman_std": 0.0007986489852632028,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.2687572757275728,
+        "spearman_std": 0.0015085160063294243,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.11939273927392739,
+        "spearman_std": 0.00022562256225622243,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.06652265226522651,
+        "spearman_std": 0.00032336498254563657,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.018253825382538252,
+        "spearman_std": 0.00019111699237822323,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.06754995499549954,
+        "spearman_std": 0.00043553610234097964,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.3794371437143714,
+        "spearman_std": 0.0018145973326797171,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.14364956495649567,
+        "spearman_std": 0.0002976297629762925,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.1031791179117912,
+        "spearman_std": 5.760576057605715e-05,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4262130213021303,
+        "spearman_std": 0.00018813962620836742,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13612961296129616,
+        "spearman_std": 0.0002645713493555252,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4173561356135614,
+        "spearman_std": 0.0004009478647286213,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.08227062706270626,
+        "spearman_std": 5.2805280528056554e-05,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 7,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_007.pth",
+    "spearman_mean": -0.029065946594659463,
+    "spearman_std": 0.26238202153104867,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.5013141314131413,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.02280948094809481,
+        "spearman_std": 0.0005676757947447022,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.37454305430543056,
+        "spearman_std": 0.0007532854187557431,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.2712847284728473,
+        "spearman_std": 0.00023850705766174097,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.12777677767776777,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.06926372637263727,
+        "spearman_std": 0.00019030134670665393,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.021539753975397542,
+        "spearman_std": 0.00019842306808703618,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.06473207320732073,
+        "spearman_std": 0.0008703112780894749,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.39465466546654665,
+        "spearman_std": 0.0007765286558271357,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.13414221422142214,
+        "spearman_std": 0.00025442544254425934,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.10450405040504049,
+        "spearman_std": 0.0006205630152048873,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42062286228622864,
+        "spearman_std": 0.00048104307309596115,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13414941494149416,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4064590459045904,
+        "spearman_std": 0.0002536089565796107,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.09510711071107111,
+        "spearman_std": 0.0002688268826882667,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 8,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_008.pth",
+    "spearman_mean": -0.02684988498849884,
+    "spearman_std": 0.2669758731497055,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.5171797179717972,
+        "spearman_std": 0.0,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.02354875487548755,
+        "spearman_std": 0.00041256209204661973,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.37698889888988896,
+        "spearman_std": 0.0007012481050694497,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.27630123012301233,
+        "spearman_std": 0.0009885492785708376,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.12442124212421242,
+        "spearman_std": 0.00021165707948441338,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.07006540654065406,
+        "spearman_std": 0.0004937965214160208,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.02161176117611761,
+        "spearman_std": 0.0010669978095011507,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.05855625562556256,
+        "spearman_std": 0.0009673711759404136,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.39646444644464446,
+        "spearman_std": 0.000464717710390347,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.13583918391839184,
+        "spearman_std": 0.00030984486409802136,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.11444824482448246,
+        "spearman_std": 0.00017647886175483263,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42947254725472545,
+        "spearman_std": 0.0009308909404022592,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.12489168916891688,
+        "spearman_std": 0.00028808880263156433,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.416052805280528,
+        "spearman_std": 0.0005147157893628593,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.08539573957395738,
+        "spearman_std": 0.00033125051589935536,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 9,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_009.pth",
+    "spearman_mean": -0.027620362036203615,
+    "spearman_std": 0.2670926882831535,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.5122712271227122,
+        "spearman_std": 0.00021602160216018795,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.021472547254725475,
+        "spearman_std": 0.0008832883288328833,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.38313111311131115,
+        "spearman_std": 0.0021995236967396912,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.27322892289228917,
+        "spearman_std": 0.00039333189604834736,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.13103390339033902,
+        "spearman_std": 0.0003762792524167349,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.07131833183318331,
+        "spearman_std": 0.0002358594610796444,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.02348874887488749,
+        "spearman_std": 0.0003930388458690528,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.06756915691569157,
+        "spearman_std": 0.0010496872856527797,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.4022970297029702,
+        "spearman_std": 0.0014242669156320567,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.12596219621962196,
+        "spearman_std": 0.0007563765301554678,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.11821422142214222,
+        "spearman_std": 0.0003817362742252646,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42836363636363634,
+        "spearman_std": 0.000692692803388148,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13353735373537354,
+        "spearman_std": 0.0003233649825456298,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.41281968196819685,
+        "spearman_std": 3.9731041961587027e-05,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.07986318631863186,
+        "spearman_std": 0.0007226516448868857,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 10,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_010.pth",
+    "spearman_mean": -0.027848224822482236,
+    "spearman_std": 0.2676557190067755,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.5094341434143413,
+        "spearman_std": 0.000200042402986041,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.023363936393639366,
+        "spearman_std": 0.00020116245390705735,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.38211581158115815,
+        "spearman_std": 0.0010494677248430628,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.27775097509750973,
+        "spearman_std": 0.0008472745290912452,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.13397419741974198,
+        "spearman_std": 0.0006206187152078633,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.07435703570357036,
+        "spearman_std": 0.0005650207841352508,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.02867326732673267,
+        "spearman_std": 0.000349265853050874,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.06200540054005401,
+        "spearman_std": 0.0012125987895676496,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.4064638463846385,
+        "spearman_std": 0.002104979026743787,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.12827122712271227,
+        "spearman_std": 0.0005719122777663152,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.11729012901290128,
+        "spearman_std": 0.0005939515065648439,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4278643864386439,
+        "spearman_std": 0.00039391734237377444,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.12835523552355238,
+        "spearman_std": 0.0008814274871558476,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.41396459645964595,
+        "spearman_std": 0.0004827168536336885,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.09225562556255626,
+        "spearman_std": 0.00012271777287646752,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 11,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_011.pth",
+    "spearman_mean": -0.02880960096009602,
+    "spearman_std": 0.2668373331632849,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.4933621362136214,
+        "spearman_std": 0.000579428083564679,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.017744974497449745,
+        "spearman_std": 0.0010225022502250228,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.38149174917491746,
+        "spearman_std": 0.0011583091826519107,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.279018301830183,
+        "spearman_std": 0.001747753855141272,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.1426798679867987,
+        "spearman_std": 0.0011565421499335896,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.07693489348934893,
+        "spearman_std": 0.0004011058907299388,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.03057425742574258,
+        "spearman_std": 0.0005791297219907361,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.06605940594059405,
+        "spearman_std": 0.0011229583939312009,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.41721932193219324,
+        "spearman_std": 0.0017456264353687535,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.12423402340234024,
+        "spearman_std": 0.0003084471866981442,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.11557875787578757,
+        "spearman_std": 0.0013176552605727281,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42977977797779776,
+        "spearman_std": 0.00019552750655305528,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13312691269126914,
+        "spearman_std": 0.00029459463052032006,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.40763516351635165,
+        "spearman_std": 0.0002462323404161077,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.10157815781578158,
+        "spearman_std": 0.0015836673815530363,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 12,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_012.pth",
+    "spearman_mean": -0.031402340234023406,
+    "spearman_std": 0.2677246194198882,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.512943294329433,
+        "spearman_std": 0.00020591765342477884,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.02086768676867687,
+        "spearman_std": 0.0013009300930093017,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.3862538253825383,
+        "spearman_std": 0.001766984260103292,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.27995919591959195,
+        "spearman_std": 0.0010204436342243879,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.12649024902490247,
+        "spearman_std": 0.001766426636294201,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.07681248124812481,
+        "spearman_std": 0.0019324928533840375,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.050018601860186016,
+        "spearman_std": 0.0003123449229531128,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.0711071107110711,
+        "spearman_std": 0.0016428761917581802,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.39045424542454243,
+        "spearman_std": 0.0007613945748050084,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.1360960096009601,
+        "spearman_std": 0.0006512307241294759,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.10921332133213321,
+        "spearman_std": 0.0045522714624527645,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42722832283228324,
+        "spearman_std": 0.0005741743393235403,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13393579357935792,
+        "spearman_std": 0.0005651737087568732,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4201116111611161,
+        "spearman_std": 0.0010136404308777039,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.09728412841284129,
+        "spearman_std": 0.001122055091756064,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 13,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_013.pth",
+    "spearman_mean": -0.031165196519651966,
+    "spearman_std": 0.26630304266073745,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.4882928292829282,
+        "spearman_std": 0.0016660155743037635,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.015805580558055803,
+        "spearman_std": 0.0003695902028160842,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.38223342334233423,
+        "spearman_std": 0.001000085288420508,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.2746810681068107,
+        "spearman_std": 0.00046028318457597335,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.14521212121212124,
+        "spearman_std": 0.0011633961167934186,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.08715991599159915,
+        "spearman_std": 0.004505619433362034,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.03982478247824782,
+        "spearman_std": 0.0010959297241983437,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.07224722472247225,
+        "spearman_std": 0.0012893333391594609,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.41576957695769573,
+        "spearman_std": 0.0037563948087610327,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.12437803780378039,
+        "spearman_std": 0.0027225684640949915,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.11356495649564957,
+        "spearman_std": 0.003992930399994583,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4323096309630963,
+        "spearman_std": 0.001018233759816446,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.12675187518751874,
+        "spearman_std": 0.0013337777681598029,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4055157515751575,
+        "spearman_std": 0.001130194503238105,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.11790939093909392,
+        "spearman_std": 0.0017576805447193872,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 14,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_014.pth",
+    "spearman_mean": -0.031126952695269522,
+    "spearman_std": 0.2669204699610838,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.49165316531653164,
+        "spearman_std": 0.0025713954088683127,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.015399939993999402,
+        "spearman_std": 0.001958989976995691,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.3827542754275427,
+        "spearman_std": 0.002576565712685673,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.26871887188718874,
+        "spearman_std": 0.00115216521543651,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.13723852385238525,
+        "spearman_std": 0.0020164673435114377,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.08328832883288331,
+        "spearman_std": 0.0030266731667763862,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.038999099909990995,
+        "spearman_std": 0.001416987547815293,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.07727092709270927,
+        "spearman_std": 0.0013310104657951111,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.41474707470747074,
+        "spearman_std": 0.003045443989481884,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.12621902190219023,
+        "spearman_std": 0.001638282944842484,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.12346114611461148,
+        "spearman_std": 0.005376262262031129,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4312895289528953,
+        "spearman_std": 0.0010361811441712326,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13665286528652865,
+        "spearman_std": 0.0021142231914443783,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4128580858085808,
+        "spearman_std": 0.0006905269876955249,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.10428562856285631,
+        "spearman_std": 0.0037854958476351147,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 15,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_015.pth",
+    "spearman_mean": -0.03385810581058105,
+    "spearman_std": 0.2670713417247997,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.5008124812481248,
+        "spearman_std": 0.0008413996812485868,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.015277527752775277,
+        "spearman_std": 0.0008640864086408649,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.38573537353735377,
+        "spearman_std": 0.003308037586410331,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.2751971197119712,
+        "spearman_std": 0.003155894877035401,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.13656645664566455,
+        "spearman_std": 0.0009621819524206332,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.08317551755175517,
+        "spearman_std": 0.005948740077346334,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.05309330933093309,
+        "spearman_std": 0.001153614386145615,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.0747122712271227,
+        "spearman_std": 0.001750408670986229,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.41029702970297033,
+        "spearman_std": 0.002088760527317317,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.1262982298229823,
+        "spearman_std": 0.004831268802109446,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.1163036303630363,
+        "spearman_std": 0.0060350263582202735,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42464086408640866,
+        "spearman_std": 0.0007942364861998444,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.12961776177617762,
+        "spearman_std": 0.0010331242028189132,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.40950495049504954,
+        "spearman_std": 0.0013750044758310278,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.1216201620162016,
+        "spearman_std": 0.0015243886410322583,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 16,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_016.pth",
+    "spearman_mean": -0.033992839283928385,
+    "spearman_std": 0.2676289684575742,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.49123312331233127,
+        "spearman_std": 0.001389736901149699,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.014843084308430843,
+        "spearman_std": 0.00035156757347023,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.38771077107710766,
+        "spearman_std": 0.0024515723079799605,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.27058385838583854,
+        "spearman_std": 0.0059754919047418755,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.15061266126612663,
+        "spearman_std": 0.0010620458638891208,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.09151395139513951,
+        "spearman_std": 0.002092626658884913,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.05385178517851785,
+        "spearman_std": 0.0029917371958086227,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.08018721872187219,
+        "spearman_std": 0.0005068202154388559,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.4178505850585058,
+        "spearman_std": 0.0025780924354366092,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.11982238223822383,
+        "spearman_std": 0.003828344464348173,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.11313051305130513,
+        "spearman_std": 0.006117470234842212,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42955895589558957,
+        "spearman_std": 0.0007369557756962264,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13542154215421542,
+        "spearman_std": 0.0020301689279366175,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.4088400840084009,
+        "spearman_std": 0.00023973580057239061,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.11987038703870387,
+        "spearman_std": 0.001069828741089768,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  },
+  {
+    "epoch": 17,
+    "checkpoint": "/home/junghc/TSLib/Time-Series-Library/meta_checkpoints/new_dspbuilder_meta/dspbuilder_meta_20260512_081438/epoch_checkpoints/epoch_017.pth",
+    "spearman_mean": -0.03538481848184819,
+    "spearman_std": 0.26752141898241977,
+    "dataset_results": {
+      "aus_electricity_demand": {
+        "dataset": "aus_electricity_demand",
+        "metric_name": "mse",
+        "spearman_mean": -0.49896189618961895,
+        "spearman_std": 0.0015032096012282071,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": -0.5633
+      },
+      "Bitcoin": {
+        "dataset": "Bitcoin",
+        "metric_name": "mse",
+        "spearman_mean": 0.016007200720072008,
+        "spearman_std": 0.0005712571257125709,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": 0.1722
+      },
+      "CIF_2016": {
+        "dataset": "CIF_2016",
+        "metric_name": "mse",
+        "spearman_mean": -0.3884596459645965,
+        "spearman_std": 0.003757526502886425,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.3982
+      },
+      "Dominick": {
+        "dataset": "Dominick",
+        "metric_name": "mse",
+        "spearman_mean": 0.271978397839784,
+        "spearman_std": 0.003931968270509349,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "flops",
+        "baseline_coefficient": 0.3126
+      },
+      "Electricity_Hourly": {
+        "dataset": "Electricity_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.14541614161416141,
+        "spearman_std": 0.00109949334014907,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.1654
+      },
+      "Electricity_Weekly": {
+        "dataset": "Electricity_Weekly",
+        "metric_name": "mse",
+        "spearman_mean": -0.0911947194719472,
+        "spearman_std": 0.0025527249471431696,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.0994
+      },
+      "FRED_MD": {
+        "dataset": "FRED_MD",
+        "metric_name": "mse",
+        "spearman_mean": -0.060325232523252316,
+        "spearman_std": 0.004770730500280072,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": 0.2742
+      },
+      "KDD_Cup_2018": {
+        "dataset": "KDD_Cup_2018",
+        "metric_name": "mse",
+        "spearman_mean": -0.0806048604860486,
+        "spearman_std": 0.0012500757906101355,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "snip",
+        "baseline_coefficient": -0.0797
+      },
+      "M1_Yearly": {
+        "dataset": "M1_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": -0.4093105310531053,
+        "spearman_std": 0.00275918422425645,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_cov",
+        "baseline_coefficient": -0.4925
+      },
+      "M3_Monthly": {
+        "dataset": "M3_Monthly",
+        "metric_name": "mse",
+        "spearman_mean": -0.12675187518751876,
+        "spearman_std": 0.004434859000936999,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grasp",
+        "baseline_coefficient": 0.2263
+      },
+      "M3_Quarterly": {
+        "dataset": "M3_Quarterly",
+        "metric_name": "mse",
+        "spearman_mean": 0.11475787578757876,
+        "spearman_std": 0.006346383501959601,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "jacob_fro",
+        "baseline_coefficient": 0.1199
+      },
+      "M3_Yearly": {
+        "dataset": "M3_Yearly",
+        "metric_name": "mse",
+        "spearman_mean": 0.42650345034503445,
+        "spearman_std": 0.0012551809591024056,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.3834
+      },
+      "NN5": {
+        "dataset": "NN5",
+        "metric_name": "mse",
+        "spearman_mean": -0.13505430543054306,
+        "spearman_std": 0.0013000928395218052,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "grad_norm",
+        "baseline_coefficient": -0.1271
+      },
+      "San_Francisco_Traffic_Hourly": {
+        "dataset": "San_Francisco_Traffic_Hourly",
+        "metric_name": "mse",
+        "spearman_mean": 0.408014401440144,
+        "spearman_std": 0.0007066414249301191,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": 0.4225
+      },
+      "Saugeen_River_Flow": {
+        "dataset": "Saugeen_River_Flow",
+        "metric_name": "mse",
+        "spearman_mean": -0.12278667866786679,
+        "spearman_std": 0.0016532828195692535,
+        "support_sets": 5,
+        "num_candidates": 100,
+        "baseline_best_proxy": "synflow",
+        "baseline_coefficient": -0.0982
+      }
+    }
+  }
+]

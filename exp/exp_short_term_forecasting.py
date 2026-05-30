@@ -285,6 +285,9 @@ class Exp_Short_Term_Forecast(Exp_Basic):
             return outputs[:, :, target_idx:target_idx + 1]
         return outputs[:, :, -1:]
 
+    def _select_fixed_window_target(self, batch_y):
+        return batch_y[:, -self.args.pred_len:, :]
+
     def _build_fixed_window_decoder_input(self, batch_x, dataset):
         if getattr(dataset, 'predict_all_channels', False):
             history = batch_x[:, -self.args.label_len:, :]
@@ -367,11 +370,11 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                     with torch.cuda.amp.autocast():
                         outputs = self.model(batch_x, encoder_mark, dec_inp, dec_mark)
                         outputs = self._select_target_channel(outputs[:, -self.args.pred_len:, :], train_data)
-                        loss = criterion(outputs, batch_y)
+                        loss = criterion(outputs, self._select_fixed_window_target(batch_y))
                 else:
                     outputs = self.model(batch_x, encoder_mark, dec_inp, dec_mark)
                     outputs = self._select_target_channel(outputs[:, -self.args.pred_len:, :], train_data)
-                    loss = criterion(outputs, batch_y)
+                    loss = criterion(outputs, self._select_fixed_window_target(batch_y))
 
                 train_loss.append(loss.item())
 
@@ -409,7 +412,7 @@ class Exp_Short_Term_Forecast(Exp_Basic):
 
         self.final_train_epoch = executed_epochs
         best_model_path = path + '/' + 'checkpoint.pth'
-        self.model.load_state_dict(torch.load(best_model_path))
+        self.model.load_state_dict(torch.load(best_model_path, map_location='cpu'))
         return self.model
 
     def _vali_fixed_window(self, data_set, data_loader, criterion):
@@ -426,7 +429,7 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                 encoder_mark = batch_x_mark if getattr(data_set, 'use_time_marks', False) else None
                 outputs = self.model(batch_x, encoder_mark, dec_inp, dec_mark)
                 outputs = self._select_target_channel(outputs[:, -self.args.pred_len:, :], data_set)
-                loss = criterion(outputs, batch_y)
+                loss = criterion(outputs, self._select_fixed_window_target(batch_y))
                 total_loss.append(loss.item())
 
         self.model.train()
@@ -436,7 +439,7 @@ class Exp_Short_Term_Forecast(Exp_Basic):
         test_data, test_loader = self._get_data(flag='test')
         if test:
             print('loading model')
-            self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth')))
+            self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'), map_location='cpu'))
 
         preds = []
         trues = []
@@ -461,7 +464,7 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                 outputs = self._select_target_channel(outputs[:, -self.args.pred_len:, :], test_data)
 
                 pred = outputs.detach().cpu().numpy()
-                true = batch_y.detach().cpu().numpy()
+                true = self._select_fixed_window_target(batch_y).detach().cpu().numpy()
                 history = batch_x[:, :, target_idx:target_idx + 1].detach().cpu().numpy()
 
                 if test_data.scale and self.args.inverse:
@@ -588,7 +591,7 @@ class Exp_Short_Term_Forecast(Exp_Basic):
             adjust_learning_rate(model_optim, epoch + 1, self.args)
 
         best_model_path = path + '/' + 'checkpoint.pth'
-        self.model.load_state_dict(torch.load(best_model_path))
+        self.model.load_state_dict(torch.load(best_model_path, map_location='cpu'))
 
         return self.model
 
@@ -638,7 +641,7 @@ class Exp_Short_Term_Forecast(Exp_Basic):
 
         if test:
             print('loading model')
-            self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth')))
+            self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'), map_location='cpu'))
 
         folder_path = './test_results/' + setting + '/'
         if not os.path.exists(folder_path):

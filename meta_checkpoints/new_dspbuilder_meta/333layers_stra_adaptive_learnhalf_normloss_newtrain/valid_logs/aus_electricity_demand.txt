@@ -1,0 +1,86 @@
+# Validation iteration logs
+# candidate_split_rule=sort candidate rows by ascending metric (lower is better), split the ranked 100 rows into 10 groups of 10, and sample a fixed 8:2 train:validation split inside every group
+# val_candidate_indices=[23, 79, 21, 44, 20, 97, 27, 78, 39, 81, 60, 92, 37, 82, 41, 52, 89, 26, 9, 76]
+# fixed_support_indices=[234383, 282481, 369013, 609383, 680157]
+[VALID] epoch=001 dataset=aus_electricity_demand iteration=001 loss=0.647914 pair_acc=0.6316 pair_loss_mean=0.647914 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.252403 weight_vector=[-0.039324, -0.020543, -0.122228, -0.083180, 0.025344, -0.135907, -0.127386, 0.065122, -0.017300]
+[EPOCH-SUMMARY] epoch=001 val_loss=0.711739 early_stopping_counter=0
+[VALID] epoch=002 dataset=aus_electricity_demand iteration=001 loss=0.694713 pair_acc=0.4842 pair_loss_mean=0.694713 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.250859 weight_vector=[-0.006145, 0.054801, -0.117949, -0.076226, 0.009283, -0.116131, -0.097158, 0.130376, 0.012506]
+[EPOCH-SUMMARY] epoch=002 val_loss=0.674986 early_stopping_counter=0
+[VALID] epoch=003 dataset=aus_electricity_demand iteration=001 loss=0.749884 pair_acc=0.4158 pair_loss_mean=0.749884 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.328881 weight_vector=[0.028957, 0.157967, -0.167212, -0.073001, 0.019827, -0.069786, -0.059560, 0.184676, 0.078520]
+[EPOCH-SUMMARY] epoch=003 val_loss=0.652480 early_stopping_counter=0
+[VALID] epoch=004 dataset=aus_electricity_demand iteration=001 loss=0.770127 pair_acc=0.3947 pair_loss_mean=0.770127 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.393215 weight_vector=[0.048555, 0.196238, -0.216081, -0.033550, 0.068390, -0.034154, -0.031908, 0.204404, 0.131500]
+[EPOCH-SUMMARY] epoch=004 val_loss=0.646092 early_stopping_counter=0
+[VALID] epoch=005 dataset=aus_electricity_demand iteration=001 loss=0.796588 pair_acc=0.3684 pair_loss_mean=0.796588 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.469591 weight_vector=[0.048251, 0.226719, -0.256422, 0.026876, 0.105954, 0.009072, 0.016612, 0.226769, 0.193139]
+[EPOCH-SUMMARY] epoch=005 val_loss=0.639681 early_stopping_counter=0
+[VALID] epoch=006 dataset=aus_electricity_demand iteration=001 loss=0.727197 pair_acc=0.4737 pair_loss_mean=0.727197 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.386225 weight_vector=[0.005751, 0.132129, -0.250440, 0.029235, 0.114768, -0.005308, -0.013891, 0.150249, 0.179265]
+[EPOCH-SUMMARY] epoch=006 val_loss=0.646341 early_stopping_counter=1
+[VALID] epoch=007 dataset=aus_electricity_demand iteration=001 loss=0.726940 pair_acc=0.4737 pair_loss_mean=0.726940 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.461568 weight_vector=[-0.010500, 0.152646, -0.280245, 0.058996, 0.180751, 0.005723, 0.040458, 0.156752, 0.220690]
+[EPOCH-SUMMARY] epoch=007 val_loss=0.637774 early_stopping_counter=0
+[VALID] epoch=008 dataset=aus_electricity_demand iteration=001 loss=0.698066 pair_acc=0.5053 pair_loss_mean=0.698066 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.408543 weight_vector=[-0.047139, 0.084472, -0.245525, 0.078334, 0.180482, -0.007042, 0.044590, 0.113762, 0.208752]
+[EPOCH-SUMMARY] epoch=008 val_loss=0.645176 early_stopping_counter=1
+[VALID] epoch=009 dataset=aus_electricity_demand iteration=001 loss=0.799869 pair_acc=0.3895 pair_loss_mean=0.799869 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.669126 weight_vector=[-0.024815, 0.209749, -0.320100, 0.193970, 0.223502, 0.165956, 0.097141, 0.220472, 0.357061]
+[EPOCH-SUMMARY] epoch=009 val_loss=0.626212 early_stopping_counter=0
+[VALID] epoch=010 dataset=aus_electricity_demand iteration=001 loss=0.799917 pair_acc=0.4105 pair_loss_mean=0.799917 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.727065 weight_vector=[0.012433, 0.223104, -0.354259, 0.184262, 0.299177, 0.129585, 0.113026, 0.249722, 0.371223]
+[EPOCH-SUMMARY] epoch=010 val_loss=0.619189 early_stopping_counter=0
+[VALID] epoch=011 dataset=aus_electricity_demand iteration=001 loss=0.701111 pair_acc=0.5053 pair_loss_mean=0.701111 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.440016 weight_vector=[-0.035131, 0.064781, -0.257630, 0.124030, 0.196072, 0.009204, 0.012908, 0.136970, 0.221293]
+[EPOCH-SUMMARY] epoch=011 val_loss=0.636922 early_stopping_counter=1
+[VALID] epoch=012 dataset=aus_electricity_demand iteration=001 loss=0.704714 pair_acc=0.5000 pair_loss_mean=0.704714 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.510898 weight_vector=[-0.038365, 0.080835, -0.288560, 0.149782, 0.232214, 0.055315, 0.028201, 0.148210, 0.259932]
+[EPOCH-SUMMARY] epoch=012 val_loss=0.630270 early_stopping_counter=2
+[VALID] epoch=013 dataset=aus_electricity_demand iteration=001 loss=0.734374 pair_acc=0.4737 pair_loss_mean=0.734374 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.639676 weight_vector=[-0.007523, 0.130581, -0.327291, 0.181779, 0.317890, 0.072999, 0.083612, 0.208476, 0.308347]
+[EPOCH-SUMMARY] epoch=013 val_loss=0.616947 early_stopping_counter=0
+[VALID] epoch=014 dataset=aus_electricity_demand iteration=001 loss=0.759385 pair_acc=0.4579 pair_loss_mean=0.759385 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.726658 weight_vector=[0.029836, 0.165153, -0.356171, 0.201218, 0.367476, 0.100823, 0.096200, 0.268822, 0.325263]
+[EPOCH-SUMMARY] epoch=014 val_loss=0.611634 early_stopping_counter=0
+[VALID] epoch=015 dataset=aus_electricity_demand iteration=001 loss=0.831226 pair_acc=0.4105 pair_loss_mean=0.831226 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.847918 weight_vector=[0.079343, 0.215462, -0.370207, 0.258943, 0.407923, 0.108295, 0.142214, 0.366982, 0.359321]
+[EPOCH-SUMMARY] epoch=015 val_loss=0.609104 early_stopping_counter=0
+[VALID] epoch=016 dataset=aus_electricity_demand iteration=001 loss=0.678834 pair_acc=0.5737 pair_loss_mean=0.678834 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.432770 weight_vector=[-0.014499, 0.006732, -0.258033, 0.099886, 0.222834, -0.028036, -0.015353, 0.144730, 0.197112]
+[EPOCH-SUMMARY] epoch=016 val_loss=0.635686 early_stopping_counter=1
+[VALID] epoch=017 dataset=aus_electricity_demand iteration=001 loss=0.681338 pair_acc=0.5684 pair_loss_mean=0.681338 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.507791 weight_vector=[-0.000557, 0.022911, -0.303558, 0.122394, 0.267318, 0.008433, 0.001171, 0.163496, 0.227895]
+[EPOCH-SUMMARY] epoch=017 val_loss=0.624660 early_stopping_counter=2
+[VALID] epoch=018 dataset=aus_electricity_demand iteration=001 loss=0.750158 pair_acc=0.4316 pair_loss_mean=0.750158 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.700021 weight_vector=[0.014364, 0.110298, -0.369044, 0.210434, 0.310417, 0.112633, 0.068597, 0.272674, 0.330271]
+[EPOCH-SUMMARY] epoch=018 val_loss=0.609895 early_stopping_counter=0
+[VALID] epoch=019 dataset=aus_electricity_demand iteration=001 loss=0.735902 pair_acc=0.4632 pair_loss_mean=0.735902 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.677095 weight_vector=[0.023715, 0.095572, -0.366723, 0.179129, 0.320124, 0.083684, 0.051656, 0.262600, 0.317930]
+[EPOCH-SUMMARY] epoch=019 val_loss=0.607668 early_stopping_counter=0
+[VALID] epoch=020 dataset=aus_electricity_demand iteration=001 loss=0.724721 pair_acc=0.4947 pair_loss_mean=0.724721 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.627676 weight_vector=[0.025197, 0.068602, -0.338827, 0.164950, 0.314929, 0.024144, 0.050593, 0.255590, 0.281024]
+[EPOCH-SUMMARY] epoch=020 val_loss=0.603547 early_stopping_counter=0
+[VALID] epoch=021 dataset=aus_electricity_demand iteration=001 loss=0.664954 pair_acc=0.6158 pair_loss_mean=0.664954 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.427161 weight_vector=[-0.012829, -0.023995, -0.259043, 0.080386, 0.232018, -0.074544, -0.009582, 0.147614, 0.163983]
+[EPOCH-SUMMARY] epoch=021 val_loss=0.618761 early_stopping_counter=1
+[VALID] epoch=022 dataset=aus_electricity_demand iteration=001 loss=0.649409 pair_acc=0.6316 pair_loss_mean=0.649409 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.405128 weight_vector=[-0.035530, -0.041487, -0.253795, 0.059292, 0.221937, -0.108647, -0.011399, 0.114306, 0.137699]
+[EPOCH-SUMMARY] epoch=022 val_loss=0.633828 early_stopping_counter=2
+[VALID] epoch=023 dataset=aus_electricity_demand iteration=001 loss=0.746692 pair_acc=0.4474 pair_loss_mean=0.746692 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.700027 weight_vector=[-0.007193, 0.103164, -0.373927, 0.186965, 0.304314, 0.089452, 0.071591, 0.301217, 0.328786]
+[EPOCH-SUMMARY] epoch=023 val_loss=0.602013 early_stopping_counter=0
+[VALID] epoch=024 dataset=aus_electricity_demand iteration=001 loss=0.745995 pair_acc=0.4474 pair_loss_mean=0.745995 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.677244 weight_vector=[0.001236, 0.101294, -0.362376, 0.159974, 0.298949, 0.074355, 0.062978, 0.300533, 0.319851]
+[EPOCH-SUMMARY] epoch=024 val_loss=0.601703 early_stopping_counter=1
+[VALID] epoch=025 dataset=aus_electricity_demand iteration=001 loss=0.659222 pair_acc=0.6316 pair_loss_mean=0.659222 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.446888 weight_vector=[0.002442, -0.021974, -0.271406, 0.050177, 0.260072, -0.092673, -0.005093, 0.150965, 0.154915]
+[EPOCH-SUMMARY] epoch=025 val_loss=0.610082 early_stopping_counter=2
+[VALID] epoch=026 dataset=aus_electricity_demand iteration=001 loss=0.648255 pair_acc=0.6316 pair_loss_mean=0.648255 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.433539 weight_vector=[-0.020932, -0.038439, -0.269882, 0.041100, 0.248301, -0.094825, -0.015356, 0.142894, 0.142181]
+[EPOCH-SUMMARY] epoch=026 val_loss=0.607573 early_stopping_counter=3
+[VALID] epoch=027 dataset=aus_electricity_demand iteration=001 loss=0.667667 pair_acc=0.5947 pair_loss_mean=0.667667 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.474193 weight_vector=[-0.010630, -0.016315, -0.290889, 0.087226, 0.252001, -0.080644, 0.009258, 0.188659, 0.162999]
+[EPOCH-SUMMARY] epoch=027 val_loss=0.601923 early_stopping_counter=0
+[VALID] epoch=028 dataset=aus_electricity_demand iteration=001 loss=0.745026 pair_acc=0.4579 pair_loss_mean=0.745026 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.701094 weight_vector=[0.023594, 0.101305, -0.374634, 0.162413, 0.328223, 0.060643, 0.067746, 0.322467, 0.306598]
+[EPOCH-SUMMARY] epoch=028 val_loss=0.610113 early_stopping_counter=1
+[VALID] epoch=029 dataset=aus_electricity_demand iteration=001 loss=0.663935 pair_acc=0.6263 pair_loss_mean=0.663935 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.504811 weight_vector=[0.017117, -0.013273, -0.308670, 0.046692, 0.287020, -0.069630, -0.005695, 0.195649, 0.177110]
+[EPOCH-SUMMARY] epoch=029 val_loss=0.592212 early_stopping_counter=0
+[VALID] epoch=030 dataset=aus_electricity_demand iteration=001 loss=0.715072 pair_acc=0.4842 pair_loss_mean=0.715072 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.564489 weight_vector=[0.001545, 0.046314, -0.312513, 0.123678, 0.262858, 0.011664, 0.008502, 0.271811, 0.245675]
+[EPOCH-SUMMARY] epoch=030 val_loss=0.605761 early_stopping_counter=1
+[VALID] epoch=031 dataset=aus_electricity_demand iteration=001 loss=0.698158 pair_acc=0.5211 pair_loss_mean=0.698158 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.553758 weight_vector=[-0.010464, 0.029815, -0.310423, 0.122542, 0.274349, -0.009897, -0.000180, 0.258519, 0.228198]
+[EPOCH-SUMMARY] epoch=031 val_loss=0.604525 early_stopping_counter=2
+[VALID] epoch=032 dataset=aus_electricity_demand iteration=001 loss=0.620462 pair_acc=0.6789 pair_loss_mean=0.620462 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.421171 weight_vector=[-0.062663, -0.071057, -0.285532, 0.016035, 0.222659, -0.103950, -0.068545, 0.115126, 0.091039]
+[EPOCH-SUMMARY] epoch=032 val_loss=0.586003 early_stopping_counter=0
+[VALID] epoch=033 dataset=aus_electricity_demand iteration=001 loss=0.600667 pair_acc=0.7211 pair_loss_mean=0.600667 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.386903 weight_vector=[-0.118139, -0.125688, -0.253153, -0.024654, 0.113084, -0.162328, -0.124610, 0.023866, 0.003106]
+[EPOCH-SUMMARY] epoch=033 val_loss=0.571677 early_stopping_counter=0
+[VALID] epoch=034 dataset=aus_electricity_demand iteration=001 loss=0.600206 pair_acc=0.7158 pair_loss_mean=0.600206 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.392132 weight_vector=[-0.122479, -0.133974, -0.253995, -0.007173, 0.107875, -0.162724, -0.132672, 0.023112, -0.000402]
+[EPOCH-SUMMARY] epoch=034 val_loss=0.569600 early_stopping_counter=0
+[VALID] epoch=035 dataset=aus_electricity_demand iteration=001 loss=0.596026 pair_acc=0.7158 pair_loss_mean=0.596026 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.406684 weight_vector=[-0.133501, -0.145190, -0.260138, -0.009827, 0.095720, -0.169314, -0.142022, 0.010944, -0.024529]
+[EPOCH-SUMMARY] epoch=035 val_loss=0.556349 early_stopping_counter=0
+[VALID] epoch=036 dataset=aus_electricity_demand iteration=001 loss=0.594362 pair_acc=0.7053 pair_loss_mean=0.594362 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.411502 weight_vector=[-0.147530, -0.152307, -0.249463, -0.026259, 0.059039, -0.175926, -0.158242, -0.003101, -0.044323]
+[EPOCH-SUMMARY] epoch=036 val_loss=0.541913 early_stopping_counter=0
+[VALID] epoch=037 dataset=aus_electricity_demand iteration=001 loss=0.612486 pair_acc=0.7211 pair_loss_mean=0.612486 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.375309 weight_vector=[-0.090950, -0.113140, -0.246424, 0.039493, 0.119330, -0.142370, -0.133085, 0.072221, 0.007947]
+[EPOCH-SUMMARY] epoch=037 val_loss=0.551782 early_stopping_counter=1
+[VALID] epoch=038 dataset=aus_electricity_demand iteration=001 loss=0.621960 pair_acc=0.7158 pair_loss_mean=0.621960 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.368177 weight_vector=[-0.078296, -0.104518, -0.238040, 0.061494, 0.116059, -0.119094, -0.143278, 0.094629, 0.030319]
+[EPOCH-SUMMARY] epoch=038 val_loss=0.571363 early_stopping_counter=2
+[VALID] epoch=039 dataset=aus_electricity_demand iteration=001 loss=0.628462 pair_acc=0.7105 pair_loss_mean=0.628462 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.378783 weight_vector=[-0.100960, -0.121438, -0.228921, 0.095815, 0.094867, -0.125011, -0.139907, 0.102384, 0.047616]
+[EPOCH-SUMMARY] epoch=039 val_loss=0.575741 early_stopping_counter=3
+[VALID] epoch=040 dataset=aus_electricity_demand iteration=001 loss=0.629472 pair_acc=0.7053 pair_loss_mean=0.629472 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.383104 weight_vector=[-0.098266, -0.116235, -0.236958, 0.114895, 0.104161, -0.101530, -0.133675, 0.114930, 0.044899]
+[EPOCH-SUMMARY] epoch=040 val_loss=0.563146 early_stopping_counter=4
+[VALID] epoch=041 dataset=aus_electricity_demand iteration=001 loss=0.626130 pair_acc=0.7053 pair_loss_mean=0.626130 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.375462 weight_vector=[-0.107239, -0.125462, -0.234073, 0.113980, 0.080789, -0.086819, -0.142280, 0.103522, 0.030395]
+[EPOCH-SUMMARY] epoch=041 val_loss=0.565179 early_stopping_counter=5

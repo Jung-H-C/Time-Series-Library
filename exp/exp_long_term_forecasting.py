@@ -165,7 +165,7 @@ class Exp_Long_Term_Forecast(Exp_Basic):
 
         self.final_train_epoch = executed_epochs
         best_model_path = path + '/' + 'checkpoint.pth'
-        self.model.load_state_dict(torch.load(best_model_path))
+        self.model.load_state_dict(torch.load(best_model_path, map_location='cpu'))
 
         return self.model
 
@@ -173,7 +173,7 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         test_data, test_loader = self._get_data(flag='test')
         if test:
             print('loading model')
-            self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth')))
+            self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'), map_location='cpu'))
 
         preds = []
         trues = []

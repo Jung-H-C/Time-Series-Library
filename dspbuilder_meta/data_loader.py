@@ -149,6 +149,7 @@ def discover_benchmark_tasks(
 def discover_candidate_configs(candidate_dir: Path) -> dict[str, Path]:
     candidate_paths: dict[str, Path] = {}
     pattern = re.compile(r"^DSPBuilder_[^_]+_(.+)_candidates$")
+    tsf_aliases: list[tuple[str, Path]] = []
     for json_path in sorted(candidate_dir.glob("DSPBuilder_*_candidates.json")):
         match = pattern.match(json_path.stem)
         if match is None:
@@ -157,6 +158,10 @@ def discover_candidate_configs(candidate_dir: Path) -> dict[str, Path]:
         if key in candidate_paths:
             raise ValueError(f"Duplicate candidate config detected for dataset key: {key}")
         candidate_paths[key] = json_path
+        if key.endswith("tsf"):
+            tsf_aliases.append((key[:-3], json_path))
+    for alias_key, json_path in tsf_aliases:
+        candidate_paths.setdefault(alias_key, json_path)
     if not candidate_paths:
         raise FileNotFoundError(f"No candidate JSON files found under {candidate_dir}")
     return candidate_paths

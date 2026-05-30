@@ -1,0 +1,17 @@
+# Validation mean loss logs
+[VAL-LOSS] epoch=001 val_loss=0.707994 best_val_loss=0.707994 early_stopping_counter=0
+[VAL-LOSS] epoch=002 val_loss=0.575311 best_val_loss=0.575311 early_stopping_counter=0
+[VAL-LOSS] epoch=003 val_loss=0.528938 best_val_loss=0.528938 early_stopping_counter=0
+[VAL-LOSS] epoch=004 val_loss=0.523036 best_val_loss=0.523036 early_stopping_counter=0
+[VAL-LOSS] epoch=005 val_loss=0.522128 best_val_loss=0.522128 early_stopping_counter=0
+[VAL-LOSS] epoch=006 val_loss=0.521179 best_val_loss=0.521179 early_stopping_counter=0
+[VAL-LOSS] epoch=007 val_loss=0.519877 best_val_loss=0.519877 early_stopping_counter=0
+[VAL-LOSS] epoch=008 val_loss=0.520267 best_val_loss=0.519877 early_stopping_counter=1
+[VAL-LOSS] epoch=009 val_loss=0.522037 best_val_loss=0.519877 early_stopping_counter=2
+[VAL-LOSS] epoch=010 val_loss=0.519390 best_val_loss=0.519390 early_stopping_counter=0
+[VAL-LOSS] epoch=011 val_loss=0.516905 best_val_loss=0.516905 early_stopping_counter=0
+[VAL-LOSS] epoch=012 val_loss=0.520522 best_val_loss=0.516905 early_stopping_counter=1
+[VAL-LOSS] epoch=013 val_loss=0.521325 best_val_loss=0.516905 early_stopping_counter=2
+[VAL-LOSS] epoch=014 val_loss=0.519892 best_val_loss=0.516905 early_stopping_counter=3
+[VAL-LOSS] epoch=015 val_loss=0.519324 best_val_loss=0.516905 early_stopping_counter=4
+[VAL-LOSS] epoch=016 val_loss=0.520745 best_val_loss=0.516905 early_stopping_counter=5

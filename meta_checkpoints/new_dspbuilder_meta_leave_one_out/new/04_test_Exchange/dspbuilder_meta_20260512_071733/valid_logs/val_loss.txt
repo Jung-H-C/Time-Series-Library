@@ -1,0 +1,14 @@
+# Validation mean loss logs
+[VAL-LOSS] epoch=001 val_loss=0.703437 best_val_loss=0.703437 early_stopping_counter=0
+[VAL-LOSS] epoch=002 val_loss=0.563084 best_val_loss=0.563084 early_stopping_counter=0
+[VAL-LOSS] epoch=003 val_loss=0.489462 best_val_loss=0.489462 early_stopping_counter=0
+[VAL-LOSS] epoch=004 val_loss=0.483910 best_val_loss=0.483910 early_stopping_counter=0
+[VAL-LOSS] epoch=005 val_loss=0.483106 best_val_loss=0.483106 early_stopping_counter=0
+[VAL-LOSS] epoch=006 val_loss=0.483309 best_val_loss=0.483106 early_stopping_counter=1
+[VAL-LOSS] epoch=007 val_loss=0.485016 best_val_loss=0.483106 early_stopping_counter=2
+[VAL-LOSS] epoch=008 val_loss=0.481045 best_val_loss=0.481045 early_stopping_counter=0
+[VAL-LOSS] epoch=009 val_loss=0.486732 best_val_loss=0.481045 early_stopping_counter=1
+[VAL-LOSS] epoch=010 val_loss=0.483119 best_val_loss=0.481045 early_stopping_counter=2
+[VAL-LOSS] epoch=011 val_loss=0.482347 best_val_loss=0.481045 early_stopping_counter=3
+[VAL-LOSS] epoch=012 val_loss=0.484969 best_val_loss=0.481045 early_stopping_counter=4
+[VAL-LOSS] epoch=013 val_loss=0.485353 best_val_loss=0.481045 early_stopping_counter=5

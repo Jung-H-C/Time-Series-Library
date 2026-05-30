@@ -16,13 +16,13 @@ def _sample_support_indices(task: TaskContext, support_size: int, rng: random.Ra
     if support_size <= 0:
         raise ValueError("support_size must be positive.")
 
-    population = list(range(len(task.train_dataset)))
-    if not population:
+    population_size = len(task.train_dataset)
+    if population_size <= 0:
         raise ValueError(f"Test dataset is empty for task: {task.benchmark.display_name}")
 
-    if len(population) >= support_size:
-        return rng.sample(population, support_size)
-    return [rng.choice(population) for _ in range(support_size)]
+    if population_size >= support_size:
+        return rng.sample(range(population_size), support_size)
+    return [rng.randrange(population_size) for _ in range(support_size)]
 
 
 def _average_ranks(values: np.ndarray) -> np.ndarray:

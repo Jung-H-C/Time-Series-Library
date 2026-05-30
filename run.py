@@ -67,6 +67,12 @@ if __name__ == '__main__':
     parser.add_argument('--d_ff', type=int, default=2048, help='dimension of fcn')
     parser.add_argument('--moving_avg', type=int, default=25, help='window size of moving average')
     parser.add_argument('--factor', type=int, default=1, help='attn factor')
+    parser.add_argument('--film_window_size', type=str, default='256',
+                        help='FiLM HiPPO/Legendre memory dimensions, comma-separated.')
+    parser.add_argument('--film_multiscale', type=str, default='1,2,4',
+                        help='FiLM multiscale factors, comma-separated.')
+    parser.add_argument('--film_modes', type=int, default=32,
+                        help='FiLM requested Fourier mode count.')
     parser.add_argument('--distil', action='store_false',
                         help='whether to use distilling in encoder, using this argument means not using distilling',
                         default=True)
@@ -98,6 +104,12 @@ if __name__ == '__main__':
     parser.add_argument('--loss', type=str, default='MSE', help='loss function')
     parser.add_argument('--lradj', type=str, default='type1', help='adjust learning rate')
     parser.add_argument('--use_amp', action='store_true', help='use automatic mixed precision training', default=False)
+    parser.add_argument('--candidate_sample_limit', type=int, default=0,
+                        help='Optional deterministic sample cap for candidate runs; 0 disables it.')
+    parser.add_argument('--candidate_train_iteration_limit', type=int, default=0,
+                        help='Optional deterministic train mini-batch cap for candidate runs; 0 disables it.')
+    parser.add_argument('--candidate_sample_seed', type=int, default=2026,
+                        help='Seed used to select deterministic candidate-run dataset subsets.')
 
     # GPU
     parser.add_argument('--use_gpu', action='store_true', default=True, help='use gpu (default: on)')

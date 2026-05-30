@@ -7,6 +7,39 @@ from scipy import special as ss
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+FILM_MODE_CHOICES = (8, 16, 24, 32, 40, 48)
+
+
+def _parse_int_list(value, default):
+    if value is None:
+        return list(default)
+    if isinstance(value, str):
+        items = [item.strip() for item in value.replace(";", ",").split(",") if item.strip()]
+    elif isinstance(value, (list, tuple)):
+        items = value
+    else:
+        items = [value]
+
+    result = [int(item) for item in items]
+    if not result or any(item <= 0 for item in result):
+        raise ValueError(f"Expected a non-empty positive integer list, got: {value}")
+    return result
+
+
+def _resolve_film_modes(requested_modes, seq_len):
+    requested_modes = int(requested_modes)
+    if requested_modes <= 0:
+        raise ValueError(f"film_modes must be positive, got: {requested_modes}")
+
+    max_modes = max(1, int(seq_len) // 2)
+    if requested_modes <= max_modes:
+        return requested_modes
+
+    valid_modes = [mode for mode in FILM_MODE_CHOICES if mode <= requested_modes and mode <= max_modes]
+    if valid_modes:
+        return max(valid_modes)
+    return max_modes
+
 
 def transition(N):
     Q = np.arange(N, dtype=np.float64)
@@ -57,7 +90,7 @@ class HiPPO_LegT(nn.Module):
 
 
 class SpectralConv1d(nn.Module):
-    def __init__(self, in_channels, out_channels, seq_len, ratio=0.5):
+    def __init__(self, in_channels, out_channels, seq_len, modes=32, ratio=0.5):
         """
         1D Fourier layer. It does FFT, linear transform, and Inverse FFT.
         """
@@ -65,7 +98,8 @@ class SpectralConv1d(nn.Module):
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.ratio = ratio
-        self.modes = min(32, seq_len // 2)
+        self.requested_modes = int(modes)
+        self.modes = _resolve_film_modes(self.requested_modes, seq_len)
         self.index = list(range(0, self.modes))
 
         self.scale = (1 / (in_channels * out_channels))
@@ -109,13 +143,15 @@ class Model(nn.Module):
         self.affine_weight = nn.Parameter(torch.ones(1, 1, configs.enc_in))
         self.affine_bias = nn.Parameter(torch.zeros(1, 1, configs.enc_in))
 
-        self.multiscale = [1, 2, 4]
-        self.window_size = [256]
+        self.multiscale = _parse_int_list(getattr(configs, "film_multiscale", None), [1, 2, 4])
+        self.window_size = _parse_int_list(getattr(configs, "film_window_size", None), [256])
+        self.film_modes = _resolve_film_modes(getattr(configs, "film_modes", 32), min(self.pred_len, self.seq_len))
         configs.ratio = 0.5
         self.legts = nn.ModuleList(
             [HiPPO_LegT(N=n, dt=1. / self.pred_len / i) for n in self.window_size for i in self.multiscale])
         self.spec_conv_1 = nn.ModuleList([SpectralConv1d(in_channels=n, out_channels=n,
                                                          seq_len=min(self.pred_len, self.seq_len),
+                                                         modes=self.film_modes,
                                                          ratio=configs.ratio) for n in
                                           self.window_size for _ in range(len(self.multiscale))])
         self.mlp = nn.Linear(len(self.multiscale) * len(self.window_size), 1)

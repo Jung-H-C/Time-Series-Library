@@ -1,0 +1,16 @@
+dataset,metric_name,total_epochs,best_epoch,best_spearman_mean,best_spearman_std,support_sets,num_candidates,baseline_best_proxy,baseline_coefficient,source_file
+Bitcoin,mse,14,1,0.046745,0.000672,5,100,grad_norm,0.172200,Bitcoin.txt
+CIF_2016,mse,14,1,-0.381518,0.002989,5,100,synflow,-0.398200,CIF_2016.txt
+Dominick,mse,14,2,0.303546,0.002350,5,100,flops,0.312600,Dominick.txt
+Electricity_Hourly,mse,14,10,0.156652,0.001080,5,100,synflow,0.165400,Electricity_Hourly.txt
+Electricity_Weekly,mse,14,2,-0.077907,0.000735,5,100,jacob_fro,0.099400,Electricity_Weekly.txt
+FRED_MD,mse,14,4,-0.060656,0.001280,5,100,jacob_cov,0.274200,FRED_MD.txt
+KDD_Cup_2018,mse,14,2,-0.062797,0.001260,5,100,snip,-0.079700,KDD_Cup_2018.txt
+M1_Yearly,mse,14,1,-0.144341,0.004477,5,100,jacob_cov,-0.492500,M1_Yearly.txt
+M3_Monthly,mse,14,8,-0.114321,0.004308,5,100,grasp,0.226300,M3_Monthly.txt
+M3_Quarterly,mse,14,12,0.107730,0.005762,5,100,jacob_fro,0.119900,M3_Quarterly.txt
+M3_Yearly,mse,14,12,0.463530,0.003969,5,100,synflow,0.383400,M3_Yearly.txt
+NN5,mse,14,1,-0.113779,0.001325,5,100,grad_norm,-0.127100,NN5.txt
+San_Francisco_Traffic_Hourly,mse,14,2,0.424492,0.000974,5,100,synflow,0.422500,San_Francisco_Traffic_Hourly.txt
+Saugeen_River_Flow,mse,14,1,-0.078742,0.000551,5,100,synflow,-0.098200,Saugeen_River_Flow.txt
+aus_electricity_demand,mse,14,14,-0.261273,0.266355,5,100,flops,-0.563300,aus_electricity_demand.txt

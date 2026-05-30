@@ -10,7 +10,12 @@ def parse_args() -> argparse.Namespace:
         description="Export epoch-wise DSPBuilder meta validation losses from valid_logs/*.txt to a single CSV file."
     )
     parser.add_argument("--base-dir", type=Path, required=True, help="Root directory containing validation run folders.")
-    parser.add_argument("--output", type=Path, required=True, help="Output CSV path.")
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help="Output CSV path. Defaults to loss.csv in the base directory.",
+    )
     return parser.parse_args()
 
 
@@ -81,9 +86,12 @@ def write_csv(output_path: Path, rows: list[dict[str, object]]) -> None:
 
 def main() -> int:
     args = parse_args()
-    rows = collect_rows(args.base_dir.resolve())
-    write_csv(args.output.resolve(), rows)
-    print(f"Wrote {len(rows)} rows to {args.output.resolve()}")
+    base_dir = args.base_dir.resolve()
+    output_path = args.output.resolve() if args.output is not None else base_dir / "loss.csv"
+
+    rows = collect_rows(base_dir)
+    write_csv(output_path, rows)
+    print(f"Wrote {len(rows)} rows to {output_path}")
     return 0
 
 

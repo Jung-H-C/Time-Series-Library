@@ -7,21 +7,36 @@ from torch import nn
 class FeatureWiseSharedEncoder(nn.Module):
     def __init__(
         self,
-        encoder_hidden_dim: int = 16,
-        projected_dim: int = 32,
+        encoder_hidden_dim: int = 64,
+        number_of_conv1d_layer: int = 1,
+        sample_encoder_norm: bool = False,
         raw_stat_dim: int = 32,
         raw_stat_emb: bool = True,
     ) -> None:
         super().__init__()
+        if number_of_conv1d_layer < 0:
+            raise ValueError("number_of_conv1d_layer must be non-negative.")
+        if sample_encoder_norm and encoder_hidden_dim % 8 != 0:
+            raise ValueError("encoder_hidden_dim must be divisible by 8 when sample_encoder_norm is enabled.")
+
         self.raw_stat_emb = raw_stat_emb
-        self.temporal_encoder = nn.Sequential(  # 각 feature => 16차원
-            nn.Conv1d(1, encoder_hidden_dim, kernel_size=5, padding=2),
-            nn.GELU(),
-            nn.Conv1d(encoder_hidden_dim, encoder_hidden_dim, kernel_size=3, padding=1),
-            nn.GELU(),
-        )
-        self.feature_projection = nn.Linear(encoder_hidden_dim, projected_dim) # 16차원 => 32차원
-        self.projected_dim = projected_dim
+        self.encoder_hidden_dim = encoder_hidden_dim
+        self.number_of_conv1d_layer = number_of_conv1d_layer
+        self.sample_encoder_norm = sample_encoder_norm
+
+        temporal_layers: list[nn.Module] = [
+            nn.Conv1d(1, encoder_hidden_dim, kernel_size=7, padding=3),
+        ]
+        if sample_encoder_norm:
+            temporal_layers.append(nn.GroupNorm(num_groups=8, num_channels=encoder_hidden_dim))
+        temporal_layers.append(nn.GELU())
+        for _ in range(number_of_conv1d_layer):
+            temporal_layers.append(nn.Conv1d(encoder_hidden_dim, encoder_hidden_dim, kernel_size=5, padding=2))
+            if sample_encoder_norm:
+                temporal_layers.append(nn.GroupNorm(num_groups=8, num_channels=encoder_hidden_dim))
+            temporal_layers.append(nn.GELU())
+        self.temporal_encoder = nn.Sequential(*temporal_layers)
+
         self.raw_stat_dim = raw_stat_dim if raw_stat_emb else 0
         if raw_stat_emb:
             self.raw_stat_projection = nn.Sequential(
@@ -34,7 +49,7 @@ class FeatureWiseSharedEncoder(nn.Module):
 
     @property
     def output_dim(self) -> int:
-        return (2 * self.projected_dim) + self.raw_stat_dim
+        return self.encoder_hidden_dim + self.raw_stat_dim
 
     def _extract_raw_stats(self, sample: torch.Tensor) -> torch.Tensor:
         feature_means = sample.mean(dim=0)
@@ -81,15 +96,14 @@ class FeatureWiseSharedEncoder(nn.Module):
         feature_series = sample.transpose(0, 1).unsqueeze(1)  # [F, 1, T]
         encoded = self.temporal_encoder(feature_series)  # [F, H, T], H = encoder_hidden_dim
 
-        # Pool over time dimension to get a single vector per feature, then project to the final embedding dimension
-        pooled_over_time = encoded.mean(dim=-1)  # [F, H] 현재 H는 16
-        projected = self.feature_projection(pooled_over_time)  # [F, P], P = projected_dim, 현재 P는 32
+        # Pool over time and feature dimensions to get a single embedding per sample
+        pooled_over_time = encoded.mean(dim=-1)  # [F, H]
 
-        pooled_mean = projected.mean(dim=0)  # [32] ; mean over features
-        pooled_std = projected.std(dim=0, unbiased=False)  # [32] ; std over features
+        pooled_mean = pooled_over_time.mean(dim=0)  # [H] ; mean over features
+        sample_embedding = pooled_mean  # [H]
         if self.raw_stat_emb:
-            return torch.cat([pooled_mean, pooled_std, raw_stat_embedding], dim=0)  # [2P + R]
-        return torch.cat([pooled_mean, pooled_std], dim=0)  # [64] ; pool_mean;pool_std
+            return torch.cat([sample_embedding, raw_stat_embedding], dim=0)  # [H + R]
+        return sample_embedding  # [H]
 
 
 class SetEncoder(nn.Module):
@@ -98,30 +112,47 @@ class SetEncoder(nn.Module):
         input_dim: int,
         output_dim: int = 128,
         dropout: float = 0.1,
+        number_of_setencoder_mlp_layers: int | None = None,
+        set_encoder_norm: bool = False,
     ) -> None:
         super().__init__()
+        if number_of_setencoder_mlp_layers is not None and number_of_setencoder_mlp_layers <= 0:
+            raise ValueError("number_of_setencoder_mlp_layers must be positive when specified.")
         self.output_dim = output_dim
-        self.shared_mlp = nn.Sequential(
-            nn.Linear(input_dim, output_dim),
-            nn.GELU(),
-            nn.Dropout(dropout),
-            nn.Linear(output_dim, output_dim),
-            nn.GELU(),
-        )
-        self.output_mlp = nn.Sequential(
-            nn.Linear(output_dim, output_dim),
-            nn.GELU(),
-            nn.Dropout(dropout),
-            nn.Linear(output_dim, output_dim),
-        )
+        self.number_of_setencoder_mlp_layers = number_of_setencoder_mlp_layers
+        self.set_encoder_norm = set_encoder_norm
+
+        shared_hidden_layers = number_of_setencoder_mlp_layers or 1
+        output_hidden_layers = number_of_setencoder_mlp_layers or 2
+
+        shared_layers: list[nn.Module] = [nn.Linear(input_dim, output_dim)]
+        if set_encoder_norm:
+            shared_layers.append(nn.LayerNorm(output_dim))
+        shared_layers.extend([nn.GELU(), nn.Dropout(dropout)])
+        for _ in range(shared_hidden_layers):
+            shared_layers.append(nn.Linear(output_dim, output_dim))
+            if set_encoder_norm:
+                shared_layers.append(nn.LayerNorm(output_dim))
+            shared_layers.append(nn.GELU())
+        self.shared_mlp = nn.Sequential(*shared_layers)
+
+        output_layers: list[nn.Module] = []
+        for layer_index in range(output_hidden_layers):
+            output_layers.append(nn.Linear(output_dim, output_dim))
+            is_last_layer = layer_index == output_hidden_layers - 1
+            if not is_last_layer:
+                if set_encoder_norm:
+                    output_layers.append(nn.LayerNorm(output_dim))
+                output_layers.extend([nn.GELU(), nn.Dropout(dropout)])
+        self.output_mlp = nn.Sequential(*output_layers)
 
     def forward(self, sample_embeddings: torch.Tensor) -> torch.Tensor:
-        # sample_embeddings: [N, 64]
+        # sample_embeddings: [N, E]
         if sample_embeddings.ndim != 2:
             raise ValueError(
                 f"Expected [num_samples, embedding_dim] tensor, got shape {tuple(sample_embeddings.shape)}"
             )
-        encoded_samples = self.shared_mlp(sample_embeddings)  # [N, 64] -> [N, 128]
+        encoded_samples = self.shared_mlp(sample_embeddings)  # [N, E] -> [N, 128]
         pooled = encoded_samples.mean(dim=0)  # [128]
         return self.output_mlp(pooled)  # [128]
 
@@ -132,6 +163,7 @@ def build_weight_head(
     output_dim: int,
     num_hidden_layers: int,
     dropout: float,
+    mlp_norm: bool = False,
 ) -> nn.Sequential:
     if num_hidden_layers <= 0:
         raise ValueError("weight_head_layers must be positive.")
@@ -141,13 +173,10 @@ def build_weight_head(
     layers: list[nn.Module] = []
     current_dim = input_dim
     for _ in range(num_hidden_layers):
-        layers.extend(
-            [
-                nn.Linear(current_dim, hidden_dim),
-                nn.ReLU(),
-                nn.Dropout(dropout),
-            ]
-        )
+        layers.append(nn.Linear(current_dim, hidden_dim))
+        if mlp_norm:
+            layers.append(nn.LayerNorm(hidden_dim))
+        layers.extend([nn.ReLU(), nn.Dropout(dropout)])
         current_dim = hidden_dim
     layers.append(nn.Linear(current_dim, output_dim))
     return nn.Sequential(*layers)
@@ -162,7 +191,12 @@ class DSPBuilderMetaModel(nn.Module):
         head_hidden_dim: int,
         dropout: float,
         raw_stat_emb: bool,
+        number_of_conv1d_layer: int = 1,
+        sample_encoder_norm: bool = False,
+        number_of_setencoder_mlp_layers: int | None = None,
+        set_encoder_norm: bool = False,
         weight_head_layers: int = 1,
+        mlp_norm: bool = False,
         dataset_description_dim: int = 128,
     ) -> None:
         super().__init__()
@@ -172,7 +206,8 @@ class DSPBuilderMetaModel(nn.Module):
             raise ValueError("proxy_dim must be positive.")
         self.support_encoder = FeatureWiseSharedEncoder(
             encoder_hidden_dim=encoder_hidden_dim,
-            projected_dim=32,
+            number_of_conv1d_layer=number_of_conv1d_layer,
+            sample_encoder_norm=sample_encoder_norm,
             raw_stat_dim=32,
             raw_stat_emb=raw_stat_emb,
         )
@@ -181,10 +216,13 @@ class DSPBuilderMetaModel(nn.Module):
         self.dataset_description_dim = dataset_description_dim
         self.task_embedding_dim = dataset_description_dim
         self.weight_head_layers = weight_head_layers
+        self.mlp_norm = mlp_norm
         self.set_encoder = SetEncoder(
             input_dim=self.sample_embedding_dim,
             output_dim=dataset_description_dim,
             dropout=dropout,
+            number_of_setencoder_mlp_layers=number_of_setencoder_mlp_layers,
+            set_encoder_norm=set_encoder_norm,
         )
         self.weight_head = build_weight_head(
             input_dim=dataset_description_dim,
@@ -192,6 +230,7 @@ class DSPBuilderMetaModel(nn.Module):
             output_dim=proxy_dim,
             num_hidden_layers=weight_head_layers,
             dropout=dropout,
+            mlp_norm=mlp_norm,
         )
         self.dataset_classifier = nn.Sequential(
             nn.Linear(dataset_description_dim, head_hidden_dim),

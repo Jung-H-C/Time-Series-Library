@@ -1,7 +1,10 @@
 from data_provider.data_loader import Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_M4, Dataset_DominickPanel, Dataset_DominickTSF, Dataset_MonashTSFGeneric, Dataset_TourismMonthlyTSF, Dataset_NN5DailyTSF, Dataset_CarPartsTSF, Dataset_WebTrafficTSF, \
     PSMSegLoader, MSLSegLoader, SMAPSegLoader, SMDSegLoader, SWATSegLoader, UEAloader
 from data_provider.uea import collate_fn
-from torch.utils.data import DataLoader
+import hashlib
+
+import numpy as np
+from torch.utils.data import DataLoader, Dataset
 
 data_dict = {
     'ETTh1': Dataset_ETT_hour,
@@ -63,6 +66,75 @@ data_dict = {
 }
 
 
+class FixedIndexSubset(Dataset):
+    def __init__(self, dataset, indices):
+        self.dataset = dataset
+        self.indices = np.asarray(indices, dtype=np.int64)
+
+    def __len__(self):
+        return int(self.indices.shape[0])
+
+    def __getitem__(self, index):
+        return self.dataset[int(self.indices[index])]
+
+    def __getattr__(self, name):
+        return getattr(self.dataset, name)
+
+
+def _candidate_subset_key(args, flag):
+    parts = [
+        getattr(args, "task_name", ""),
+        getattr(args, "data", ""),
+        getattr(args, "root_path", ""),
+        getattr(args, "data_path", ""),
+        getattr(args, "features", ""),
+        getattr(args, "target", ""),
+        getattr(args, "freq", ""),
+        str(getattr(args, "seq_len", "")),
+        str(getattr(args, "label_len", "")),
+        str(getattr(args, "pred_len", "")),
+        str(flag).lower(),
+    ]
+    return "|".join(str(part) for part in parts)
+
+
+def _candidate_subset_indices(args, flag, dataset_len, limit):
+    seed = int(getattr(args, "candidate_sample_seed", 2026))
+    digest = hashlib.blake2b(_candidate_subset_key(args, flag).encode("utf-8"), digest_size=8).digest()
+    split_seed = (seed + int.from_bytes(digest, byteorder="little", signed=False)) % (2 ** 32)
+    rng = np.random.default_rng(split_seed)
+    return np.sort(rng.choice(dataset_len, size=limit, replace=False))
+
+
+def _maybe_limit_candidate_dataset(args, data_set, flag, batch_size):
+    if getattr(args, "task_name", "") != "short_term_forecast" or getattr(args, "data", "") == "m4":
+        return data_set
+
+    dataset_len = len(data_set)
+    flag_name = str(flag).lower()
+    sample_limit = int(getattr(args, "candidate_sample_limit", 0) or 0)
+    train_iteration_limit = int(getattr(args, "candidate_train_iteration_limit", 0) or 0)
+
+    if flag_name == "train" and train_iteration_limit > 0:
+        limit = train_iteration_limit * int(batch_size)
+        limit_label = f"{train_iteration_limit} mini-batches"
+    elif flag_name in {"val", "test"} and sample_limit > 0:
+        limit = sample_limit
+        limit_label = f"{sample_limit} samples"
+    else:
+        return data_set
+
+    if dataset_len <= limit:
+        return data_set
+
+    indices = _candidate_subset_indices(args, flag_name, dataset_len, limit)
+    print(
+        f"[candidate-subset] {flag_name}: original={dataset_len}, selected={len(indices)} "
+        f"({limit_label}), seed={getattr(args, 'candidate_sample_seed', 2026)}"
+    )
+    return FixedIndexSubset(data_set, indices)
+
+
 def data_provider(args, flag):
     Data = data_dict[args.data]
     timeenc = 0 if args.embed != 'timeF' else 1
@@ -80,6 +152,7 @@ def data_provider(args, flag):
             win_size=args.seq_len,
             flag=flag,
         )
+        data_set = _maybe_limit_candidate_dataset(args, data_set, flag, batch_size)
         print(flag, len(data_set))
         data_loader = DataLoader(
             data_set,
@@ -120,6 +193,7 @@ def data_provider(args, flag):
             freq=freq,
             seasonal_patterns=args.seasonal_patterns
         )
+        data_set = _maybe_limit_candidate_dataset(args, data_set, flag, batch_size)
         print(flag, len(data_set))
         data_loader = DataLoader(
             data_set,

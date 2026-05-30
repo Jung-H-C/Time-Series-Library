@@ -1,0 +1,35 @@
+# Validation iteration logs
+# val_candidate_indices=[80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+# fixed_support_indices=[10638, 13454, 24322, 32227, 37062]
+[VALID] epoch=001 dataset=M4_Monthly iteration=001 loss=0.659959 pair_acc=0.5737 pair_loss_mean=0.659959 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.239944 weight_vector=[-0.020255, -0.070594, 0.023411, -0.013562, -0.168460, 0.035664, 0.107503, 0.100091, -0.014881]
+[EPOCH-SUMMARY] epoch=001 val_loss=0.710628 early_stopping_counter=0
+[VALID] epoch=002 dataset=M4_Monthly iteration=001 loss=0.543723 pair_acc=0.7474 pair_loss_mean=0.543723 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.372693 weight_vector=[0.106656, 0.100205, 0.003491, -0.153703, -0.210177, 0.101320, 0.049114, 0.183349, 0.058111]
+[EPOCH-SUMMARY] epoch=002 val_loss=0.570867 early_stopping_counter=0
+[VALID] epoch=003 dataset=M4_Monthly iteration=001 loss=0.489670 pair_acc=0.7789 pair_loss_mean=0.489670 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.494765 weight_vector=[0.172605, 0.228766, -0.130045, -0.171685, -0.131054, 0.111178, 0.098149, 0.200506, 0.192112]
+[EPOCH-SUMMARY] epoch=003 val_loss=0.523130 early_stopping_counter=0
+[VALID] epoch=004 dataset=M4_Monthly iteration=001 loss=0.468032 pair_acc=0.8105 pair_loss_mean=0.468032 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.552474 weight_vector=[0.165635, 0.271965, -0.175413, -0.108751, -0.049609, 0.108934, 0.139706, 0.209995, 0.288595]
+[EPOCH-SUMMARY] epoch=004 val_loss=0.515875 early_stopping_counter=0
+[VALID] epoch=005 dataset=M4_Monthly iteration=001 loss=0.460100 pair_acc=0.8000 pair_loss_mean=0.460100 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.587675 weight_vector=[0.127094, 0.294818, -0.187287, -0.046219, 0.010038, 0.132555, 0.143129, 0.214151, 0.347937]
+[EPOCH-SUMMARY] epoch=005 val_loss=0.516015 early_stopping_counter=1
+[VALID] epoch=006 dataset=M4_Monthly iteration=001 loss=0.450132 pair_acc=0.8158 pair_loss_mean=0.450132 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.649623 weight_vector=[0.101094, 0.334094, -0.195275, -0.005468, 0.060360, 0.147025, 0.137056, 0.225154, 0.408988]
+[EPOCH-SUMMARY] epoch=006 val_loss=0.514344 early_stopping_counter=0
+[VALID] epoch=007 dataset=M4_Monthly iteration=001 loss=0.453666 pair_acc=0.8105 pair_loss_mean=0.453666 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.639468 weight_vector=[0.062025, 0.328431, -0.172572, 0.036697, 0.079185, 0.120043, 0.133817, 0.221836, 0.422230]
+[EPOCH-SUMMARY] epoch=007 val_loss=0.514709 early_stopping_counter=1
+[VALID] epoch=008 dataset=M4_Monthly iteration=001 loss=0.450322 pair_acc=0.8105 pair_loss_mean=0.450322 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.679771 weight_vector=[0.030595, 0.358403, -0.176238, 0.061823, 0.107757, 0.128760, 0.102222, 0.221345, 0.458459]
+[EPOCH-SUMMARY] epoch=008 val_loss=0.515307 early_stopping_counter=2
+[VALID] epoch=009 dataset=M4_Monthly iteration=001 loss=0.450974 pair_acc=0.8105 pair_loss_mean=0.450974 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.697655 weight_vector=[-0.001646, 0.371282, -0.172728, 0.080103, 0.128225, 0.108501, 0.076919, 0.212462, 0.483060]
+[EPOCH-SUMMARY] epoch=009 val_loss=0.516732 early_stopping_counter=3
+[VALID] epoch=010 dataset=M4_Monthly iteration=001 loss=0.437415 pair_acc=0.8158 pair_loss_mean=0.437415 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.795166 weight_vector=[-0.015310, 0.436040, -0.173019, 0.101117, 0.163010, 0.110840, 0.049289, 0.222650, 0.557587]
+[EPOCH-SUMMARY] epoch=010 val_loss=0.513032 early_stopping_counter=0
+[VALID] epoch=011 dataset=M4_Monthly iteration=001 loss=0.439669 pair_acc=0.8158 pair_loss_mean=0.439669 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.814480 weight_vector=[-0.044421, 0.434857, -0.159747, 0.144841, 0.176143, 0.083129, 0.060431, 0.223556, 0.578135]
+[EPOCH-SUMMARY] epoch=011 val_loss=0.512039 early_stopping_counter=0
+[VALID] epoch=012 dataset=M4_Monthly iteration=001 loss=0.438899 pair_acc=0.8158 pair_loss_mean=0.438899 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.841767 weight_vector=[-0.079292, 0.452829, -0.155668, 0.138466, 0.201409, 0.080012, 0.020431, 0.216213, 0.599743]
+[EPOCH-SUMMARY] epoch=012 val_loss=0.514847 early_stopping_counter=1
+[VALID] epoch=013 dataset=M4_Monthly iteration=001 loss=0.443074 pair_acc=0.8105 pair_loss_mean=0.443074 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.830404 weight_vector=[-0.106710, 0.438691, -0.123118, 0.142794, 0.200731, 0.072257, 0.018629, 0.227074, 0.593937]
+[EPOCH-SUMMARY] epoch=013 val_loss=0.515092 early_stopping_counter=2
+[VALID] epoch=014 dataset=M4_Monthly iteration=001 loss=0.429579 pair_acc=0.8211 pair_loss_mean=0.429579 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.935460 weight_vector=[-0.104775, 0.511445, -0.137104, 0.137223, 0.256270, 0.063151, -0.023931, 0.237836, 0.661893]
+[EPOCH-SUMMARY] epoch=014 val_loss=0.513225 early_stopping_counter=3
+[VALID] epoch=015 dataset=M4_Monthly iteration=001 loss=0.433520 pair_acc=0.8211 pair_loss_mean=0.433520 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.919758 weight_vector=[-0.127758, 0.494368, -0.107311, 0.141222, 0.254626, 0.049488, -0.021631, 0.235528, 0.656162]
+[EPOCH-SUMMARY] epoch=015 val_loss=0.513077 early_stopping_counter=4
+[VALID] epoch=016 dataset=M4_Monthly iteration=001 loss=0.434667 pair_acc=0.8263 pair_loss_mean=0.434667 cls_loss=0.000000 dataset_acc=0.0000 num_pairs=190 weight_norm=0.940599 weight_vector=[-0.160010, 0.499719, -0.095446, 0.135202, 0.280457, 0.058171, -0.035702, 0.246353, 0.661823]
+[EPOCH-SUMMARY] epoch=016 val_loss=0.515112 early_stopping_counter=5

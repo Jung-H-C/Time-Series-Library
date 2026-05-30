@@ -552,6 +552,38 @@ def _resolve_candidates_path_from_name(
 ) -> Path:
     repo_root = repo_root or _repo_root()
     candidates_dir = repo_root / "candidates"
+
+    # Prefer concrete paths first so case-preserving generated file names work
+    # with --run-candidates as well as --run-candidates-file.
+    raw_input = Path(candidate_name).expanduser()
+    direct_candidates = []
+    if raw_input.is_absolute():
+        direct_candidates.append(raw_input)
+    else:
+        direct_candidates.extend(
+            [
+                Path(candidate_name),
+                repo_root / candidate_name,
+                candidates_dir / candidate_name,
+            ]
+        )
+
+    if raw_input.suffix:
+        suffixed_candidates = direct_candidates
+    else:
+        suffixed_candidates = direct_candidates + [
+            Path(f"{candidate_name}.json"),
+            Path(f"{candidate_name}_candidates.json"),
+            repo_root / f"{candidate_name}.json",
+            repo_root / f"{candidate_name}_candidates.json",
+            candidates_dir / f"{candidate_name}.json",
+            candidates_dir / f"{candidate_name}_candidates.json",
+        ]
+
+    for candidate_path in suffixed_candidates:
+        if candidate_path.exists() and candidate_path.is_file():
+            return candidate_path
+
     normalized = _slugify(Path(candidate_name).stem.replace("_candidates", ""))
     candidate_path = candidates_dir / f"{normalized}_candidates.json"
     if not candidate_path.exists():
@@ -1450,17 +1482,20 @@ def _prepare_candidate_run_args(
     else:
         run_args["results_id"] = candidate_name
 
-    # Keep model_id stable for tasks like classification where it doubles as
-    # the dataset identifier, and isolate checkpoint/result namespaces via des.
+    # Keep `des` compact: `run.py` already includes model_id, data, and
+    # hyperparameters in the checkpoint setting, and results_id isolates result
+    # folders for candidate runs.
     original_des = run_args.get("des")
     normalized_des = str(original_des).strip() if original_des is not None else ""
     if normalized_des:
-        if normalized_des == candidate_name or normalized_des.endswith(f"__{candidate_name}"):
-            run_args["des"] = normalized_des
-        else:
-            run_args["des"] = f"{normalized_des}__{candidate_name}"
+        run_args["des"] = normalized_des
     else:
-        run_args["des"] = candidate_name
+        run_args["des"] = "Exp"
+
+    if run_args.get("task_name") == "short_term_forecast" and run_args.get("data") != "m4":
+        run_args.setdefault("candidate_sample_limit", 5000)
+        run_args.setdefault("candidate_train_iteration_limit", 5000)
+        run_args.setdefault("candidate_sample_seed", 2026)
 
     if gpu_id is not None:
         run_args["use_gpu"] = True
