@@ -1,0 +1,62 @@
+53-dataset validation-fitness-sorted teacher formulas
+archive_root: /data/Time-Series-Library/archive/symbolic_proxy_evolution/autoformer
+top_k_per_run: 10
+max_formulas_per_dataset: 1000
+unique_key: normalized rpn_tokens
+sort: validation_fitness descending
+weight: linear percentile from 1.0 at rank 1 to 0.1 at the last saved rank
+
+dataset,archive_latex_files,top_k_records,unique_formulas,saved_formulas
+ECL,200,2000,1038,1000
+ETTh1,200,2000,1508,1000
+Exchange,200,2000,1443,1000
+ILI,350,3500,1018,1000
+Monash__anonymous_public_load_power_data_per_unit,200,2000,1348,1000
+Monash__anonymous_public_pv_power_data_per_unit,200,2000,1407,1000
+Monash__australian_electricity_demand_dataset,300,3000,885,885
+Monash__bitcoin_dataset_without_missing_values,200,2000,1523,1000
+Monash__elecdemand_dataset,300,3000,944,944
+Monash__electricity_hourly_dataset,219,2190,1045,1000
+Monash__kdd_cup_2018_dataset_without_missing_values,200,2000,1138,1000
+Monash__oikolab_weather_dataset,300,3000,404,404
+Monash__pedestrian_counts_dataset,300,3000,766,766
+Monash__saugeenday_dataset,300,3000,812,812
+Monash__solar_10_minutes_dataset,206,2060,1008,1000
+Monash__solar_4_seconds_dataset,200,2000,1163,1000
+Monash__sunspot_dataset_without_missing_values,200,2000,1043,1000
+Monash__traffic_hourly_dataset,268,2680,1008,1000
+Monash__us_births_dataset,268,2680,1020,1000
+Monash__weather_dataset,271,2710,1006,1000
+Monash__wind_4_seconds_dataset,200,2000,1119,1000
+Monash__wind_farms_minutely_dataset_without_missing_values,300,3000,988,988
+TIME__Australia_Solar__H,300,3000,1003,1000
+TIME__CPHL__15T,200,2000,1110,1000
+TIME__CPHL__30T,300,3000,1001,1000
+TIME__CPHL__H,252,2520,1027,1000
+TIME__Coastal_T_S__15T,200,2000,1170,1000
+TIME__Coastal_T_S__20T,300,3000,780,780
+TIME__Coastal_T_S__5T,200,2000,1274,1000
+TIME__Coastal_T_S__H,200,2000,1096,1000
+TIME__Crypto__D,200,2000,1160,1000
+TIME__EWELD_Load__15T,200,2000,1285,1000
+TIME__Finland_Traffic__15T,200,2000,1137,1000
+TIME__MetroPT-3__5T,200,2000,1126,1000
+TIME__NE_China_Wind__H,200,2000,1278,1000
+TIME__Oil_Price__B,200,2000,1240,1000
+TIME__OpenElectricity_NEM__5T,200,2000,1511,1000
+TIME__Port_Activity__D,266,2660,1007,1000
+TIME__SG_Carpark__15T,200,2000,1211,1000
+TIME__SG_PM25__H,200,2000,1156,1000
+TIME__SG_Weather__D,200,2000,1030,1000
+TIME__US_Term_Structure__B,200,2000,1191,1000
+TIME__Water_Quality_Darwin__15T,200,2000,1198,1000
+TIME__azure2019_D__5T,242,2420,1005,1000
+TIME__azure2019_I__5T,200,2000,1192,1000
+TIME__current_velocity__10T,200,2000,1140,1000
+TIME__current_velocity__15T,200,2000,1336,1000
+TIME__current_velocity__20T,200,2000,1244,1000
+TIME__current_velocity__5T,200,2000,1253,1000
+TIME__current_velocity__H,228,2280,1012,1000
+TIME__epf_electricity_price__H,200,2000,1171,1000
+Traffic,200,2000,1155,1000
+Weather,200,2000,1121,1000

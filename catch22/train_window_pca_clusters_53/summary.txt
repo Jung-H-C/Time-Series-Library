@@ -1,0 +1,26 @@
+53-dataset global train-window catch22 PCA with cluster circles
+
+visualization_mode: global_sample_coordinates_with_cluster_circles
+seed: 20260713
+dataset_count: 53
+family_counts: {'Benchmark': 6, 'Monash': 18, 'TIME': 29}
+input_len_default: 96
+input_len_illness: 36
+samples_per_dataset: 20
+feature_rows: 1060
+channel_pooling: mean
+input_scaling: Time-Series-Library train-split standardization
+pca_preprocessing: global feature-mean imputation and feature-wise z-score
+pca_scope: one PCA fitted over all z-scored sample vectors
+circle_center: mean of each dataset's sample PCA coordinates
+circle_radius: maximum distance from center (contains every dataset sample)
+visibility_expanded_circle_count: 0
+
+Files
+- dataset_assignments.csv: the 53 datasets and source paths.
+- sample_catch22_features.csv: raw pooled catch22 vectors.
+- sample_catch22_features_zscored_global.csv: normalized PCA inputs.
+- sample_catch22_pca_2d.csv: global two-dimensional PCA coordinates.
+- dataset_cluster_circles.csv: circle centers and radii.
+- catch22_feature_manifest.csv: full and short catch22 feature names.
+- plots/all_53_datasets_20_samples_cluster_circles.png: combined visualization.

@@ -1,0 +1,25 @@
+catch24 valid-sample analysis summary
+
+samples_per_dataset: 10
+seed: 20260603
+pooling: mean
+scale: train_split_standard
+
+Within-dataset variation
+- Largest mean pairwise Euclidean distance: illness (5.357122); most varying feature: outlier_timing_neg.
+- Smallest mean pairwise Euclidean distance: traffic (1.521539); most varying feature: centroid_freq.
+
+Between-dataset representative distance
+- Farthest representative pair: exchange_rate vs traffic (10.004074).
+- Closest representative pair: ETT-small vs electricity (3.610947).
+
+PCA view
+- PC1 + PC2 explained ratio: 69.26% (46.97%, 22.29%).
+
+Files
+- sample_features.csv: 10 sampled feature vectors per dataset.
+- dataset_representative_features.csv: dataset-wise mean feature vectors.
+- within_dataset_feature_variation.csv: per-feature variation within each dataset.
+- within_dataset_summary.csv: compact within-dataset variation metrics.
+- between_dataset_*_distance.csv: representative-feature distance matrices.
+- plots/*.png: heatmap/bar/PCA visualizations.

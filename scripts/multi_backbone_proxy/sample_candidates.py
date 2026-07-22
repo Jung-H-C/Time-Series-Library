@@ -113,7 +113,7 @@ def sample_autoformer(
         seq_lens,
         dropout,
         learning_rate,
-        d_models=[64, 128, 256],
+        d_models=[96, 128, 192],
         e_layers=[1, 2, 3],
         d_layers=[1, 2],
     )
@@ -235,7 +235,7 @@ def sample_mamba(
         **_common_args(rng, seq_lens, dropout, learning_rate),
         "d_model": int(_choice(rng, [64, 96, 128])),
         "d_ff": int(_choice(rng, [8, 12, 16])),
-        "d_conv": int(_choice(rng, [2, 3, 4])),
+        "d_conv": int(_choice(rng, [4, 5, 6])),
         "expand": int(_choice(rng, [1, 2, 3])),
         "dt_rank": int(_choice(rng, [8, 16, 32])),
         "e_layers": 2,
@@ -433,7 +433,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--num-per-backbone",
         type=int,
-        default=10,
+        default=300,
         help="Number of candidates sampled per backbone.",
     )
     parser.add_argument(

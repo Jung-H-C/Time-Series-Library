@@ -1,7 +1,6 @@
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
 from utils.tools import EarlyStopping, adjust_learning_rate, visual
-from utils.metrics import metric
 import torch
 import torch.nn as nn
 from torch import optim
@@ -175,8 +174,16 @@ class Exp_Long_Term_Forecast(Exp_Basic):
             print('loading model')
             self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'), map_location='cpu'))
 
-        preds = []
-        trues = []
+        total_count = 0
+        total_samples = 0
+        pred_shape_tail = None
+        true_shape_tail = None
+        mae_sum = 0.0
+        mse_sum = 0.0
+        mape_sum = 0.0
+        mspe_sum = 0.0
+        dtw_list = []
+        dtw_index = 0
         folder_path = './test_results/' + setting + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
@@ -218,8 +225,29 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                 pred = outputs
                 true = batch_y
 
-                preds.append(pred)
-                trues.append(true)
+                diff = true - pred
+                pct_error = diff / true
+                batch_count = pred.size
+                total_count += batch_count
+                total_samples += pred.shape[0]
+                pred_shape_tail = pred.shape[1:]
+                true_shape_tail = true.shape[1:]
+                mae_sum += np.abs(diff).sum(dtype=np.float64)
+                mse_sum += np.square(diff).sum(dtype=np.float64)
+                mape_sum += np.abs(pct_error).sum(dtype=np.float64)
+                mspe_sum += np.square(pct_error).sum(dtype=np.float64)
+
+                if self.args.use_dtw:
+                    manhattan_distance = lambda x, y: np.abs(x - y)
+                    for sample_idx in range(pred.shape[0]):
+                        x = pred[sample_idx].reshape(-1, 1)
+                        y = true[sample_idx].reshape(-1, 1)
+                        if dtw_index % 100 == 0:
+                            print("calculating dtw iter:", dtw_index)
+                        d, _, _, _ = accelerated_dtw(x, y, dist=manhattan_distance)
+                        dtw_list.append(d)
+                        dtw_index += 1
+
                 if i % 20 == 0:
                     input = batch_x.detach().cpu().numpy()
                     if test_data.scale and self.args.inverse:
@@ -229,12 +257,12 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                     pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
                     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
 
-        preds = np.concatenate(preds, axis=0)
-        trues = np.concatenate(trues, axis=0)
-        print('test shape:', preds.shape, trues.shape)
-        preds = preds.reshape(-1, preds.shape[-2], preds.shape[-1])
-        trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
-        print('test shape:', preds.shape, trues.shape)
+        if total_count == 0:
+            raise RuntimeError("No test batches were produced; cannot compute metrics.")
+
+        pred_shape = (total_samples,) + pred_shape_tail
+        true_shape = (total_samples,) + true_shape_tail
+        print('test shape:', pred_shape, true_shape)
 
         # result save
         folder_path = self._results_folder_path(setting)
@@ -242,20 +270,15 @@ class Exp_Long_Term_Forecast(Exp_Basic):
 
         # dtw calculation
         if self.args.use_dtw:
-            dtw_list = []
-            manhattan_distance = lambda x, y: np.abs(x - y)
-            for i in range(preds.shape[0]):
-                x = preds[i].reshape(-1, 1)
-                y = trues[i].reshape(-1, 1)
-                if i % 100 == 0:
-                    print("calculating dtw iter:", i)
-                d, _, _, _ = accelerated_dtw(x, y, dist=manhattan_distance)
-                dtw_list.append(d)
             dtw = np.array(dtw_list).mean()
         else:
             dtw = 'Not calculated'
 
-        mae, mse, rmse, mape, mspe = metric(preds, trues)
+        mae = mae_sum / total_count
+        mse = mse_sum / total_count
+        rmse = np.sqrt(mse)
+        mape = mape_sum / total_count
+        mspe = mspe_sum / total_count
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         final_epoch = self.final_train_epoch if self.final_train_epoch is not None else 'N/A'
         f = open("result_long_term_forecast.txt", 'a')
@@ -265,8 +288,6 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         f.write('\n')
         f.close()
 
-        np.save(os.path.join(folder_path, 'metrics.npy'), np.array([mae, mse, rmse, mape, mspe]))
-        np.save(os.path.join(folder_path, 'pred.npy'), preds)
-        np.save(os.path.join(folder_path, 'true.npy'), trues)
+        np.save(os.path.join(folder_path, 'metrics.npy'), np.array([mae, mse, rmse, mape, mspe], dtype=np.float32))
 
         return

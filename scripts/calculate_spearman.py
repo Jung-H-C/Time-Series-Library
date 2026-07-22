@@ -8,8 +8,11 @@ import re
 from pathlib import Path
 
 
+
+# python ./calculate_spearman.py --input-glob ./mamba_100_sl96_*.csv --proxy-columns I:T --target-columns V 
 EXCEL_COLUMN_PATTERN = re.compile(r"^[A-Za-z]+$")
-DEFAULT_RESULTS_DIR = Path("/home/junghc/TSLib/Time-Series-Library/results")
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_RESULTS_DIR = REPO_ROOT / "results"
 DEFAULT_MPLCONFIG_DIR = Path("/tmp/tslib_matplotlib")
 KNOWN_DATASET_LABELS = ("Exchange", "Traffic", "Weather", "ETTh1", "ETTh2", "ETTm1", "ETTm2", "ECL", "ILI")
 
@@ -46,7 +49,7 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help=(
             "Proxy columns as comma-separated names/Excel letters/ranges. "
-            "Examples: I,J,K,L,M,N,O,P,Q or I:Q or params:synflow."
+            "Examples: I,J,K,L,M,N,O,P,Q or I:T or params:synflow."
         ),
     )
     parser.add_argument(
@@ -55,7 +58,7 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help=(
             "Target columns as comma-separated names/Excel letters/ranges. "
-            "Examples: S,T,U,V,W,X or S:X or ecl:weather."
+            "Examples: S,T,U,V,W,X or V or ecl:weather."
         ),
     )
     parser.add_argument(
@@ -84,6 +87,14 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Optional labels for targets in the polygon plot. For multiple input CSVs, pass one label per CSV "
             "when each file has one target column. Defaults to dataset labels inferred from filenames."
+        ),
+    )
+    parser.add_argument(
+        "--split",
+        default="proxy_train",
+        help=(
+            "Filter input rows by the CSV split column before computing Spearman. "
+            "Use 'all' to disable split filtering. Default: proxy_train."
         ),
     )
     return parser.parse_args()
@@ -186,6 +197,17 @@ def resolve_results_path(path: Path, default_dir: Path) -> Path:
     return (default_dir / path).resolve()
 
 
+def resolve_input_csv_path(path: Path, default_dir: Path) -> Path:
+    if path.is_absolute():
+        return path.resolve()
+
+    cwd_path = path.resolve()
+    if cwd_path.is_file():
+        return cwd_path
+
+    return (default_dir / path).resolve()
+
+
 def resolve_input_glob(pattern: str, default_dir: Path) -> list[Path]:
     pattern_path = Path(pattern)
     if pattern_path.is_absolute():
@@ -273,6 +295,27 @@ def get_cell(row: list[str], index: int) -> str:
     return row[index]
 
 
+def filter_rows_by_split(header: list[str], data_rows: list[list[str]], split: str) -> list[list[str]]:
+    requested_split = split.strip()
+    if not requested_split:
+        raise ValueError("--split must be a non-empty value or 'all'.")
+    if requested_split.casefold() == "all":
+        return data_rows
+
+    split_index = resolve_header_name("split", header)
+    if split_index is None:
+        raise ValueError("Input CSV is missing required 'split' column. Use --split all to disable filtering.")
+
+    filtered_rows = [
+        row
+        for row in data_rows
+        if get_cell(row, split_index).strip() == requested_split
+    ]
+    if not filtered_rows:
+        raise ValueError(f"No input rows matched --split {requested_split!r}.")
+    return filtered_rows
+
+
 def build_result_rows(
     header: list[str],
     data_rows: list[list[str]],
@@ -280,6 +323,7 @@ def build_result_rows(
     target_indices: list[int],
     *,
     input_csv: Path,
+    split: str,
     target_label: str | None = None,
 ) -> list[dict[str, object]]:
     result_rows: list[dict[str, object]] = []
@@ -307,6 +351,7 @@ def build_result_rows(
             result_rows.append(
                 {
                     "input_csv": input_csv.name,
+                    "split": split,
                     "target_column": index_to_excel_column(target_index),
                     "target_name": target_name,
                     "proxy_column": index_to_excel_column(proxy_index),
@@ -332,6 +377,7 @@ def write_results(output_csv: Path, rows: list[dict[str, object]]) -> None:
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
         "input_csv",
+        "split",
         "target_column",
         "target_name",
         "proxy_column",
@@ -448,7 +494,7 @@ def main() -> int:
         if not input_csvs:
             raise FileNotFoundError(f"No input CSVs matched --input-glob pattern: {args.input_glob}")
     else:
-        input_csvs = [resolve_results_path(input_path, DEFAULT_RESULTS_DIR) for input_path in args.input_csv]
+        input_csvs = [resolve_input_csv_path(input_path, DEFAULT_RESULTS_DIR) for input_path in args.input_csv]
 
     for input_csv in input_csvs:
         if not input_csv.is_file():
@@ -483,6 +529,7 @@ def main() -> int:
                 raise ValueError(f"Input CSV is empty: {input_csv}") from exc
             data_rows = list(reader)
 
+        filtered_rows = filter_rows_by_split(header, data_rows, args.split)
         proxy_indices = resolve_columns(args.proxy_columns, header)
         target_indices = resolve_columns(args.target_columns, header)
         inferred_label = target_labels[input_index] if target_labels is not None else infer_target_label_from_path(input_csv)
@@ -490,10 +537,11 @@ def main() -> int:
         result_rows.extend(
             build_result_rows(
                 header,
-                data_rows,
+                filtered_rows,
                 proxy_indices,
                 target_indices,
                 input_csv=input_csv,
+                split=args.split.strip(),
                 target_label=target_label,
             )
         )
@@ -504,7 +552,7 @@ def main() -> int:
     print(
         f"Wrote {len(result_rows)} proxy-target Spearman rows from {len(input_csvs)} input CSV(s) "
         f"to {output_csv} and plot to {output_png}. "
-        "spearman_coefficient is -1 * raw_spearman_coefficient."
+        f"split={args.split.strip()!r}. spearman_coefficient is -1 * raw_spearman_coefficient."
     )
     return 0
 

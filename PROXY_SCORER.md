@@ -10,6 +10,26 @@
 python score_candidates.py --candidates TimesNet_long_term_forecast_ETTh1
 ```
 
+53개 long-term forecasting dataset registry는 다음 family selector로 실행할 수 있습니다.
+
+```bash
+# Benchmark 6 + Monash 18 + TIME 29
+python score_candidates.py --candidates multi_backbone_proxy_90_seed2026.json --dataset all
+
+# Monash 18 + TIME 29만 실행
+python score_candidates.py --candidates multi_backbone_proxy_90_seed2026.json --dataset Monash TIME
+
+# 실제 확장 목록만 확인
+python score_candidates.py --candidates multi_backbone_proxy_90_seed2026.json \
+  --dataset Benchmark Monash TIME --list-datasets
+```
+
+`--dataset Benchmark`, `--dataset Monash`, `--dataset TIME`은 각각 6, 18, 29개
+dataset으로 확장됩니다. 복수 dataset 실행에서는 dataset별 CSV를 따로 저장하고,
+각 CSV에 `dataset_name`과 `dataset_family` metadata column을 기록합니다. Monash/TIME의
+lazy Arrow/RDS/TSF loader는 기본적으로 `num_workers=0`을 사용하며, 필요한 경우
+`--num-workers`로 변경할 수 있습니다.
+
 실제 구현:
 
 - [proxy_scorer.py](/home/gpuadmin/junghc/Time-Series-Library/benchmarking/proxy_scorer.py)

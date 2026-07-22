@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import csv
+import math
 from dataclasses import dataclass
+from pathlib import Path
 
 
 CANONICAL_BACKBONES = (
@@ -98,6 +101,67 @@ DATASETS = {
         pred_lens=(96, 192, 336, 720),
     ),
 }
+
+
+def _summary_datasets() -> dict[str, DatasetSpec]:
+    """Build runnable multi-series specs from rows explicitly marked horizon=96."""
+    repo_root = Path(__file__).resolve().parents[2]
+    families = (
+        ("Monash", repo_root / "dataset/monash_dataset_summary.csv", "./dataset/Monash_Dataset/"),
+        ("TIME", repo_root / "dataset/time_dataset_summary.csv", "./dataset/Time_Dataset/"),
+    )
+    result: dict[str, DatasetSpec] = {}
+    for family, summary_path, root_path in families:
+        if not summary_path.is_file():
+            continue
+        with summary_path.open(newline="", encoding="utf-8-sig") as handle:
+            for row in csv.DictReader(handle):
+                try:
+                    horizon = float(str(row.get("horizon", "")).strip())
+                except ValueError:
+                    continue
+                if not math.isfinite(horizon) or horizon != 96:
+                    continue
+                dataset_name = str(row.get("dataset_name", "")).strip()
+                source_files = str(row.get("source_files", "")).strip()
+                source_format = str(row.get("source_format", "")).strip().lower()
+                if not dataset_name or not source_files or source_format not in {"tsf", "rds", "arrow"}:
+                    continue
+
+                # Every TSF row and the supported RDS files are independent
+                # univariate series. TIME Arrow target rows preserve their
+                # actual multivariate channel dimension.
+                if source_format == "arrow":
+                    try:
+                        enc_in = int(row["channel_count"])
+                    except (KeyError, TypeError, ValueError) as exc:
+                        raise ValueError(
+                            f"Invalid channel_count for {family} dataset {dataset_name!r}"
+                        ) from exc
+                else:
+                    enc_in = 1
+
+                registry_name = f"{family}__{dataset_name}"
+                result[registry_name] = DatasetSpec(
+                    name=registry_name,
+                    data="multi_series",
+                    root_path=root_path,
+                    data_path=source_files,
+                    enc_in=enc_in,
+                    pred_lens=(96,),
+                    default_seq_len=96,
+                    default_label_len=48,
+                    default_batch_size=16 if enc_in > 16 else 32,
+                    features="M",
+                    target="OT",
+                    # The loader emits zero-valued 4-column time marks; hourly
+                    # keeps that contract valid for timeF embeddings.
+                    freq="h",
+                )
+    return result
+
+
+DATASETS.update(_summary_datasets())
 
 
 def normalize_backbone(name: str) -> str:

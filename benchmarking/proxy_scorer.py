@@ -9,7 +9,9 @@ import os
 import queue
 import random
 import re
+import sys
 import threading
+import time
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
@@ -68,12 +70,27 @@ ALL_PROXY_COLUMNS = [
 
 DATA_INDEPENDENT_PROXY_COLUMNS = {"params", "l2_norm"}
 
+CSV_PROXY_COLUMN_LABELS = {
+    "params": "MParams",
+    "flops": "GFLOPs",
+    "synflow": "GSynFlow",
+}
+
+CSV_PROXY_COLUMN_SCALES = {
+    "params": 1e6,
+    "flops": 1e9,
+    "synflow": 1e9,
+}
+
 META_COLUMNS = [
     "candidate_id",
     "candidate_name",
     "model",
+    "split",
     "task_name",
     "data",
+    "dataset_name",
+    "dataset_family",
     "num_batches",
     "status",
     "error",
@@ -83,8 +100,11 @@ SEPARATE_META_COLUMNS = [
     "candidate_id",
     "candidate_name",
     "model",
+    "split",
     "task_name",
     "data",
+    "dataset_name",
+    "dataset_family",
     "run_index",
     "run_name",
     "batch_index",
@@ -95,6 +115,20 @@ SEPARATE_META_COLUMNS = [
 
 CANDIDATE_SUFFIX_PATTERN = re.compile(r"_(\d+)$")
 SUPPORTED_TASK_NAME = "long_term_forecast"
+DATASET_FAMILY_NAMES = ("Benchmark", "Monash", "TIME")
+EXPECTED_DATASET_FAMILY_COUNTS = {"Benchmark": 6, "Monash": 18, "TIME": 29}
+BENCHMARK_DATASET_ALIASES = {
+    "ecl": "ECL",
+    "electricity": "ECL",
+    "etth1": "ETTh1",
+    "ett": "ETTh1",
+    "exchange": "Exchange",
+    "exchangerate": "Exchange",
+    "ili": "ILI",
+    "illness": "ILI",
+    "traffic": "Traffic",
+    "weather": "Weather",
+}
 
 
 def _repo_root() -> Path:
@@ -176,6 +210,82 @@ def _require_mbproxy_dataset(dataset_name: str):
     return MB_PROXY_DATASETS[canonical_name]
 
 
+def _dataset_family(dataset_name: str) -> str:
+    if dataset_name.startswith("Monash__"):
+        return "Monash"
+    if dataset_name.startswith("TIME__"):
+        return "TIME"
+    return "Benchmark"
+
+
+def _registry_family_names(family: str) -> list[str]:
+    names = [name for name in MB_PROXY_DATASETS if _dataset_family(name) == family]
+    expected = EXPECTED_DATASET_FAMILY_COUNTS[family]
+    if len(names) != expected:
+        raise ValueError(
+            f"Expected {expected} {family} datasets in the proxy registry, found {len(names)}."
+        )
+    return names
+
+
+def _split_dataset_selectors(raw_selectors: list[str] | str | None) -> list[str]:
+    values = [raw_selectors] if isinstance(raw_selectors, str) else list(raw_selectors or [])
+    selectors = []
+    for value in values:
+        for token in str(value).split(","):
+            token = token.strip()
+            if token:
+                selectors.append(token)
+    return selectors or ["ECL"]
+
+
+def _resolve_scoring_dataset_names(raw_selectors: list[str] | str | None) -> list[str]:
+    """Expand explicit dataset names and Benchmark/Monash/TIME/all selectors."""
+    if _normalize_mb_proxy_dataset is None or not MB_PROXY_DATASETS:
+        raise ValueError(
+            "Dataset selectors require scripts/multi_backbone_proxy/proxy_experiment_config.py."
+        )
+
+    for family in DATASET_FAMILY_NAMES:
+        _registry_family_names(family)
+    expected_total = sum(EXPECTED_DATASET_FAMILY_COUNTS.values())
+    if len(MB_PROXY_DATASETS) != expected_total:
+        raise ValueError(
+            f"Expected {expected_total} total datasets in the proxy registry, "
+            f"found {len(MB_PROXY_DATASETS)}."
+        )
+
+    selectors = _split_dataset_selectors(raw_selectors)
+    selected: list[str] = []
+    for selector in selectors:
+        compact = re.sub(r"[^a-z0-9]", "", selector.lower())
+        if compact == "all":
+            expanded = list(MB_PROXY_DATASETS)
+        elif compact in {"benchmark", "benchmarks"}:
+            expanded = _registry_family_names("Benchmark")
+        elif compact == "monash":
+            expanded = _registry_family_names("Monash")
+        elif compact == "time":
+            expanded = _registry_family_names("TIME")
+        else:
+            alias = BENCHMARK_DATASET_ALIASES.get(compact, selector)
+            try:
+                expanded = [_normalize_mb_proxy_dataset(alias)]
+            except ValueError as exc:
+                family_choices = ", ".join((*DATASET_FAMILY_NAMES, "all"))
+                raise ValueError(
+                    f"Unknown dataset/family selector {selector!r}. "
+                    f"Use a registry dataset name or one of: {family_choices}."
+                ) from exc
+        for dataset_name in expanded:
+            if dataset_name not in selected:
+                selected.append(dataset_name)
+
+    if not selected:
+        raise ValueError("Dataset selection resolved to zero datasets.")
+    return selected
+
+
 def _default_label_len(dataset: Any, seq_len: int, override: int | None) -> int:
     if override is not None:
         return int(override)
@@ -200,6 +310,7 @@ def _adapt_compact_mbproxy_payload(
     fixed_seq_len: int | None,
     label_len: int | None,
     batch_size: int | None,
+    num_workers: int | None,
     run_group: str,
 ) -> dict[str, Any]:
     if not _uses_compact_mbproxy_schema(payload):
@@ -246,7 +357,10 @@ def _adapt_compact_mbproxy_payload(
         )
         resolved_label_len = _default_label_len(dataset, seq_len, label_len)
         model_id = f"{run_group}_{dataset.name}_{candidate_id}_sl{seq_len}_pl{resolved_pred_len}"
-        results_id = f"{run_group}_{candidate.get('split', 'unsplit')}_{dataset.name}_{candidate_id}_pl{resolved_pred_len}"
+        results_id = (
+            f"{run_group}_{candidate.get('split', 'unsplit')}_"
+            f"{dataset.name}_{candidate_id}_pl{resolved_pred_len}"
+        )
 
         base_run_args: dict[str, Any] = {
             "task_name": task_name,
@@ -291,6 +405,12 @@ def _adapt_compact_mbproxy_payload(
                 "batch_size": resolved_batch_size,
             }
         )
+        if num_workers is not None:
+            merged_run_args["num_workers"] = int(num_workers)
+        elif dataset.data == "multi_series":
+            # Arrow/RDS/TSF sources are lazily loaded and keep small local
+            # caches. Avoid duplicating those readers across worker processes.
+            merged_run_args["num_workers"] = 0
         merged_run_args.setdefault("model_id", model_id)
         merged_run_args.setdefault("results_id", results_id)
         merged_run_args.setdefault("des", run_group)
@@ -299,6 +419,8 @@ def _adapt_compact_mbproxy_payload(
         adapted_candidate["candidate_id"] = candidate_id
         adapted_candidate.setdefault("candidate_name", candidate_id)
         adapted_candidate["model"] = backbone
+        adapted_candidate["dataset_name"] = dataset.name
+        adapted_candidate["dataset_family"] = _dataset_family(dataset.name)
         adapted_candidate["hyperparameters"] = dict(candidate.get("hyperparameters") or raw_run_args)
         adapted_candidate["run_args"] = merged_run_args
         adapted_candidates.append(adapted_candidate)
@@ -309,6 +431,7 @@ def _adapt_compact_mbproxy_payload(
         {
             "source_schema": "multi_backbone_proxy_compact",
             "scoring_dataset": dataset.name,
+            "scoring_dataset_family": _dataset_family(dataset.name),
             "scoring_pred_len": resolved_pred_len,
             "scoring_batch_size": resolved_batch_size,
             "scoring_run_group": run_group,
@@ -356,6 +479,76 @@ def _append_timestamp_to_csv_path(csv_path: Path, timestamp_label: str) -> Path:
     suffix = csv_path.suffix or ".csv"
     stem = csv_path.stem if csv_path.suffix else csv_path.name
     return csv_path.with_name(f"{stem}_{timestamp_label}{suffix}")
+
+
+def _safe_dataset_filename(dataset_name: str) -> str:
+    safe_name = re.sub(r"[^A-Za-z0-9_.-]+", "_", dataset_name).strip("._")
+    return safe_name or "dataset"
+
+
+def _insert_dataset_into_csv_path(
+    csv_path: Path,
+    dataset_name: str,
+    *,
+    candidate_stem: str | None = None,
+) -> Path:
+    """Make one collision-free CSV path per dataset in a multi-dataset run."""
+    dataset_label = _safe_dataset_filename(dataset_name)
+    suffix = csv_path.suffix or ".csv"
+    stem = csv_path.stem if csv_path.suffix else csv_path.name
+    if candidate_stem and stem.startswith(candidate_stem):
+        stem = f"{candidate_stem}_{dataset_label}{stem[len(candidate_stem):]}"
+    else:
+        stem = f"{stem}_{dataset_label}"
+    return csv_path.with_name(f"{stem}{suffix}")
+
+
+def _dataset_csv_path(
+    *,
+    explicit_csv_path: str | None,
+    candidate_path: Path,
+    repo_root: Path,
+    dataset_name: str,
+    multi_dataset: bool,
+    proxy_columns: list[str],
+    proxy_filename_labels: list[str],
+    separate: bool,
+    timestamp_label: str,
+) -> Path:
+    if explicit_csv_path:
+        requested_path = Path(explicit_csv_path)
+        if not requested_path.is_absolute():
+            requested_path = (repo_root / requested_path).resolve()
+        if multi_dataset and requested_path.suffix.lower() != ".csv":
+            base_path = _default_csv_path(
+                candidate_path,
+                repo_root,
+                proxy_columns=proxy_columns,
+                proxy_filename_labels=proxy_filename_labels,
+                separate=separate,
+            )
+            requested_path = requested_path / base_path.name
+        if multi_dataset:
+            requested_path = _insert_dataset_into_csv_path(
+                requested_path,
+                dataset_name,
+                candidate_stem=candidate_path.stem,
+            )
+    else:
+        requested_path = _default_csv_path(
+            candidate_path,
+            repo_root,
+            proxy_columns=proxy_columns,
+            proxy_filename_labels=proxy_filename_labels,
+            separate=separate,
+        )
+        if multi_dataset:
+            requested_path = _insert_dataset_into_csv_path(
+                requested_path,
+                dataset_name,
+                candidate_stem=candidate_path.stem,
+            )
+    return _append_timestamp_to_csv_path(requested_path, timestamp_label)
 
 
 def _set_global_seed(seed: int, deterministic: bool = False) -> None:
@@ -452,6 +645,11 @@ def _build_args(run_args: dict[str, Any], gpu_id: int | None, repo_root: Path | 
     ):
         merged["device"] = torch.device("mps")
     else:
+        # Exp_Basic selects its device from use_gpu rather than args.device.
+        # Keep those fields consistent so CPU-only scoring does not attempt to
+        # construct a CUDA model when no accelerator is available.
+        merged["use_gpu"] = False
+        merged["use_multi_gpu"] = False
         merged["device"] = torch.device("cpu")
 
     return SimpleNamespace(**merged)
@@ -525,12 +723,19 @@ def _write_rows(
     proxy_columns: list[str],
     meta_columns: list[str],
 ) -> None:
-    fieldnames = meta_columns + proxy_columns
+    proxy_fieldnames = [CSV_PROXY_COLUMN_LABELS.get(column, column) for column in proxy_columns]
+    fieldnames = meta_columns + proxy_fieldnames
     with csv_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
-            normalized = {key: row.get(key, "") for key in fieldnames}
+            normalized = {key: row.get(key, "") for key in meta_columns}
+            for proxy_name, fieldname in zip(proxy_columns, proxy_fieldnames):
+                value = row.get(proxy_name, "")
+                scale = CSV_PROXY_COLUMN_SCALES.get(proxy_name)
+                if scale is not None and value != "":
+                    value = f"{float(value) / scale:.9f}"
+                normalized[fieldname] = value
             writer.writerow(normalized)
 
 
@@ -614,12 +819,16 @@ def _build_failed_row(
     run_args: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     run_args = run_args or candidate.get("run_args", {})
+    split = candidate.get("split", run_args.get("split", ""))
     row = {
         "candidate_id": candidate_id,
         "candidate_name": candidate.get("candidate_name", candidate_id),
         "model": run_args.get("model", candidate.get("model", "")),
+        "split": split,
         "task_name": run_args.get("task_name", ""),
         "data": run_args.get("data", ""),
+        "dataset_name": candidate.get("dataset_name", ""),
+        "dataset_family": candidate.get("dataset_family", ""),
         "num_batches": num_batches,
         "status": "failed",
         "error": error,
@@ -639,6 +848,7 @@ def _build_separate_rows(
     run_name: str,
 ) -> list[dict[str, Any]]:
     num_batches = int(summary["num_batches"])
+    split = candidate.get("split", "")
     rows: list[dict[str, Any]] = []
     row_count = max(1, num_batches)
     for batch_offset in range(row_count):
@@ -648,8 +858,11 @@ def _build_separate_rows(
             "candidate_id": candidate_id,
             "candidate_name": candidate.get("candidate_name", candidate_id),
             "model": summary["model"],
+            "split": split,
             "task_name": summary["task_name"],
             "data": summary["data"],
+            "dataset_name": candidate.get("dataset_name", ""),
+            "dataset_family": candidate.get("dataset_family", ""),
             "run_index": run_index,
             "run_name": run_name,
             "batch_index": batch_index,
@@ -760,6 +973,142 @@ def _randomized_train_loader(exp, *, seed: int):
     }
 
     return DataLoader(train_data, **loader_kwargs)
+
+
+def _training_batch_cache_key(
+    run_args: dict[str, Any],
+    *,
+    num_batches: int,
+    seed: int,
+) -> str:
+    """Return a stable key for every setting that can change sampled train batches."""
+    args = _build_args(run_args, gpu_id=None)
+    fields = (
+        "task_name",
+        "data",
+        "root_path",
+        "data_path",
+        "features",
+        "target",
+        "freq",
+        "embed",
+        "seasonal_patterns",
+        "seq_len",
+        "label_len",
+        "pred_len",
+        "batch_size",
+        "num_workers",
+        "augmentation_ratio",
+        "long_term_train_sample_limit",
+        "candidate_sample_seed",
+    )
+    key_payload = {field: getattr(args, field, None) for field in fields}
+    key_payload.update({"num_batches": int(num_batches), "proxy_batch_seed": int(seed)})
+    return json.dumps(key_payload, sort_keys=True, default=str, separators=(",", ":"))
+
+
+def _cpu_raw_batch(raw_batch: Any) -> tuple[Any, ...]:
+    """Detach a DataLoader batch into CPU-owned tensors suitable for reuse."""
+    if not isinstance(raw_batch, (tuple, list)):
+        raise TypeError(f"Expected a tuple/list DataLoader batch, got {type(raw_batch).__name__}.")
+    return tuple(
+        None if value is None else value.detach().to(device="cpu").contiguous()
+        if torch.is_tensor(value)
+        else value
+        for value in raw_batch
+    )
+
+
+def _raw_batches_nbytes(raw_batches: list[Any]) -> int:
+    return sum(
+        int(value.numel() * value.element_size())
+        for raw_batch in raw_batches
+        for value in raw_batch
+        if torch.is_tensor(value)
+    )
+
+
+def _raw_batch_shapes(raw_batch: Any) -> str:
+    names = ("x", "y", "x_mark", "y_mark")
+    parts = []
+    for index, value in enumerate(raw_batch):
+        name = names[index] if index < len(names) else f"item{index}"
+        shape = "None" if value is None else "x".join(str(dim) for dim in value.shape)
+        parts.append(f"{name}={shape}")
+    return ", ".join(parts)
+
+
+def _load_cpu_training_batches(
+    run_args: dict[str, Any],
+    *,
+    num_batches: int,
+    seed: int,
+    deterministic: bool,
+    dataset_name: str,
+    config_index: int,
+    config_count: int,
+) -> list[Any]:
+    """Load randomized train batches once without constructing a candidate model."""
+    from data_provider.data_factory import data_provider
+
+    started_at = time.perf_counter()
+    _set_global_seed(seed, deterministic=deterministic)
+    args = _build_args(run_args, gpu_id=None)
+    print(
+        f"[batch-cache][{dataset_name}][config {config_index}/{config_count}] "
+        f"Loading train dataset (data={args.data}, seq_len={args.seq_len}, "
+        f"pred_len={args.pred_len}, batch_size={args.batch_size}, "
+        f"requested_batches={num_batches}, workers={args.num_workers}) ...",
+        flush=True,
+    )
+    train_data, _ = data_provider(args, "train")
+    print(
+        f"[batch-cache][{dataset_name}][config {config_index}/{config_count}] "
+        f"Dataset ready: train_windows={len(train_data):,}; sampling batches ...",
+        flush=True,
+    )
+    loader = DataLoader(
+        train_data,
+        batch_size=args.batch_size,
+        shuffle=True,
+        num_workers=args.num_workers,
+        drop_last=False,
+        generator=_proxy_loader_generator(seed),
+        worker_init_fn=_seed_proxy_dataloader_worker,
+    )
+    raw_batches: list[Any] = []
+    iterator = iter(loader)
+    for batch_index in range(1, num_batches + 1):
+        batch_started_at = time.perf_counter()
+        try:
+            raw_batch = next(iterator)
+        except StopIteration:
+            print(
+                f"[batch-cache][{dataset_name}][config {config_index}/{config_count}] "
+                f"Train loader exhausted after {len(raw_batches)}/{num_batches} batches.",
+                flush=True,
+            )
+            break
+        cached_batch = _cpu_raw_batch(raw_batch)
+        raw_batches.append(cached_batch)
+        print(
+            f"[batch-cache][{dataset_name}][config {config_index}/{config_count}] "
+            f"Cached batch {batch_index}/{num_batches} on CPU "
+            f"({_raw_batch_shapes(cached_batch)}; "
+            f"{time.perf_counter() - batch_started_at:.2f}s)",
+            flush=True,
+        )
+    if not raw_batches:
+        raise RuntimeError("Failed to collect any training minibatch for proxy scoring.")
+    size_mib = _raw_batches_nbytes(raw_batches) / (1024**2)
+    print(
+        f"[batch-cache][{dataset_name}][config {config_index}/{config_count}] "
+        f"Ready: {len(raw_batches)} batches, {size_mib:.2f} MiB CPU RAM, "
+        f"elapsed={time.perf_counter() - started_at:.2f}s. "
+        "These batches will be reused for every candidate in this dataset.",
+        flush=True,
+    )
+    return raw_batches
 
 
 def _prepare_batches(exp, num_batches: int, *, seed: int) -> list[dict[str, Any]]:
@@ -1274,6 +1623,7 @@ def _score_single_run_args(
     deterministic: bool,
     batch_norm_mode: str,
     proxy_columns: list[str],
+    cpu_batch_cache: dict[str, list[Any]] | None = None,
 ) -> dict[str, Any]:
     _set_global_seed(seed, deterministic=deterministic)
     args = _build_args(run_args, gpu_id=gpu_id)
@@ -1281,7 +1631,13 @@ def _score_single_run_args(
     exp = Exp(args)
     needs_batches = any(proxy_name not in DATA_INDEPENDENT_PROXY_COLUMNS for proxy_name in proxy_columns)
     criterion = _build_proxy_criterion(exp) if needs_batches else None
-    batches = _prepare_batches(exp, num_batches, seed=seed) if needs_batches else []
+    if needs_batches and cpu_batch_cache is not None:
+        cache_key = _training_batch_cache_key(run_args, num_batches=num_batches, seed=seed)
+        if cache_key not in cpu_batch_cache:
+            raise KeyError("No preloaded CPU training batches match this candidate's data settings.")
+        batches = [_prepare_single_batch(exp, raw_batch) for raw_batch in cpu_batch_cache[cache_key]]
+    else:
+        batches = _prepare_batches(exp, num_batches, seed=seed) if needs_batches else []
     try:
         return _score_prepared_batches(
             exp,
@@ -1308,6 +1664,7 @@ def _score_candidate_rows(
     batch_norm_mode: str,
     proxy_columns: list[str],
     separate: bool = False,
+    cpu_batch_cache: dict[str, list[Any]] | None = None,
 ) -> list[dict[str, Any]]:
     run_arg_sets = _candidate_run_args_list(
         candidate,
@@ -1318,6 +1675,7 @@ def _score_candidate_rows(
 
     candidate_id = str(candidate.get("candidate_id", run_arg_sets[0].get("model_id", "")))
     candidate_name = str(candidate.get("candidate_name", candidate_id))
+    candidate_split = candidate.get("split", run_arg_sets[0].get("split", ""))
     aggregate_proxy_accumulators: dict[str, list[float]] = {name: [] for name in proxy_columns}
     separate_rows: list[dict[str, Any]] = []
     params_score = None
@@ -1334,6 +1692,7 @@ def _score_candidate_rows(
             deterministic=deterministic,
             batch_norm_mode=batch_norm_mode,
             proxy_columns=proxy_columns,
+            cpu_batch_cache=cpu_batch_cache,
         )
         if run_summary is None:
             run_summary = summary
@@ -1367,8 +1726,11 @@ def _score_candidate_rows(
         "candidate_id": candidate_id,
         "candidate_name": candidate_name,
         "model": run_summary["model"],
+        "split": candidate_split,
         "task_name": run_summary["task_name"],
         "data": run_summary["data"],
+        "dataset_name": candidate.get("dataset_name", ""),
+        "dataset_family": candidate.get("dataset_family", ""),
         "num_batches": total_num_batches,
         "status": "success",
         "error": "",
@@ -1383,6 +1745,170 @@ def _score_candidate_rows(
         row[proxy_name] = _nanmean(values)
 
     return [row]
+
+
+def _score_candidates_to_csv(
+    candidates: list[dict[str, Any]],
+    *,
+    csv_path: Path,
+    args: argparse.Namespace,
+    gpu_ids: list[int],
+    output_proxy_columns: list[str],
+    output_meta_columns: list[str],
+    dataset_index: int,
+    dataset_count: int,
+    dataset_name: str,
+) -> None:
+    """Score one adapted dataset payload and persist its candidates incrementally."""
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
+    rows = _load_existing_rows(csv_path)
+    row_by_key: dict[str, dict[str, Any]] = {}
+    existing_candidate_ids: set[str] = set()
+    for existing_row in rows:
+        row_key = _row_storage_key(existing_row)
+        candidate_id = str(existing_row.get("candidate_id", ""))
+        if row_key:
+            row_by_key[row_key] = dict(existing_row)
+        if candidate_id:
+            existing_candidate_ids.add(candidate_id)
+
+    candidate_jobs: list[tuple[int, dict[str, Any], str]] = []
+    for index, candidate in enumerate(candidates, start=1):
+        candidate_id = str(
+            candidate.get("candidate_id", candidate.get("candidate_name", f"candidate_{index:04d}"))
+        )
+        if args.skip_existing and candidate_id in existing_candidate_ids:
+            print(
+                f"[dataset {dataset_index}/{dataset_count}][{index}/{len(candidates)}] "
+                f"Skipping {dataset_name}/{candidate_id} (already scored)"
+            )
+            continue
+        candidate_jobs.append((index, candidate, candidate_id))
+
+    needs_batches = any(
+        proxy_name not in DATA_INDEPENDENT_PROXY_COLUMNS for proxy_name in output_proxy_columns
+    )
+    cpu_batch_cache: dict[str, list[Any]] = {}
+    if candidate_jobs and needs_batches:
+        cache_sources: dict[str, dict[str, Any]] = {}
+        for _, candidate, _ in candidate_jobs:
+            for run_args in _candidate_run_args_list(candidate, gpu_id=None):
+                cache_key = _training_batch_cache_key(
+                    run_args,
+                    num_batches=args.num_batches,
+                    seed=args.seed,
+                )
+                cache_sources.setdefault(cache_key, run_args)
+
+        print(
+            f"[batch-cache][{dataset_name}] Preloading {args.num_batches} train batches "
+            f"for {len(cache_sources)} unique data configuration(s) before candidate scoring.",
+            flush=True,
+        )
+        for config_index, (cache_key, run_args) in enumerate(cache_sources.items(), start=1):
+            cpu_batch_cache[cache_key] = _load_cpu_training_batches(
+                run_args,
+                num_batches=args.num_batches,
+                seed=args.seed,
+                deterministic=args.deterministic,
+                dataset_name=dataset_name,
+                config_index=config_index,
+                config_count=len(cache_sources),
+            )
+    elif candidate_jobs:
+        print(
+            f"[batch-cache][{dataset_name}] Skipped: selected proxies are data-independent.",
+            flush=True,
+        )
+
+    write_lock = threading.Lock()
+
+    def persist_row(row: dict[str, Any]) -> None:
+        with write_lock:
+            row_by_key[_row_storage_key(row)] = row
+            existing_candidate_ids.add(str(row["candidate_id"]))
+            ordered_rows = sorted(row_by_key.values(), key=_row_sort_key)
+            _write_rows(csv_path, ordered_rows, output_proxy_columns, output_meta_columns)
+
+    def score_one(
+        index: int,
+        candidate: dict[str, Any],
+        candidate_id: str,
+        gpu_id: int | None,
+    ) -> None:
+        prefix = f"[dataset {dataset_index}/{dataset_count}][{index}/{len(candidates)}]"
+        gpu_suffix = f"[gpu:{gpu_id}]" if gpu_id is not None else ""
+        print(f"{prefix}{gpu_suffix} Scoring {dataset_name}/{candidate_id}")
+        try:
+            rows_to_persist = _score_candidate_rows(
+                candidate,
+                gpu_id=gpu_id,
+                num_batches=args.num_batches,
+                seed=args.seed,
+                deterministic=args.deterministic,
+                batch_norm_mode=args.proxy_bn_mode,
+                proxy_columns=output_proxy_columns,
+                separate=args.separate,
+                cpu_batch_cache=cpu_batch_cache,
+            )
+        except Exception as exc:
+            rows_to_persist = [
+                _build_failed_row(
+                    candidate,
+                    candidate_id=candidate_id,
+                    proxy_columns=output_proxy_columns,
+                    error=str(exc),
+                    num_batches=args.num_batches,
+                )
+            ]
+            print(f"{prefix}{gpu_suffix} failed: {exc}")
+
+        for row in rows_to_persist:
+            persist_row(row)
+
+    if len(gpu_ids) <= 1:
+        assigned_gpu_id = gpu_ids[0] if gpu_ids else None
+        for index, candidate, candidate_id in candidate_jobs:
+            score_one(index, candidate, candidate_id, assigned_gpu_id)
+    else:
+        print(
+            f"Launching {len(gpu_ids)} parallel GPU workers for {len(candidate_jobs)} "
+            f"candidates on {dataset_name}: "
+            + ", ".join(f"cuda:{gpu_id}" for gpu_id in gpu_ids)
+        )
+        job_queue: queue.Queue[tuple[int, dict[str, Any], str]] = queue.Queue()
+        for job in candidate_jobs:
+            job_queue.put(job)
+
+        def worker(gpu_id: int) -> None:
+            while True:
+                try:
+                    index, candidate, candidate_id = job_queue.get_nowait()
+                except queue.Empty:
+                    return
+                score_one(index, candidate, candidate_id, gpu_id)
+
+        threads = [
+            threading.Thread(target=worker, name=f"proxy-scorer-gpu-{gpu_id}", args=(gpu_id,))
+            for gpu_id in gpu_ids
+        ]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+
+    # When there are no jobs (for example after --skip-existing), preserve an
+    # existing CSV and otherwise create a header-only output for this dataset.
+    if not candidate_jobs and not csv_path.exists():
+        _write_rows(csv_path, [], output_proxy_columns, output_meta_columns)
+    cached_mib = sum(_raw_batches_nbytes(batches) for batches in cpu_batch_cache.values()) / (1024**2)
+    cpu_batch_cache.clear()
+    if cached_mib:
+        print(
+            f"[batch-cache][{dataset_name}] Released {cached_mib:.2f} MiB CPU batch cache.",
+            flush=True,
+        )
+    print(f"Saved {dataset_name} proxy scores to {csv_path}", flush=True)
 
 
 def _build_arg_parser() -> argparse.ArgumentParser:
@@ -1403,12 +1929,14 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--dataset",
-        type=str,
-        default="ECL",
+        nargs="+",
+        default=["ECL"],
         help=(
-            "Scoring dataset used when a compact multi-backbone JSON lacks full run_args. "
-            "Choices from scripts/multi_backbone_proxy: ECL, ETTh1, Exchange, ILI, Traffic, Weather. "
-            "Default: ECL."
+            "One or more scoring datasets/families used when a compact multi-backbone JSON "
+            "lacks full run_args. Accepts explicit registry names, comma-separated values, "
+            "or the selectors Benchmark (6), Monash (18), TIME (29), and all (53). "
+            "Examples: --dataset ECL; --dataset Monash TIME; --dataset Monash,TIME; "
+            "--dataset all. Default: ECL."
         ),
     )
     parser.add_argument(
@@ -1439,12 +1967,29 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         help="Override batch_size when adapting compact multi-backbone JSONs.",
     )
     parser.add_argument(
+        "--num-workers",
+        type=int,
+        default=None,
+        help=(
+            "Override DataLoader workers for adapted candidates. Monash/TIME multi-series "
+            "datasets default to 0 to keep lazy Arrow/RDS/TSF readers process-local."
+        ),
+    )
+    parser.add_argument(
         "--scoring-run-group",
         type=str,
         default="mbproxy_score",
         help="model_id/results_id prefix used for adapted compact multi-backbone JSONs.",
     )
-    parser.add_argument("--csv-path", type=str, default=None, help="Where to store the proxy score CSV.")
+    parser.add_argument(
+        "--csv-path",
+        type=str,
+        default=None,
+        help=(
+            "Where to store proxy score CSVs. For multiple datasets, a .csv path gets a "
+            "dataset suffix; a path without .csv is treated as an output directory."
+        ),
+    )
     parser.add_argument(
         "--num-batches",
         type=int,
@@ -1493,6 +2038,17 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--skip-existing", action="store_true", help="Skip candidates already present in the CSV.")
     parser.add_argument("--max-candidates", type=int, default=-1, help="Only process the first N candidates.")
     parser.add_argument(
+        "--max-datasets",
+        type=int,
+        default=-1,
+        help="Debug option: process only the first N resolved datasets.",
+    )
+    parser.add_argument(
+        "--list-datasets",
+        action="store_true",
+        help="Print resolved dataset names/families and exit without scoring.",
+    )
+    parser.add_argument(
         "--proxies",
         nargs="+",
         default=None,
@@ -1505,11 +2061,21 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Redirected stdout (for example nohup > run.out) is block-buffered by
+    # default. Line buffering makes dataset-loading and scoring progress
+    # visible in the log immediately without requiring `python -u`.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(line_buffering=True)
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(line_buffering=True)
+
     parser = _build_arg_parser()
     args = parser.parse_args(argv)
 
     if bool(args.candidates) == bool(args.candidates_file):
         parser.error("Use exactly one of --candidates or --candidates-file.")
+    if args.num_workers is not None and args.num_workers < 0:
+        parser.error("--num-workers must be non-negative.")
 
     repo_root = _repo_root()
     invocation_cwd = Path.cwd()
@@ -1530,135 +2096,87 @@ def main(argv: list[str] | None = None) -> int:
         if not candidate_path.exists():
             parser.error(f"Candidate JSON not found: {candidate_path}")
 
-    payload = _load_candidate_payload(candidate_path)
+    base_payload = _load_candidate_payload(candidate_path)
     try:
-        payload = _adapt_compact_mbproxy_payload(
-            payload,
-            dataset_name=args.dataset,
-            pred_len=args.pred_len,
-            fixed_seq_len=args.fixed_seq_len,
-            label_len=args.label_len,
-            batch_size=args.batch_size,
-            run_group=args.scoring_run_group,
-        )
+        dataset_names = _resolve_scoring_dataset_names(args.dataset)
     except ValueError as exc:
         parser.error(str(exc))
-    candidates = payload["candidates"]
-    if args.max_candidates > 0:
-        candidates = candidates[: args.max_candidates]
+    if args.max_datasets > 0:
+        dataset_names = dataset_names[: args.max_datasets]
+    if args.list_datasets:
+        family_counts = {family: 0 for family in DATASET_FAMILY_NAMES}
+        for index, dataset_name in enumerate(dataset_names, start=1):
+            family = _dataset_family(dataset_name)
+            family_counts[family] += 1
+            print(f"{index:02d}\t{family}\t{dataset_name}")
+        print(f"Resolved {len(dataset_names)} datasets: {family_counts}")
+        return 0
+
+    compact_payload = _uses_compact_mbproxy_schema(base_payload)
+    if not compact_payload and len(dataset_names) > 1:
+        parser.error(
+            "Multiple --dataset selectors require a compact multi-backbone candidate JSON. "
+            "The supplied candidates already contain full dataset-specific run_args."
+        )
 
     requested_proxy_columns = _normalize_proxy_selection(args.proxies)
     output_proxy_columns = list(requested_proxy_columns)
     proxy_filename_labels = list(requested_proxy_columns)
     output_meta_columns = _output_meta_columns(args.separate)
     timestamp_label = _timestamp_label()
+    multi_dataset = len(dataset_names) > 1
+    csv_paths: list[Path] = []
+    for dataset_index, dataset_name in enumerate(dataset_names, start=1):
+        if compact_payload:
+            try:
+                payload = _adapt_compact_mbproxy_payload(
+                    base_payload,
+                    dataset_name=dataset_name,
+                    pred_len=args.pred_len,
+                    fixed_seq_len=args.fixed_seq_len,
+                    label_len=args.label_len,
+                    batch_size=args.batch_size,
+                    num_workers=args.num_workers,
+                    run_group=args.scoring_run_group,
+                )
+            except ValueError as exc:
+                parser.error(str(exc))
+        else:
+            payload = base_payload
 
-    csv_path = (
-        Path(args.csv_path)
-        if args.csv_path
-        else _default_csv_path(
-            candidate_path,
-            repo_root,
+        candidates = payload["candidates"]
+        if args.max_candidates > 0:
+            candidates = candidates[: args.max_candidates]
+        csv_path = _dataset_csv_path(
+            explicit_csv_path=args.csv_path,
+            candidate_path=candidate_path,
+            repo_root=repo_root,
+            dataset_name=dataset_name,
+            multi_dataset=multi_dataset,
             proxy_columns=output_proxy_columns,
             proxy_filename_labels=proxy_filename_labels,
             separate=args.separate,
+            timestamp_label=timestamp_label,
         )
-    )
-    if not csv_path.is_absolute():
-        csv_path = (repo_root / csv_path).resolve()
-    csv_path = _append_timestamp_to_csv_path(csv_path, timestamp_label)
-    csv_path.parent.mkdir(parents=True, exist_ok=True)
-
-    rows = _load_existing_rows(csv_path)
-    row_by_key: dict[str, dict[str, Any]] = {}
-    existing_candidate_ids: set[str] = set()
-    for existing_row in rows:
-        row_key = _row_storage_key(existing_row)
-        candidate_id = str(existing_row.get("candidate_id", ""))
-        if row_key:
-            row_by_key[row_key] = dict(existing_row)
-        if candidate_id:
-            existing_candidate_ids.add(candidate_id)
-
-    candidate_jobs: list[tuple[int, dict[str, Any], str]] = []
-    for index, candidate in enumerate(candidates, start=1):
-        candidate_id = str(candidate.get("candidate_id", candidate.get("candidate_name", f"candidate_{index:04d}")))
-        if args.skip_existing and candidate_id in existing_candidate_ids:
-            print(f"[{index}/{len(candidates)}] Skipping {candidate_id} (already scored)")
-            continue
-        candidate_jobs.append((index, candidate, candidate_id))
-
-    write_lock = threading.Lock()
-
-    def persist_row(row: dict[str, Any]) -> None:
-        with write_lock:
-            row_by_key[_row_storage_key(row)] = row
-            existing_candidate_ids.add(str(row["candidate_id"]))
-            ordered_rows = sorted(
-                row_by_key.values(),
-                key=_row_sort_key,
-            )
-            _write_rows(csv_path, ordered_rows, output_proxy_columns, output_meta_columns)
-
-    def score_one(index: int, candidate: dict[str, Any], candidate_id: str, gpu_id: int | None) -> None:
-        prefix = f"[{index}/{len(candidates)}]"
-        gpu_suffix = f"[gpu:{gpu_id}]" if gpu_id is not None else ""
-        print(f"{prefix}{gpu_suffix} Scoring {candidate_id}")
-        try:
-            rows_to_persist = _score_candidate_rows(
-                candidate,
-                gpu_id=gpu_id,
-                num_batches=args.num_batches,
-                seed=args.seed,
-                deterministic=args.deterministic,
-                batch_norm_mode=args.proxy_bn_mode,
-                proxy_columns=output_proxy_columns,
-                separate=args.separate,
-            )
-        except Exception as exc:
-            rows_to_persist = [
-                _build_failed_row(
-                    candidate,
-                    candidate_id=candidate_id,
-                    proxy_columns=output_proxy_columns,
-                    error=str(exc),
-                    num_batches=args.num_batches,
-                )
-            ]
-            print(f"{prefix}{gpu_suffix} failed: {exc}")
-
-        for row in rows_to_persist:
-            persist_row(row)
-
-    if len(gpu_ids) <= 1:
-        assigned_gpu_id = gpu_ids[0] if gpu_ids else None
-        for index, candidate, candidate_id in candidate_jobs:
-            score_one(index, candidate, candidate_id, assigned_gpu_id)
-    else:
+        family = _dataset_family(dataset_name)
         print(
-            f"Launching {len(gpu_ids)} parallel GPU workers for {len(candidate_jobs)} candidates: "
-            + ", ".join(f"cuda:{gpu_id}" for gpu_id in gpu_ids)
+            f"=== Dataset {dataset_index}/{len(dataset_names)}: "
+            f"{dataset_name} ({family}); candidates={len(candidates)} ==="
         )
-        job_queue: queue.Queue[tuple[int, dict[str, Any], str]] = queue.Queue()
-        for job in candidate_jobs:
-            job_queue.put(job)
+        _score_candidates_to_csv(
+            candidates,
+            csv_path=csv_path,
+            args=args,
+            gpu_ids=gpu_ids,
+            output_proxy_columns=output_proxy_columns,
+            output_meta_columns=output_meta_columns,
+            dataset_index=dataset_index,
+            dataset_count=len(dataset_names),
+            dataset_name=dataset_name,
+        )
+        csv_paths.append(csv_path)
 
-        def worker(gpu_id: int) -> None:
-            while True:
-                try:
-                    index, candidate, candidate_id = job_queue.get_nowait()
-                except queue.Empty:
-                    return
-                score_one(index, candidate, candidate_id, gpu_id)
-
-        threads = [
-            threading.Thread(target=worker, name=f"proxy-scorer-gpu-{gpu_id}", args=(gpu_id,))
-            for gpu_id in gpu_ids
-        ]
-        for thread in threads:
-            thread.start()
-        for thread in threads:
-            thread.join()
-
-    print(f"Saved proxy scores to {csv_path}")
+    print(f"Completed proxy scoring for {len(dataset_names)} datasets.")
+    if len(csv_paths) > 1:
+        print(f"CSV output directory: {csv_paths[0].parent}")
     return 0

@@ -1,0 +1,21 @@
+47-dataset centroid clustering from z-scored catch22 PCA
+
+excluded_benchmarks: ['ETT-small', 'electricity', 'exchange_rate', 'illness', 'traffic', 'weather']
+retained_dataset_count: 47
+retained_family_counts: {'Monash': 18, 'TIME': 29}
+seed: 20260716
+samples_per_dataset: 20
+feature_rows: 940
+catch22_dimension: 22
+channel_pooling: mean
+input_scaling: Time-Series-Library train standardization
+normalization: global feature-wise z-score over all sampled vectors
+explained_variance_threshold: 0.9
+retained_pc_count: 11
+retained_cumulative_explained_variance_ratio: 0.906830046979
+dataset_centroid: mean of 20 sample coordinates in retained PCA space
+distance: Euclidean between dataset centroids
+clustering: agglomerative, average linkage, precomputed distance matrix
+cluster_count: 8
+cluster_sizes: [5, 17, 16, 1, 2, 2, 2, 2]
+visualization: none

@@ -1,0 +1,27 @@
+53-dataset train-window catch22 PCA cluster spheres
+
+seed: 20260716
+dataset_count: 53
+family_counts: {'TIME': 29, 'Monash': 18, 'Benchmark': 6}
+samples_per_dataset: 5
+feature_rows: 265
+catch22_dimensions_per_sample: 22
+channel_pooling: mean
+input_scaling: Time-Series-Library train standardization
+input_lengths_by_dataset: {'ECL': 96, 'ETTh1': 96, 'exchange_rate': 96, 'illness': 36, 'traffic': 96, 'weather': 96, 'anonymous_public_load_power_data_per_unit': 96, 'anonymous_public_pv_power_data_per_unit': 96, 'australian_electricity_demand_dataset': 96, 'bitcoin_dataset_without_missing_values': 96, 'elecdemand_dataset': 96, 'electricity_hourly_dataset': 96, 'kdd_cup_2018_dataset_without_missing_values': 96, 'oikolab_weather_dataset': 96, 'pedestrian_counts_dataset': 96, 'saugeenday_dataset': 96, 'solar_10_minutes_dataset': 96, 'solar_4_seconds_dataset': 96, 'sunspot_dataset_without_missing_values': 96, 'traffic_hourly_dataset': 96, 'us_births_dataset': 96, 'weather_dataset': 96, 'wind_4_seconds_dataset': 96, 'wind_farms_minutely_dataset_without_missing_values': 96, 'Australia_Solar__H': 96, 'CPHL__15T': 96, 'CPHL__30T': 96, 'CPHL__H': 96, 'Coastal_T_S__15T': 96, 'Coastal_T_S__20T': 96, 'Coastal_T_S__5T': 96, 'Coastal_T_S__H': 96, 'Crypto__D': 96, 'EWELD_Load__15T': 96, 'Finland_Traffic__15T': 96, 'MetroPT-3__5T': 96, 'NE_China_Wind__H': 96, 'Oil_Price__B': 96, 'OpenElectricity_NEM__5T': 96, 'Port_Activity__D': 96, 'SG_Carpark__15T': 96, 'SG_PM25__H': 96, 'SG_Weather__D': 96, 'US_Term_Structure__B': 96, 'Water_Quality_Darwin__15T': 96, 'azure2019_D__5T': 96, 'azure2019_I__5T': 96, 'current_velocity__10T': 96, 'current_velocity__15T': 96, 'current_velocity__20T': 96, 'current_velocity__5T': 96, 'current_velocity__H': 96, 'epf_electricity_price__H': 96}
+pca_preprocessing: global feature-mean imputation and z-score over all samples
+pca_scope: one three-component PCA fitted over all sample-level 22D vectors
+sphere_center: mean of each dataset's five 3D PCA coordinates
+sphere_true_radius: maximum 3D distance from center (contains all five samples)
+minimum_visible_radius_fraction: 0.004
+visibility_expanded_sphere_count: 0
+top_3_largest_spheres_rank_dataset_radius: 1:electricity_hourly_dataset(10.873522509), 2:solar_4_seconds_dataset(6.281527338), 3:anonymous_public_pv_power_data_per_unit(5.722795439)
+plot_contents: cluster sphere surfaces only; sample points, centers, labels, and annotations omitted
+
+Files
+- sample_catch22_features.csv: raw channel-pooled 22D vectors.
+- sample_catch22_features_zscored.csv: global PCA inputs.
+- sample_catch22_pca_3d.csv: PCA coordinates retained for reproducibility, not plotted.
+- dataset_cluster_spheres.csv: sphere centers, radii, and radius ranks.
+- catch22_feature_manifest.csv: full and short catch22 feature names.
+- train_window_cluster_spheres_only.png: sphere-only 3D PCA plot.

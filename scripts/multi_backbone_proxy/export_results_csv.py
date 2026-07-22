@@ -25,7 +25,7 @@ def parse_args() -> argparse.Namespace:
         )
     )
     parser.add_argument(
-        "folder_prefix",
+        "--folder_prefix",
         help=(
             "Prefix of result folder names to collect, e.g. "
             "long_term_forecast_mbproxy_ECL_Autoformer"
@@ -115,6 +115,10 @@ def parse_result_folder(folder_name: str) -> dict[str, Any]:
     split = ""
     if "_proxy_train_" in folder_name:
         split = "proxy_train"
+    elif "_proxy_valid_" in folder_name:
+        split = "proxy_valid"
+    elif "_proxy_test_" in folder_name:
+        split = "proxy_test"
     elif "_proxy_eval_" in folder_name:
         split = "proxy_eval"
 

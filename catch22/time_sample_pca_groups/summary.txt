@@ -1,0 +1,18 @@
+TIME catch22 grouped PCA summary
+
+seed: 20260710
+dataset_frequency_units: 50
+groups: 10
+datasets_per_group: 5
+samples_per_dataset: 5
+max_series_length: 50000
+feature_rows: 250
+skipped_samples: 0
+
+Files
+- group_assignments.csv: shuffled dataset/frequency unit order and group membership.
+- sample_catch22_features.csv: raw catch22 feature rows.
+- sample_catch22_features_zscored_by_group.csv: group-wise z-scored features used for PCA.
+- sample_catch22_pca_2d.csv: group-wise 2D PCA coordinates.
+- plots/group_XXX_pca_2d.png: one PCA visualization per shuffled group.
+- skipped_samples.csv: samples skipped during extraction, if any.

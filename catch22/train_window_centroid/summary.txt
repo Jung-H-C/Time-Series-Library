@@ -1,0 +1,26 @@
+53-dataset train-window catch22 PCA
+
+visualization_mode: global_centroid
+seed: 20260713
+dataset_count: 53
+family_counts: {'Benchmark': 6, 'Monash': 18, 'TIME': 29}
+group_sizes: [8, 8, 8, 8, 8, 8, 5]
+seq_len: 96
+pred_len_used_to_define_train_windows: 96
+samples_per_dataset: 5
+feature_rows: 265
+channel_pooling: mean
+input_scaling: Time-Series-Library train-split standardization
+centroid_aggregation: feature-wise mean of each dataset's sampled vectors
+pca_preprocessing: global imputation, centroid aggregation, centroid-wise z-score
+pca_scope: one PCA fitted over all dataset centroids
+centroid_plot_labels: index
+
+Files
+- group_assignments.csv: shuffled dataset membership and group order.
+- sample_catch22_features.csv: raw pooled catch22 vectors before aggregation.
+- dataset_centroid_catch22_features.csv: one raw 22D centroid per dataset.
+- dataset_centroid_catch22_features_zscored.csv: global PCA inputs.
+- dataset_centroid_pca_2d.csv: IDs, dataset names, and global PCA coordinates.
+- catch22_feature_manifest.csv: full and short catch22 feature names.
+- plots/all_53_dataset_centroids_pca_2d.png: the 53-centroid visualization.

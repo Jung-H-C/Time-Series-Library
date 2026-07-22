@@ -1,0 +1,31 @@
+{
+  "files.watcherExclude": {
+    "**/.git/**": true,
+    "**/.venv/**": true,
+    "**/venv/**": true,
+    "**/dataset/**": true,
+    "**/datasets/**": true,
+    "**/checkpoints/**": true,
+    "**/outputs/**": true,
+    "**/wandb/**": true,
+    "**/__pycache__/**": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/.venv": true,
+    "**/venv": true,
+    "**/dataset": true,
+    "**/datasets": true,
+    "**/checkpoints": true,
+    "**/outputs": true,
+    "**/wandb": true
+  },
+  "python.analysis.exclude": [
+    "**/dataset/**",
+    "**/datasets/**",
+    "**/checkpoints/**",
+    "**/outputs/**",
+    "**/wandb/**"
+  ],
+  "git.autoRepositoryDetection": false
+}

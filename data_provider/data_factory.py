@@ -1,4 +1,4 @@
-from data_provider.data_loader import Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_M4, Dataset_DominickPanel, Dataset_DominickTSF, Dataset_MonashTSFGeneric, Dataset_TourismMonthlyTSF, Dataset_NN5DailyTSF, Dataset_CarPartsTSF, Dataset_WebTrafficTSF, \
+from data_provider.data_loader import Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_M4, Dataset_DominickPanel, Dataset_DominickTSF, Dataset_MonashTSFGeneric, Dataset_MultiSeriesForecast, Dataset_TourismMonthlyTSF, Dataset_NN5DailyTSF, Dataset_CarPartsTSF, Dataset_WebTrafficTSF, \
     PSMSegLoader, MSLSegLoader, SMAPSegLoader, SMDSegLoader, SWATSegLoader, UEAloader
 from data_provider.uea import collate_fn
 import hashlib
@@ -12,6 +12,7 @@ data_dict = {
     'ETTm1': Dataset_ETT_minute,
     'ETTm2': Dataset_ETT_minute,
     'custom': Dataset_Custom,
+    'multi_series': Dataset_MultiSeriesForecast,
     'm4': Dataset_M4,
     'dominick': Dataset_DominickPanel,
     'dominik': Dataset_DominickPanel,
@@ -107,7 +108,31 @@ def _candidate_subset_indices(args, flag, dataset_len, limit):
 
 
 def _maybe_limit_candidate_dataset(args, data_set, flag, batch_size):
-    if getattr(args, "task_name", "") != "short_term_forecast" or getattr(args, "data", "") == "m4":
+    task_name = getattr(args, "task_name", "")
+    data_name = getattr(args, "data", "")
+    if task_name == "long_term_forecast":
+        # The lazy multi-series loader performs selection before loading values.
+        if data_name == "multi_series":
+            return data_set
+        limit_names = {
+            "train": "long_term_train_sample_limit",
+            "val": "long_term_val_sample_limit",
+            "test": "long_term_test_sample_limit",
+        }
+        flag_name = str(flag).lower()
+        if flag_name not in limit_names:
+            return data_set
+        limit = int(getattr(args, limit_names[flag_name], 0) or 0)
+        if limit <= 0 or len(data_set) <= limit:
+            return data_set
+        indices = _candidate_subset_indices(args, flag_name, len(data_set), limit)
+        print(
+            f"[long-term-subset] {flag_name}: original={len(data_set)}, selected={limit}, "
+            f"seed={getattr(args, 'candidate_sample_seed', 2026)}"
+        )
+        return FixedIndexSubset(data_set, indices)
+
+    if task_name != "short_term_forecast" or data_name == "m4":
         return data_set
 
     dataset_len = len(data_set)
@@ -140,6 +165,11 @@ def data_provider(args, flag):
     timeenc = 0 if args.embed != 'timeF' else 1
 
     shuffle_flag = False if (flag == 'test' or flag == 'TEST') else True
+    if args.data == 'multi_series':
+        # Deterministically sampled indices are sorted by global window index,
+        # preserving source-series locality so bounded lazy caches do not
+        # repeatedly reopen large RDS/Arrow sources.
+        shuffle_flag = False
     drop_last = False
     batch_size = args.batch_size
     freq = args.freq

@@ -1,0 +1,26 @@
+catch22 valid-sample analysis summary
+
+samples_per_dataset: 10
+seed: 20260603
+pooling: mean
+scale: train_split_standard
+
+Within-dataset variation
+- Largest mean pairwise Euclidean distance: illness (5.326301); most varying feature: outlier_timing_neg.
+- Smallest mean pairwise Euclidean distance: traffic (1.465384); most varying feature: centroid_freq.
+
+Between-dataset representative distance
+- Farthest representative pair: traffic vs weather (9.495983).
+- Closest representative pair: ETT-small vs electricity (3.599031).
+
+PCA view
+- PC1 + PC2 explained ratio: 70.04% (47.68%, 22.35%).
+- PC1 + PC2 + PC3 explained ratio: 77.81% (47.68%, 22.35%, 7.78%).
+
+Files
+- sample_features.csv: 10 sampled catch22 feature vectors per dataset.
+- dataset_representative_features.csv: dataset-wise mean feature vectors.
+- within_dataset_feature_variation.csv: per-feature variation within each dataset.
+- within_dataset_summary.csv: compact within-dataset variation metrics.
+- between_dataset_*_distance.csv: representative-feature distance matrices.
+- plots/*.png: heatmap/bar/2D PCA/3D PCA visualizations.

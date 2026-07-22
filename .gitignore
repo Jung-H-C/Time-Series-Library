@@ -162,6 +162,7 @@ data_loader_all.py
 
 checkpoints/
 log/
+archive/
 
 results/
 result_long_term_forecast.txt

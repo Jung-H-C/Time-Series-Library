@@ -23,7 +23,7 @@
       "candidate_id": "Mamba_001",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -41,7 +41,7 @@
       "candidate_id": "Mamba_002",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 64,
@@ -59,7 +59,7 @@
       "candidate_id": "Mamba_003",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 96,
@@ -77,7 +77,7 @@
       "candidate_id": "Mamba_004",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
@@ -95,7 +95,7 @@
       "candidate_id": "Mamba_005",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 64,
@@ -113,7 +113,7 @@
       "candidate_id": "Mamba_006",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 64,
@@ -131,7 +131,7 @@
       "candidate_id": "Mamba_007",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -149,7 +149,7 @@
       "candidate_id": "Mamba_008",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 96,
@@ -167,7 +167,7 @@
       "candidate_id": "Mamba_009",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
@@ -185,7 +185,7 @@
       "candidate_id": "Mamba_010",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 96,
@@ -203,7 +203,25 @@
       "candidate_id": "Mamba_011",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 6,
+        "d_ff": 16,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "dt_rank": 8,
+        "e_layers": 2,
+        "expand": 2,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_012",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 5,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
@@ -218,10 +236,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_012",
+      "candidate_id": "Mamba_013",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -236,10 +254,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_013",
+      "candidate_id": "Mamba_014",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 96,
@@ -254,10 +272,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_014",
+      "candidate_id": "Mamba_015",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 96,
@@ -265,24 +283,6 @@
         "dt_rank": 32,
         "e_layers": 2,
         "expand": 1,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_train"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_015",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 2,
-        "d_ff": 8,
-        "d_layers": 1,
-        "d_model": 64,
-        "dropout": 0.1,
-        "dt_rank": 32,
-        "e_layers": 2,
-        "expand": 3,
         "learning_rate": 0.0001,
         "seq_len": 96
       },
@@ -296,9 +296,9 @@
         "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
-        "d_model": 128,
+        "d_model": 64,
         "dropout": 0.1,
-        "dt_rank": 16,
+        "dt_rank": 32,
         "e_layers": 2,
         "expand": 3,
         "learning_rate": 0.0001,
@@ -311,7 +311,25 @@
       "candidate_id": "Mamba_017",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 6,
+        "d_ff": 8,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "dt_rank": 16,
+        "e_layers": 2,
+        "expand": 3,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_018",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -326,10 +344,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_018",
+      "candidate_id": "Mamba_019",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 128,
@@ -344,10 +362,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_019",
+      "candidate_id": "Mamba_020",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
@@ -362,10 +380,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_020",
+      "candidate_id": "Mamba_021",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
@@ -380,10 +398,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_021",
+      "candidate_id": "Mamba_022",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 96,
@@ -398,10 +416,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_022",
+      "candidate_id": "Mamba_023",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -416,33 +434,15 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_023",
+      "candidate_id": "Mamba_024",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 128,
         "dropout": 0.1,
         "dt_rank": 16,
-        "e_layers": 2,
-        "expand": 2,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_train"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_024",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 2,
-        "d_ff": 12,
-        "d_layers": 1,
-        "d_model": 96,
-        "dropout": 0.1,
-        "dt_rank": 32,
         "e_layers": 2,
         "expand": 2,
         "learning_rate": 0.0001,
@@ -456,6 +456,24 @@
       "is_default": false,
       "run_args": {
         "d_conv": 4,
+        "d_ff": 12,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "dt_rank": 32,
+        "e_layers": 2,
+        "expand": 2,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_026",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 6,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -470,10 +488,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_026",
+      "candidate_id": "Mamba_027",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -488,10 +506,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_027",
+      "candidate_id": "Mamba_028",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -506,10 +524,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_028",
+      "candidate_id": "Mamba_029",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 64,
@@ -524,10 +542,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_029",
+      "candidate_id": "Mamba_030",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
@@ -542,10 +560,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_030",
+      "candidate_id": "Mamba_031",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 64,
@@ -560,29 +578,11 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_031",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 4,
-        "d_ff": 12,
-        "d_layers": 1,
-        "d_model": 128,
-        "dropout": 0.1,
-        "dt_rank": 8,
-        "e_layers": 2,
-        "expand": 3,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_train"
-    },
-    {
-      "backbone": "Mamba",
       "candidate_id": "Mamba_032",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
-        "d_ff": 8,
+        "d_conv": 6,
+        "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
         "dropout": 0.1,
@@ -599,7 +599,25 @@
       "candidate_id": "Mamba_033",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 5,
+        "d_ff": 8,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "dt_rank": 8,
+        "e_layers": 2,
+        "expand": 3,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_034",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 4,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 96,
@@ -614,10 +632,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_034",
+      "candidate_id": "Mamba_035",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 96,
@@ -632,10 +650,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_035",
+      "candidate_id": "Mamba_036",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 128,
@@ -650,33 +668,15 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_036",
+      "candidate_id": "Mamba_037",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
         "dropout": 0.1,
         "dt_rank": 32,
-        "e_layers": 2,
-        "expand": 2,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_train"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_037",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 3,
-        "d_ff": 16,
-        "d_layers": 1,
-        "d_model": 96,
-        "dropout": 0.1,
-        "dt_rank": 16,
         "e_layers": 2,
         "expand": 2,
         "learning_rate": 0.0001,
@@ -689,14 +689,14 @@
       "candidate_id": "Mamba_038",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
-        "d_ff": 12,
+        "d_conv": 5,
+        "d_ff": 16,
         "d_layers": 1,
-        "d_model": 64,
+        "d_model": 96,
         "dropout": 0.1,
-        "dt_rank": 32,
+        "dt_rank": 16,
         "e_layers": 2,
-        "expand": 3,
+        "expand": 2,
         "learning_rate": 0.0001,
         "seq_len": 96
       },
@@ -707,12 +707,12 @@
       "candidate_id": "Mamba_039",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
-        "d_ff": 8,
+        "d_conv": 5,
+        "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
         "dropout": 0.1,
-        "dt_rank": 8,
+        "dt_rank": 32,
         "e_layers": 2,
         "expand": 3,
         "learning_rate": 0.0001,
@@ -725,7 +725,25 @@
       "candidate_id": "Mamba_040",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
+        "d_ff": 8,
+        "d_layers": 1,
+        "d_model": 64,
+        "dropout": 0.1,
+        "dt_rank": 8,
+        "e_layers": 2,
+        "expand": 3,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_041",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 64,
@@ -740,10 +758,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_041",
+      "candidate_id": "Mamba_042",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -758,10 +776,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_042",
+      "candidate_id": "Mamba_043",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 64,
@@ -776,33 +794,15 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_043",
+      "candidate_id": "Mamba_044",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 128,
         "dropout": 0.1,
         "dt_rank": 32,
-        "e_layers": 2,
-        "expand": 3,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_train"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_044",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 2,
-        "d_ff": 8,
-        "d_layers": 1,
-        "d_model": 128,
-        "dropout": 0.1,
-        "dt_rank": 8,
         "e_layers": 2,
         "expand": 3,
         "learning_rate": 0.0001,
@@ -815,12 +815,12 @@
       "candidate_id": "Mamba_045",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
-        "d_ff": 12,
+        "d_conv": 4,
+        "d_ff": 8,
         "d_layers": 1,
-        "d_model": 96,
+        "d_model": 128,
         "dropout": 0.1,
-        "dt_rank": 16,
+        "dt_rank": 8,
         "e_layers": 2,
         "expand": 3,
         "learning_rate": 0.0001,
@@ -833,7 +833,25 @@
       "candidate_id": "Mamba_046",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
+        "d_ff": 12,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "dt_rank": 16,
+        "e_layers": 2,
+        "expand": 3,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_047",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 5,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -848,10 +866,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_047",
+      "candidate_id": "Mamba_048",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 96,
@@ -866,10 +884,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_048",
+      "candidate_id": "Mamba_049",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -884,10 +902,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_049",
+      "candidate_id": "Mamba_050",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -898,14 +916,14 @@
         "learning_rate": 0.0001,
         "seq_len": 96
       },
-      "split": "proxy_train"
+      "split": "proxy_eval"
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_050",
+      "candidate_id": "Mamba_051",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 128,
@@ -920,10 +938,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_051",
+      "candidate_id": "Mamba_052",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 128,
@@ -938,33 +956,15 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_052",
+      "candidate_id": "Mamba_053",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
         "dropout": 0.1,
         "dt_rank": 32,
-        "e_layers": 2,
-        "expand": 2,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_053",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 2,
-        "d_ff": 8,
-        "d_layers": 1,
-        "d_model": 128,
-        "dropout": 0.1,
-        "dt_rank": 8,
         "e_layers": 2,
         "expand": 2,
         "learning_rate": 0.0001,
@@ -977,7 +977,25 @@
       "candidate_id": "Mamba_054",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
+        "d_ff": 8,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "dt_rank": 8,
+        "e_layers": 2,
+        "expand": 2,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_eval"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_055",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 4,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 96,
@@ -992,10 +1010,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_055",
+      "candidate_id": "Mamba_056",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 64,
@@ -1010,10 +1028,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_056",
+      "candidate_id": "Mamba_057",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -1028,10 +1046,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_057",
+      "candidate_id": "Mamba_058",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -1046,10 +1064,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_058",
+      "candidate_id": "Mamba_059",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 128,
@@ -1064,10 +1082,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_059",
+      "candidate_id": "Mamba_060",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 128,
@@ -1082,31 +1100,13 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_060",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 3,
-        "d_ff": 12,
-        "d_layers": 1,
-        "d_model": 64,
-        "dropout": 0.1,
-        "dt_rank": 8,
-        "e_layers": 2,
-        "expand": 3,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
       "candidate_id": "Mamba_061",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 12,
         "d_layers": 1,
-        "d_model": 128,
+        "d_model": 64,
         "dropout": 0.1,
         "dt_rank": 8,
         "e_layers": 2,
@@ -1121,7 +1121,25 @@
       "candidate_id": "Mamba_062",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 5,
+        "d_ff": 12,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "dt_rank": 8,
+        "e_layers": 2,
+        "expand": 3,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_eval"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_063",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
@@ -1136,10 +1154,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_063",
+      "candidate_id": "Mamba_064",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 96,
@@ -1154,29 +1172,11 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_064",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 4,
-        "d_ff": 12,
-        "d_layers": 1,
-        "d_model": 96,
-        "dropout": 0.1,
-        "dt_rank": 32,
-        "e_layers": 2,
-        "expand": 1,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
       "candidate_id": "Mamba_065",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
-        "d_ff": 8,
+        "d_conv": 6,
+        "d_ff": 12,
         "d_layers": 1,
         "d_model": 96,
         "dropout": 0.1,
@@ -1193,7 +1193,25 @@
       "candidate_id": "Mamba_066",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
+        "d_ff": 8,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "dt_rank": 32,
+        "e_layers": 2,
+        "expand": 1,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_eval"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_067",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 6,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 64,
@@ -1208,10 +1226,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_067",
+      "candidate_id": "Mamba_068",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 64,
@@ -1226,10 +1244,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_068",
+      "candidate_id": "Mamba_069",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 128,
@@ -1244,10 +1262,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_069",
+      "candidate_id": "Mamba_070",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -1262,10 +1280,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_070",
+      "candidate_id": "Mamba_071",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 64,
@@ -1280,33 +1298,15 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_071",
+      "candidate_id": "Mamba_072",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 128,
         "dropout": 0.1,
         "dt_rank": 16,
-        "e_layers": 2,
-        "expand": 3,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_072",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 4,
-        "d_ff": 8,
-        "d_layers": 1,
-        "d_model": 96,
-        "dropout": 0.1,
-        "dt_rank": 8,
         "e_layers": 2,
         "expand": 3,
         "learning_rate": 0.0001,
@@ -1319,12 +1319,12 @@
       "candidate_id": "Mamba_073",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
-        "d_ff": 16,
+        "d_conv": 6,
+        "d_ff": 8,
         "d_layers": 1,
-        "d_model": 64,
+        "d_model": 96,
         "dropout": 0.1,
-        "dt_rank": 32,
+        "dt_rank": 8,
         "e_layers": 2,
         "expand": 3,
         "learning_rate": 0.0001,
@@ -1338,9 +1338,9 @@
       "is_default": false,
       "run_args": {
         "d_conv": 4,
-        "d_ff": 12,
+        "d_ff": 16,
         "d_layers": 1,
-        "d_model": 96,
+        "d_model": 64,
         "dropout": 0.1,
         "dt_rank": 32,
         "e_layers": 2,
@@ -1355,14 +1355,14 @@
       "candidate_id": "Mamba_075",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
-        "d_ff": 8,
+        "d_conv": 6,
+        "d_ff": 12,
         "d_layers": 1,
-        "d_model": 128,
+        "d_model": 96,
         "dropout": 0.1,
         "dt_rank": 32,
         "e_layers": 2,
-        "expand": 2,
+        "expand": 3,
         "learning_rate": 0.0001,
         "seq_len": 96
       },
@@ -1373,10 +1373,10 @@
       "candidate_id": "Mamba_076",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
-        "d_ff": 12,
+        "d_conv": 6,
+        "d_ff": 8,
         "d_layers": 1,
-        "d_model": 64,
+        "d_model": 128,
         "dropout": 0.1,
         "dt_rank": 32,
         "e_layers": 2,
@@ -1391,25 +1391,7 @@
       "candidate_id": "Mamba_077",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
-        "d_ff": 16,
-        "d_layers": 1,
-        "d_model": 96,
-        "dropout": 0.1,
-        "dt_rank": 32,
-        "e_layers": 2,
-        "expand": 3,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_078",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 2,
+        "d_conv": 5,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -1424,17 +1406,35 @@
     },
     {
       "backbone": "Mamba",
+      "candidate_id": "Mamba_078",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 5,
+        "d_ff": 16,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "dt_rank": 32,
+        "e_layers": 2,
+        "expand": 3,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_eval"
+    },
+    {
+      "backbone": "Mamba",
       "candidate_id": "Mamba_079",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
-        "d_model": 128,
+        "d_model": 64,
         "dropout": 0.1,
-        "dt_rank": 8,
+        "dt_rank": 32,
         "e_layers": 2,
-        "expand": 3,
+        "expand": 2,
         "learning_rate": 0.0001,
         "seq_len": 96
       },
@@ -1445,14 +1445,14 @@
       "candidate_id": "Mamba_080",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
-        "d_ff": 16,
+        "d_conv": 4,
+        "d_ff": 12,
         "d_layers": 1,
-        "d_model": 96,
+        "d_model": 128,
         "dropout": 0.1,
-        "dt_rank": 16,
+        "dt_rank": 8,
         "e_layers": 2,
-        "expand": 2,
+        "expand": 3,
         "learning_rate": 0.0001,
         "seq_len": 96
       },
@@ -1466,6 +1466,24 @@
         "d_conv": 4,
         "d_ff": 16,
         "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "dt_rank": 16,
+        "e_layers": 2,
+        "expand": 2,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_eval"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_082",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 6,
+        "d_ff": 16,
+        "d_layers": 1,
         "d_model": 128,
         "dropout": 0.1,
         "dt_rank": 8,
@@ -1478,10 +1496,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_082",
+      "candidate_id": "Mamba_083",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 128,
@@ -1496,10 +1514,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_083",
+      "candidate_id": "Mamba_084",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 96,
@@ -1514,33 +1532,15 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_084",
+      "candidate_id": "Mamba_085",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 64,
         "dropout": 0.1,
         "dt_rank": 8,
-        "e_layers": 2,
-        "expand": 3,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_085",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 3,
-        "d_ff": 12,
-        "d_layers": 1,
-        "d_model": 64,
-        "dropout": 0.1,
-        "dt_rank": 16,
         "e_layers": 2,
         "expand": 3,
         "learning_rate": 0.0001,
@@ -1553,7 +1553,25 @@
       "candidate_id": "Mamba_086",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 5,
+        "d_ff": 12,
+        "d_layers": 1,
+        "d_model": 64,
+        "dropout": 0.1,
+        "dt_rank": 16,
+        "e_layers": 2,
+        "expand": 3,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_eval"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_087",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 96,
@@ -1568,10 +1586,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_087",
+      "candidate_id": "Mamba_088",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 128,
@@ -1586,33 +1604,15 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_088",
+      "candidate_id": "Mamba_089",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 8,
         "d_layers": 1,
         "d_model": 64,
         "dropout": 0.1,
         "dt_rank": 32,
-        "e_layers": 2,
-        "expand": 1,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_089",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 4,
-        "d_ff": 16,
-        "d_layers": 1,
-        "d_model": 128,
-        "dropout": 0.1,
-        "dt_rank": 16,
         "e_layers": 2,
         "expand": 1,
         "learning_rate": 0.0001,
@@ -1625,7 +1625,25 @@
       "candidate_id": "Mamba_090",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 6,
+        "d_ff": 16,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "dt_rank": 16,
+        "e_layers": 2,
+        "expand": 1,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_eval"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_091",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 5,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -1640,10 +1658,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_091",
+      "candidate_id": "Mamba_092",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 64,
@@ -1658,10 +1676,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_092",
+      "candidate_id": "Mamba_093",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 128,
@@ -1676,31 +1694,13 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_093",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 3,
-        "d_ff": 8,
-        "d_layers": 1,
-        "d_model": 64,
-        "dropout": 0.1,
-        "dt_rank": 16,
-        "e_layers": 2,
-        "expand": 2,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
       "candidate_id": "Mamba_094",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 5,
         "d_ff": 8,
         "d_layers": 1,
-        "d_model": 128,
+        "d_model": 64,
         "dropout": 0.1,
         "dt_rank": 16,
         "e_layers": 2,
@@ -1715,7 +1715,25 @@
       "candidate_id": "Mamba_095",
       "is_default": false,
       "run_args": {
-        "d_conv": 3,
+        "d_conv": 4,
+        "d_ff": 8,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "dt_rank": 16,
+        "e_layers": 2,
+        "expand": 2,
+        "learning_rate": 0.0001,
+        "seq_len": 96
+      },
+      "split": "proxy_eval"
+    },
+    {
+      "backbone": "Mamba",
+      "candidate_id": "Mamba_096",
+      "is_default": false,
+      "run_args": {
+        "d_conv": 5,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 128,
@@ -1730,10 +1748,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_096",
+      "candidate_id": "Mamba_097",
       "is_default": false,
       "run_args": {
-        "d_conv": 2,
+        "d_conv": 4,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 64,
@@ -1748,10 +1766,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_097",
+      "candidate_id": "Mamba_098",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 12,
         "d_layers": 1,
         "d_model": 96,
@@ -1766,10 +1784,10 @@
     },
     {
       "backbone": "Mamba",
-      "candidate_id": "Mamba_098",
+      "candidate_id": "Mamba_099",
       "is_default": false,
       "run_args": {
-        "d_conv": 4,
+        "d_conv": 6,
         "d_ff": 16,
         "d_layers": 1,
         "d_model": 64,
@@ -1781,27 +1799,9 @@
         "seq_len": 96
       },
       "split": "proxy_eval"
-    },
-    {
-      "backbone": "Mamba",
-      "candidate_id": "Mamba_099",
-      "is_default": false,
-      "run_args": {
-        "d_conv": 4,
-        "d_ff": 8,
-        "d_layers": 1,
-        "d_model": 96,
-        "dropout": 0.1,
-        "dt_rank": 16,
-        "e_layers": 2,
-        "expand": 1,
-        "learning_rate": 0.0001,
-        "seq_len": 96
-      },
-      "split": "proxy_eval"
     }
   ],
-  "created_at": "2026-05-28T11:37:12.826251+00:00",
+  "created_at": "2026-06-01T12:24:39.907582+00:00",
   "sampling": {
     "backbones": [
       "Mamba"

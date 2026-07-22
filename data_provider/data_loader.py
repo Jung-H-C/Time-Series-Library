@@ -1,10 +1,14 @@
 import os
 from bisect import bisect_right
+from collections import OrderedDict
+import hashlib
+import json
 import numpy as np
 import pandas as pd
 import glob
 import re
 import shutil
+import threading
 import torch
 import zipfile
 import tarfile
@@ -1663,6 +1667,534 @@ class Dataset_MonashTSFGeneric(Dataset):
         if not self.scale:
             return data
         return self.scaler.inverse_transform(data)
+
+
+class Dataset_MultiSeriesForecast(Dataset):
+    """Long-term forecasting loader for collections of independent series.
+
+    Supported sources are Monash TSF/RDS and TIME Arrow stream files. Every
+    source row (or RDS metric group) remains an independent series. Splits are
+    computed per series using 70/10/20 target ranges; validation and test may
+    use ``seq_len`` observations immediately before their target range as
+    forecasting context, but prediction targets never cross split boundaries.
+    """
+
+    _TIME_COLUMN_NAMES = {"time", "date", "datetime", "timestamp", "utc"}
+    _ID_COLUMN_NAMES = {"id", "unit", "series_id", "series_name", "count"}
+
+    def __init__(
+        self,
+        args,
+        root_path,
+        flag="train",
+        size=None,
+        features="M",
+        data_path="",
+        target="OT",
+        scale=True,
+        timeenc=0,
+        freq="h",
+        seasonal_patterns=None,
+    ):
+        if size is None:
+            self.seq_len, self.label_len, self.pred_len = 96, 48, 96
+        else:
+            self.seq_len, self.label_len, self.pred_len = size
+        if flag not in {"train", "val", "test"}:
+            raise ValueError(f"Unsupported split: {flag}")
+
+        self.args = args
+        self.flag = flag
+        self.features = features
+        self.scale = scale
+        self.root_path = root_path
+        self.data_path = data_path
+        self.series_descriptors = []
+        self.series_start_offsets = []
+        self.series_window_counts = []
+        self.cumulative_windows = np.array([], dtype=np.int64)
+        self.selected_window_indices = None
+        self.scaler = StandardScaler()
+        self.lru_cache_size = max(1, int(getattr(args, "multi_series_lru_size", 8)))
+        self._series_cache = OrderedDict()
+        # Arrow stream files are not row-seekable. Keep only the most recently
+        # used record batch so hundreds of selected rows do not rescan a large
+        # stream file for every series.
+        self._arrow_batch_cache = OrderedDict()
+
+        # These sources do not consistently provide timestamps. Zero-valued
+        # hourly marks preserve the standard long-term model input contract.
+        mark_dim = 4
+        self.seq_x_mark_template = np.zeros((self.seq_len, mark_dim), dtype=np.float32)
+        self.seq_y_mark_template = np.zeros(
+            (self.label_len + self.pred_len, mark_dim), dtype=np.float32
+        )
+        self.__read_data__()
+
+    def _source_paths(self):
+        pattern = os.path.join(self.root_path, self.data_path)
+        paths = sorted(glob.glob(pattern))
+        if not paths and os.path.isfile(pattern):
+            paths = [pattern]
+        if not paths:
+            raise FileNotFoundError(
+                f"No multi-series source files match root_path={self.root_path!r}, "
+                f"data_path={self.data_path!r}."
+            )
+        return [os.path.abspath(path) for path in paths]
+
+    @staticmethod
+    def _clean_values(values):
+        array = np.asarray(values, dtype=np.float32)
+        if array.ndim == 1:
+            array = array[:, None]
+        if array.ndim != 2:
+            raise ValueError(f"Expected [length, channels], got shape={array.shape}")
+        if array.shape[0] == 0 or array.shape[1] == 0:
+            return None
+        for channel in range(array.shape[1]):
+            column = array[:, channel]
+            finite = np.isfinite(column)
+            if finite.all():
+                continue
+            if not finite.any():
+                column[:] = 0.0
+            elif finite.sum() == 1:
+                column[:] = column[finite][0]
+            else:
+                indices = np.arange(len(column))
+                column[~finite] = np.interp(indices[~finite], indices[finite], column[finite])
+        return array
+
+    @staticmethod
+    def _arrow_reader(path):
+        try:
+            import pyarrow.ipc as ipc
+        except ImportError as exc:
+            raise ImportError("pyarrow is required to load TIME .arrow datasets") from exc
+        return ipc
+
+    @classmethod
+    def _rds_value_column(cls, frame):
+        if "sum" in frame.columns:
+            return "sum"
+        candidates = []
+        for column in frame.columns:
+            name = str(column).lower()
+            if name in cls._TIME_COLUMN_NAMES or name in cls._ID_COLUMN_NAMES or name == "metric":
+                continue
+            if pd.api.types.is_numeric_dtype(frame[column]):
+                candidates.append(column)
+        if not candidates:
+            raise ValueError("RDS data frame contains no usable numeric value column")
+        return candidates[0]
+
+    @classmethod
+    def _read_rds_frame(cls, path):
+        try:
+            import pyreadr
+        except ImportError as exc:
+            raise ImportError("pyreadr is required to load Monash .rds datasets") from exc
+
+        objects = pyreadr.read_r(path)
+        if not objects:
+            raise ValueError(f"pyreadr returned no objects for {path}")
+        return next(iter(objects.values()))
+
+    @classmethod
+    def _rds_groups(cls, frame):
+        value_column = cls._rds_value_column(frame)
+        time_columns = [
+            column for column in frame.columns if str(column).lower() in cls._TIME_COLUMN_NAMES
+        ]
+        groups = (
+            frame.groupby("metric", sort=False, dropna=False)
+            if "metric" in frame.columns
+            else [(None, frame)]
+        )
+        for metric, group in groups:
+            if time_columns:
+                group = group.sort_values(time_columns[0], kind="stable")
+            values = pd.to_numeric(group[value_column], errors="coerce").to_numpy(dtype=np.float32)
+            values = cls._clean_values(values)
+            if values is not None:
+                metric_key = None if metric is None or pd.isna(metric) else str(metric)
+                yield metric_key, values
+
+    def _source_signature(self, paths):
+        entries = [
+            [path, os.path.getsize(path), os.stat(path).st_mtime_ns]
+            for path in paths
+        ]
+        encoded = json.dumps(entries, separators=(",", ":")).encode("utf-8")
+        return entries, hashlib.blake2b(encoded, digest_size=16).hexdigest()
+
+    def _cache_directory(self):
+        cache_dir = os.path.join(os.path.abspath(self.root_path), ".cache", "multi_series")
+        os.makedirs(cache_dir, exist_ok=True)
+        return cache_dir
+
+    def _dataset_cache_stem(self):
+        identity = f"{os.path.abspath(self.root_path)}|{self.data_path}"
+        return hashlib.blake2b(identity.encode("utf-8"), digest_size=12).hexdigest()
+
+    @staticmethod
+    def _update_stats(values, accumulator):
+        train_end = int(len(values) * 0.7)
+        if train_end <= 0:
+            return
+        train = values[:train_end].astype(np.float64)
+        if accumulator[0] is None:
+            accumulator[0] = np.zeros(train.shape[1], dtype=np.float64)
+            accumulator[1] = np.zeros(train.shape[1], dtype=np.float64)
+        accumulator[0] += train.sum(axis=0)
+        accumulator[1] += np.square(train).sum(axis=0)
+        accumulator[2] += len(train)
+
+    def _scan_tsf(self, path, descriptors, stats):
+        attribute_count = 0
+        in_data = False
+        with open(path, "rb") as handle:
+            while True:
+                offset = handle.tell()
+                raw_line = handle.readline()
+                if not raw_line:
+                    break
+                line = raw_line.decode("utf-8", errors="replace").strip()
+                if not line or line.startswith("#"):
+                    continue
+                lowered = line.lower()
+                if not in_data:
+                    if lowered.startswith("@attribute"):
+                        attribute_count += 1
+                    elif lowered == "@data":
+                        in_data = True
+                    continue
+                parts = line.split(":", attribute_count)
+                if len(parts) != attribute_count + 1:
+                    raise ValueError(f"Malformed TSF row at byte {offset} in {path}")
+                tokens = parts[-1].split(",") if parts[-1] else []
+                raw_values = [np.nan if token == "?" else float(token) for token in tokens]
+                values = self._clean_values(raw_values)
+                if values is None:
+                    continue
+                descriptors.append(
+                    {
+                        "format": "tsf",
+                        "path": path,
+                        "offset": offset,
+                        "attribute_count": attribute_count,
+                        "length": len(values),
+                        "channels": values.shape[1],
+                    }
+                )
+                self._update_stats(values, stats)
+        if not in_data:
+            raise ValueError(f"Missing @data section in {path}")
+
+    def _scan_arrow(self, path, descriptors, stats):
+        ipc = self._arrow_reader(path)
+        with open(path, "rb") as handle:
+            reader = ipc.open_stream(handle)
+            if "target" not in reader.schema.names:
+                raise ValueError(f"Arrow file has no target column: {path}")
+            target_index = reader.schema.get_field_index("target")
+            for batch_index, batch in enumerate(reader):
+                targets = batch.column(target_index).to_pylist()
+                for row_index, target in enumerate(targets):
+                    raw = np.asarray(target, dtype=np.float32)
+                    values = self._clean_values(raw.T if raw.ndim == 2 else raw)
+                    if values is None:
+                        continue
+                    descriptors.append(
+                        {
+                            "format": "arrow",
+                            "path": path,
+                            "batch_index": batch_index,
+                            "row_index": row_index,
+                            "length": len(values),
+                            "channels": values.shape[1],
+                        }
+                    )
+                    self._update_stats(values, stats)
+
+    def _scan_rds(self, path, descriptors, stats):
+        frame = self._read_rds_frame(path)
+        for metric, values in self._rds_groups(frame):
+            descriptors.append(
+                {
+                    "format": "rds",
+                    "path": path,
+                    "metric": metric,
+                    "length": len(values),
+                    "channels": values.shape[1],
+                }
+            )
+            self._update_stats(values, stats)
+
+    def _build_metadata(self, paths, signature_entries, signature_hash):
+        descriptors = []
+        stats = [None, None, 0]
+        for path in paths:
+            suffix = os.path.splitext(path)[1].lower()
+            if suffix == ".tsf":
+                self._scan_tsf(path, descriptors, stats)
+            elif suffix == ".arrow":
+                self._scan_arrow(path, descriptors, stats)
+            elif suffix == ".rds":
+                self._scan_rds(path, descriptors, stats)
+            else:
+                raise ValueError(f"Unsupported multi-series source format: {path}")
+        if not descriptors or stats[2] <= 0:
+            raise ValueError("No usable time series were found while building metadata")
+        channel_counts = {descriptor["channels"] for descriptor in descriptors}
+        if len(channel_counts) != 1:
+            raise ValueError(f"Mixed channel counts in dataset: {sorted(channel_counts)}")
+        mean = stats[0] / stats[2]
+        variance = np.maximum(stats[1] / stats[2] - np.square(mean), 0.0)
+        scale = np.sqrt(variance)
+        scale[scale == 0] = 1.0
+        return {
+            "version": 1,
+            "signature": signature_entries,
+            "signature_hash": signature_hash,
+            "channels": next(iter(channel_counts)),
+            "series": descriptors,
+            "train_statistics": {
+                "count": stats[2],
+                "mean": mean.tolist(),
+                "variance": variance.tolist(),
+                "scale": scale.tolist(),
+            },
+        }
+
+    def _load_or_build_metadata(self, paths):
+        signature_entries, signature_hash = self._source_signature(paths)
+        cache_dir = self._cache_directory()
+        stem = self._dataset_cache_stem()
+        cache_path = os.path.join(cache_dir, f"{stem}.metadata.json")
+        lock_path = os.path.join(cache_dir, f"{stem}.lock")
+        try:
+            import fcntl
+        except ImportError:
+            fcntl = None
+        with open(lock_path, "a+", encoding="utf-8") as lock_handle:
+            if fcntl is not None:
+                fcntl.flock(lock_handle.fileno(), fcntl.LOCK_EX)
+            metadata = None
+            if os.path.isfile(cache_path):
+                try:
+                    with open(cache_path, "r", encoding="utf-8") as handle:
+                        candidate = json.load(handle)
+                    if candidate.get("signature_hash") == signature_hash:
+                        metadata = candidate
+                except (OSError, ValueError, json.JSONDecodeError):
+                    metadata = None
+            if metadata is None:
+                print(f"[multi-series-cache] building {cache_path}")
+                metadata = self._build_metadata(paths, signature_entries, signature_hash)
+                temp_path = f"{cache_path}.tmp.{os.getpid()}.{threading.get_ident()}"
+                with open(temp_path, "w", encoding="utf-8") as handle:
+                    json.dump(metadata, handle, separators=(",", ":"))
+                os.replace(temp_path, cache_path)
+            else:
+                print(f"[multi-series-cache] using {cache_path}")
+            if fcntl is not None:
+                fcntl.flock(lock_handle.fileno(), fcntl.LOCK_UN)
+        return metadata, cache_dir, stem
+
+    def _split_bounds(self, series_length):
+        train_end = int(series_length * 0.7)
+        valid_end = int(series_length * 0.8)
+        target_start = {"train": self.seq_len, "val": train_end, "test": valid_end}[self.flag]
+        target_end = {"train": train_end, "val": valid_end, "test": series_length}[self.flag]
+        first_window_start = target_start - self.seq_len
+        count = target_end - target_start - self.pred_len + 1
+        if first_window_start < 0 or count <= 0:
+            return None
+        return first_window_start, count, train_end
+
+    def _split_limit(self):
+        names = {
+            "train": "long_term_train_sample_limit",
+            "val": "long_term_val_sample_limit",
+            "test": "long_term_test_sample_limit",
+        }
+        defaults = {"train": 5000, "val": 600, "test": 1400}
+        return int(getattr(self.args, names[self.flag], defaults[self.flag]))
+
+    def _deterministic_subset(self, total_windows, cache_dir, stem, signature_hash):
+        limit = self._split_limit()
+        if limit <= 0 or total_windows <= limit:
+            return None
+        seed = int(getattr(self.args, "candidate_sample_seed", 2026))
+        identity = "|".join(
+            [
+                signature_hash,
+                self.flag,
+                str(self.seq_len),
+                str(self.pred_len),
+                str(limit),
+                str(seed),
+            ]
+        )
+        digest = hashlib.blake2b(identity.encode("utf-8"), digest_size=16).hexdigest()
+        index_path = os.path.join(cache_dir, f"{stem}.{digest}.indices.json")
+        if os.path.isfile(index_path):
+            try:
+                with open(index_path, "r", encoding="utf-8") as handle:
+                    indices = np.asarray(json.load(handle)["indices"], dtype=np.int64)
+                if len(indices) == limit and (indices < total_windows).all():
+                    return indices
+            except (OSError, ValueError, KeyError, json.JSONDecodeError):
+                pass
+        numeric_seed = int(digest[:16], 16) % (2 ** 32)
+        rng = np.random.default_rng(numeric_seed)
+        indices = np.sort(rng.choice(total_windows, size=limit, replace=False)).astype(np.int64)
+        temp_path = f"{index_path}.tmp.{os.getpid()}.{threading.get_ident()}"
+        with open(temp_path, "w", encoding="utf-8") as handle:
+            json.dump({"total_windows": total_windows, "indices": indices.tolist()}, handle)
+        try:
+            os.replace(temp_path, index_path)
+        except FileNotFoundError:
+            pass
+        return indices
+
+    def __read_data__(self):
+        paths = self._source_paths()
+        metadata, cache_dir, stem = self._load_or_build_metadata(paths)
+        actual_channels = int(metadata["channels"])
+        expected_channels = int(getattr(self.args, "enc_in", actual_channels))
+        if expected_channels != actual_channels:
+            raise ValueError(
+                f"Configured enc_in={expected_channels}, but source has {actual_channels} channels"
+            )
+
+        stats = metadata["train_statistics"]
+        self.scaler.mean_ = np.asarray(stats["mean"], dtype=np.float64)
+        self.scaler.var_ = np.asarray(stats["variance"], dtype=np.float64)
+        self.scaler.scale_ = np.asarray(stats["scale"], dtype=np.float64)
+        self.scaler.n_features_in_ = actual_channels
+        self.scaler.n_samples_seen_ = int(stats["count"])
+
+        cumulative = []
+        running_total = 0
+        for descriptor in metadata["series"]:
+            bounds = self._split_bounds(int(descriptor["length"]))
+            if bounds is None:
+                continue
+            start, count, train_end = bounds
+            self.series_descriptors.append(descriptor)
+            self.series_start_offsets.append(start)
+            self.series_window_counts.append(count)
+            running_total += count
+            cumulative.append(running_total)
+        if not cumulative:
+            raise ValueError(
+                f"No series has a usable {self.flag} split for seq_len={self.seq_len}, "
+                f"pred_len={self.pred_len}"
+            )
+
+        self.cumulative_windows = np.asarray(cumulative, dtype=np.int64)
+        self.selected_window_indices = self._deterministic_subset(
+            running_total, cache_dir, stem, metadata["signature_hash"]
+        )
+        selected = running_total if self.selected_window_indices is None else len(self.selected_window_indices)
+        print(
+            f"[multi-series-subset] {self.flag}: total={running_total}, selected={selected}, "
+            f"limit={self._split_limit()}, seed={getattr(self.args, 'candidate_sample_seed', 2026)}"
+        )
+
+    def _load_descriptor(self, descriptor):
+        source_format = descriptor["format"]
+        path = descriptor["path"]
+        if source_format == "tsf":
+            with open(path, "rb") as handle:
+                handle.seek(int(descriptor["offset"]))
+                line = handle.readline().decode("utf-8", errors="replace").strip()
+            parts = line.split(":", int(descriptor["attribute_count"]))
+            tokens = parts[-1].split(",") if parts[-1] else []
+            values = self._clean_values([np.nan if token == "?" else float(token) for token in tokens])
+        elif source_format == "arrow":
+            batch_key = (path, int(descriptor["batch_index"]))
+            batch_entry = self._arrow_batch_cache.get(batch_key)
+            if batch_entry is None:
+                ipc = self._arrow_reader(path)
+                with open(path, "rb") as handle:
+                    reader = ipc.open_stream(handle)
+                    target_index = reader.schema.get_field_index("target")
+                    batch_entry = None
+                    for batch_index, batch in enumerate(reader):
+                        if batch_index == batch_key[1]:
+                            batch_entry = (batch, target_index)
+                            break
+                if batch_entry is not None:
+                    self._arrow_batch_cache.clear()
+                    self._arrow_batch_cache[batch_key] = batch_entry
+            values = None
+            if batch_entry is not None:
+                batch, target_index = batch_entry
+                target = batch.column(target_index)[int(descriptor["row_index"])].as_py()
+                raw = np.asarray(target, dtype=np.float32)
+                values = self._clean_values(raw.T if raw.ndim == 2 else raw)
+        elif source_format == "rds":
+            frame = self._read_rds_frame(path)
+            values = None
+            requested_metric = descriptor.get("metric")
+            for metric, candidate in self._rds_groups(frame):
+                if metric == requested_metric:
+                    values = candidate
+                    break
+        else:
+            raise ValueError(f"Unsupported descriptor format: {source_format}")
+        if values is None:
+            raise ValueError(f"Could not load cached series descriptor: {descriptor}")
+        if self.scale:
+            values = self.scaler.transform(values).astype(np.float32)
+        return values
+
+    def _series_values(self, series_index):
+        if series_index in self._series_cache:
+            values = self._series_cache.pop(series_index)
+            self._series_cache[series_index] = values
+            return values
+        values = self._load_descriptor(self.series_descriptors[series_index])
+        self._series_cache[series_index] = values
+        while len(self._series_cache) > self.lru_cache_size:
+            self._series_cache.popitem(last=False)
+        return values
+
+    def __getitem__(self, index):
+        if index < 0:
+            index += len(self)
+        if index < 0 or index >= len(self):
+            raise IndexError(index)
+        global_index = (
+            int(self.selected_window_indices[index])
+            if self.selected_window_indices is not None
+            else index
+        )
+        series_index = bisect_right(self.cumulative_windows, global_index)
+        previous = 0 if series_index == 0 else int(self.cumulative_windows[series_index - 1])
+        start = self.series_start_offsets[series_index] + global_index - previous
+        input_end = start + self.seq_len
+        target_start = input_end - self.label_len
+        target_end = input_end + self.pred_len
+        values = self._series_values(series_index)
+        return (
+            values[start:input_end],
+            values[target_start:target_end],
+            self.seq_x_mark_template.copy(),
+            self.seq_y_mark_template.copy(),
+        )
+
+    def __len__(self):
+        if self.selected_window_indices is not None:
+            return len(self.selected_window_indices)
+        return int(self.cumulative_windows[-1]) if self.cumulative_windows.size else 0
+
+    def inverse_transform(self, data):
+        return self.scaler.inverse_transform(data) if self.scale else data
 
 
 class Dataset_TourismMonthlyTSF(Dataset):

@@ -110,12 +110,22 @@ if __name__ == '__main__':
                         help='Optional deterministic train mini-batch cap for candidate runs; 0 disables it.')
     parser.add_argument('--candidate_sample_seed', type=int, default=2026,
                         help='Seed used to select deterministic candidate-run dataset subsets.')
+    parser.add_argument('--long_term_train_sample_limit', type=int, default=5000,
+                        help='Deterministic long-term train sample cap; <=0 disables it.')
+    parser.add_argument('--long_term_val_sample_limit', type=int, default=600,
+                        help='Deterministic long-term validation sample cap; <=0 disables it.')
+    parser.add_argument('--long_term_test_sample_limit', type=int, default=1400,
+                        help='Deterministic long-term test sample cap; <=0 disables it.')
+    parser.add_argument('--multi_series_lru_size', type=int, default=8,
+                        help='Maximum number of lazily loaded source series cached per worker.')
 
     # GPU
     parser.add_argument('--use_gpu', action='store_true', default=True, help='use gpu (default: on)')
     parser.add_argument('--no_use_gpu', action='store_false', dest='use_gpu', help='disable gpu (force cpu)')
     parser.add_argument('--gpu', type=int, default=0, help='gpu')
     parser.add_argument('--gpu_type', type=str, default='cuda', help='gpu type')  # cuda or mps
+    parser.add_argument('--gpu_memory_limit_mb', type=int, default=0,
+                        help='Per-process CUDA allocator cap in MB; 0 disables it.')
     parser.add_argument('--use_multi_gpu', action='store_true', help='use multiple gpus', default=False)
     parser.add_argument('--devices', type=str, default='0,1,2,3', help='device ids of multile gpus')
 
@@ -174,6 +184,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if torch.cuda.is_available() and args.use_gpu:
         args.device = torch.device('cuda:{}'.format(args.gpu))
+        if args.gpu_memory_limit_mb > 0:
+            total_memory_mb = torch.cuda.get_device_properties(args.gpu).total_memory / (1024 ** 2)
+            fraction = min(1.0, args.gpu_memory_limit_mb / total_memory_mb)
+            torch.cuda.set_per_process_memory_fraction(fraction, device=args.gpu)
+            print(
+                f'CUDA allocator limit: {args.gpu_memory_limit_mb} MB '
+                f'({fraction:.4f} of GPU {args.gpu})'
+            )
         print('Using GPU')
     else:
         if hasattr(torch.backends, "mps"):

@@ -22,6 +22,18 @@ from proxy_experiment_config import (
 
 
 BOOL_FLAGS = {"individual", "inverse", "use_amp", "use_dtw", "no_use_gpu"}
+DEFAULT_FIXED_SEQ_LEN = 96
+DEFAULT_FIXED_PRED_LEN = 96
+ILI_FIXED_SEQ_LEN = 36
+ILI_FIXED_PRED_LEN = 36
+
+
+def fixed_seq_len_for(dataset: DatasetSpec) -> int:
+    return ILI_FIXED_SEQ_LEN if dataset.name == "ILI" else DEFAULT_FIXED_SEQ_LEN
+
+
+def fixed_pred_len_for(dataset: DatasetSpec) -> int:
+    return ILI_FIXED_PRED_LEN if dataset.name == "ILI" else DEFAULT_FIXED_PRED_LEN
 
 
 def load_candidates(path: Path) -> list[dict[str, Any]]:
@@ -47,7 +59,10 @@ def parse_args() -> argparse.Namespace:
         "--datasets",
         nargs="+",
         default=["all"],
-        help="Datasets to run: ECL ETTh1 Exchange ILI Traffic Weather, or all.",
+        help=(
+            "Datasets to run. Use benchmarks, monash, time, or all for groups; "
+            "individual horizon=96 datasets use Monash__<name> or TIME__<name>."
+        ),
     )
     parser.add_argument(
         "--backbones",
@@ -59,50 +74,15 @@ def parse_args() -> argparse.Namespace:
         "--splits",
         nargs="+",
         default=["all"],
-        choices=["all", "proxy_train", "proxy_eval"],
+        choices=["all", "proxy_train", "proxy_valid", "proxy_test", "proxy_eval"],
         help="Candidate split filter.",
     )
     parser.add_argument("--candidate-ids", nargs="+", default=None, help="Optional candidate_id filter.")
     parser.add_argument(
-        "--pred-lens",
-        type=int,
-        nargs="+",
-        default=None,
-        help="Prediction horizons. Default: each dataset's canonical horizons.",
-    )
-    parser.add_argument(
-        "--dataset-pred-lens",
-        dest="dataset_pred_len_overrides",
-        action="append",
-        default=[],
-        metavar="DATASET=PRED_LEN[,PRED_LEN...]",
-        help=(
-            "Dataset-specific prediction horizon override. Can be repeated. "
-            "Example: --dataset-pred-lens Exchange=96 --dataset-pred-lens ILI=24"
-        ),
-    )
-    parser.add_argument(
-        "--fixed-seq-len",
-        type=int,
-        default=None,
-        help="Override sampled candidate seq_len for all runs.",
-    )
-    parser.add_argument(
-        "--dataset-seq-len",
-        dest="dataset_seq_len_overrides",
-        action="append",
-        default=[],
-        metavar="DATASET=SEQ_LEN",
-        help=(
-            "Dataset-specific seq_len override. Can be repeated. "
-            "Example: --dataset-seq-len Exchange=96 --dataset-seq-len ILI=36"
-        ),
-    )
-    parser.add_argument(
         "--label-len",
         type=int,
         default=None,
-        help="Override decoder label_len. Default: min(dataset default, seq_len//2).",
+        help="Override decoder label_len. Default: min(dataset default, fixed seq_len//2).",
     )
     parser.add_argument(
         "--train-epochs",
@@ -114,8 +94,35 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=None, help="Override dataset default batch size.")
     parser.add_argument("--learning-rate", type=float, default=None, help="Override candidate learning_rate.")
     parser.add_argument("--num-workers", type=int, default=None, help="Override run.py num_workers.")
-    parser.add_argument("--gpu", type=int, default=None, help="GPU id passed to run.py.")
+    parser.add_argument("--train-sample-limit", type=int, default=5000)
+    parser.add_argument("--val-sample-limit", type=int, default=600)
+    parser.add_argument("--test-sample-limit", type=int, default=1400)
+    parser.add_argument("--sample-seed", type=int, default=2026)
+    parser.add_argument("--multi-series-lru-size", type=int, default=8)
+    parser.add_argument(
+        "--gpu",
+        "--gpu-ids",
+        dest="gpu_ids",
+        nargs="+",
+        default=None,
+        help=(
+            "GPU id(s) passed to run.py. Supports space-separated or comma-separated values, "
+            "e.g. --gpu 0 1 2 3 or --gpu 0,1,2,3."
+        ),
+    )
     parser.add_argument("--gpu-type", default=None, choices=["cuda", "mps"], help="GPU type passed to run.py.")
+    parser.add_argument(
+        "--gpu-memory-limit-mb",
+        type=int,
+        default=30000,
+        help="Maximum aggregate memory budget used for scheduling on each GPU.",
+    )
+    parser.add_argument(
+        "--job-gpu-memory-mb",
+        type=int,
+        default=2400,
+        help="Memory reservation per job; default permits at most two jobs per 28000 MB GPU budget.",
+    )
     parser.add_argument("--no-use-gpu", action="store_true", help="Pass --no_use_gpu to run.py.")
     parser.add_argument(
         "--python-cmd",
@@ -156,7 +163,7 @@ def parse_args() -> argparse.Namespace:
         "--n-jobs",
         dest="n_jobs",
         type=int,
-        default=1,
+        default=16,
         help="Number of parallel worker threads. Each worker launches one independent run.py process at a time.",
     )
     parser.add_argument("--execute", action="store_true", help="Actually launch run.py. Default is dry-run.")
@@ -164,15 +171,46 @@ def parse_args() -> argparse.Namespace:
 
 
 def selected_datasets(values: list[str]) -> list[DatasetSpec]:
-    if values == ["all"] or "all" in values:
+    tokens = [piece.strip() for value in values for piece in value.split(",") if piece.strip()]
+    if tokens == ["all"] or "all" in tokens:
         return [DATASETS[name] for name in DATASETS]
-    return [DATASETS[normalize_dataset(value)] for value in values]
+    selected: list[DatasetSpec] = []
+    for value in tokens:
+        group = value.strip().lower()
+        if group in {"benchmark", "benchmarks"}:
+            selected.extend(dataset for dataset in DATASETS.values() if "__" not in dataset.name)
+        elif group == "monash":
+            selected.extend(dataset for dataset in DATASETS.values() if dataset.name.startswith("Monash__"))
+        elif group == "time":
+            selected.extend(dataset for dataset in DATASETS.values() if dataset.name.startswith("TIME__"))
+        else:
+            selected.append(DATASETS[normalize_dataset(value)])
+    # Preserve registry/request order while removing duplicates from mixed groups.
+    return list(dict.fromkeys(selected))
 
 
 def selected_backbones(values: list[str]) -> set[str]:
     if values == ["all"] or "all" in values:
         return set(CANONICAL_BACKBONES)
     return {normalize_backbone(value) for value in values}
+
+
+def parse_gpu_ids(values: list[str] | None) -> list[int]:
+    if values is None:
+        return []
+    gpu_ids: list[int] = []
+    for value in values:
+        for piece in str(value).split(","):
+            stripped = piece.strip()
+            if not stripped:
+                continue
+            gpu_id = int(stripped)
+            if gpu_id < 0:
+                raise ValueError(f"GPU id must be non-negative, got: {gpu_id}")
+            gpu_ids.append(gpu_id)
+    if not gpu_ids:
+        raise ValueError("--gpu/--gpu-ids requires at least one GPU id.")
+    return gpu_ids
 
 
 def parse_extra_run_args(items: list[str]) -> dict[str, str]:
@@ -185,45 +223,6 @@ def parse_extra_run_args(items: list[str]) -> dict[str, str]:
         if not key:
             raise ValueError(f"Empty --extra-run-arg key in: {item}")
         result[key] = value
-    return result
-
-
-def split_dataset_override(item: str, option_name: str) -> tuple[str, str]:
-    if "=" not in item:
-        raise ValueError(f"{option_name} must be DATASET=VALUE, got: {item}")
-    dataset_name, raw_value = item.split("=", 1)
-    dataset_name = dataset_name.strip()
-    raw_value = raw_value.strip()
-    if not dataset_name or not raw_value:
-        raise ValueError(f"{option_name} must be DATASET=VALUE, got: {item}")
-    return normalize_dataset(dataset_name), raw_value
-
-
-def parse_dataset_int_overrides(items: list[str], option_name: str) -> dict[str, int]:
-    result: dict[str, int] = {}
-    for item in items:
-        dataset_name, raw_value = split_dataset_override(item, option_name)
-        if dataset_name in result:
-            raise ValueError(f"Duplicate {option_name} override for dataset: {dataset_name}")
-        value = int(raw_value)
-        if value <= 0:
-            raise ValueError(f"{option_name} value must be positive for {dataset_name}: {value}")
-        result[dataset_name] = value
-    return result
-
-
-def parse_dataset_int_list_overrides(items: list[str], option_name: str) -> dict[str, list[int]]:
-    result: dict[str, list[int]] = {}
-    for item in items:
-        dataset_name, raw_value = split_dataset_override(item, option_name)
-        if dataset_name in result:
-            raise ValueError(f"Duplicate {option_name} override for dataset: {dataset_name}")
-        values = [int(value.strip()) for value in raw_value.split(",") if value.strip()]
-        if not values:
-            raise ValueError(f"{option_name} needs at least one value for {dataset_name}")
-        if any(value <= 0 for value in values):
-            raise ValueError(f"{option_name} values must be positive for {dataset_name}: {raw_value}")
-        result[dataset_name] = values
     return result
 
 
@@ -259,15 +258,8 @@ def build_job(
     candidate_id = candidate["candidate_id"]
     backbone = candidate["backbone"]
     run_args = dict(candidate.get("run_args") or {})
-    sampled_seq_len = run_args.pop("seq_len", dataset.default_seq_len)
-    seq_len_override = args.dataset_seq_len_overrides.get(dataset.name)
-    if seq_len_override is not None:
-        seq_len_value = seq_len_override
-    elif args.fixed_seq_len is not None:
-        seq_len_value = args.fixed_seq_len
-    else:
-        seq_len_value = sampled_seq_len
-    seq_len = int(seq_len_value)
+    run_args.pop("seq_len", None)
+    seq_len = fixed_seq_len_for(dataset)
     label_len = label_len_for(dataset, seq_len, args.label_len)
     model_id = f"{args.run_group}_{dataset.name}_{candidate_id}_sl{seq_len}_pl{pred_len}"
     results_id = f"{args.run_group}_{candidate.get('split', 'unsplit')}_{dataset.name}_{candidate_id}_pl{pred_len}"
@@ -294,6 +286,14 @@ def build_job(
         "checkpoints": args.checkpoints,
         "results_id": results_id,
         "batch_size": args.batch_size if args.batch_size is not None else dataset.default_batch_size,
+        "long_term_train_sample_limit": args.train_sample_limit,
+        "long_term_val_sample_limit": args.val_sample_limit,
+        "long_term_test_sample_limit": args.test_sample_limit,
+        "candidate_sample_seed": args.sample_seed,
+        "multi_series_lru_size": args.multi_series_lru_size,
+        # Leave headroom for CUDA context/non-allocator memory within the
+        # scheduler's reservation for this process.
+        "gpu_memory_limit_mb": max(256, args.job_gpu_memory_mb - 512),
     }
 
     if args.train_epochs is not None:
@@ -302,8 +302,9 @@ def build_job(
         base_args["patience"] = args.patience
     if args.num_workers is not None:
         base_args["num_workers"] = args.num_workers
-    if args.gpu is not None:
-        base_args["gpu"] = args.gpu
+    elif dataset.data == "multi_series":
+        # Avoid one independent bounded LRU cache per DataLoader worker.
+        base_args["num_workers"] = 0
     if args.gpu_type is not None:
         base_args["gpu_type"] = args.gpu_type
     if args.no_use_gpu:
@@ -339,6 +340,99 @@ def write_manifest(path: Path | None, record: dict[str, Any]) -> None:
         handle.write(json.dumps(record, sort_keys=True) + "\n")
 
 
+def current_gpu_memory_mb(gpu_ids: list[int]) -> dict[int, int]:
+    if not gpu_ids:
+        return {}
+    try:
+        completed = subprocess.run(
+            [
+                "nvidia-smi",
+                "--query-gpu=index,memory.used",
+                "--format=csv,noheader,nounits",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        usage = {}
+        for line in completed.stdout.splitlines():
+            index_text, used_text = (piece.strip() for piece in line.split(",", 1))
+            usage[int(index_text)] = int(used_text)
+        return {gpu_id: usage.get(gpu_id, 0) for gpu_id in gpu_ids}
+    except (OSError, subprocess.SubprocessError, ValueError):
+        raise RuntimeError(
+            "Could not query nvidia-smi; refusing to launch because the 15000 MB/GPU "
+            "budget cannot be verified. Use --no-use-gpu for CPU execution."
+        )
+
+
+def worker_gpu_assignments(
+    gpu_ids: list[int],
+    worker_limit: int,
+    memory_limit_mb: int,
+    job_memory_mb: int,
+) -> list[int | None]:
+    if worker_limit <= 0:
+        return []
+    if not gpu_ids:
+        return [None] * worker_limit
+    if memory_limit_mb <= 0 or job_memory_mb <= 0:
+        raise ValueError("GPU memory limits must be positive")
+    usage = current_gpu_memory_mb(gpu_ids)
+    slots = []
+    slot_counts = {}
+    for gpu_id in gpu_ids:
+        available = max(0, memory_limit_mb - usage[gpu_id])
+        count = available // job_memory_mb
+        slot_counts[gpu_id] = count
+        slots.extend([gpu_id] * count)
+    if not slots:
+        details = ", ".join(f"gpu {gpu}: {usage[gpu]} MB used" for gpu in gpu_ids)
+        raise RuntimeError(
+            f"No GPU reservation slot fits the {memory_limit_mb} MB budget "
+            f"with {job_memory_mb} MB/job ({details})"
+        )
+    # Interleave GPUs so the first wave is balanced instead of filling GPU 0 first.
+    balanced = []
+    for slot_index in range(max(slot_counts.values())):
+        for gpu_id in gpu_ids:
+            if slot_index < slot_counts[gpu_id]:
+                balanced.append(gpu_id)
+    print(
+        "GPU memory scheduler: "
+        + ", ".join(
+            f"gpu {gpu}: used={usage[gpu]} MB slots={slot_counts[gpu]}"
+            for gpu in gpu_ids
+        )
+        + f"; budget={memory_limit_mb} MB, reservation={job_memory_mb} MB/job"
+    )
+    return balanced[:worker_limit]
+
+
+def command_for_assigned_gpu(command: list[str], gpu_id: int | None) -> list[str]:
+    assigned = list(command)
+    if gpu_id is not None:
+        assigned.extend(["--gpu", str(gpu_id)])
+    return assigned
+
+
+def gpu_assignment_summary(assignments: list[int | None]) -> str:
+    if not assignments:
+        return "no workers"
+    counts: dict[int | None, int] = {}
+    for gpu_id in assignments:
+        counts[gpu_id] = counts.get(gpu_id, 0) + 1
+    if set(counts) == {None}:
+        return "no explicit GPU assignment"
+    return ", ".join(
+        f"gpu {gpu_id}: {count}"
+        for gpu_id, count in sorted(
+            ((gpu_id, count) for gpu_id, count in counts.items() if gpu_id is not None),
+            key=lambda item: item[0],
+        )
+    )
+
+
 def execute_job(
     index: int,
     total: int,
@@ -346,22 +440,29 @@ def execute_job(
     args: argparse.Namespace,
     repo_root: Path,
     io_lock: threading.Lock,
+    assigned_gpu: int | None,
 ) -> dict[str, Any]:
     log_path = args.log_dir / (
         f"{index:05d}_{job['dataset']}_{job['candidate_id']}_pl{job['pred_len']}.log"
     )
     start_time = time.time()
+    command = command_for_assigned_gpu(job["command"], assigned_gpu)
+    runtime_job = {**job, "command": command, "assigned_gpu": assigned_gpu}
 
     with io_lock:
-        print(f"[{index}/{total}] {job['dataset']} {job['candidate_id']} pred_len={job['pred_len']}")
+        gpu_text = f" gpu={assigned_gpu}" if assigned_gpu is not None else ""
+        print(
+            f"[{index}/{total}] {job['dataset']} {job['candidate_id']} "
+            f"pred_len={job['pred_len']}{gpu_text}"
+        )
         print(f"  log: {log_path}")
-        write_manifest(args.manifest, {**job, "status": "started", "log_path": str(log_path)})
+        write_manifest(args.manifest, {**runtime_job, "status": "started", "log_path": str(log_path)})
 
     with log_path.open("w", encoding="utf-8") as log_handle:
-        log_handle.write(shlex.join(job["command"]) + "\n\n")
+        log_handle.write(shlex.join(command) + "\n\n")
         log_handle.flush()
         completed = subprocess.run(
-            job["command"],
+            command,
             cwd=repo_root,
             stdout=log_handle,
             stderr=subprocess.STDOUT,
@@ -372,7 +473,7 @@ def execute_job(
     elapsed = time.time() - start_time
     status = "completed" if completed.returncode == 0 else "failed"
     record = {
-        **job,
+        **runtime_job,
         "status": status,
         "returncode": completed.returncode,
         "elapsed_sec": round(elapsed, 3),
@@ -405,7 +506,7 @@ def execute_jobs_parallel(
     failures: list[dict[str, Any]] = []
     failure_lock = threading.Lock()
 
-    def worker() -> None:
+    def worker(worker_id: int, assigned_gpu: int | None) -> None:
         while not stop_event.is_set():
             try:
                 index, job = work_queue.get_nowait()
@@ -413,17 +514,29 @@ def execute_jobs_parallel(
                 return
             try:
                 try:
-                    record = execute_job(index, total, job, args, repo_root, io_lock)
+                    record = execute_job(
+                        index,
+                        total,
+                        job,
+                        args,
+                        repo_root,
+                        io_lock,
+                        assigned_gpu,
+                    )
                 except Exception as exc:
                     record = {
                         **job,
                         "status": "failed",
                         "returncode": None,
                         "error": repr(exc),
+                        "assigned_gpu": assigned_gpu,
                     }
                     with io_lock:
                         write_manifest(args.manifest, record)
-                        print(f"[{index}/{total}] failed before completion: {job['candidate_id']} ({exc!r})")
+                        print(
+                            f"[{index}/{total}] worker={worker_id} failed before completion: "
+                            f"{job['candidate_id']} ({exc!r})"
+                        )
                 if record["returncode"] != 0:
                     with failure_lock:
                         failures.append(record)
@@ -432,14 +545,27 @@ def execute_jobs_parallel(
             finally:
                 work_queue.task_done()
 
-    worker_count = min(args.n_jobs, total) if total > 0 else 0
+    worker_limit = min(args.n_jobs, total) if total > 0 else 0
+    gpu_assignments = worker_gpu_assignments(
+        args.gpu_ids,
+        worker_limit,
+        args.gpu_memory_limit_mb,
+        args.job_gpu_memory_mb,
+    )
+    worker_count = len(gpu_assignments)
     threads = [
-        threading.Thread(target=worker, name=f"candidate-worker-{worker_index + 1}", daemon=False)
+        threading.Thread(
+            target=worker,
+            args=(worker_index + 1, gpu_assignments[worker_index]),
+            name=f"candidate-worker-{worker_index + 1}",
+            daemon=False,
+        )
         for worker_index in range(worker_count)
     ]
 
     with io_lock:
         print(f"Launching {worker_count} worker thread(s) for {total} job(s).")
+        print(f"GPU worker assignment: {gpu_assignment_summary(gpu_assignments)}")
     for thread in threads:
         thread.start()
     for thread in threads:
@@ -450,6 +576,11 @@ def execute_jobs_parallel(
 
 def main() -> None:
     args = parse_args()
+    if args.gpu_ids is None and not args.no_use_gpu:
+        args.gpu_ids = ["0", "1", "2", "3"]
+    args.gpu_ids = parse_gpu_ids(args.gpu_ids)
+    if args.no_use_gpu and args.gpu_ids:
+        raise ValueError("--gpu/--gpu-ids cannot be used together with --no-use-gpu.")
     repo_root = args.repo_root.resolve()
     if not (repo_root / "run.py").exists():
         raise FileNotFoundError(f"run.py not found under repo root: {repo_root}")
@@ -460,12 +591,6 @@ def main() -> None:
     split_filter = None if "all" in args.splits else set(args.splits)
     id_filter = set(args.candidate_ids) if args.candidate_ids else None
     extra_args = parse_extra_run_args(args.extra_run_arg)
-    args.dataset_seq_len_overrides = parse_dataset_int_overrides(
-        args.dataset_seq_len_overrides, "--dataset-seq-len"
-    )
-    args.dataset_pred_len_overrides = parse_dataset_int_list_overrides(
-        args.dataset_pred_len_overrides, "--dataset-pred-lens"
-    )
 
     candidates = []
     for candidate in load_candidates(args.candidates):
@@ -480,25 +605,46 @@ def main() -> None:
     jobs: list[dict[str, Any]] = []
     for candidate in candidates:
         for dataset in datasets:
-            pred_lens = args.dataset_pred_len_overrides.get(dataset.name)
-            if pred_lens is None:
-                pred_lens = args.pred_lens if args.pred_lens is not None else dataset.pred_lens
-            for pred_len in pred_lens:
-                job = build_job(candidate, dataset, int(pred_len), args, extra_args)
-                if args.skip_existing and Path(job["metrics_path"]).exists():
-                    job["status"] = "skipped_existing"
-                    write_manifest(args.manifest, job)
-                    continue
-                jobs.append(job)
+            pred_len = fixed_pred_len_for(dataset)
+            job = build_job(candidate, dataset, pred_len, args, extra_args)
+            if args.skip_existing and Path(job["metrics_path"]).exists():
+                job["status"] = "skipped_existing"
+                write_manifest(args.manifest, job)
+                continue
+            jobs.append(job)
 
     if args.limit is not None:
         jobs = jobs[: args.limit]
 
     print(f"Expanded {len(jobs)} jobs from {len(candidates)} candidates.")
     if not args.execute:
-        for job in jobs:
-            print(shlex.join(job["command"]))
-            write_manifest(args.manifest, {**job, "status": "planned"})
+        worker_limit = min(args.n_jobs, len(jobs)) if jobs else 0
+        gpu_assignments = worker_gpu_assignments(
+            args.gpu_ids,
+            worker_limit,
+            args.gpu_memory_limit_mb,
+            args.job_gpu_memory_mb,
+        )
+        worker_count = len(gpu_assignments)
+        if worker_count:
+            print(f"Dry-run GPU worker assignment: {gpu_assignment_summary(gpu_assignments)}")
+        for index, job in enumerate(jobs, start=1):
+            assigned_gpu = (
+                gpu_assignments[(index - 1) % worker_count]
+                if worker_count
+                else None
+            )
+            command = command_for_assigned_gpu(job["command"], assigned_gpu)
+            print(shlex.join(command))
+            write_manifest(
+                args.manifest,
+                {
+                    **job,
+                    "command": command,
+                    "assigned_gpu": assigned_gpu,
+                    "status": "planned",
+                },
+            )
         print("Dry-run only. Add --execute to launch jobs.")
         return
 

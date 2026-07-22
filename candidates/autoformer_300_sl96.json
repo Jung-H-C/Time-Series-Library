@@ -1,0 +1,5431 @@
+{
+  "candidates": [
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_000",
+      "is_default": true,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_001",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_002",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_003",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_004",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_005",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_006",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_007",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_008",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_009",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_010",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_011",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_012",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_013",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_014",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_015",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_016",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_017",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_018",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_019",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_020",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_021",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_022",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_023",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_024",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_025",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_026",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_027",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_028",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_029",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_030",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_031",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_032",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_033",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_034",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_035",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_036",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_037",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_038",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_039",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_040",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_041",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_042",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_043",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_044",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_045",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_046",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_047",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_048",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_049",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_050",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_051",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_052",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_053",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_054",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_055",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_056",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_057",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_058",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_059",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_060",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_061",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_062",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_063",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_064",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_065",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_066",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_067",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_068",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_069",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_070",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_071",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_072",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_073",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_074",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_075",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_076",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_077",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_078",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_079",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_080",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_081",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_082",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_083",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_084",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_085",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_086",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_087",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_088",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_089",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_090",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_091",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_092",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_093",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_094",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_095",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_096",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_097",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_098",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_099",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_train"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_100",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_101",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_102",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_103",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_104",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_105",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_106",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_107",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_108",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_109",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_110",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_111",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_112",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_113",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_114",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_115",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_116",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_117",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_118",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_119",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_120",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_121",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_122",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_123",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_124",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_125",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_126",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_127",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_128",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_129",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_130",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_131",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_132",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_133",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_134",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_135",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_136",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_137",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_138",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_139",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_140",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_141",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_142",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_143",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_144",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_145",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_146",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_147",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_148",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_149",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_150",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_151",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_152",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_153",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_154",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_155",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_156",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_157",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_158",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_159",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_160",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_161",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_162",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_163",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_164",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_165",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_166",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_167",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_168",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_169",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_170",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_171",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_172",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_173",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_174",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_175",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_176",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_177",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_178",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_179",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_180",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_181",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_182",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_183",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_184",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_185",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_186",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_187",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_188",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_189",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_190",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_191",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_192",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_193",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_194",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_195",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_196",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_197",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_198",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_199",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_valid"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_200",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_201",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_202",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_203",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_204",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_205",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_206",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_207",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_208",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_209",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_210",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_211",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_212",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_213",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_214",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_215",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_216",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_217",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_218",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_219",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_220",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_221",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_222",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_223",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_224",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_225",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_226",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_227",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_228",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_229",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_230",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_231",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_232",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_233",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_234",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_235",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_236",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_237",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_238",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_239",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_240",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_241",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_242",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_243",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_244",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_245",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_246",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_247",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_248",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_249",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_250",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_251",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_252",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_253",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_254",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_255",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_256",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_257",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_258",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_259",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_260",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_261",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_262",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_263",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_264",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_265",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_266",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_267",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_268",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_269",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_270",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_271",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_272",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_273",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_274",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_275",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_276",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_277",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_278",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_279",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_280",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_281",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_282",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_283",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_284",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_285",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_286",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_287",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_288",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_289",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_290",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 8,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_291",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_292",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 1,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_293",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 512,
+        "d_layers": 2,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_294",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 256,
+        "d_layers": 1,
+        "d_model": 128,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 13,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_295",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 5,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_296",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 384,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_297",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 1,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 3,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 49,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_298",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 192,
+        "d_layers": 2,
+        "d_model": 96,
+        "dropout": 0.1,
+        "e_layers": 2,
+        "factor": 3,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 2,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    },
+    {
+      "backbone": "Autoformer",
+      "candidate_id": "Autoformer_299",
+      "is_default": false,
+      "run_args": {
+        "d_ff": 768,
+        "d_layers": 2,
+        "d_model": 192,
+        "dropout": 0.1,
+        "e_layers": 1,
+        "factor": 1,
+        "learning_rate": 0.0001,
+        "moving_avg": 25,
+        "n_heads": 4,
+        "seq_len": 96
+      },
+      "split": "proxy_test"
+    }
+  ],
+  "created_at": "2026-06-11T09:31:39.538811+00:00",
+  "sampling": {
+    "backbones": [
+      "Autoformer"
+    ],
+    "default_candidate_index": 0,
+    "fixed_dropout": 0.1,
+    "fixed_learning_rate": 0.0001,
+    "num_per_backbone": 300,
+    "seq_len": 96,
+    "seq_lens": [
+      96
+    ],
+    "test_per_backbone": 100,
+    "train_per_backbone": 100,
+    "valid_per_backbone": 100
+  },
+  "schema_version": 1,
+  "seed": 2026,
+  "split_counts": {
+    "Autoformer": {
+      "proxy_test": 100,
+      "proxy_train": 100,
+      "proxy_valid": 100
+    }
+  },
+  "task_name": "long_term_forecast"
+}
