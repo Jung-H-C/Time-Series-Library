@@ -1,5 +1,8 @@
 # Data-Conditioned Symbolic Zero-Cost Proxy Generation for Time-Series Neural Architecture Search: An Empirical Investigation
 
+**Hyeoncheol Jung** · SeoulTech <img src="assets/seoultech.gif" width="20" style="vertical-align: middle;"> 
+<br>*March 2026 – July 2026*
+
 ## Project Overview
 
 ### Motivation
@@ -7,6 +10,16 @@
 Applying **Neural Architecture Search (NAS)** to time-series forecasting is computationally expensive because candidate architectures generally need to be trained and evaluated across different datasets and backbone families.
 
 Zero-Cost Proxies (ZCPs) provide a potential alternative by estimating architecture quality without full training. However, our preliminary experiments showed that the ranking performance of existing ZCPs was highly inconsistent across different time-series datasets and backbone architectures.
+
+<p align="center">
+  <img src="assets/multi_input_spearman_proxy_train.png" width="450">
+</p>
+
+<p align="center">
+  <em>
+    Figure 1. Proxy-target Spearman correlations across six time-series datasets.
+  </em>
+</p>
 
 If an effective proxy could be inferred directly from the characteristics of a target dataset, it could substantially reduce the computational cost required to identify suitable time-series architectures.
 
