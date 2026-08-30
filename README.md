@@ -48,6 +48,24 @@ Zero-Cost Proxy Formula
         ↓
 Architecture Ranking
 ```
+### Hypotheses
+
+#### H1. Dataset-Specific Proxy Hypothesis
+
+> **Different time-series datasets may have different optimal zero-cost proxies.**
+
+#### H2. Feature-Proxy Relationship Hypothesis
+
+> **Time-series datasets with similar statistical characteristics should prefer similar zero-cost proxies.**
+
+#### H3. Generalization Hypothesis
+
+> **By learning dataset-to-proxy relationships across a sufficiently diverse collection of datasets, a model should be able to infer an effective proxy for an unseen dataset.**
+
+#### H4. Symbolic Compositionality Hypothesis
+
+> **Combining multiple zero-cost proxies through symbolic mathematical expressions can produce stronger architecture-ranking signals than relying on a single ZCP.**
+
 
 ### Outcome
 
